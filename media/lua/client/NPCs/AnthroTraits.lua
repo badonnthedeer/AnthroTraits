@@ -657,9 +657,6 @@ local function ATEveryOneMinute()
             local player = getSpecificPlayer(playerIndex)
             if player and not player:isDead()
             then
-                --testing stuff
-                print(TraitFactory.getTrait("AT_Carnivore"):getDescription());
-                --
                 if player:HasTrait("AT_Immunity") and not player:getBodyDamage():isInfected() and player:getModData().ATPlayerData.trulyInfected == true
                 then
                     --if a player is a cheater/debugging or takes a game-made cure
