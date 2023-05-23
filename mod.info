@@ -2,4 +2,5 @@ name=Anthro Traits
 poster=poster.png
 id=AnthroTraits
 description=Add realistic, balanced traits for anthropormorphic animals.
+require=TraitTagFramework
 url=https://theindiestone.com/forums/
