@@ -3,4 +3,4 @@ poster=poster.png
 id=AnthroTraits
 description=Add realistic, balanced traits for anthropormorphic animals.
 require=TraitTagFramework
-url=https://theindiestone.com/forums/
+url=https://github.com/badonnthedeer/AnthroTraits
