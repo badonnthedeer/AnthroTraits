@@ -1,0 +1,15 @@
+base.BeerBottle
+base.BeerCan
+base.Beer2
+base.Beer
+base.WhiskeyFull
+base.Cigarettes
+base.CocoaPowder
+base.Coffee2
+base.Wine2
+base.Wine
+base.ChocolateChips
+base.WineInGlass
+base.Teabag2
+base.OnionRings
+base.Chocolate

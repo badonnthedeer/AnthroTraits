@@ -1,0 +1,20 @@
+Sandbox_EN = {
+	Sandbox_AnthroTraits = "Anthro Traits",
+	Sandbox_AnthroTraits_AnthroImmunityScratchInfectionChance = "Anthro Immunity Scratch Infection Chance (stacks with regular)",
+	Sandbox_AnthroTraits_AnthroImmunityLacerationInfectionChance = "Anthro Immunity Laceration Infection Chance (stacks with regular)",
+	Sandbox_AnthroTraits_AnthroImmunityBiteInfectionChance = "Anthro Immunity Bite Infection Chance",
+	Sandbox_AnthroTraits_RightFoodBonus = "Extra Food Effectiveness % for Carnivore/Herbivores",
+	Sandbox_AnthroTraits_WrongFoodMalus = "Food Ineffectiveness % for Carnivore/Herbivores",
+	Sandbox_AnthroTraits_CarrionEaterBonus = "Extra Rotten Meat Effectiveness % for Carrion Eaters",
+	Sandbox_AnthroTraits_FoodMotivatedBonus = "Extra Happiness for players with Food Motivated",
+	Sandbox_AnthroTraits_ExclaimerExclaimThresholdMultiplier = "Chance per minute of a player with Exclaimer to exclaim * panic level (ignoring lvl 1)",
+	Sandbox_AnthroTraits_FeralDigestionPoisonAmt = "The amount that an entire bag of cocoa powder or coffee will poison a character with this trait. Decreased by 1/2 or 1/4 depending on food type."
+	Sandbox_AnthroTraits_StinkyDistance = "How far zombies are attracted to a player with the Stinky trait.",
+	Sandbox_AnthroTraits_StinkyLoudness = "How much zombies within distance are attracted to a player with the Stinky trait.",
+	Sandbox_AnthroTraits_StinkyCommentChance = "A percentage chance per minute another player may comment on another player with the Stinky trait.",
+	AnthroTraits_BullRushKnockdownEndCost = "Endurance cost of knocking down a Zombie/player with Bull Rush.",
+	AnthroTraits_NaturalTumblerFallTimeMult = "Reduces fall time which allows players with Natural Tumbler to fall further with less consequences.",
+	AnthroTraits_TailTripReduction = "Flat chance after all factors to stop a trip."
+	AnthroTraits_UnwieldyHandsTimeIncrease = "Percentage increase of time to complete an action that requires fine motor control."
+	AnthroTraits_SlinkyTimeIncrease = "Percentage decrease of time to open/close containers and go over fences and through entrances."
+}

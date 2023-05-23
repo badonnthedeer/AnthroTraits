@@ -1,6 +1,0 @@
-base.Gum
-base.CannedFruitBeverageOpen
-base.DoughnutJelly
-base.GrapeLeaves
-base.Grapes
-base.JuiceBox
