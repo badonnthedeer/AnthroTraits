@@ -13,6 +13,7 @@ local function InitATPlayerData(player)
     end
 end
 
+
 local function ATHandleInfection(player)
     local biteInfectionChance = SandboxVars.AnthroTraits.AnthroImmunityBiteInfectionChance;
     local lacerationInfectionChance = SandboxVars.AnthroTraits.AnthroImmunityLacerationInfectionChance;
@@ -31,11 +32,11 @@ local function ATHandleInfection(player)
         if bodypart:HasInjury() == true and bodypart:IsInfected() 
         then
             print( tostring(bodypart:getType()) .. " is injured and infected.");
-            if player:HasTrait("anthroHooves")
+            if player:HasTrait("AT_Hooves")
             then
                 if tostring(bodypart:getType()) == "Foot_L" or tostring(bodypart:getType()) == "Foot_R"
                 then
-                    print("anthroHooves foot immunity triggered.");
+                    print("AT_Hooves foot immunity triggered.");
                     bodypart:SetInfected(false);
                     player:getBodyDamage():setInfected(false);
                     player:getBodyDamage():setInfectionMortalityDuration(-1);
@@ -44,7 +45,7 @@ local function ATHandleInfection(player)
                     player:getBodyDamage():setInfectionGrowthRate(0);
                 end
             end
-            if player:HasTrait("anthroImmunity")
+            if player:HasTrait("AT_Immunity")
             then
                 local rolledInfectionChance = ZombRand(1, 100);
                 print("Rolled " .. rolledInfectionChance)
@@ -107,7 +108,6 @@ local function ATHandleInfection(player)
     end
 end
 
---function MTPlayerHit(player, _, __){
 local function ATPlayerDamageTick(player)
     if player:isZombie()
     then
@@ -124,7 +124,7 @@ local function ATPlayerDamageTick(player)
         playerData.trulyInfected = ATHandleInfection(player);
     end
     
-    if player:HasTrait("anthroHooves")
+    if player:HasTrait("AT_Hooves")
     then
         --immune to scratches, lacerations, bites
         local footL = player:getBodyDamage():getBodyPart(BodyPartType.Foot_L);
@@ -132,7 +132,7 @@ local function ATPlayerDamageTick(player)
 
         if footL:scratched()
         then
-            print("can't scratch me anthroHooves!");
+            print("can't scratch me AT_Hooves!");
             --casing is inconsistent in the game >:C 
             footL:setScratchTime(0);
 			footL:SetScratchedWeapon(false);
@@ -141,7 +141,7 @@ local function ATPlayerDamageTick(player)
         end
         if footR:scratched()
         then
-            print("can't scratch me anthroHooves!");
+            print("can't scratch me AT_Hooves!");
             footR:setScratchTime(0);
 			footR:SetScratchedWeapon(false);
             footR:setBleedingTime(0);
@@ -149,7 +149,7 @@ local function ATPlayerDamageTick(player)
         end
         if footL:isCut()
         then
-            print("can't cut me anthroHooves!");
+            print("can't cut me AT_Hooves!");
             footL:setCutTime(0);
             footL:setCut(false, false);
             footL:setBleedingTime(0);
@@ -157,7 +157,7 @@ local function ATPlayerDamageTick(player)
         end
         if footR:isCut()
         then
-            print("can't cut me anthroHooves!");
+            print("can't cut me AT_Hooves!");
             footR:setCutTime(0);
             footR:setCut(false, false);
             footR:setBleedingTime(0);
@@ -166,7 +166,7 @@ local function ATPlayerDamageTick(player)
         end
         if footL:bitten()
         then
-            print("can't bite me anthroHooves!");
+            print("can't bite me AT_Hooves!");
             --casing is inconsistent in the game >:C 
             footL:setBiteTime(0);
             footL:SetBitten(false, false);
@@ -175,7 +175,7 @@ local function ATPlayerDamageTick(player)
         end
         if footR:bitten()
         then
-            print("can't bite me anthroHooves!");
+            print("can't bite me AT_Hooves!");
             footR:setBiteTime(0);
             footR:SetBitten(false, false);
             footR:setBleedingTime(0);
@@ -195,45 +195,237 @@ local function ATPlayerDamageTick(player)
     -- end
 end
 
-local ISEatFoodAction:perform = ATOnEatPerform
-ATOnEatPerform = function()
+local function ApplyFoodTypeMod(modifier, character, foodEaten, percentEaten)
+getPlayer()
+    local foodHungChange = foodEaten:getHungerChange();
+    local foodThirstChange = foodEaten:getThirstChange();
+    local foodBoredomChange = foodEaten:getBoredomChange();
+    local foodUnhappyChange = foodEaten:getUnhappyChange();
+    local foodCalories = foodEaten:getCalories();
+
+    local charStats = character:getStats();
+    local charBodyDmg = character:getBodyDamage();
+    local charNutrition = character:getNutrition();
+
+    if foodHungChange == not nil
+    then
+        charStats:setHunger(charStats:getHunger() - ((foodHungChange * modifier ) * percentEaten));
+    end
+    if foodThirstChange == not nil
+    then
+        charStats:setThirst(charStats:getThirst() - ((foodThirstChange * modifier) * percentEaten));
+    end
+    if foodBoredomChange == not nil
+    then
+        charBodyDmg:setBoredomLevel(charBodyDmg:getBoredomLevel() - ((foodBoredomChange * modifier ) * percentEaten));
+    end
+    if foodUnhappyChange == not nil
+    then
+        charBodyDmg:setUnhappinessLevel(charBodyDmg:getUnhappinessLevel() - ((foodUnhappyChange * modifier ) * percentEaten));
+    end
+    if foodCalories == not nil
+    then
+        charNutrition:setCalories(charNutrition:getCalories() + ((foodCalories * modifier ) * percentEaten));
+    end
+end
+
+local originalEatPerform = ISEatFoodAction.perform
+ISEatFoodAction.perform = function(self)
     -- code to run before the original
-    local foodHungChange = self.item:getHungChange();
-    local foodType = self.item.getFoodType();
+    local charTraits = this.character:getTraits();
 
-    if toString(foodType) == "Meat"
-    then
-        if this.character.GetTraits().contains("anthroCarnivore")
-        then
-            self.character:Eat(new item{ HungerChange = (foodHungChange * .5)}, 100);
-        end
-    end
-    if toString(foodType) == "Vegetable"
-    then
-        if this.character.GetTraits().contains("anthroHerbivore")
-        then
-            self.character:Eat(new item{ HungerChange = (foodHungChange * .5)}, 100);
-        end
-    end
+    local charStats = this.character:getStats();
+    local charBodyDmg = this.character:getBodyDamage();
+    local charNutrition = this.character:getNutrition();
 
-    ISEatFoodAction:perform()
+    local rightFoodBonus = SandboxVars.AnthroTraits.RightFoodBonus;
+    local wrongFoodMalus = SandboxVars.AnthroTraits.WrongFoodMalus;
+    local carrionEaterBonus = SandboxVars.AnthroTraits.CarrionEaterBonus;
+    local foodMotivatedBonus = SandboxVars.AnthroTraits.FoodMotivatedBonus;
+
+    local beforeUnhappiness = charBodyDmg:getUnhappinessLevel();
+    local beforeFoodSickness = charBodyDmg:getFoodSicknessLevel();
+
+    local foodEaten = self.item
+    local foodPercentEaten = self.percent
+    local foodDisplayName = foodEaten:getDisplayName();
+    local foodType = foodEaten:getFoodType();
+
+
+    originalEatPerform()
     -- code to run after the original
-    
-    if toString(foodType) == "Meat"
+
+    if charTraits.contains("AT_Carnivore")
     then
-        if this.character.GetTraits().contains("anthroHerbivore")
+        if foodType == "Vegetables" or foodType == "Fruits"
         then
-            self.character:Eat(new item{ HungerChange = (foodHungChange * -.5)}, 100);
+            ApplyFoodTypeMod(wrongFoodMalus, this.character, self.item, self.percent);
+        elseif charTraits.contains("AT_CarrionEater") and (foodType == "Meat" or foodType == "Seafood") and foodEaten:isRotten()
+        then
+            ApplyFoodTypeMod((rightFoodBonus + carrionEaterBonus), this.character, self.item, self.percent);
+            charBodyDmg:setFoodSicknessLevel(beforeFoodSickness);
+        elseif foodType == "Meat" or foodType == "Seafood"
+        then
+            ApplyFoodTypeMod(rightFoodBonus, this.character, self.item, self.percent);
+            if not foodEaten:isRotten()
+            then
+                charBodyDmg:setFoodSicknessLevel(beforeFoodSickness);
+            end
+        end
+
+    elseif charTraits.contains("AT_Herbivore") then
+        if foodType == "Vegetables" or foodType == "Fruits"
+        then
+            ApplyFoodTypeMod(rightFoodBonus, this.character, self.item, foodPercentEaten);
+            if not foodEaten:isRotten()
+            then
+                charBodyDmg:setFoodSicknessLevel(beforeFoodSickness);
+            end
+        elseif foodType == "Meat" or foodType == "Seafood"
+        then
+            ApplyFoodTypeMod(wrongFoodMalus, this.character, self.item, foodPercentEaten);
+        end
+
+    elseif charTraits.contains("AT_CarrionEater")
+    then
+        if (foodType == "Meat" or foodType == "Seafood") and foodEaten:isRotten()
+        then
+            ApplyFoodTypeMod(carrionEaterBonus, this.character, self.item, foodPercentEaten);
+            charBodyDmg:setFoodSicknessLevel(beforeFoodSickness);
         end
     end
-    if toString(foodType) == "Vegetable"
+
+    if charTraits.contains("AT_FoodMotivated")
     then
-        if this.character.GetTraits().contains("anthroCarnivore")
+        charBodyDmg:setBoredomLevel(charBodyDmg:getBoredomLevel() - (foodMotivatedBonus * foodPercentEaten));
+        if(foodDisplayName == "Opened Dog Food")
         then
-            self.character:Eat(new item{ HungerChange = (foodHungChange * -.5)}, 100);
+            --50 is unhappiness gain from dog food.
+            charBodyDmg:setUnhappinessLevel(charBodyDmg:getUnhappinessLevel() - ((50 + foodMotivatedBonus) * foodPercentEaten));
+        else
+            charBodyDmg:setUnhappinessLevel(charBodyDmg:getUnhappinessLevel() - (foodMotivatedBonus * foodPercentEaten));
+        end
+
+    end
+    if charTraits.contains("AT_FeralDigestion")
+    then
+        local maxPoisonAmt = SandboxVars.AnthroTraits.FeralDigestionPoisonAmt
+        if(foodEaten:isAlcoholic() or
+                foodDisplayName.contains("Cuppa") or
+                foodDisplayName == ("Tea Bag") or
+                foodDisplayName == ("Coffee") or
+                foodDisplayName == ("Cocoa Powder"))
+        then
+            charBodyDmg:setPoisonLevel(charBodyDmg:getPoisonLevel() + (maxPoisonAmt * foodPercentEaten))
+        elseif (foodDisplayName.contains("Choco") or
+                foodDisplayName.contains("Cocoa") or
+                foodDisplayName.contains("Pop") or
+                foodDisplayName == ("Orange Soda") or
+                foodDisplayName == ("Black Forest Cake Slice"))
+        then
+            charBodyDmg:setPoisonLevel(charBodyDmg:getPoisonLevel() + (maxPoisonAmt / 2 * foodPercentEaten))
+        elseif(foodDisplayName == ("Smore") or
+                foodDisplayName == ("Gum") or
+                foodDisplayName == ("Cookie"))
+        then
+            charBodyDmg:setPoisonLevel(charBodyDmg:getPoisonLevel() +  (maxPoisonAmt / 4 * foodPercentEaten))
+        end
+    end
+    if charTraits.contains("AT_Bug-o-ssieur")
+    then
+        if foodEaten:getIcon().contains("Insect")
+        then
+            charBodyDmg:setUnhappinessLevel(beforeUnhappiness);
         end
     end
 
 end
+
+local function ExclaimerCheck(player)
+    local moodles = player:getMoodles();
+    local panicLevel = moodles:getMoodleLevel(MoodleType.Panic);
+    local thresholdMultiplier = SandboxVars.AnthroTraits.ExclaimerExclaimThresholdMultiplier;
+
+    local exclaimChance = ZombRand(1,100);
+
+    if (exclaimChance >= panicLevel * thresholdMultiplier)
+    then
+        if player:HasTrait("AT_Hooves")
+        then
+            player:sayShout("BLEAT!")
+        else
+            player:sayShout("HAHAHAHAHA!")
+        end
+    end
+end
+
+local function BeStinky(player)
+    local stinkyLoudness = SandboxVars.AnthroTraits.StinkyTraitLoudness
+    local stinkyCommentChance = SandboxVars.AnthroTraits.StinkyCommentChance
+    local playerSquare = player:getCurrentSquare()
+    local activePlayers = getNumActivePlayers()-1
+    local playerInQuestion = player;
+
+    getWorldSoundManager():addSound(player,
+            playerSquare:getX(),
+            playerSquare:getY(),
+            playerSquare:getZ(),
+            stinkyLoudness,
+            100);
+    if activePlayers > 0
+    then
+        for playerIndex = 0, activePlayers
+        do
+            playerInQuestion = getSpecificPlayer(playerIndex)
+            if player == not playerInQuestion
+            then
+                if ZombRand(1,100) >= stinkyCommentChance and playerInQuestion:DistTo() < stinkyLoudness and playerInQuestion:getMoodles():getMoodleLevel("Pain") < 2 and playerInQuestion:getMoodles():getMoodleLevel("Panic") < 1
+                then
+                    playerInQuestion:Say("Stinky!")
+                end
+            end
+        end
+    end
+end
+
+local function ATEveryOneMinute()
+    local activePlayers = getNumActivePlayers()-1
+    if activePlayers >= 0
+    then
+        for playerIndex = 0, activePlayers
+        do
+            local player = getSpecificPlayer(playerIndex)
+            if player and not player:isDead()
+            then
+                if player:HasTrait("AT_Exclaimer")
+                then
+                    ExclaimerCheck(player);
+                end
+                if player:HasTrait("AT_Stinky")
+                then
+                    BeStinky(player);
+                end
+            end
+
+        end
+
+    end
+
+end
+
+local function ATPlayerUpdate(player)
+    if player:HasTrait("AT_NaturalTumbler")
+    then
+        --Fall damage reduced
+        player:setFallTime(player:getFallTime() * .5);
+    elseif player:HasTrait("AT_ClippedWings")
+    then
+        --immune to fall damage
+        player:setFallTime(0);
+    end
+end
+
 Events.OnNewGame.Add(InitATPlayerData);
-Events.OnPlayerGetDamage.Add(ATPlayerDamageTick)
+Events.OnPlayerGetDamage.Add(ATPlayerDamageTick);
+Events.OnPlayerUpdate.Add(ATPlayerUpdate);
+Events.ATEveryOneMinute.Add(ATEveryOneMinute);
