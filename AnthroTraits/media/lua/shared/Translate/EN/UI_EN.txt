@@ -16,7 +16,7 @@ UI_EN = {
     UI_trait_AT_FoodMotivated = "Food Motivated",
     UI_trait_AT_FoodMotivated_desc = "Food makes you slightly less unhappy and bored;\nDog food doesn't make you unhappy.",
     UI_trait_AT_FeralDigestion = "Feral Digestion",
-    UI_trait_AT_FeralDigestion_desc = "Chocolate, gum, alcohol, and caffeine poison you.\n(Not an exhaustive list for real life, be careful what you feed your pets!)",
+    UI_trait_AT_FeralDigestion_desc = "Grape, onion, chocolate, gum, alcohol, and caffeine poison you.\n(Not an exhaustive list for real life, be careful what you feed your pets!)",
     UI_trait_AT_Carpenter = "Instinctual Carpenter",
     UI_trait_AT_Carpenter_desc = "Carpentry +1",
     UI_trait_AT_Exclaimer = "Warning Call",
@@ -25,6 +25,8 @@ UI_EN = {
     UI_trait_AT_NaturalTumbler_desc = "The damage and severity of your falls are reduced.",
     UI_trait_AT_VestigialWings = "Vestigial Wings",
     UI_trait_AT_VestigialWings_desc = "You have enough of your ancestor's wings to not take fall damage.",
+    UI_trait_AT_Stinky = "Stinky",
+    UI_trait_AT_Stinky_desc = "You stink. Zombies will be more attracted to you and other players may comment on your smell.",
     UI_trait_AT_Bug-o-ssieur="Bug-o-ssieur",
     UI_trait_AT_Bug-o-ssieur_desc="You don't gain unhappiness when eating bugs.",
 }

@@ -22,23 +22,23 @@ option AnthroTraits.AnthroImmunityBiteGetsRegularInfectionOnDefense
 }
 option AnthroTraits.RightFoodBonus
 {
-	type = float, min = 0, max = 1, default = 0.5f,
+	type = double, min = 0, max = 1, default = 0.5,
 	page = AnthroTraits, translation = AnthroTraits_RightFoodBonus,
 }
 option AnthroTraits.WrongFoodMalus
 {
-	type = float, min = -1, max = 0, default = -0.5f,
+	type = double, min = -1, max = 0, default = -0.5,
 	page = AnthroTraits, translation = AnthroTraits_WrongFoodMalus,
 }
 option AnthroTraits.CarrionEaterBonus
 {
-	type = float, min = 0, max = 1, default = 0.5f,
+	type = double, min = 0, max = 1, default = 0.5,
 	page = AnthroTraits, translation = AnthroTraits_CarrionEaterBonus,
 }
 option AnthroTraits.FoodMotivatedBonus
 {
 	type = integer, min = 0, max = 100, default = 5,
-	page = AnthroTraits, translation = AnthroTraits_CarrionEaterBonus,
+	page = AnthroTraits, translation = AnthroTraits_FoodMotivatedBonus,
 }
 option AnthroTraits.FeralDigestionPoisonAmt
 {
@@ -47,13 +47,18 @@ option AnthroTraits.FeralDigestionPoisonAmt
 }
 option AnthroTraits.ExclaimerExclaimThresholdMultiplier
 {
-	type = integer, min = 1, max = 33, default = 15,
-	page = AnthroTraits, translation = ExclaimerExclaimThresholdMultiplier,
+	type = integer, min = 1, max = 33, default = 10,
+	page = AnthroTraits, translation = AnthroTraits_ExclaimerExclaimThresholdMultiplier,
 }
-option AnthroTraits.StinkyTraitLoudness
+option AnthroTraits.StinkyDistance
+{
+	type = integer, min = 1, max = 100, default = 3,
+	page = AnthroTraits, translation = StinkyDistance,
+}
+option AnthroTraits.StinkyLoudness
 {
 	type = integer, min = 1, max = 100, default = 5,
-	page = AnthroTraits, translation = StinkyTraitLoudness,
+	page = AnthroTraits, translation = StinkyLoudness,
 }
 option AnthroTraits.StinkyCommentChance
 {

@@ -46,15 +46,18 @@ local function initAnthroTraits()
     -- (see shortsighted) TraitFactory.addTrait("AT_BadEyes", getText("UI_trait_AT_BadEyes"), 1, getText("UI_trait_AT_BadEyes_desc"), false);
     -- (see hard of hearing) TraitFactory.addTrait("AT_BadHearing", getText("UI_trait_AT_BadHearing"), 1, getText("UI_trait_AT_BadHearing_desc"), false);
 
+    -- TraitFactory.addTrait("AT_WannaGoCar", getText("UI_trait_AT_WannaGoCar"), 1, getText("UI_trait_AT_WannaGoCar_desc"), false);
+
     -- TraitFactory.addTrait("AT_ColdBlooded", getText("UI_trait_AT_ColdBlooded"), 1, getText("UI_trait_AT_ColdBlooded_desc"), false);
-    TraitFactory.addTrait("AT_Stinky", getText("UI_trait_AT_Stinky"), 1, getText("UI_trait_AT_Stinky_desc"), false);
+    TraitFactory.addTrait("AT_Stinky", getText("UI_trait_AT_Stinky"), -4, getText("UI_trait_AT_Stinky_desc"), false);
     TraitFactory.addTrait("AT_Exclaimer", getText("UI_trait_AT_Exclaimer"), -6, getText("UI_trait_AT_Exclaimer_desc"), false);
     -- TraitFactory.addTrait("AT_Sly", getText("UI_trait_AT_Sly"), 1, getText("UI_trait_AT_Sly_desc"), false);
     -- TraitFactory.addTrait("AT_Slinky", getText("UI_trait_AT_Slinky"), 1, getText("UI_trait_AT_Slinky_desc"), false);
+    -- TraitFactory.addTrait("AT_UnwieldyHands", getText("UI_trait_AT_UnwieldyHands"), 1, getText("UI_trait_AT_UnwieldyHands_desc"), false);
     TraitFactory.addTrait("AT_NaturalTumbler", getText("UI_trait_AT_NaturalTumbler"), 3, getText("UI_trait_AT_NaturalTumbler_desc"), false);
     TraitFactory.addTrait("AT_VestigialWings", getText("UI_trait_AT_VestigialWings"), 5, getText("UI_trait_AT_VestigialWings_desc"), false);
     -- (see stout) TraitFactory.addTrait("AT_BeastOfBurden", getText("UI_trait_AT_BeastOfBurden"), 1, getText("UI_trait_AT_BeastOfBurden_desc"), false);
-    -- TraitFactory.addTrait("AT_HornedCharger", getText("UI_trait_AT_HornedCharger"), 1, getText("UI_trait_AT_HornedCharger_desc"), false);
+    -- TraitFactory.addTrait("AT_BullRush", getText("UI_trait_AT_BullRush"), 1, getText("UI_trait_AT_BullRush_desc"), false);
     -- TraitFactory.addTrait("AT_NoThoughts", getText("UI_trait_AT_NoThoughts"), 1, getText("UI_trait_AT_NoThoughts_desc"), false);
     -- TraitFactory.addTrait("AT_NotCute", getText("UI_trait_AT_NotCute"), 1, getText("UI_trait_AT_NotCute_desc"), false);
     -- TraitFactory.addTrait("AT_SelfClean", getText("UI_trait_AT_SelfClean"), 1, getText("UI_trait_AT_SelfClean_desc"), false);
@@ -62,6 +65,7 @@ local function initAnthroTraits()
 
     TraitFactory.setMutualExclusive("AT_Paws", "AT_Hooves");
     TraitFactory.setMutualExclusive("AT_Herbivore", "AT_Carnivore");
+    TraitFactory.setMutualExclusive("AT_Herbivore", "AT_CarrionEater");
     TraitFactory.setMutualExclusive("AT_NaturalTumbler", "AT_VestigialWings");
 
 end

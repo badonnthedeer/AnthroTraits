@@ -1,42 +1,81 @@
+require('AnthroTraitsGlobals')
 require('NPCs/MainCreationMethods');
 
-local function InitATPlayerData(player)
+--UTILITIES
+local function FileExists(path)
 
-    local modData = player:getModData();
-
-    if modData.ATPlayerData == nil then
-        modData.ATPlayerData = {};
-        local atData = modData.ATPlayerData;
-
-        atData.trulyInfected = false;
-
+    local reader = getModFileReader(AnthroTraitsGlobals.ModID, path, false);
+    if not reader
+    then
+        return false
+    else
+        reader:close();
+        return true
     end
 end
 
 
-local function ATHandleInfection(player)
+local function AddItemTagToItemsFromFile(path, tag)
+    if not FileExists(path)
+    then
+        print("Cannot find file");
+        return {};
+    end
+
+    local reader = getModFileReader(AnthroTraitsGlobals.ModID, path, false);
+    local line;
+    local foundItem;
+    local itemTags;
+
+    while reader:ready()
+    do
+        line = reader:readLine();
+        foundItem = getScriptManager():getItem(line);
+        if foundItem ~= nil
+        then
+            itemTags = foundItem:getTags()
+            if not itemTags:contains(tag)
+            then
+                itemTags:add(tag);
+                if getDebug()
+                then
+                    print("tag "..tag.." added to "..line);
+                end
+            end
+        else
+            print("Cannot find item "..line.." to add tag "..tag)
+        end
+    end
+    reader:close();
+end
+
+
+local function HandleInfection(player)
     local biteInfectionChance = SandboxVars.AnthroTraits.AnthroImmunityBiteInfectionChance;
     local lacerationInfectionChance = SandboxVars.AnthroTraits.AnthroImmunityLacerationInfectionChance;
     local scratchInfectionChance = SandboxVars.AnthroTraits.AnthroImmunityScratchInfectionChance;
-
-    --print("Handle Infection Triggered");
-
-    --debug
-    local bodyDamage = player:getBodyDamage();
-    --print(bodypart:getType()); --this causes an error, useful for breakpoints in game
-    --end debug
+    if getDebug()
+    then
+        print("Handle Infection Triggered");
+    end
 
     for i = 0, player:getBodyDamage():getBodyParts():size() - 1 
     do
         local bodypart = player:getBodyDamage():getBodyParts():get(i);
         if bodypart:HasInjury() == true and bodypart:IsInfected() 
         then
-            print( tostring(bodypart:getType()) .. " is injured and infected.");
+            if getDebug()
+            then
+                print( tostring(bodypart:getType()) .. " is injured and infected.");
+            end
             if player:HasTrait("AT_Hooves")
             then
                 if tostring(bodypart:getType()) == "Foot_L" or tostring(bodypart:getType()) == "Foot_R"
                 then
-                    print("AT_Hooves foot immunity triggered.");
+                    if getDebug()
+                    then
+                        print("AT_Hooves foot immunity triggered.");
+                    end
                     bodypart:SetInfected(false);
                     player:getBodyDamage():setInfected(false);
                     player:getBodyDamage():setInfectionMortalityDuration(-1);
@@ -48,7 +87,10 @@ local function ATHandleInfection(player)
             if player:HasTrait("AT_Immunity")
             then
                 local rolledInfectionChance = ZombRand(1, 100);
-                print("Rolled " .. rolledInfectionChance)
+                if getDebug()
+                then
+                    print("Rolled " .. rolledInfectionChance)
+                end
                 if bodypart:bitten() 
                 then
                     if biteInfectionChance <= rolledInfectionChance 
@@ -59,15 +101,25 @@ local function ATHandleInfection(player)
                         player:getBodyDamage():setInfectionTime(-1);
                         player:getBodyDamage():setInfectionLevel(0);
                         player:getBodyDamage():setInfectionGrowthRate(0);
-                        print("Infection defense successful.")
+                        if getDebug()
+                        then
+                            print("Infection defense successful.");
+                        end
                         if SandboxVars.AnthroTraits.AnthroImmunityBiteGetsRegularInfectionOnDefense
                         then
                             bodypart:setInfectedWound(true);
-                            print("Knox infection substituted with regular infection. Human mouths are septic :S")
+                            if getDebug()
+                            then
+                                print("Knox infection substituted with regular infection. Human mouths are septic :S");
+                            end
+
                         end
                         return false;
                     else
-                        print("Infection defense UNSUCCESSFUL. DIE WELL!");
+                        if getDebug()
+                        then
+                            print("Infection defense UNSUCCESSFUL. DIE WELL!");
+                        end
                         return true;
                     end
                 elseif bodypart:isCut() --irritatingly, using the function to get laceration doesn't follow the same naming convention
@@ -80,10 +132,16 @@ local function ATHandleInfection(player)
                         player:getBodyDamage():setInfectionTime(-1);
                         player:getBodyDamage():setInfectionLevel(0);
                         player:getBodyDamage():setInfectionGrowthRate(0);
-                        print("Infection defense successful.")
+                        if getDebug()
+                        then
+                            print("Infection defense successful.");
+                        end
                         return false;
                     else
-                        print("Infection defense UNSUCCESSFUL. DIE WELL!")
+                        if getDebug()
+                        then
+                            print("Infection defense UNSUCCESSFUL. DIE WELL!");
+                        end
                         return true;
                     end
                 elseif bodypart:scratched() 
@@ -96,10 +154,16 @@ local function ATHandleInfection(player)
                         player:getBodyDamage():setInfectionTime(-1);
                         player:getBodyDamage():setInfectionLevel(0);
                         player:getBodyDamage():setInfectionGrowthRate(0);
-                        print("Infection defense successful.")
+                        if getDebug()
+                        then
+                            print("Infection defense successful.");
+                        end
                         return false;
                     else
-                        print("Infection defense UNSUCCESSFUL. DIE WELL!")
+                        if getDebug()
+                        then
+                            print("Infection defense UNSUCCESSFUL. DIE WELL!");
+                        end
                         return true;
                     end
                 end
@@ -108,96 +172,16 @@ local function ATHandleInfection(player)
     end
 end
 
-local function ATPlayerDamageTick(player)
-    if player:isZombie()
-    then
-		return
-	end
-    --print("I'm being damaged!");
-    local playerData = player:getModData().ATPlayerData;
-    --print(player:getBodyDamage():isInfected())
-    --print(playerData.trulyInfected)
 
-    if player:getBodyDamage():isInfected() == true and playerData.trulyInfected == false
-    then
-        print("Handle Infection about to be triggered");
-        playerData.trulyInfected = ATHandleInfection(player);
-    end
-    
-    if player:HasTrait("AT_Hooves")
-    then
-        --immune to scratches, lacerations, bites
-        local footL = player:getBodyDamage():getBodyPart(BodyPartType.Foot_L);
-        local footR = player:getBodyDamage():getBodyPart(BodyPartType.Foot_R);
-
-        if footL:scratched()
-        then
-            print("can't scratch me AT_Hooves!");
-            --casing is inconsistent in the game >:C 
-            footL:setScratchTime(0);
-			footL:SetScratchedWeapon(false);
-            footL:setBleedingTime(0);
-            footL:setBleeding(false);
-        end
-        if footR:scratched()
-        then
-            print("can't scratch me AT_Hooves!");
-            footR:setScratchTime(0);
-			footR:SetScratchedWeapon(false);
-            footR:setBleedingTime(0);
-            footR:setBleeding(false);
-        end
-        if footL:isCut()
-        then
-            print("can't cut me AT_Hooves!");
-            footL:setCutTime(0);
-            footL:setCut(false, false);
-            footL:setBleedingTime(0);
-            footL:setBleeding(false);
-        end
-        if footR:isCut()
-        then
-            print("can't cut me AT_Hooves!");
-            footR:setCutTime(0);
-            footR:setCut(false, false);
-            footR:setBleedingTime(0);
-            footR:setBleeding(false);
-
-        end
-        if footL:bitten()
-        then
-            print("can't bite me AT_Hooves!");
-            --casing is inconsistent in the game >:C 
-            footL:setBiteTime(0);
-            footL:SetBitten(false, false);
-            footL:setBleedingTime(0);
-            footL:setBleeding(false);
-        end
-        if footR:bitten()
-        then
-            print("can't bite me AT_Hooves!");
-            footR:setBiteTime(0);
-            footR:SetBitten(false, false);
-            footR:setBleedingTime(0);
-            footR:setBleeding(false);
-            
-        end
-
-    end
-    -- if player:HasTrait("anthroPaws") 
-    -- then
-    --     --immune to scratches?
-    --     for i = 0, player:getBodyDamage():getBodyParts():size() - 1 
-    --     do
-    --         local bodypart = player:getBodyDamage():getBodyParts():get(i);
-    --         print(bodypart);
-    --     end
-    -- end
+local function NeutralizeFoodPoisoning(charBodyDmg, beforeFoodSickness, beforePoisonLevel)
+    charBodyDmg:setFoodSicknessLevel(beforeFoodSickness);
+    charBodyDmg:setPoisonLevel(beforePoisonLevel);
 end
 
+
 local function ApplyFoodTypeMod(modifier, character, foodEaten, percentEaten)
-getPlayer()
-    local foodHungChange = foodEaten:getHungerChange();
+    local foodBaseHunger = foodEaten:getBaseHunger();
+    --local foodHungChange = foodEaten:getHungerChange();
     local foodThirstChange = foodEaten:getThirstChange();
     local foodBoredomChange = foodEaten:getBoredomChange();
     local foodUnhappyChange = foodEaten:getUnhappyChange();
@@ -207,160 +191,69 @@ getPlayer()
     local charBodyDmg = character:getBodyDamage();
     local charNutrition = character:getNutrition();
 
-    if foodHungChange == not nil
+    if getDebug()
     then
-        charStats:setHunger(charStats:getHunger() - ((foodHungChange * modifier ) * percentEaten));
+        print("Item| BaseHunger: "..foodBaseHunger..", ThirstChange: "..foodThirstChange..", BoredomChange: "..foodBoredomChange..", UnhappyChange: "..foodUnhappyChange..", Calories: "..foodCalories);
+        print("Before Mod| Hunger: "..charStats:getHunger()..", Thirst: "..charStats:getThirst()..", Boredom: "..charBodyDmg:getBoredomLevel()..", Unhappiness: "..charBodyDmg:getUnhappynessLevel()..", Calories:"..charNutrition:getCalories());
     end
-    if foodThirstChange == not nil
+
+    if foodBaseHunger ~= 0
+    then
+        charStats:setHunger(charStats:getHunger() - ((foodBaseHunger * modifier ) * percentEaten));
+    end
+    if foodThirstChange ~= 0
     then
         charStats:setThirst(charStats:getThirst() - ((foodThirstChange * modifier) * percentEaten));
     end
-    if foodBoredomChange == not nil
+    if foodBoredomChange ~= 0
     then
         charBodyDmg:setBoredomLevel(charBodyDmg:getBoredomLevel() - ((foodBoredomChange * modifier ) * percentEaten));
     end
-    if foodUnhappyChange == not nil
+    if foodUnhappyChange ~= 0
     then
-        charBodyDmg:setUnhappinessLevel(charBodyDmg:getUnhappinessLevel() - ((foodUnhappyChange * modifier ) * percentEaten));
+        charBodyDmg:setUnhappynessLevel(charBodyDmg:getUnhappynessLevel() - ((foodUnhappyChange * modifier ) * percentEaten));
     end
-    if foodCalories == not nil
+    if foodCalories ~= 0
     then
         charNutrition:setCalories(charNutrition:getCalories() + ((foodCalories * modifier ) * percentEaten));
     end
+
+    if getDebug()
+    then
+        print("After Mod| Hunger: "..charStats:getHunger()..", Thirst: "..charStats:getThirst()..", Boredom: "..charBodyDmg:getBoredomLevel()..", Unhappiness: "..charBodyDmg:getUnhappynessLevel()..", Calories:"..charNutrition:getCalories());
+    end
 end
 
-local originalEatPerform = ISEatFoodAction.perform
-ISEatFoodAction.perform = function(self)
-    -- code to run before the original
-    local charTraits = this.character:getTraits();
-
-    local charStats = this.character:getStats();
-    local charBodyDmg = this.character:getBodyDamage();
-    local charNutrition = this.character:getNutrition();
-
-    local rightFoodBonus = SandboxVars.AnthroTraits.RightFoodBonus;
-    local wrongFoodMalus = SandboxVars.AnthroTraits.WrongFoodMalus;
-    local carrionEaterBonus = SandboxVars.AnthroTraits.CarrionEaterBonus;
-    local foodMotivatedBonus = SandboxVars.AnthroTraits.FoodMotivatedBonus;
-
-    local beforeUnhappiness = charBodyDmg:getUnhappinessLevel();
-    local beforeFoodSickness = charBodyDmg:getFoodSicknessLevel();
-
-    local foodEaten = self.item
-    local foodPercentEaten = self.percent
-    local foodDisplayName = foodEaten:getDisplayName();
-    local foodType = foodEaten:getFoodType();
-
-
-    originalEatPerform()
-    -- code to run after the original
-
-    if charTraits.contains("AT_Carnivore")
-    then
-        if foodType == "Vegetables" or foodType == "Fruits"
-        then
-            ApplyFoodTypeMod(wrongFoodMalus, this.character, self.item, self.percent);
-        elseif charTraits.contains("AT_CarrionEater") and (foodType == "Meat" or foodType == "Seafood") and foodEaten:isRotten()
-        then
-            ApplyFoodTypeMod((rightFoodBonus + carrionEaterBonus), this.character, self.item, self.percent);
-            charBodyDmg:setFoodSicknessLevel(beforeFoodSickness);
-        elseif foodType == "Meat" or foodType == "Seafood"
-        then
-            ApplyFoodTypeMod(rightFoodBonus, this.character, self.item, self.percent);
-            if not foodEaten:isRotten()
-            then
-                charBodyDmg:setFoodSicknessLevel(beforeFoodSickness);
-            end
-        end
-
-    elseif charTraits.contains("AT_Herbivore") then
-        if foodType == "Vegetables" or foodType == "Fruits"
-        then
-            ApplyFoodTypeMod(rightFoodBonus, this.character, self.item, foodPercentEaten);
-            if not foodEaten:isRotten()
-            then
-                charBodyDmg:setFoodSicknessLevel(beforeFoodSickness);
-            end
-        elseif foodType == "Meat" or foodType == "Seafood"
-        then
-            ApplyFoodTypeMod(wrongFoodMalus, this.character, self.item, foodPercentEaten);
-        end
-
-    elseif charTraits.contains("AT_CarrionEater")
-    then
-        if (foodType == "Meat" or foodType == "Seafood") and foodEaten:isRotten()
-        then
-            ApplyFoodTypeMod(carrionEaterBonus, this.character, self.item, foodPercentEaten);
-            charBodyDmg:setFoodSicknessLevel(beforeFoodSickness);
-        end
-    end
-
-    if charTraits.contains("AT_FoodMotivated")
-    then
-        charBodyDmg:setBoredomLevel(charBodyDmg:getBoredomLevel() - (foodMotivatedBonus * foodPercentEaten));
-        if(foodDisplayName == "Opened Dog Food")
-        then
-            --50 is unhappiness gain from dog food.
-            charBodyDmg:setUnhappinessLevel(charBodyDmg:getUnhappinessLevel() - ((50 + foodMotivatedBonus) * foodPercentEaten));
-        else
-            charBodyDmg:setUnhappinessLevel(charBodyDmg:getUnhappinessLevel() - (foodMotivatedBonus * foodPercentEaten));
-        end
-
-    end
-    if charTraits.contains("AT_FeralDigestion")
-    then
-        local maxPoisonAmt = SandboxVars.AnthroTraits.FeralDigestionPoisonAmt
-        if(foodEaten:isAlcoholic() or
-                foodDisplayName.contains("Cuppa") or
-                foodDisplayName == ("Tea Bag") or
-                foodDisplayName == ("Coffee") or
-                foodDisplayName == ("Cocoa Powder"))
-        then
-            charBodyDmg:setPoisonLevel(charBodyDmg:getPoisonLevel() + (maxPoisonAmt * foodPercentEaten))
-        elseif (foodDisplayName.contains("Choco") or
-                foodDisplayName.contains("Cocoa") or
-                foodDisplayName.contains("Pop") or
-                foodDisplayName == ("Orange Soda") or
-                foodDisplayName == ("Black Forest Cake Slice"))
-        then
-            charBodyDmg:setPoisonLevel(charBodyDmg:getPoisonLevel() + (maxPoisonAmt / 2 * foodPercentEaten))
-        elseif(foodDisplayName == ("Smore") or
-                foodDisplayName == ("Gum") or
-                foodDisplayName == ("Cookie"))
-        then
-            charBodyDmg:setPoisonLevel(charBodyDmg:getPoisonLevel() +  (maxPoisonAmt / 4 * foodPercentEaten))
-        end
-    end
-    if charTraits.contains("AT_Bug-o-ssieur")
-    then
-        if foodEaten:getIcon().contains("Insect")
-        then
-            charBodyDmg:setUnhappinessLevel(beforeUnhappiness);
-        end
-    end
-
-end
 
 local function ExclaimerCheck(player)
     local moodles = player:getMoodles();
     local panicLevel = moodles:getMoodleLevel(MoodleType.Panic);
+    local playerSquare = player:getCurrentSquare()
     local thresholdMultiplier = SandboxVars.AnthroTraits.ExclaimerExclaimThresholdMultiplier;
 
     local exclaimChance = ZombRand(1,100);
 
-    if (exclaimChance >= panicLevel * thresholdMultiplier)
+    if (exclaimChance <= (panicLevel * thresholdMultiplier))
     then
         if player:HasTrait("AT_Hooves")
         then
-            player:sayShout("BLEAT!")
+            player:SayShout("BLEAT!")
         else
-            player:sayShout("HAHAHAHAHA!")
+            player:SayShout("HAHAHAHA!")
         end
+        getWorldSoundManager():addSound(player,
+                playerSquare:getX(),
+                playerSquare:getY(),
+                playerSquare:getZ(),
+                20,
+                100);
     end
 end
 
+
 local function BeStinky(player)
-    local stinkyLoudness = SandboxVars.AnthroTraits.StinkyTraitLoudness
+    local stinkyLoudness = SandboxVars.AnthroTraits.StinkyLoudness
+    local stinkyDistance = SandboxVars.AnthroTraits.StinkyDistance
     local stinkyCommentChance = SandboxVars.AnthroTraits.StinkyCommentChance
     local playerSquare = player:getCurrentSquare()
     local activePlayers = getNumActivePlayers()-1
@@ -370,8 +263,8 @@ local function BeStinky(player)
             playerSquare:getX(),
             playerSquare:getY(),
             playerSquare:getZ(),
-            stinkyLoudness,
-            100);
+            stinkyDistance,
+            stinkyLoudness);
     if activePlayers > 0
     then
         for playerIndex = 0, activePlayers
@@ -387,6 +280,246 @@ local function BeStinky(player)
         end
     end
 end
+
+
+--VANILLA LUA FUNCTION HOOKS
+
+local OriginalEatPerform = ISEatFoodAction.perform;
+ISEatFoodAction.perform = function(self)
+    -- code to run before the original
+
+    local PC = self.character
+    local charStats = PC:getStats();
+    local charBodyDmg = PC:getBodyDamage();
+    local charNutrition = PC:getNutrition();
+
+    local rightFoodBonus = SandboxVars.AnthroTraits.RightFoodBonus;
+    local wrongFoodMalus = SandboxVars.AnthroTraits.WrongFoodMalus;
+    local carrionEaterBonus = SandboxVars.AnthroTraits.CarrionEaterBonus;
+    local foodMotivatedBonus = SandboxVars.AnthroTraits.FoodMotivatedBonus;
+    local maxPoisonAmt = SandboxVars.AnthroTraits.FeralDigestionPoisonAmt
+
+    local beforeUnhappiness = charBodyDmg:getUnhappynessLevel();
+    local beforeFoodSickness = charBodyDmg:getFoodSicknessLevel();
+    local beforePoisonLevel = charBodyDmg:getPoisonLevel();
+
+
+    local foodEaten = self.item
+    local foodPercentEaten = self.percentage
+    local foodDisplayName = foodEaten:getDisplayName();
+    local foodTags =
+
+    OriginalEatPerform(self)
+    -- code to run after the original
+
+    if PC:HasTrait("AT_Carnivore")
+    then
+        if foodEaten:hasTag("ATHerbivore")
+        then
+            ApplyFoodTypeMod(wrongFoodMalus, PC, foodEaten, foodPercentEaten);
+        elseif PC:HasTrait("AT_CarrionEater") and foodEaten:isRotten() and foodEaten:hasTag("ATCarnivore")
+        then
+            ApplyFoodTypeMod((rightFoodBonus + carrionEaterBonus), PC, foodEaten, foodPercentEaten);
+            NeutralizeFoodPoisoning(charBodyDmg, beforeFoodSickness, beforePoisonLevel);
+        elseif foodEaten:hasTag("ATCarnivore")
+        then
+            ApplyFoodTypeMod(rightFoodBonus, PC, foodEaten, foodPercentEaten);
+            if not foodEaten:isRotten() and foodEaten:getPoisonPower() == 0
+            then
+                NeutralizeFoodPoisoning(charBodyDmg, beforeFoodSickness, beforePoisonLevel);
+            end
+        end
+
+    elseif PC:HasTrait("AT_Herbivore") then
+        if foodEaten:hasTag("ATHerbivore")
+        then
+            ApplyFoodTypeMod(rightFoodBonus, PC, foodEaten, foodPercentEaten);
+            if not foodEaten:isRotten() and foodEaten:getPoisonPower() == 0
+            then
+                NeutralizeFoodPoisoning(charBodyDmg, beforeFoodSickness, beforePoisonLevel);
+            end
+        elseif foodEaten:hasTag("ATCarnivore")
+        then
+            ApplyFoodTypeMod(wrongFoodMalus, PC, foodEaten, foodPercentEaten);
+        end
+        --Necessary if a PC has carrion eater but not carnivore.
+    elseif PC:HasTrait("AT_CarrionEater")
+    then
+        if foodEaten:hasTag("ATCarnivore")
+        then
+            ApplyFoodTypeMod(carrionEaterBonus, PC, foodEaten, foodPercentEaten);
+            NeutralizeFoodPoisoning(charBodyDmg, beforeFoodSickness, beforePoisonLevel)
+
+        end
+    end
+
+    if PC:HasTrait("AT_FoodMotivated")
+    then
+        charBodyDmg:setBoredomLevel(charBodyDmg:getBoredomLevel() - (foodMotivatedBonus * foodPercentEaten));
+        if(foodDisplayName == "Opened Dog Food")
+        then
+            --50 is unhappiness gain from dog food.
+            charBodyDmg:setUnhappynessLevel(charBodyDmg:getUnhappynessLevel() - ((50 + foodMotivatedBonus) * foodPercentEaten));
+        else
+            charBodyDmg:setUnhappynessLevel(charBodyDmg:getUnhappynessLevel() - (foodMotivatedBonus * foodPercentEaten));
+        end
+
+    end
+    if PC:HasTrait("AT_FeralDigestion") and foodEaten:hasTag("ATFeralPoison")
+    then
+        charBodyDmg:setPoisonLevel(charBodyDmg:getPoisonLevel() + ((maxPoisonAmt) * foodPercentEaten))
+    end
+    if PC:HasTrait("AT_Bug-o-ssieur") and foodEaten:hasTag("ATInsect")
+    then
+        charBodyDmg:setUnhappynessLevel(beforeUnhappiness);
+    end
+
+end
+
+--poison gui update?
+--[[local originalRefreshContainer = ISInventoryPane.refreshContainer;
+ISInventoryPane.refreshContainer = function(self)
+    --before original
+    originalRefreshContainer(self);
+    --after original
+
+    local it = self.inventory:getItems();
+    for i = 0, it:size()-1 do
+        local item = it:get(i);
+        local itemName = item:getName();
+        if item:IsFood() and item:getHerbalistType() and item:getHerbalistType() ~= "" then
+            if playerObj:isRecipeKnown("Herbalist") then
+                if item:getHerbalistType() == "Berry" then
+                    itemName = (item:getPoisonPower() > 0) and getText("IGUI_PoisonousBerry") or getText("IGUI_Berry")
+                end
+                if item:getHerbalistType() == "Mushroom" then
+                    itemName = (item:getPoisonPower() > 0) and getText("IGUI_PoisonousMushroom") or getText("IGUI_Mushroom")
+                end
+            else
+                if item:getHerbalistType() == "Berry"  then
+                    itemName = getText("IGUI_UnknownBerry")
+                end
+                if item:getHerbalistType() == "Mushroom" then
+                    itemName = getText("IGUI_UnknownMushroom")
+                end
+            end
+            if itemName ~= item:getDisplayName() then
+                item:setName(itemName);
+            end
+            itemName = item:getName()
+        end
+    end
+end]]
+
+
+--EVENT HANDLERS
+
+local function ATInitPlayerData(player)
+
+    local modData = player:getModData();
+
+    if modData.ATPlayerData == nil then
+        modData.ATPlayerData = {};
+        local atData = modData.ATPlayerData;
+
+        atData.trulyInfected = false;
+        atData.oldFallTime = 0.0;
+
+    end
+end
+
+
+function ATOnInitWorld()
+    AddItemTagToItemsFromFile("ATCarnivoreTag.txt", "ATCarnivore")
+    AddItemTagToItemsFromFile("ATHerbivoreTag.txt", "ATHerbivore")
+    AddItemTagToItemsFromFile("ATInsectTag.txt", "ATInsect")
+    AddItemTagToItemsFromFile("ATFeralPoison.txt", "ATFeralPoison")
+
+end
+
+
+local function ATPlayerDamageTick(player)
+    if player:isZombie()
+    then
+        return
+    end
+
+    local playerData = player:getModData().ATPlayerData;
+
+    if player:getBodyDamage():isInfected() == true and playerData.trulyInfected == false
+    then
+        if getDebug()
+        then
+            print("Handle Infection about to be triggered");
+        end
+        playerData.trulyInfected = HandleInfection(player);
+    end
+
+    if player:HasTrait("AT_Hooves")
+    then
+        --immune to scratches, lacerations, bites
+        local footL = player:getBodyDamage():getBodyPart(BodyPartType.Foot_L);
+        local footR = player:getBodyDamage():getBodyPart(BodyPartType.Foot_R);
+
+        if footL:scratched()
+        then
+            --casing is inconsistent in the game >:C
+            footL:setScratchTime(0);
+            footL:SetScratchedWeapon(false);
+            footL:setBleedingTime(0);
+            footL:setBleeding(false);
+        end
+        if footR:scratched()
+        then
+            footR:setScratchTime(0);
+            footR:SetScratchedWeapon(false);
+            footR:setBleedingTime(0);
+            footR:setBleeding(false);
+        end
+        if footL:isCut()
+        then
+            footL:setCutTime(0);
+            footL:setCut(false, false);
+            footL:setBleedingTime(0);
+            footL:setBleeding(false);
+        end
+        if footR:isCut()
+        then
+            footR:setCutTime(0);
+            footR:setCut(false, false);
+            footR:setBleedingTime(0);
+            footR:setBleeding(false);
+
+        end
+        if footL:bitten()
+        then
+            --casing is inconsistent in the game >:C
+            footL:setBiteTime(0);
+            footL:SetBitten(false, false);
+            footL:setBleedingTime(0);
+            footL:setBleeding(false);
+        end
+        if footR:bitten()
+        then
+            footR:setBiteTime(0);
+            footR:SetBitten(false, false);
+            footR:setBleedingTime(0);
+            footR:setBleeding(false);
+
+        end
+
+    end
+    -- if player:HasTrait("anthroPaws")
+    -- then
+    --     --immune to scratches?
+    --     for i = 0, player:getBodyDamage():getBodyParts():size() - 1
+    --     do
+    --         local bodypart = player:getBodyDamage():getBodyParts():get(i);
+    --         print(bodypart);
+    --     end
+    -- end
+end
+
 
 local function ATEveryOneMinute()
     local activePlayers = getNumActivePlayers()-1
@@ -410,22 +543,38 @@ local function ATEveryOneMinute()
         end
 
     end
-
 end
 
+
 local function ATPlayerUpdate(player)
+    local beforeFallTime = player:getModData().ATPlayerData.oldFallTime
     if player:HasTrait("AT_NaturalTumbler")
     then
         --Fall damage reduced
-        player:setFallTime(player:getFallTime() * .5);
-    elseif player:HasTrait("AT_ClippedWings")
+        if(beforeFallTime < player():getFallTime())
+        then
+            player:setFallTime(beforeFallTime + ((player:getFallTime() - beforeFallTime) * .5));
+        end
+        if getDebug() and player:getFallTime() > 0
+        then
+            print("FallTime (natural tumbler): "..player:getFallTime())
+        end
+        player:getModData().ATPlayerData.oldFallTime = player:getFallTime();
+    elseif player:HasTrait("AT_VestigialWings")
     then
         --immune to fall damage
         player:setFallTime(0);
+    else
+        if getDebug() and player:getFallTime() > 0
+        then
+            print("FallTime: "..player:getFallTime())
+        end
     end
 end
 
-Events.OnNewGame.Add(InitATPlayerData);
-Events.OnPlayerGetDamage.Add(ATPlayerDamageTick);
-Events.OnPlayerUpdate.Add(ATPlayerUpdate);
-Events.ATEveryOneMinute.Add(ATEveryOneMinute);
+
+    Events.OnNewGame.Add(ATInitPlayerData);
+    Events.OnInitWorld.Add(ATOnInitWorld)
+    Events.EveryOneMinute.Add(ATEveryOneMinute);
+    Events.OnPlayerGetDamage.Add(ATPlayerDamageTick);
+    Events.OnPlayerUpdate.Add(ATPlayerUpdate);
