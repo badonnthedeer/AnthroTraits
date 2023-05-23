@@ -49,7 +49,7 @@ local function AddItemTagToItemsFromFile(path, tag)
     reader:close();
 end
 
-local function InitTableFromFile(path)
+--[[local function InitTableFromFile(path)
     if not FileExists(path)
     then
         print("Cannot find file");
@@ -69,7 +69,7 @@ local function InitTableFromFile(path)
     end
     reader:close();
     return returnTable;
-end
+end]]
 
 local function HandleInfection(player)
     local biteInfectionChance = SandboxVars.AnthroTraits.AnthroImmunityBiteInfectionChance;
@@ -422,46 +422,6 @@ ISBaseTimedAction.create = function(self)
     end
 end
 
-local metatable = getmetatable(zombie.characters.traits["TraitFactory$Trait"].class).__index
-local originalGetTraitDescription = metatable.getDescription;
-metatable.getDescription = function(self)
-    local descAndTags = originalGetTraitDescription(self);
-    local indexOfTagsBegin = strFind(descAndTags, "||");
-    if indexOfTagsBegin ~= nil
-    then
-        local description = strSub(descAndTags, 0, indexOfTagsBegin);
-        return description;
-    else
-        print("Anthro Traits: No tags attached to description of "..tostring(self:getType()))
-        return descAndTags;
-    end
-end
-
-metatable.getTags = function(self)
-    local descAndTags = originalGetTraitDescription(self);
-    local indexOfTagsBegin = strFind(descAndTags, "||");
-    local lastComma = 1;
-    local tagTable = {};
-
-    if indexOfTagsBegin ~= nil
-    then
-        local tags = strSub(descAndTags, indexOfTagsBegin);
-
-        for i=1, strlen(tags)
-        do
-            if tags[i] == '' or tags[i] == ','
-            then
-                table.insert(tagTable, strSub(tags, lastComma, i));
-                lastComma = i;
-            end
-        end
-    else
-        print("Anthro Traits: No tags attached to description of "..tostring(self:getType()))
-        return tagTable;
-    end
-    return tagTable;
-end
-
 
 --poison gui update?
 --[[local originalRefreshContainer = ISInventoryPane.refreshContainer;
@@ -498,6 +458,8 @@ ISInventoryPane.refreshContainer = function(self)
     end
 end]]
 
+
+--Accessing trait gui for tags, maybe?
 --[[local OriginalStatsScreenPopulateTraits = ISPlayerStatsChooseTraitUI.create
 ISPlayerStatsChooseTraitUI.create = function(self)
     OriginalStatsScreenPopulateTraits(self);
@@ -516,6 +478,8 @@ ISPlayerStatsChooseTraitUI.create = function(self)
         end
     end
 end]]
+
+
 --EVENT HANDLERS
 
 local function ATInitPlayerData(player)
@@ -534,10 +498,10 @@ end
 
 
 function ATOnInitWorld()
-    AddItemTagToItemsFromFile("ATCarnivoreTag.txt", "ATCarnivore")
-    AddItemTagToItemsFromFile("ATHerbivoreTag.txt", "ATHerbivore")
-    AddItemTagToItemsFromFile("ATInsectTag.txt", "ATInsect")
-    AddItemTagToItemsFromFile("ATFeralPoison.txt", "ATFeralPoison")
+    AddItemTagToItemsFromFile("ATCarnivoreItemTag.txt", "ATCarnivore")
+    AddItemTagToItemsFromFile("ATHerbivoreItemTag.txt", "ATHerbivore")
+    AddItemTagToItemsFromFile("ATInsectItemTag.txt", "ATInsect")
+    AddItemTagToItemsFromFile("ATFeralPoisonItemTag.txt", "ATFeralPoison")
 end
 
 
@@ -720,6 +684,7 @@ local function ATPlayerUpdate(player)
     local fallTimeMult = SandboxVars.AnthroTraits.NaturalTumblerFallTimeMult;
     local modData =  player:getModData().ATPlayerData;
     local beforeFallTime = modData.oldFallTime;
+    --local beforeWetness = modData.oldWetness;
     local rolledChance = ZombRand(0,100);
     -- wetness experiments
     --print("Projec. Difference: "..tostring(GameTime.getMultiplier() * WetnessIncrease));
@@ -756,10 +721,10 @@ local function ATPlayerUpdate(player)
             print("FallTime: "..player:getFallTime())
         end
     end
-    if player:HasTrait("AT_ColdBlooded")
+    --[[if player:HasTrait("AT_ColdBlooded")
     then
         player:getBodyDamage():getThermoregulator():setMetabolicTarget(Metabolics.Sleeping);
-    end
+    end]]
     if player:HasTrait("AT_Tail")
     then
         if player:getStats():isTripping() and rolledChance <= SandboxVars.AnthroTraits.TailTripReduction
@@ -772,7 +737,7 @@ local function ATPlayerUpdate(player)
         end
     end
     --update oldWetness
-    modData.oldWetness = player:getBodyDamage():getWetness();
+    --modData.oldWetness = player:getBodyDamage():getWetness();
 end
 
 

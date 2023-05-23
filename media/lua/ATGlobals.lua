@@ -1,3 +1,0 @@
-ATGlobals = {
-    ATModVersion = 1,
-}
