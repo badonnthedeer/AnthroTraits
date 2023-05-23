@@ -1,0 +1,6 @@
+Sandbox_EN = {
+	Sandbox_AnthroTraits = "Anthro Traits",
+	Sandbox_AnthroTraits_AnthroImmunityScratchInfectionChance = "Anthro Immunity Scratch Infection Chance (stacks with regular)",
+	Sandbox_AnthroTraits_AnthroImmunityLacerationInfectionChance = "Anthro Immunity Laceration Infection Chance (stacks with regular)",
+	Sandbox_AnthroTraits_AnthroImmunityBiteInfectionChance = "Anthro Immunity Bite Infection Chance",
+}

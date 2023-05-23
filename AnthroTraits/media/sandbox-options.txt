@@ -1,0 +1,22 @@
+VERSION = 1,
+
+option AnthroTraits.AnthroImmunityScratchInfectionChance
+{
+	type = integer, min = 0, max = 100, default = 10,
+	page = AnthroTraits, translation = AnthroTraits_AnthroImmunityScratchInfectionChance,
+}
+option AnthroTraits.AnthroImmunityLacerationInfectionChance
+{
+	type = integer, min = 0, max = 100, default = 15,
+	page = AnthroTraits, translation = AnthroTraits_AnthroImmunityLacerationInfectionChance,
+}
+option AnthroTraits.AnthroImmunityBiteInfectionChance
+{
+	type = integer, min = 0, max = 100, default = 20,
+	page = AnthroTraits, translation = AnthroTraits_AnthroImmunityBiteInfectionChance,
+}
+option AnthroTraits.AnthroImmunityBiteGetsRegularInfectionOnDefense
+{
+	type = boolean, default = true,
+	page = AnthroTraits, translation = AnthroTraits_AnthroImmunityBiteGetsRegularInfectionOnDefense,
+}

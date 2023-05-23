@@ -1,0 +1,10 @@
+UI_EN = {
+    UI_trait_anthroHooves = "Hoofed",
+    UI_trait_anthroHooves_desc = "You have hooves, which make you slower in handling items, but you're slightly stealthier, run faster, and you're immune to foot damage.",
+    UI_trait_anthroPaws = "Pawed",
+    UI_trait_anthroPaws_desc = "You have paws, which make you stealthier and run slightly faster.",
+    UI_trait_anthroBody = "Animalistic Body",
+    UI_trait_anthroBody_desc = "Your body still has the latent strength of an animal. You're stronger but less fit.",
+    UI_trait_anthroImmunity = "Anthro Immunity",
+    UI_trait_anthroImmunity_desc = "Your anthro biology is different enough to make you immune to the Knox infection, even from bites, except in the rare case of zoonotic infection...",
+}
