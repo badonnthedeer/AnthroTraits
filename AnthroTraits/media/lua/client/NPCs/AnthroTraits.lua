@@ -49,6 +49,27 @@ local function AddItemTagToItemsFromFile(path, tag)
     reader:close();
 end
 
+local function InitTableFromFile(path)
+    if not FileExists(path)
+    then
+        print("Cannot find file");
+        return {};
+    end
+
+    local reader = getModFileReader(AnthroTraitsGlobals.ModID, path, false);
+    local line;
+    local returnTable = {}
+    local returnTableCurrentIndex = 1;
+
+    while reader:ready()
+    do
+        line = reader:readLine();
+        returnTable[returnTableCurrentIndex] = line;
+        returnTableCurrentIndex = returnTableCurrentIndex + 1;
+    end
+    reader:close();
+    return returnTable;
+end
 
 local function HandleInfection(player)
     local biteInfectionChance = SandboxVars.AnthroTraits.AnthroImmunityBiteInfectionChance;
@@ -289,9 +310,9 @@ ISEatFoodAction.perform = function(self)
     -- code to run before the original
 
     local PC = self.character
-    local charStats = PC:getStats();
+    --local charStats = PC:getStats();
     local charBodyDmg = PC:getBodyDamage();
-    local charNutrition = PC:getNutrition();
+    --local charNutrition = PC:getNutrition();
 
     local rightFoodBonus = SandboxVars.AnthroTraits.RightFoodBonus;
     local wrongFoodMalus = SandboxVars.AnthroTraits.WrongFoodMalus;
@@ -307,7 +328,6 @@ ISEatFoodAction.perform = function(self)
     local foodEaten = self.item
     local foodPercentEaten = self.percentage
     local foodDisplayName = foodEaten:getDisplayName();
-    local foodTags =
 
     OriginalEatPerform(self)
     -- code to run after the original
@@ -376,6 +396,73 @@ ISEatFoodAction.perform = function(self)
 
 end
 
+
+local OriginalTimedActionCreate = ISBaseTimedAction.create;
+ISBaseTimedAction.create = function(self)
+    OriginalTimedActionCreate(self);
+    if self.character:HasTrait("AT_UnwieldyHands")
+    then
+        for i = 1, getn(AnthroTraitsGlobals.UnwieldyHandsAffectedTimedActions)
+        do
+            if self.Type == AnthroTraitsGlobals.UnwieldyHandsAffectedTimedActions[i]
+            then
+                self.maxTime = self.maxTime * (1 + SandboxVars.AnthroTraits.UnwieldyHandsTimeIncrease);
+            end
+        end
+    end
+    if self.character:HasTrait("AT_Slinky")
+    then
+        for i = 1, getn(AnthroTraitsGlobals.SlinkyAffectedTimedActions)
+        do
+            if self.Type == AnthroTraitsGlobals.SlinkyAffectedTimedActions[i]
+            then
+                self.maxTime = self.maxTime * (1 + SandboxVars.AnthroTraits.SlinkyTimeIncrease);
+            end
+        end
+    end
+end
+
+local metatable = getmetatable(zombie.characters.traits["TraitFactory$Trait"].class).__index
+local originalGetTraitDescription = metatable.getDescription;
+metatable.getDescription = function(self)
+    local descAndTags = originalGetTraitDescription(self);
+    local indexOfTagsBegin = strFind(descAndTags, "||");
+    if indexOfTagsBegin ~= nil
+    then
+        local description = strSub(descAndTags, 0, indexOfTagsBegin);
+        return description;
+    else
+        print("Anthro Traits: No tags attached to description of "..tostring(self:getType()))
+        return descAndTags;
+    end
+end
+
+metatable.getTags = function(self)
+    local descAndTags = originalGetTraitDescription(self);
+    local indexOfTagsBegin = strFind(descAndTags, "||");
+    local lastComma = 1;
+    local tagTable = {};
+
+    if indexOfTagsBegin ~= nil
+    then
+        local tags = strSub(descAndTags, indexOfTagsBegin);
+
+        for i=1, strlen(tags)
+        do
+            if tags[i] == '' or tags[i] == ','
+            then
+                table.insert(tagTable, strSub(tags, lastComma, i));
+                lastComma = i;
+            end
+        end
+    else
+        print("Anthro Traits: No tags attached to description of "..tostring(self:getType()))
+        return tagTable;
+    end
+    return tagTable;
+end
+
+
 --poison gui update?
 --[[local originalRefreshContainer = ISInventoryPane.refreshContainer;
 ISInventoryPane.refreshContainer = function(self)
@@ -411,7 +498,24 @@ ISInventoryPane.refreshContainer = function(self)
     end
 end]]
 
+--[[local OriginalStatsScreenPopulateTraits = ISPlayerStatsChooseTraitUI.create
+ISPlayerStatsChooseTraitUI.create = function(self)
+    OriginalStatsScreenPopulateTraits(self);
 
+    for i=0,TraitFactory.getTraits():size()-1
+    do
+        local trait = TraitFactory.getTraits():get(i);
+        if not self.chr:getTraits():contains(trait:getType())
+        then
+            if trait:getCost() >= 0
+            then
+                table.Remove(self.goodTraits, trait)
+            else
+                table.Remove(self.badTraits, trait)
+            end
+        end
+    end
+end]]
 --EVENT HANDLERS
 
 local function ATInitPlayerData(player)
@@ -424,7 +528,7 @@ local function ATInitPlayerData(player)
 
         atData.trulyInfected = false;
         atData.oldFallTime = 0.0;
-
+        atData.oldWetness = 0.0;
     end
 end
 
@@ -434,7 +538,6 @@ function ATOnInitWorld()
     AddItemTagToItemsFromFile("ATHerbivoreTag.txt", "ATHerbivore")
     AddItemTagToItemsFromFile("ATInsectTag.txt", "ATInsect")
     AddItemTagToItemsFromFile("ATFeralPoison.txt", "ATFeralPoison")
-
 end
 
 
@@ -521,6 +624,66 @@ local function ATPlayerDamageTick(player)
 end
 
 
+local function ATOnCharacterCollide(collider, collidee)
+    if instanceof(collider, "IsoPlayer")
+    then
+        -- take the sandbox cost, modify it by the difference between the player's current strength/fitness and the average strength/fitness of 5. Then turn that into a decimal since endurance is a decimal. Pick .01 if the cost is lower.
+        -- if you ever figure out math, make it do a percentage taken away instead of a flat number
+        local knockdownEndCost = math.max(SandboxVars.AnthroTraits.BullRushKnockdownEndCost - (((collider:getPerkLevel(Perks.Fitness) + collider:getPerkLevel(Perks.Strength)) - 10) / 100), .01)
+        local colliderBehindCollidee = collidee:isFacingObject(collider, 0.5);
+        if getDebug()
+        then
+            print("ATOnCharacterCollide Triggered");
+        end
+        if not collidee:isKnockedDown() and collider:HasTrait("AT_BullRush") and collider:isSprinting() and collider:getBeenSprintingFor() >= 10
+        then
+            if getDebug()
+            then
+                print("collidee: "..tostring(collidee));
+                print("colliderBehindCollidee: "..tostring(colliderBehindCollidee));
+                print("Is Sprinting: "..tostring(collider:isSprinting()));
+                print("getBeenSprintingFor(): "..tostring(collider:getBeenSprintingFor()));
+                print("Tripping: "..tostring(collider:getStats():isTripping()))
+            end
+            if instanceof(collidee, "IsoZombie")
+            then
+                collidee:setStaggerBack(true);
+                collidee:knockDown(colliderBehindCollidee);
+                collider:getStats():setEndurance(collider:getStats():getEndurance() - knockdownEndCost);
+                collider:setBumpType("");
+                collider:setBumpStaggered(false);
+                collider:setBumpFall(false);
+            elseif instanceof(collidee, "IsoPlayer") and ((collider:getCoopPVP() == true and collidee:getCoopPVP() == true) or collidee.isZombie())
+            then
+                collidee:setBumpStaggered(true)
+                collidee:setKnockedDown(true);
+                collider:getStats():setEndurance(collider:getStats():getEndurance() - knockdownEndCost)
+                collider:setBumpType("");
+                collider:setBumpStaggered(false);
+                collider:setBumpFall(false);
+            end
+        elseif collidee:isKnockedDown() and collider:HasTrait("AT_BullRush") and collider:isSprinting() and collider:getBeenSprintingFor() >= 10
+        then
+            if instanceof(collidee, "IsoZombie")
+            then
+                collidee:setStaggerBack(true);
+                collidee:knockDown(colliderBehindCollidee);
+                collider:setBumpType("");
+                collider:setBumpStaggered(false);
+                collider:setBumpFall(false);
+            elseif instanceof(collidee, "IsoPlayer") and ((collider:getCoopPVP() == true and collidee:getCoopPVP() == true) or collidee.isZombie())
+            then
+                collidee:setBumpStaggered(true)
+                collidee:setKnockedDown(true);
+                collider:setBumpType("");
+                collider:setBumpStaggered(false);
+                collider:setBumpFall(false);
+            end
+        end
+    end
+end
+
+
 local function ATEveryOneMinute()
     local activePlayers = getNumActivePlayers()-1
     if activePlayers >= 0
@@ -530,6 +693,14 @@ local function ATEveryOneMinute()
             local player = getSpecificPlayer(playerIndex)
             if player and not player:isDead()
             then
+                --testing stuff
+                print(TraitFactory.getTrait("AT_Carnivore"):getDescription());
+                --
+                if player:HasTrait("AT_Immunity") and not player:getBodyDamage():isInfected() and player:getModData().ATPlayerData.trulyInfected == true
+                then
+                    --if a player is a cheater/debugging or takes a game-made cure
+                    player:getModData().trulyInfected = false;
+                end
                 if player:HasTrait("AT_Exclaimer")
                 then
                     ExclaimerCheck(player);
@@ -539,42 +710,75 @@ local function ATEveryOneMinute()
                     BeStinky(player);
                 end
             end
-
         end
-
     end
 end
 
 
+
 local function ATPlayerUpdate(player)
-    local beforeFallTime = player:getModData().ATPlayerData.oldFallTime
+    local fallTimeMult = SandboxVars.AnthroTraits.NaturalTumblerFallTimeMult;
+    local modData =  player:getModData().ATPlayerData;
+    local beforeFallTime = modData.oldFallTime;
+    local rolledChance = ZombRand(0,100);
+    -- wetness experiments
+    --print("Projec. Difference: "..tostring(GameTime.getMultiplier() * WetnessIncrease));
+    --print("Wetness Difference: "..tostring(player:getBodyDamage():getWetness() - modData.oldWetness));
+    --
+    --print("Temp: "..tostring(player:getBodyDamage():getTemperature()))
     if player:HasTrait("AT_NaturalTumbler")
     then
         --Fall damage reduced
-        if(beforeFallTime < player():getFallTime())
+        if(beforeFallTime < player:getFallTime())
         then
-            player:setFallTime(beforeFallTime + ((player:getFallTime() - beforeFallTime) * .5));
+            player:setFallTime(beforeFallTime + ((player:getFallTime() - beforeFallTime) * fallTimeMult));
         end
         if getDebug() and player:getFallTime() > 0
         then
-            print("FallTime (natural tumbler): "..player:getFallTime())
+            print("FallTime (Natural Tumbler): "..player:getFallTime())
         end
-        player:getModData().ATPlayerData.oldFallTime = player:getFallTime();
+        beforeFallTime = player:getFallTime();
     elseif player:HasTrait("AT_VestigialWings")
     then
         --immune to fall damage
-        player:setFallTime(0);
+        if(beforeFallTime < player:getFallTime())
+        then
+            player:setFallTime(10);
+        end
+        if getDebug() and player:getFallTime() > 0
+        then
+            print("FallTime (Vestigial Wings): "..player:getFallTime())
+        end
+        beforeFallTime = player:getFallTime();
     else
         if getDebug() and player:getFallTime() > 0
         then
             print("FallTime: "..player:getFallTime())
         end
     end
+    if player:HasTrait("AT_ColdBlooded")
+    then
+        player:getBodyDamage():getThermoregulator():setMetabolicTarget(Metabolics.Sleeping);
+    end
+    if player:HasTrait("AT_Tail")
+    then
+        if player:getStats():isTripping() and rolledChance <= SandboxVars.AnthroTraits.TailTripReduction
+        then
+            player:getStats():setTripping(false);
+            if getDebug()
+            then
+                print("Player trip prevented by Tail trait.")
+            end
+        end
+    end
+    --update oldWetness
+    modData.oldWetness = player:getBodyDamage():getWetness();
 end
 
 
-    Events.OnNewGame.Add(ATInitPlayerData);
-    Events.OnInitWorld.Add(ATOnInitWorld)
-    Events.EveryOneMinute.Add(ATEveryOneMinute);
-    Events.OnPlayerGetDamage.Add(ATPlayerDamageTick);
-    Events.OnPlayerUpdate.Add(ATPlayerUpdate);
+Events.OnNewGame.Add(ATInitPlayerData);
+Events.OnInitWorld.Add(ATOnInitWorld)
+Events.OnCharacterCollide.Add(ATOnCharacterCollide)
+Events.EveryOneMinute.Add(ATEveryOneMinute);
+Events.OnPlayerGetDamage.Add(ATPlayerDamageTick);
+Events.OnPlayerUpdate.Add(ATPlayerUpdate);

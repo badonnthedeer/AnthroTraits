@@ -12,4 +12,9 @@ Sandbox_EN = {
 	Sandbox_AnthroTraits_StinkyDistance = "How far zombies are attracted to a player with the Stinky trait.",
 	Sandbox_AnthroTraits_StinkyLoudness = "How much zombies within distance are attracted to a player with the Stinky trait.",
 	Sandbox_AnthroTraits_StinkyCommentChance = "A percentage chance per minute another player may comment on another player with the Stinky trait.",
+	AnthroTraits_BullRushKnockdownEndCost = "Endurance cost of knocking down a Zombie/player with Bull Rush.",
+	AnthroTraits_NaturalTumblerFallTimeMult = "Reduces fall time which allows players with Natural Tumbler to fall further with less consequences.",
+	AnthroTraits_TailTripReduction = "Flat chance after all factors to stop a trip."
+	AnthroTraits_UnwieldyHandsTimeIncrease = "Percentage increase of time to complete an action that requires fine motor control."
+	AnthroTraits_SlinkyTimeIncrease = "Percentage decrease of time to open/close containers and go over fences and through entrances."
 }
