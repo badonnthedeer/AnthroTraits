@@ -5,5 +5,7 @@
     <content url="file://$MODULE_DIR$" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="zdoc-lua-41.78" level="application" />
+    <orderEntry type="library" name="zomboid-41.78" level="application" />
   </component>
 </module>
