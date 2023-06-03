@@ -195,6 +195,10 @@ end
 
 
 local function NeutralizeFoodPoisoning(charBodyDmg, beforeFoodSickness, beforePoisonLevel)
+    if getDebug()
+    then
+        print("Food Poisoning neutralized.");
+    end
     charBodyDmg:setFoodSicknessLevel(beforeFoodSickness);
     charBodyDmg:setPoisonLevel(beforePoisonLevel);
 end
@@ -253,15 +257,17 @@ local function ExclaimerCheck(player)
     local thresholdMultiplier = SandboxVars.AnthroTraits.ExclaimerExclaimThresholdMultiplier;
 
     local exclaimChance = ZombRand(1,100);
+    local phraseChance = ZombRand(0, AnthroTraitsGlobals.ExclaimPhrases.size() -1)
 
-    if (exclaimChance <= (panicLevel * thresholdMultiplier))
+    if (exclaimChance <= (panicLevel * thresholdMultiplier)) and panicLevel > 1
     then
-        if player:HasTrait("AT_Hooves")
-        then
-            player:SayShout("BLEAT!")
-        else
-            player:SayShout("HAHAHAHA!")
-        end
+        --if player:HasTrait("AT_Hooves")
+        --then
+        --    player:SayShout("BLEAT!")
+        --else
+        --    player:SayShout("HAHAHAHA!")
+        --end
+        player:SayShout(AnthroTraitsGlobals.ExclaimPhrases(phraseChance))
         getWorldSoundManager():addSound(player,
                 playerSquare:getX(),
                 playerSquare:getY(),
