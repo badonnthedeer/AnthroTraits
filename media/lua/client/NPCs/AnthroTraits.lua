@@ -1,5 +1,5 @@
 require('AnthroTraitsGlobals')
-require('NPCs/MainCreationMethods');
+local TTF = require("TraitTagFramework");
 
 --UTILITIES
 local function FileExists(path)
