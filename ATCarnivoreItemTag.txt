@@ -54,4 +54,5 @@ Base.SquidCalamari
 Base.Steak
 Base.Sunfish
 Base.Trout
+Base.TunaTinOpen
 Base.WildEggs
