@@ -3,6 +3,7 @@ Sandbox_EN = {
 	Sandbox_AnthroTraits_AnthroImmunityScratchInfectionChance = "Anthro Immunity Scratch Infection Chance (stacks with regular)",
 	Sandbox_AnthroTraits_AnthroImmunityLacerationInfectionChance = "Anthro Immunity Laceration Infection Chance (stacks with regular)",
 	Sandbox_AnthroTraits_AnthroImmunityBiteInfectionChance = "Anthro Immunity Bite Infection Chance",
+	Sandbox_AnthroTraits_AnthroImmunityBiteGetsRegularInfectionOnDefense = "Regular Wound Infection from Bites on Knox Infection Defense",
 	Sandbox_AnthroTraits_RightFoodBonus = "Extra Food Effectiveness % for Carnivore/Herbivores",
 	Sandbox_AnthroTraits_WrongFoodMalus = "Food Ineffectiveness % for Carnivore/Herbivores",
 	Sandbox_AnthroTraits_CarrionEaterBonus = "Extra Rotten Meat Effectiveness % for Carrion Eaters",
