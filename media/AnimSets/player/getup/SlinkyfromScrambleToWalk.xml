@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="fromScramble.xml">
+	<m_Name>fromScrambleToWalk</m_Name>
+	<m_AnimName>Bob_ScrambleFloorToWalk</m_AnimName>
+	<m_SyncTrackingEnabled>false</m_SyncTrackingEnabled>
+	<m_SpeedScale>1.04</m_SpeedScale>
+	<m_Conditions />
+	<m_Conditions />
+	<m_Conditions>
+		<m_BoolValue>true</m_BoolValue>
+	</m_Conditions>
+</animNode>

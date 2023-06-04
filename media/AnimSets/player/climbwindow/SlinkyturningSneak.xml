@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="turning.xml">
+	<m_Name>turningSneak</m_Name>
+	<m_AnimName>Bob_IdleSneak</m_AnimName>
+	<m_Conditions />
+	<m_Conditions />
+	<m_Conditions>
+		<m_Name>sneaking</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_BoolValue>true</m_BoolValue>
+	</m_Conditions>
+</animNode>

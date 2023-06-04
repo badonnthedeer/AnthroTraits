@@ -2,6 +2,7 @@ require("NPCs/MainCreationMethods");
 local TTF = require("TraitTagFramework");
 
 -- C:\Program Files (x86)\Steam\steamapps\common\ProjectZomboid\media\lua | Project Zomboid files
+-- C:\Program Files (x86)\Steam\steamapps\common\ProjectZomboid\media\AnimSets\player
 -- C:\Program Files (x86)\Steam\steamapps\workshop\content\108600\2730251452\mods | Expanded Traits
 -- C:\Program Files (x86)\Steam\steamapps\workshop\content\108600\1299328280\mods | More Traits
 -- C:\Program Files (x86)\Steam\steamapps\workshop\content\108600\2792245343\mods | More Simple Traits

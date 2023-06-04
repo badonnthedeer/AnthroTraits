@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="fromScrambleToWalk.xml">
+	<m_Name>fromScrambleToRun</m_Name>
+	<m_AnimName>Bob_ScrambleFloorToRun</m_AnimName>
+	<m_EarlyTransitionOut>true</m_EarlyTransitionOut>
+	<m_BlendTime>0.20</m_BlendTime>
+	<m_BlendOutTime>0.20</m_BlendOutTime>
+	<m_Conditions />
+	<m_Conditions />
+	<m_Conditions />
+	<m_Conditions>
+		<m_Name>getUpQuick</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_BoolValue>true</m_BoolValue>
+	</m_Conditions>
+</animNode>

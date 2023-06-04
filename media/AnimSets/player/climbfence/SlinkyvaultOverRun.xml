@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode>
+	<m_Name>vaultOverRun</m_Name>
+	<m_AnimName>Bob_ValultOver_Run</m_AnimName>
+	<m_Priority>4</m_Priority>
+	<m_deferredBoneAxis>Y</m_deferredBoneAxis>
+	<m_Looped>false</m_Looped>
+	<m_SpeedScale>0.80</m_SpeedScale>
+	<m_BlendTime>0.05</m_BlendTime>
+	<m_BlendOutTime>0.35</m_BlendOutTime>
+	<m_Conditions>
+		<m_Name>ClimbFenceStarted</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_BoolValue>false</m_BoolValue>
+	</m_Conditions>
+	<m_Conditions>
+		<m_Name>VaultOverRun</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_BoolValue>true</m_BoolValue>
+	</m_Conditions>
+	<m_Conditions>
+		<m_Name>ClimbFenceOutcome</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_StringValue>success</m_StringValue>
+	</m_Conditions>
+	<m_Events>
+		<m_EventName>VaultOverStarted</m_EventName>
+		<m_Time>Start</m_Time>
+		<m_ParameterValue></m_ParameterValue>
+	</m_Events>
+	<m_Events>
+		<m_EventName>SetVariable</m_EventName>
+		<m_TimePc>0.5</m_TimePc>
+		<m_ParameterValue>ClimbFenceFinished=true</m_ParameterValue>
+	</m_Events>
+	<m_Events>
+		<m_EventName>SetCollidable</m_EventName>
+		<m_TimePc>0.5</m_TimePc>
+		<m_ParameterValue>true</m_ParameterValue>
+	</m_Events>
+	<m_Events>
+		<m_EventName>PlayFenceSound</m_EventName>
+		<m_Time>Start</m_Time>
+		<m_ParameterValue>ClimbOverFenceLow</m_ParameterValue>
+	</m_Events>
+</animNode>

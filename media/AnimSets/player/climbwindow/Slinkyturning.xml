@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode>
+	<m_Name>turning</m_Name>
+	<m_SpeedScale>0.80</m_SpeedScale>
+	<m_AnimName>Bob_Idle</m_AnimName>
+	<m_deferredBoneAxis>Y</m_deferredBoneAxis>
+	<m_BlendTime>0.20</m_BlendTime>
+	<m_Conditions>
+		<m_Name>ClimbWindowStarted</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_BoolValue>false</m_BoolValue>
+	</m_Conditions>
+	<m_Conditions>
+		<m_Name>isTurningAround</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_BoolValue>true</m_BoolValue>
+	</m_Conditions>
+</animNode>

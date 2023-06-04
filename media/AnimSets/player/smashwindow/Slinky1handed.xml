@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="default.xml">
+	<m_Name>1handed</m_Name>
+	<m_AnimName>Bob_Attack1Hand01_Hit</m_AnimName>
+	<m_SyncTrackingEnabled>true</m_SyncTrackingEnabled>
+	<m_Conditions>
+		<m_Name>Weapon</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_StringValue>1handed</m_StringValue>
+	</m_Conditions>
+</animNode>

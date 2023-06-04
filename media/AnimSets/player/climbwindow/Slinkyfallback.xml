@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="back.xml">>
+	<m_Name>fallback</m_Name>
+	<m_AnimName>Bob_ClimbWindowBackFall</m_AnimName>
+	<m_Conditions/>
+	<m_Conditions>
+		<m_StringValue>fallback</m_StringValue>
+	</m_Conditions>
+	<m_Events>
+		<m_ParameterValue>ClimbWindowGetUpBack=true</m_ParameterValue>
+	</m_Events>
+</animNode>

@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode>
+	<m_Name>DropWhileMoving</m_Name>
+	<m_SpeedScale>0.80</m_SpeedScale>
+	<m_AnimName>Bob_IdleLooting_Mid</m_AnimName>
+	<m_deferredBoneAxis>Y</m_deferredBoneAxis>
+	<m_Looped>true</m_Looped>
+	<m_SyncTrackingEnabled>false</m_SyncTrackingEnabled>
+	<m_BlendTime>0.20</m_BlendTime>
+	<m_Conditions>
+		<m_Name>PerformingAction</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_StringValue>DropWhileMoving</m_StringValue>
+	</m_Conditions>
+</animNode>

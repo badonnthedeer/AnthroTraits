@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="walkbagleft.xml">
+	<m_Name>strafebagleft</m_Name>
+	<m_AnimName>Bob_IdleAim1Hand</m_AnimName>
+	<m_SpeedScale>StrafeSpeed</m_SpeedScale>
+	<m_Scalar>DeltaX</m_Scalar>
+	<m_Scalar2>DeltaY</m_Scalar2>
+	<m_Conditions />
+	<m_Conditions />
+	<m_Conditions />
+	<m_Conditions />
+	<m_Conditions>
+		<m_BoolValue>true</m_BoolValue>
+	</m_Conditions>
+	<m_Conditions />
+	<m_Conditions />
+	<m_2DBlends referenceID="1">
+		<m_AnimName>Bob_IdleAim1Hand</m_AnimName>
+		<m_XPos>0.00</m_XPos>
+		<m_YPos>0.00</m_YPos>
+		<m_SpeedScale>0.80</m_SpeedScale>
+	</m_2DBlends>
+	<m_2DBlends referenceID="2">
+		<m_AnimName>Bob_WalkAim_Bag</m_AnimName>
+		<m_XPos>0.00</m_XPos>
+		<m_YPos>1.00</m_YPos>
+		<m_SpeedScale>0.80</m_SpeedScale>
+	</m_2DBlends>
+	<m_2DBlends referenceID="3">
+		<m_AnimName>Bob_WalkBwdAim_Bag</m_AnimName>
+		<m_XPos>0.00</m_XPos>
+		<m_YPos>-1.00</m_YPos>
+		<m_SpeedScale>0.80</m_SpeedScale>
+	</m_2DBlends>
+	<m_2DBlends referenceID="4">
+		<m_AnimName>Bob_Strafe_Right_Bag</m_AnimName>
+		<m_XPos>1.00</m_XPos>
+		<m_YPos>0.00</m_YPos>
+		<m_SpeedScale>0.80</m_SpeedScale>
+	</m_2DBlends>
+	<m_2DBlends referenceID="5">
+		<m_AnimName>Bob_Strafe_Left_Bag</m_AnimName>
+		<m_XPos>-1.00</m_XPos>
+		<m_YPos>0.00</m_YPos>
+		<m_SpeedScale>0.80</m_SpeedScale>
+	</m_2DBlends>
+	<m_2DBlends referenceID="6">
+		<m_AnimName>Bob_WalkBwdAimDiagL_Bag</m_AnimName>
+		<m_XPos>-0.55</m_XPos>
+		<m_YPos>-0.55</m_YPos>
+		<m_SpeedScale>0.80</m_SpeedScale>
+	</m_2DBlends>
+	<m_2DBlends referenceID="7">
+		<m_AnimName>Bob_WalkBwdAimDiagR_Bag</m_AnimName>
+		<m_XPos>0.55</m_XPos>
+		<m_YPos>-0.55</m_YPos>
+		<m_SpeedScale>0.80</m_SpeedScale>
+	</m_2DBlends>
+	<m_2DBlends referenceID="8">
+		<m_AnimName>Bob_WalkAimDiagR_Bag</m_AnimName>
+		<m_XPos>0.55</m_XPos>
+		<m_YPos>0.55</m_YPos>
+		<m_SpeedScale>0.80</m_SpeedScale>
+	</m_2DBlends>
+	<m_2DBlends referenceID="9">
+		<m_AnimName>Bob_WalkAimDiagL_Bag</m_AnimName>
+		<m_XPos>-0.55</m_XPos>
+		<m_YPos>0.55</m_YPos>
+		<m_SpeedScale>0.80</m_SpeedScale>
+	</m_2DBlends>
+	<m_2DBlendTri>
+		<node1>6</node1>
+		<node2>1</node2>
+		<node3>5</node3>
+	</m_2DBlendTri>
+	<m_2DBlendTri>
+		<node1>5</node1>
+		<node2>1</node2>
+		<node3>9</node3>
+	</m_2DBlendTri>
+	<m_2DBlendTri>
+		<node1>1</node1>
+		<node2>6</node2>
+		<node3>3</node3>
+	</m_2DBlendTri>
+	<m_2DBlendTri>
+		<node1>4</node1>
+		<node2>1</node2>
+		<node3>7</node3>
+	</m_2DBlendTri>
+	<m_2DBlendTri>
+		<node1>3</node1>
+		<node2>7</node2>
+		<node3>1</node3>
+	</m_2DBlendTri>
+	<m_2DBlendTri>
+		<node1>2</node1>
+		<node2>1</node2>
+		<node3>8</node3>
+	</m_2DBlendTri>
+	<m_2DBlendTri>
+		<node1>4</node1>
+		<node2>8</node2>
+		<node3>1</node3>
+	</m_2DBlendTri>
+	<m_2DBlendTri>
+		<node1>9</node1>
+		<node2>1</node2>
+		<node3>2</node3>
+	</m_2DBlendTri>
+	<m_Transitions>
+		<m_Target>aimhandgunbagleft</m_Target>
+		<m_blendInTime>0.5</m_blendInTime>
+		<m_blendOutTime>0.5</m_blendOutTime>
+		<m_speedScale>1</m_speedScale>
+	</m_Transitions>
+</animNode>

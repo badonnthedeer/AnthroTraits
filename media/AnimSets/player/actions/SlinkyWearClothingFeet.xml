@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="WearClothingNotMoving.xml">
+	<m_Name>WearClothingFeet</m_Name>
+</animNode>

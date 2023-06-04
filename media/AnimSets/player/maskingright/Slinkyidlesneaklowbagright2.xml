@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="idlesneaklowbagright.xml">
+	<m_Name>idlesneaklowbagright2</m_Name>
+	<m_Conditions />
+	<m_Conditions />
+	<m_Conditions>
+		<m_BoolValue>true</m_BoolValue>
+	</m_Conditions>
+	<m_Conditions />
+	<m_Conditions />
+	<m_Conditions />
+	<m_Conditions />
+</animNode>

@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode>
+	<m_Name>default</m_Name>
+	<m_AnimName>Bob_WindowSmash</m_AnimName>
+	<m_Looped>false</m_Looped>
+	<m_UpperOnly>false</m_UpperOnly>
+	<m_EarlyBlendOut>false</m_EarlyBlendOut>
+	<m_SpeedScale>0.80</m_SpeedScale>
+	<m_BlendTime>0.20</m_BlendTime>
+	<m_Scalar></m_Scalar>
+	<m_Scalar2></m_Scalar2>
+	<m_Events>
+		<m_EventName>AttackCollisionCheck</m_EventName>
+		<m_TimePc>0.35</m_TimePc>
+		<m_ParameterValue></m_ParameterValue>
+	</m_Events>
+</animNode>

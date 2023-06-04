@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="vaultOverRun.xml">
+	<m_Name>vaultOverRunFail</m_Name>
+	<m_AnimName>Bob_ValultOver_RunFail</m_AnimName>
+	<m_Conditions />
+	<m_Conditions />
+	<m_Conditions>
+		<m_StringValue>fall</m_StringValue>
+	</m_Conditions>
+	<m_Events />
+	<m_Events />
+	<m_Events />
+	<m_Events>
+		<m_EventName>FallenOnKnees</m_EventName>
+		<m_ParameterValue></m_ParameterValue>
+	</m_Events>
+	<m_Events>
+		<m_EventName>PlayTripSound</m_EventName>
+		<m_Time>Start</m_Time>
+		<m_ParameterValue>TripOverObstacle</m_ParameterValue>
+	</m_Events>
+	<m_Events>
+		<m_EventName>PlaySound</m_EventName>
+		<m_TimePc>0.45</m_TimePc>
+		<m_ParameterValue>FallLight</m_ParameterValue>
+	</m_Events>
+</animNode>

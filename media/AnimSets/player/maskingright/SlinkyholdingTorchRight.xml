@@ -1,0 +1,29 @@
+<animNode x_overrides="true" x_extends="">
+  <m_Name x_overrides="true">holdingTorchRight</m_Name>
+  <m_AnimName>Bob_IdleFlashLight</m_AnimName>
+  <m_Priority>10</m_Priority>
+  <m_deferredBoneAxis>Y</m_deferredBoneAxis>
+  <m_SpeedScale>0.00</m_SpeedScale>
+  <m_BlendTime>0.20</m_BlendTime>
+  <m_Conditions x_overrides="true">
+    <m_Name>RightHandMask</m_Name>
+    <m_Type>STRING</m_Type>
+    <m_StringValue>holdingtorchright</m_StringValue>
+  </m_Conditions>
+  <m_Transitions>
+    <m_Target>aimhandguntorchleft</m_Target>
+    <m_blendInTime>0.5</m_blendInTime>
+    <m_blendOutTime>0.5</m_blendOutTime>
+    <m_speedScale>1</m_speedScale>
+  </m_Transitions>
+  <m_SubStateBoneWeights>
+    <boneName>Bip01</boneName>
+    <weight>0.00</weight>
+  </m_SubStateBoneWeights>
+  <m_SubStateBoneWeights x_overrides="true">
+    <boneName x_overrides="true">Bip01_R_Clavicle</boneName>
+  </m_SubStateBoneWeights>
+  <m_SubStateBoneWeights x_overrides="true">
+    <boneName x_overrides="true">Bip01_Prop1</boneName>
+  </m_SubStateBoneWeights>
+</animNode>

@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="fromScrambleToRun.xml">
+	<m_Name>fromScrambleToRunRifle</m_Name>
+	<m_AnimName>Bob_ScrambleFloorToRun_Rifle</m_AnimName>
+	<m_EarlyTransitionOut>true</m_EarlyTransitionOut>
+	<m_Conditions />
+	<m_Conditions />
+	<m_Conditions />
+	<m_Conditions />
+	<m_Conditions>
+		<m_Name>Weapon</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_StringValue>firearm</m_StringValue>
+	</m_Conditions>
+</animNode>

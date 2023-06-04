@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="climbfencestartbagleft.xml">
+	<m_Name>climbfenceendbagleft</m_Name>
+	<m_AnimName>Bob_VaultOverEnd_Bag</m_AnimName>
+	<m_Conditions />
+	<m_Conditions />
+	<m_Conditions>
+		<m_BoolValue>true</m_BoolValue>
+	</m_Conditions>
+	<m_Conditions />
+	<m_Conditions>
+		<m_Name>ClimbFenceOutcome</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_StringValue>success</m_StringValue>
+	</m_Conditions>
+	<m_Conditions>
+		<m_Name>ClimbFenceFinished</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_BoolValue>false</m_BoolValue>
+	</m_Conditions>
+	<m_Conditions>
+		<m_Name>prout</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_BoolValue>true</m_BoolValue>
+	</m_Conditions>
+</animNode>

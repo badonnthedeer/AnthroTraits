@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="climbfencestartbagleft.xml">
+	<m_Name>vaultoverbagleft</m_Name>
+	<m_AnimName>Bob_ValultOverRun_Bag</m_AnimName>
+	<m_BlendOutTime>0.35</m_BlendOutTime>
+	<m_Conditions />
+	<m_Conditions />
+	<m_Conditions />
+	<m_Conditions>
+		<m_BoolValue>true</m_BoolValue>
+	</m_Conditions>
+</animNode>

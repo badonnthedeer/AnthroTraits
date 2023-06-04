@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode>
+	<m_Name>trying</m_Name>
+	<m_AnimName>Bob_WindowStruggleLoop</m_AnimName>
+	<m_deferredBoneAxis>Y</m_deferredBoneAxis>
+	<m_SyncTrackingEnabled>false</m_SyncTrackingEnabled>
+	<m_StopAnimOnExit>true</m_StopAnimOnExit>
+	<m_SpeedScale>0.80</m_SpeedScale>
+	<m_BlendTime>0.20</m_BlendTime>
+	<m_Conditions>
+		<m_Name>OpenWindowOutcome</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_StringValue>struggle</m_StringValue>
+	</m_Conditions>
+	<m_Events>
+		<m_EventName>WindowOpenAttempt</m_EventName>
+		<m_Time>End</m_Time>
+		<m_ParameterValue></m_ParameterValue>
+	</m_Events>
+	<m_Events>
+		<m_EventName>WindowAnimLooped</m_EventName>
+		<m_Time>End</m_Time>
+		<m_ParameterValue>struggle</m_ParameterValue>
+	</m_Events>
+	<m_Events>
+		<m_EventName>WindowStruggleSound</m_EventName>
+		<m_Time>Start</m_Time>
+		<m_ParameterValue></m_ParameterValue>
+	</m_Events>
+</animNode>

@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode>
+	<m_Name>obstacle</m_Name>
+	<m_AnimName>Bob_VaultOver_Fail</m_AnimName>
+	<m_deferredBoneAxis>Y</m_deferredBoneAxis>
+	<m_Looped>false</m_Looped>
+	<m_SpeedScale>1.20</m_SpeedScale>
+	<m_BlendTime>0.20</m_BlendTime>
+	<m_Conditions>
+		<m_Name>ClimbFenceStarted</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_BoolValue>true</m_BoolValue>
+	</m_Conditions>
+	<m_Conditions>
+		<m_Name>ClimbFenceOutcome</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_StringValue>obstacle</m_StringValue>
+	</m_Conditions>
+	<m_Events>
+		<m_EventName>SetVariable</m_EventName>
+		<m_Time>End</m_Time>
+		<m_ParameterValue>ClimbFenceFinished=true</m_ParameterValue>
+	</m_Events>
+</animNode>

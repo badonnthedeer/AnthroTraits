@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="getupback.xml">
+	<m_Name>getupfront</m_Name>
+	<m_AnimName>Bob_GetUp_Front</m_AnimName>
+	<m_SpeedScale>0.88</m_SpeedScale>
+	<m_Conditions>
+		<m_Name>ClimbWindowGetUpFront</m_Name>
+	</m_Conditions>
+	<m_Conditions />
+	<m_Conditions>
+		<m_StringValue>fallfront</m_StringValue>
+	</m_Conditions>
+</animNode>

@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode>
+	<m_Name>obstacle_loop</m_Name>
+	<m_AnimName>Bob_ClimbWindowObs_Loop</m_AnimName>
+	<m_Looped>true</m_Looped>
+	<m_SyncTrackingEnabled>false</m_SyncTrackingEnabled>
+	<m_EarlyBlendOut>false</m_EarlyBlendOut>
+	<m_SpeedScale>0.80</m_SpeedScale>
+	<m_BlendTime>0.20</m_BlendTime>
+	<m_Scalar></m_Scalar>
+	<m_Scalar2></m_Scalar2>
+	<m_Conditions>
+		<m_Name>ClimbWindowStarted</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_BoolValue>true</m_BoolValue>
+	</m_Conditions>
+	<m_Conditions>
+		<m_Name>ClimbWindowOutcome</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_StringValue>obstacle</m_StringValue>
+	</m_Conditions>
+	<m_Events>
+		<m_EventName>ClimbWindowObstacle</m_EventName>
+		<m_Time>End</m_Time>
+		<m_ParameterValue></m_ParameterValue>
+	</m_Events>
+</animNode>

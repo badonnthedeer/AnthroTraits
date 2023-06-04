@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode>
+	<m_Name>LootSitting</m_Name>
+	<m_AnimName>Bob_IdleLooting_Mid</m_AnimName>
+	<m_deferredBoneAxis>Y</m_deferredBoneAxis>
+	<m_SyncTrackingEnabled>false</m_SyncTrackingEnabled>
+	<m_BlendTime>0.20</m_BlendTime>
+	<m_Conditions>
+		<m_Name>PerformingAction</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_StringValue>Loot</m_StringValue>
+	</m_Conditions>
+	<m_Conditions>
+		<m_Name>sitonground</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_BoolValue>true</m_BoolValue>
+	</m_Conditions>
+</animNode>

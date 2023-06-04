@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="walkbagright.xml">
+	<m_Name>idlesneakbagright</m_Name>
+	<m_AnimName>Bob_IdleSneak_Bag</m_AnimName>
+	<m_SpeedScale>0.48</m_SpeedScale>
+	<m_Conditions />
+	<m_Conditions>
+		<m_BoolValue>false</m_BoolValue>
+	</m_Conditions>
+	<m_Conditions />
+	<m_Conditions />
+	<m_Conditions />
+	<m_Conditions>
+		<m_BoolValue>true</m_BoolValue>
+	</m_Conditions>
+	<m_Conditions>
+		<m_Name>nearWallCrouching</m_Name>
+	</m_Conditions>
+	<m_Transitions />
+	<m_Transitions>
+		<m_blendInTime>0.35</m_blendInTime>
+		<m_blendOutTime>0.35</m_blendOutTime>
+	</m_Transitions>
+	<m_Transitions>
+		<m_Target>walksneakbagright</m_Target>
+		<m_blendInTime>0.3</m_blendInTime>
+		<m_blendOutTime>0.3</m_blendOutTime>
+	</m_Transitions>
+	<m_Transitions>
+		<m_Target>runsneakbagright</m_Target>
+		<m_blendInTime>0.1</m_blendInTime>
+		<m_blendOutTime>0.1</m_blendOutTime>
+	</m_Transitions>
+</animNode>
