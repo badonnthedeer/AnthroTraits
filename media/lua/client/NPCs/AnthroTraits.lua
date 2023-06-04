@@ -257,7 +257,7 @@ local function ExclaimerCheck(player)
     local thresholdMultiplier = SandboxVars.AnthroTraits.ExclaimerExclaimThresholdMultiplier;
 
     local exclaimChance = ZombRand(1,100);
-    local phraseChance = ZombRand(0, AnthroTraitsGlobals.ExclaimPhrases.size() -1)
+    local phraseChance = ZombRand(0, AnthroTraitsGlobals.ExclaimPhrases:size() -1)
 
     if (exclaimChance <= (panicLevel * thresholdMultiplier)) and panicLevel > 1
     then
@@ -406,23 +406,34 @@ end
 local OriginalTimedActionCreate = ISBaseTimedAction.create;
 ISBaseTimedAction.create = function(self)
     OriginalTimedActionCreate(self);
+    local newTime = self.maxTime * (1 + SandboxVars.AnthroTraits.UnwieldyHandsTimeIncrease)
     if self.character:HasTrait("AT_UnwieldyHands")
     then
-        for i = 1, getn(AnthroTraitsGlobals.UnwieldyHandsAffectedTimedActions)
+        for _, action in pairs(AnthroTraitsGlobals.UnwieldyHandsAffectedTimedActions)
         do
-            if self.Type == AnthroTraitsGlobals.UnwieldyHandsAffectedTimedActions[i]
+            if self.Type == action
             then
-                self.maxTime = self.maxTime * (1 + SandboxVars.AnthroTraits.UnwieldyHandsTimeIncrease);
+                if getDebug()
+                then
+                    print("UnwieldyHands activated. Old time: "..tostring(self.maxTime).." New time: "..tostring(newTime));
+                end
+                self.maxTime = newTime;
+                break;
             end
         end
     end
     if self.character:HasTrait("AT_Slinky")
     then
-        for i = 1, getn(AnthroTraitsGlobals.SlinkyAffectedTimedActions)
+        for _, action in pairs(AnthroTraitsGlobals.SlinkyAffectedTimedActions)
         do
-            if self.Type == AnthroTraitsGlobals.SlinkyAffectedTimedActions[i]
+            if self.Type == action
             then
-                self.maxTime = self.maxTime * (1 + SandboxVars.AnthroTraits.SlinkyTimeIncrease);
+                if getDebug()
+                then
+                    print("Slinky activated. Old time: "..tostring(self.maxTime).." New time: "..tostring(newTime));
+                end
+                self.maxTime = newTime;
+                break;
             end
         end
     end
@@ -663,6 +674,10 @@ local function ATEveryOneMinute()
             local player = getSpecificPlayer(playerIndex)
             if player and not player:isDead()
             then
+                --add random test functions here:
+
+
+                --
                 if player:HasTrait("AT_Immunity") and not player:getBodyDamage():isInfected() and player:getModData().ATPlayerData.trulyInfected == true
                 then
                     --if a player is a cheater/debugging or takes a game-made cure
