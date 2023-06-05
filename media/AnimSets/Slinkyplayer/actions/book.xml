@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="reading.xml">
+	<m_Name>book</m_Name>
+	<m_AnimName>Bob_IdleReadBook</m_AnimName>
+	<m_deferredBoneAxis>Y</m_deferredBoneAxis>
+	<m_SpeedScale>0.80</m_SpeedScale>
+	<m_BlendTime>0.30</m_BlendTime>
+	<m_Conditions />
+	<m_Conditions>
+		<m_Name>ReadType</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_StringValue>book</m_StringValue>
+	</m_Conditions>
+	<m_Events>
+		<m_EventName>PageFlip</m_EventName>
+		<m_TimePc>0.6</m_TimePc>
+		<m_ParameterValue></m_ParameterValue>
+	</m_Events>
+</animNode>

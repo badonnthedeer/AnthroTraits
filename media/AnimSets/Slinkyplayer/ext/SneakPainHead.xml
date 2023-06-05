@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="Ext_PainHead.xml">
+	<m_Name>SneakPainHead</m_Name>
+	<m_AnimName>Bob_StealthEmotePainHead</m_AnimName>
+	<m_BlendOutTime>0.20</m_BlendOutTime>
+	<m_Conditions />
+	<m_Conditions>
+		<m_Name>sneaking</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_BoolValue>true</m_BoolValue>
+	</m_Conditions>
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights>
+		<weight>0.50</weight>
+	</m_SubStateBoneWeights>
+	<m_SubStateBoneWeights>
+		<weight>0.50</weight>
+	</m_SubStateBoneWeights>
+	<m_SubStateBoneWeights>
+		<weight>0.50</weight>
+	</m_SubStateBoneWeights>
+	<m_SubStateBoneWeights>
+		<weight>0.50</weight>
+	</m_SubStateBoneWeights>
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+</animNode>

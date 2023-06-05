@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="stop.xml">
+	<m_Name>stop02</m_Name>
+	<m_AnimName>Bob_EmoteStop02</m_AnimName>
+	<m_Conditions>
+		<m_StringValue>stop02</m_StringValue>
+	</m_Conditions>
+</animNode>

@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="aim_default.xml">
+	<m_Name>aim_chainsaw</m_Name>
+	<m_AnimName>Bob_IdleAimChainsaw</m_AnimName>
+	<m_Transitions>
+		<m_Target>IdleChainsaw</m_Target>
+		<m_AnimName>Bob_AimToIdle_Chainsaw</m_AnimName>
+	</m_Transitions>
+	<m_Transitions>
+		<m_Target>sneakIdleChainsaw</m_Target>
+		<m_AnimName>Bob_AimToIdle_Chainsaw</m_AnimName>
+	</m_Transitions>
+	<m_Transitions>
+		<m_Target>sneakIdleLowChainsaw</m_Target>
+		<m_AnimName>Bob_AimToIdle_Chainsaw</m_AnimName>
+	</m_Transitions>
+	<m_Conditions>
+		<m_Name>Weapon</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_StringValue>chainsaw</m_StringValue>
+	</m_Conditions>
+</animNode>

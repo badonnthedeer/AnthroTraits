@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="left.xml">
+	<m_Name>right</m_Name>
+	<m_AnimName>Bob_Run_BumpR</m_AnimName>
+	<m_Conditions>
+		<m_StringValue>right</m_StringValue>
+	</m_Conditions>
+</animNode>

@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="FillBottleFromTap.xml">
+	<m_Name>FillPotFromTap</m_Name>
+	<m_AnimName>Bob_IdleFill_CookingPot</m_AnimName>
+	<m_deferredBoneAxis>Y</m_deferredBoneAxis>
+	<m_Conditions />
+	<m_Conditions>
+		<m_Name>FoodType</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_StringValue>Pot</m_StringValue>
+	</m_Conditions>
+</animNode>

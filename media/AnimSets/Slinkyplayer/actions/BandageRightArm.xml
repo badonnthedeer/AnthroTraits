@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="Bandage.xml">
+	<m_Name>BandageRightArm</m_Name>
+	<m_AnimName>Bob_BandageRightArm</m_AnimName>
+	<m_Conditions />
+	<m_Conditions>
+		<m_Name>BandageType</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_StringValue>RightArm</m_StringValue>
+	</m_Conditions>
+</animNode>

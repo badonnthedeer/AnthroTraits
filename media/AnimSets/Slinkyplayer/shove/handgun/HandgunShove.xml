@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="HandgunDefault.xml">
+	<m_Name>HandgunShove</m_Name>
+	<m_SyncTrackingEnabled>true</m_SyncTrackingEnabled>
+	<m_BlendOutTime>0.30</m_BlendOutTime>
+	<m_Conditions />
+	<m_Conditions />
+	<m_Conditions>
+		<m_Name>bShoveAiming</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_BoolValue>true</m_BoolValue>
+	</m_Conditions>
+	<m_Events>
+		<m_TimePc>0.35</m_TimePc>
+	</m_Events>
+	<m_Events />
+	<m_Events />
+	<m_Events>
+		<m_EventName>ShoveAnim</m_EventName>
+		<m_Time>Start</m_Time>
+		<m_ParameterValue>TRUE</m_ParameterValue>
+	</m_Events>
+	<m_Events>
+		<m_EventName>ShoveAnim</m_EventName>
+		<m_Time>End</m_Time>
+		<m_ParameterValue>FALSE</m_ParameterValue>
+	</m_Events>
+	<m_Events>
+		<m_EventName>SetMeleeDelay</m_EventName>
+		<m_Time>End</m_Time>
+		<m_ParameterValue>8</m_ParameterValue>
+	</m_Events>
+	<m_SubStateBoneWeights>
+		<boneName>Bip01_Spine1</boneName>
+	</m_SubStateBoneWeights>
+	<m_SubStateBoneWeights>
+		<boneName>Bip01_Neck</boneName>
+	</m_SubStateBoneWeights>
+	<m_SubStateBoneWeights>
+		<boneName>Bip01_BackPack</boneName>
+	</m_SubStateBoneWeights>
+	<m_SubStateBoneWeights>
+		<boneName>Bip01_Prop1</boneName>
+	</m_SubStateBoneWeights>
+	<m_SubStateBoneWeights>
+		<boneName>Bip01_Prop2</boneName>
+	</m_SubStateBoneWeights>
+	<m_SubStateBoneWeights>
+		<boneName>Bip01_Spine</boneName>
+		<includeDescendants>false</includeDescendants>
+	</m_SubStateBoneWeights>
+	<m_SubStateBoneWeights>
+		<boneName>Bip01_Pelvis</boneName>
+		<weight>0.50</weight>
+		<includeDescendants>false</includeDescendants>
+	</m_SubStateBoneWeights>
+</animNode>

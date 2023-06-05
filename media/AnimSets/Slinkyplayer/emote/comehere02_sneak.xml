@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="default.xml">
+	<m_Name>comehere02_sneak</m_Name>
+	<m_AnimName>Bob_StealthEmoteComeHere</m_AnimName>
+	<m_Conditions>
+		<m_StringValue>comehere02</m_StringValue>
+	</m_Conditions>
+	<m_Conditions>
+		<m_Name>sneaking</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_BoolValue>true</m_BoolValue>
+	</m_Conditions>
+</animNode>

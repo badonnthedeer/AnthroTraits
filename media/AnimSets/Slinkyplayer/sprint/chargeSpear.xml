@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="sprintSpear.xml">
+	<m_Name>chargeSpear</m_Name>
+	<m_AnimName>Bob_RunSpearCharge</m_AnimName>
+	<m_Conditions />
+	<m_Conditions>
+		<m_Name>beensprintingfor</m_Name>
+		<m_Type>GTR</m_Type>
+		<m_FloatValue>70</m_FloatValue>
+	</m_Conditions>
+	<m_2DBlends>
+		<m_AnimName>Bob_RunSpearCharge</m_AnimName>
+	</m_2DBlends>
+	<m_2DBlends>
+		<m_AnimName>Bob_RunSpearCharge</m_AnimName>
+	</m_2DBlends>
+	<m_2DBlends>
+		<m_AnimName>Bob_RunSpearCharge</m_AnimName>
+	</m_2DBlends>
+	<m_2DBlends>
+		<m_AnimName>Bob_RunSpearCharge</m_AnimName>
+	</m_2DBlends>
+	<m_2DBlends>
+		<m_AnimName>Bob_RunSpearCharge</m_AnimName>
+	</m_2DBlends>
+</animNode>

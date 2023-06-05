@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode>
+	<m_Name>bumpFall</m_Name>
+	<m_AnimName>Bob_RunStumble</m_AnimName>
+	<m_deferredBoneAxis>Y</m_deferredBoneAxis>
+	<m_Looped>false</m_Looped>
+	<m_EarlyTransitionOut>true</m_EarlyTransitionOut>
+	<m_SpeedScale>1.04</m_SpeedScale>
+	<m_BlendTime>0.05</m_BlendTime>
+	<m_Conditions>
+		<m_Name>BumpDone</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_BoolValue>true</m_BoolValue>
+	</m_Conditions>
+	<m_Conditions>
+		<m_Name>BumpFall</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_BoolValue>true</m_BoolValue>
+	</m_Conditions>
+	<m_Events>
+		<m_EventName>FallOnFront</m_EventName>
+		<m_TimePc>0.5</m_TimePc>
+		<m_ParameterValue>true</m_ParameterValue>
+	</m_Events>
+	<m_Events>
+		<m_EventName>SetVariable</m_EventName>
+		<m_Time>End</m_Time>
+		<m_ParameterValue>BumpFallAnimFinished=true</m_ParameterValue>
+	</m_Events>
+	<m_Events>
+		<m_EventName>PlaySound</m_EventName>
+		<m_TimePc>0.23</m_TimePc>
+		<m_ParameterValue>FallLight</m_ParameterValue>
+	</m_Events>
+</animNode>

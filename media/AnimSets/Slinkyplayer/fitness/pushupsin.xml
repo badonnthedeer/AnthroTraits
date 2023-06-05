@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="pushups.xml">
+	<m_Name>pushupsin</m_Name>
+	<m_AnimName>Bob_PushUp_In</m_AnimName>
+	<m_Looped>false</m_Looped>
+	<m_Events>
+		<m_EventName>SetVariable</m_EventName>
+		<m_Time>End</m_Time>
+		<m_ParameterValue>ExerciseStarted=TRUE</m_ParameterValue>
+	</m_Events>
+</animNode>

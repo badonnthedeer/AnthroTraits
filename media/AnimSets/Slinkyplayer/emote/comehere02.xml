@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="comehere.xml">
+	<m_Name>comehere02</m_Name>
+	<m_AnimName>Bob_EmoteComeHere02</m_AnimName>
+	<m_Conditions>
+		<m_StringValue>comehere02</m_StringValue>
+	</m_Conditions>
+</animNode>

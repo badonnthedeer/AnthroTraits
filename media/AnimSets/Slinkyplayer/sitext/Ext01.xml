@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode>
+	<m_Name>Ext01</m_Name>
+	<m_AnimName>Bob_IdleExt01</m_AnimName>
+	<m_deferredBoneAxis>Y</m_deferredBoneAxis>
+	<m_Looped>false</m_Looped>
+	<m_SyncTrackingEnabled>false</m_SyncTrackingEnabled>
+	<m_EarlyTransitionOut>true</m_EarlyTransitionOut>
+	<m_SpeedScale>0.80</m_SpeedScale>
+	<m_BlendTime>0.70</m_BlendTime>
+	<m_Conditions>
+		<m_Name>Ext</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_StringValue>1</m_StringValue>
+	</m_Conditions>
+	<m_Events>
+		<m_EventName>ExtFinishing</m_EventName>
+		<m_Time>End</m_Time>
+		<m_ParameterValue></m_ParameterValue>
+	</m_Events>
+</animNode>

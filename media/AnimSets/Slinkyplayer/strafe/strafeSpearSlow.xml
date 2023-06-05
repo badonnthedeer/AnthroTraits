@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="strafeSpear.xml">
+	<m_Name>strafeSpearSlow</m_Name>
+	<m_BlendTime>0.10</m_BlendTime>
+	<m_Conditions />
+	<m_Conditions>
+		<m_Name>SlowingMovement</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_BoolValue>true</m_BoolValue>
+	</m_Conditions>
+	<m_2DBlends />
+	<m_2DBlends />
+	<m_2DBlends>
+		<m_AnimName>Bob_WalkBwdAimSpearSlow</m_AnimName>
+	</m_2DBlends>
+	<m_2DBlends />
+	<m_2DBlends />
+	<m_2DBlends>
+		<m_AnimName>Bob_WalkBwdAimSpear_DiagLSlow</m_AnimName>
+	</m_2DBlends>
+	<m_2DBlends>
+		<m_AnimName>Bob_WalkBwdAimSpear_DiagRSlow</m_AnimName>
+	</m_2DBlends>
+	<m_2DBlends />
+	<m_2DBlends />
+</animNode>

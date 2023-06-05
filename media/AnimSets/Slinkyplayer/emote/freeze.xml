@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="default.xml">
+	<m_Name>freeze</m_Name>
+	<m_AnimName>Bob_Signal_1H_Freeze</m_AnimName>
+	<m_Conditions>
+		<m_StringValue>freeze</m_StringValue>
+	</m_Conditions>
+</animNode>

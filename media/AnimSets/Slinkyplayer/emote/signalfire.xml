@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="default.xml">
+	<m_Name>signalfire</m_Name>
+	<m_AnimName>Bob_Signal_1H_Fire</m_AnimName>
+	<m_SpeedScale>1.00</m_SpeedScale>
+	<m_Conditions>
+		<m_StringValue>signalfire</m_StringValue>
+	</m_Conditions>
+</animNode>

@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="HitR2H.xml">
+	<m_Name>HitR2HBehind</m_Name>
+	<m_AnimName>Bob_HitReactBehind2H_01</m_AnimName>
+	<m_Conditions />
+	<m_Conditions>
+		<m_Name>FromBehind</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_BoolValue>true</m_BoolValue>
+	</m_Conditions>
+</animNode>

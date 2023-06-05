@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="turn_run.xml">
+	<m_Name>turn_run_180</m_Name>
+	<m_Looped>false</m_Looped>
+	<m_SpeedScale>1.04</m_SpeedScale>
+	<m_BlendTime>0.06</m_BlendTime>
+	<m_BlendOutTime>0.10</m_BlendOutTime>
+	<m_Conditions />
+	<m_Conditions />
+	<m_Conditions />
+	<m_Conditions />
+	<m_Conditions>
+		<m_Name>isTurningAround</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_BoolValue>true</m_BoolValue>
+	</m_Conditions>
+	<m_Conditions>
+		<m_Name>momentumScalar</m_Name>
+		<m_Type>GTR</m_Type>
+		<m_FloatValue>0.999</m_FloatValue>
+	</m_Conditions>
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights>
+		<weight>0.00</weight>
+	</m_SubStateBoneWeights>
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+</animNode>

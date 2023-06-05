@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="SneakPullAtCollar.xml">
+	<m_Name>SneakPullAtCollarRifle</m_Name>
+	<m_AnimName>Bob_StealthEmotePullAtCollar2H</m_AnimName>
+	<m_Conditions />
+	<m_Conditions />
+	<m_Conditions>
+		<m_Name>Weapon</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_StringValue>firearm</m_StringValue>
+	</m_Conditions>
+</animNode>

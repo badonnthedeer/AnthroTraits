@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="FirearmShove.xml">
+	<m_Name>FirearmShoveBehind</m_Name>
+	<m_AnimName>Bob_AttackRifleButt02_Hit</m_AnimName>
+	<m_Conditions />
+	<m_Conditions />
+	<m_Conditions>
+		<m_Name>AttackFromBehind</m_Name>
+	</m_Conditions>
+	<m_Conditions>
+		<m_Name>bShoveAiming</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_BoolValue>true</m_BoolValue>
+	</m_Conditions>
+	<m_Events>
+		<m_TimePc>0.3</m_TimePc>
+	</m_Events>
+</animNode>

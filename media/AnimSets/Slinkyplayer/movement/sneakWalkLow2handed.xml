@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="sneakWalkLow.xml">
+	<m_Name>sneakWalkLow2handed</m_Name>
+	<m_AnimName>Bob_WalkLowSneak_Bat</m_AnimName>
+	<m_Conditions />
+	<m_Conditions />
+	<m_Conditions />
+	<m_Conditions>
+		<m_Name>Weapon</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_StringValue>2handed</m_StringValue>
+	</m_Conditions>
+	<m_2DBlends>
+		<m_AnimName>Bob_WalkLowSneak_Slow_Bat</m_AnimName>
+	</m_2DBlends>
+	<m_2DBlends>
+		<m_AnimName>Bob_WalkLowSneak_Bat</m_AnimName>
+	</m_2DBlends>
+	<m_2DBlends>
+		<m_AnimName>Bob_WalkLowSneak_Slow_Bat</m_AnimName>
+	</m_2DBlends>
+	<m_2DBlends>
+		<m_AnimName>Bob_WalkLowSneak_Slow_Bat</m_AnimName>
+	</m_2DBlends>
+	<m_2DBlends>
+		<m_AnimName>Bob_WalkLowSneak_Slow_Bat</m_AnimName>
+	</m_2DBlends>
+	<m_2DBlends>
+		<m_AnimName>Bob_WalkLowSneak_Slow_Bat</m_AnimName>
+	</m_2DBlends>
+	<m_Transitions>
+		<m_Target>strafe2handed</m_Target>
+		<m_AnimName>Bob_WalkToWalkAimBat</m_AnimName>
+	</m_Transitions>
+	<m_Transitions>
+		<m_Target>sprint2handed</m_Target>
+		<m_AnimName>Bob_IdleToSprint_Bat</m_AnimName>
+	</m_Transitions>
+	<m_Transitions>
+		<m_Target>sneakIdleLow2handed</m_Target>
+	</m_Transitions>
+	<m_Transitions>
+		<m_Target>walk2handed</m_Target>
+	</m_Transitions>
+	<m_Transitions>
+		<m_Target>strafe2handed</m_Target>
+	</m_Transitions>
+</animNode>

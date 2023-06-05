@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="Ext01.xml">
+	<m_Name>Ext04</m_Name>
+	<m_AnimName>Bob_IdleExt04</m_AnimName>
+	<m_Looped>false</m_Looped>
+	<m_Conditions>
+		<m_StringValue>4</m_StringValue>
+	</m_Conditions>
+</animNode>

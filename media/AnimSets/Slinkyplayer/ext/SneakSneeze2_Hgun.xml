@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="SneakSneeze2.xml">
+	<m_Name>SneakSneeze2_Hgun</m_Name>
+	<m_Conditions />
+	<m_Conditions />
+	<m_Conditions>
+		<m_Name>NewCondition</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_StringValue>handgun</m_StringValue>
+	</m_Conditions>
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights>
+		<weight>0.20</weight>
+	</m_SubStateBoneWeights>
+	<m_SubStateBoneWeights>
+		<weight>0.20</weight>
+	</m_SubStateBoneWeights>
+	<m_SubStateBoneWeights>
+		<weight>0.20</weight>
+	</m_SubStateBoneWeights>
+	<m_SubStateBoneWeights>
+		<weight>0.20</weight>
+	</m_SubStateBoneWeights>
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+</animNode>

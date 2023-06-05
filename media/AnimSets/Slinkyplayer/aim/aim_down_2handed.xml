@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="aim_down.xml">
+	<m_Name>aim_down_2handed</m_Name>
+	<m_AnimName>Bob_IdleAimBat_Down</m_AnimName>
+	<m_Conditions />
+	<m_Conditions>
+		<m_Name>Weapon</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_StringValue>2handed</m_StringValue>
+	</m_Conditions>
+	<m_Transitions>
+		<m_Target>Idle2Handed</m_Target>
+	</m_Transitions>
+	<m_Transitions>
+		<m_Target>sneakIdle2handed</m_Target>
+	</m_Transitions>
+	<m_Transitions>
+		<m_Target>sneakIdleLow2handed</m_Target>
+	</m_Transitions>
+</animNode>

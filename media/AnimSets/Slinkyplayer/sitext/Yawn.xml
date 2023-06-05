@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="Ext01.xml">
+	<m_Name>Yawn</m_Name>
+	<m_AnimName>Bob_EmoteYawn</m_AnimName>
+	<m_Conditions>
+		<m_StringValue>Yawn</m_StringValue>
+	</m_Conditions>
+</animNode>

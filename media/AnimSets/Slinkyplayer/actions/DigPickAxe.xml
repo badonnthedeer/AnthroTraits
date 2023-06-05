@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="Dig.xml">
+	<m_Name>DigPickAxe</m_Name>
+	<m_AnimName>Bob_Dig_PickAxe</m_AnimName>
+	<m_Conditions>
+		<m_StringValue>DigPickAxe</m_StringValue>
+	</m_Conditions>
+</animNode>

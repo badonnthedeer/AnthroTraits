@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="Ext01.xml">
+	<m_Name>WipeLegR</m_Name>
+	<m_AnimName>Bob_EmoteWipeRightLeg</m_AnimName>
+	<m_Conditions>
+		<m_StringValue>WipeLegR</m_StringValue>
+	</m_Conditions>
+</animNode>

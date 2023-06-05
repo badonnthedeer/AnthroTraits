@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="turn.xml">
+	<m_Name>turn_run_sneaklow</m_Name>
+	<m_BlendTime>0.10</m_BlendTime>
+	<m_Conditions />
+	<m_Conditions>
+		<m_Name>ismoving</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_BoolValue>true</m_BoolValue>
+	</m_Conditions>
+	<m_Conditions>
+		<m_Name>isRunning</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_BoolValue>true</m_BoolValue>
+	</m_Conditions>
+	<m_Conditions>
+		<m_Name>Aim</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_BoolValue>false</m_BoolValue>
+	</m_Conditions>
+	<m_Conditions>
+		<m_Name>sneaking</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_BoolValue>true</m_BoolValue>
+	</m_Conditions>
+	<m_Conditions>
+		<m_Name>nearWallCrouching</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_BoolValue>true</m_BoolValue>
+	</m_Conditions>
+	<m_Conditions>
+		<m_Name>isTurningAround</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_BoolValue>true</m_BoolValue>
+	</m_Conditions>
+	<m_Conditions>
+		<m_Name>momentumScalar</m_Name>
+		<m_Type>LESS</m_Type>
+		<m_FloatValue>1</m_FloatValue>
+	</m_Conditions>
+	<m_Transitions>
+		<m_Target>sneakRunLow</m_Target>
+		<m_blendInTime>0.1</m_blendInTime>
+	</m_Transitions>
+	<m_Transitions>
+		<m_Target>turn_idle_sneaklow_180L</m_Target>
+		<m_blendInTime>0.5</m_blendInTime>
+	</m_Transitions>
+	<m_Transitions>
+		<m_Target>turn_idle_sneaklow_180R</m_Target>
+		<m_blendInTime>0.5</m_blendInTime>
+	</m_Transitions>
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights>
+		<weight>0.25</weight>
+	</m_SubStateBoneWeights>
+	<m_SubStateBoneWeights>
+		<weight>0.20</weight>
+	</m_SubStateBoneWeights>
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+</animNode>

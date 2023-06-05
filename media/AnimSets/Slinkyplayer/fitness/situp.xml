@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode>
+	<m_Name>situp</m_Name>
+	<m_deferredBoneAxis>Y</m_deferredBoneAxis>
+	<m_SyncTrackingEnabled>false</m_SyncTrackingEnabled>
+	<m_SpeedScale>FitnessSpeed</m_SpeedScale>
+	<m_BlendTime>0.20</m_BlendTime>
+	<m_Conditions>
+		<m_Name>ExerciseType</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_StringValue>situp</m_StringValue>
+	</m_Conditions>
+</animNode>

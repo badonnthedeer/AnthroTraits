@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="turn_walk_sneaklow.xml">
+	<m_Name>turn_idleToWalk_sneakLow_180</m_Name>
+	<m_Looped>false</m_Looped>
+	<m_BlendOutTime>0.10</m_BlendOutTime>
+</animNode>

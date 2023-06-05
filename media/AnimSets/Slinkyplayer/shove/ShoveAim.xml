@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="ShoveDefault.xml">
+	<m_Name>ShoveAim</m_Name>
+	<m_AnimName>Bob_AimShove</m_AnimName>
+	<m_Scalar>ShoveAimX</m_Scalar>
+	<m_Scalar2>ShoveAimY</m_Scalar2>
+	<m_Conditions />
+	<m_Conditions>
+		<m_Name>ShoveAim</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_BoolValue>true</m_BoolValue>
+	</m_Conditions>
+	<m_2DBlends referenceID="1">
+		<m_AnimName>Bob_AimShove</m_AnimName>
+		<m_XPos>0.00</m_XPos>
+		<m_YPos>0.00</m_YPos>
+		<m_SpeedScale>0.80</m_SpeedScale>
+	</m_2DBlends>
+	<m_2DBlends referenceID="2">
+		<m_AnimName>Bob_AimShove</m_AnimName>
+		<m_XPos>0.39</m_XPos>
+		<m_YPos>1.00</m_YPos>
+		<m_SpeedScale>0.80</m_SpeedScale>
+	</m_2DBlends>
+	<m_2DBlends referenceID="3">
+		<m_AnimName>Bob_AimShove</m_AnimName>
+		<m_XPos>0.74</m_XPos>
+		<m_YPos>1.00</m_YPos>
+		<m_SpeedScale>0.80</m_SpeedScale>
+	</m_2DBlends>
+	<m_2DBlendTri>
+		<node1>1</node1>
+		<node2>2</node2>
+		<node3>3</node3>
+	</m_2DBlendTri>
+</animNode>

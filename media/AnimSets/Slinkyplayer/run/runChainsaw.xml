@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="defaultRun.xml">
+	<m_Name>runChainsaw</m_Name>
+	<m_AnimName>Bob_RunChainsaw</m_AnimName>
+	<m_Conditions>
+		<m_Name>Weapon</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_StringValue>chainsaw</m_StringValue>
+	</m_Conditions>
+	<m_2DBlends>
+		<m_AnimName>Bob_WalkChainsaw</m_AnimName>
+	</m_2DBlends>
+	<m_2DBlends>
+		<m_AnimName>Bob_WalkLightLimpR_ChSaw</m_AnimName>
+	</m_2DBlends>
+	<m_2DBlends>
+		<m_AnimName>Bob_WalkLightLimpL_ChSaw</m_AnimName>
+	</m_2DBlends>
+	<m_2DBlends>
+		<m_AnimName>Bob_RunChainsaw</m_AnimName>
+	</m_2DBlends>
+	<m_2DBlends>
+		<m_AnimName>Bob_RunLightLimpR_ChSaw</m_AnimName>
+	</m_2DBlends>
+	<m_2DBlends>
+		<m_AnimName>Bob_RunLightLimpL_ChSaw</m_AnimName>
+	</m_2DBlends>
+	<m_2DBlends>
+		<m_AnimName>Bob_WalkHeavyLimpR_ChSaw</m_AnimName>
+	</m_2DBlends>
+	<m_2DBlends>
+		<m_AnimName>Bob_WalkHeavyLimpL_ChSaw</m_AnimName>
+	</m_2DBlends>
+	<m_Transitions>
+		<m_Target>IdleChainsaw</m_Target>
+		<m_AnimName>Bob_RunToStop_Chainsaw</m_AnimName>
+	</m_Transitions>
+	<m_Transitions>
+		<m_Target>strafeChainsaw</m_Target>
+		<m_AnimName>Bob_WalkToWalkAimChainsaw</m_AnimName>
+	</m_Transitions>
+	<m_Transitions />
+	<m_Transitions />
+	<m_Transitions />
+	<m_Transitions />
+	<m_Transitions>
+		<m_Target>strafeChainsaw</m_Target>
+	</m_Transitions>
+</animNode>

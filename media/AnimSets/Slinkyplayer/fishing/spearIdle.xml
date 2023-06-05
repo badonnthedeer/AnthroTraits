@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="fishingIdle.xml">
+	<m_Name>spearIdle</m_Name>
+	<m_AnimName>Bob_FishingSpearIdle</m_AnimName>
+	<m_Conditions>
+		<m_StringValue>spearIdle</m_StringValue>
+	</m_Conditions>
+</animNode>

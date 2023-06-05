@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode>
+	<m_Name>strike</m_Name>
+	<m_AnimName>Bob_FishingStrike</m_AnimName>
+	<m_deferredBoneAxis>Y</m_deferredBoneAxis>
+	<m_Looped>false</m_Looped>
+	<m_EarlyTransitionOut>true</m_EarlyTransitionOut>
+	<m_SpeedScale>1.00</m_SpeedScale>
+	<m_BlendTime>0.20</m_BlendTime>
+	<m_Conditions>
+		<m_Name>FishingStage</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_StringValue>strike</m_StringValue>
+	</m_Conditions>
+	<m_Events>
+		<m_EventName>SetVariable</m_EventName>
+		<m_Time>End</m_Time>
+		<m_ParameterValue>FishingStage=idle</m_ParameterValue>
+	</m_Events>
+</animNode>

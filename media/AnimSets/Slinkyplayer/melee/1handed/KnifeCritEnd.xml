@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="KnifeCritStart.xml">
+	<m_Name>KnifeCritEnd</m_Name>
+	<m_AnimName>Bob_AttackKnife01_CritHitEnd</m_AnimName>
+	<m_Conditions />
+	<m_Conditions />
+	<m_Conditions />
+	<m_Conditions>
+		<m_Name>KnifeCritStarted</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_BoolValue>true</m_BoolValue>
+	</m_Conditions>
+	<m_2DBlends>
+		<m_AnimName>Bob_AttackKnife01_CritHitStepBackEnd</m_AnimName>
+	</m_2DBlends>
+	<m_2DBlends>
+		<m_AnimName>Bob_AttackKnife01_CritHitEnd</m_AnimName>
+	</m_2DBlends>
+	<m_2DBlends>
+		<m_AnimName>Bob_AttackKnife01_CritHitCloseEnd</m_AnimName>
+	</m_2DBlends>
+	<m_Events />
+	<m_Events />
+	<m_Events>
+		<m_ParameterValue>KnifeCritStarted=false</m_ParameterValue>
+	</m_Events>
+</animNode>

@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="cast.xml">
+	<m_Name>castSit</m_Name>
+	<m_AnimName>Bob_Sit_FishingCast</m_AnimName>
+	<m_SpeedScale>0.88</m_SpeedScale>
+	<m_BlendOutTime>0.40</m_BlendOutTime>
+	<m_Conditions />
+	<m_Conditions>
+		<m_Name>sitonground</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_BoolValue>true</m_BoolValue>
+	</m_Conditions>
+	<m_SubStateBoneWeights>
+		<boneName>Bip01</boneName>
+	</m_SubStateBoneWeights>
+</animNode>

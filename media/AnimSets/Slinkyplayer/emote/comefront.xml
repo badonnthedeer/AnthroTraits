@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="default.xml">
+	<m_Name>comefront</m_Name>
+	<m_AnimName>Bob_Signal_1H_ComeFront</m_AnimName>
+	<m_SpeedScale>1.04</m_SpeedScale>
+	<m_Conditions>
+		<m_StringValue>comefront</m_StringValue>
+	</m_Conditions>
+	<m_Conditions>
+		<m_Name>sneaking</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_BoolValue>false</m_BoolValue>
+	</m_Conditions>
+</animNode>

@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="WipeTorso2.xml">
+	<m_Name>WipeTorso2Rifle</m_Name>
+	<m_AnimName>Bob_EmoteWipeTorso02_2H</m_AnimName>
+	<m_Conditions />
+	<m_Conditions>
+		<m_Name>Weapon</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_StringValue>firearm</m_StringValue>
+	</m_Conditions>
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights>
+		<weight>0.50</weight>
+	</m_SubStateBoneWeights>
+	<m_SubStateBoneWeights>
+		<weight>0.50</weight>
+	</m_SubStateBoneWeights>
+	<m_SubStateBoneWeights>
+		<weight>0.50</weight>
+	</m_SubStateBoneWeights>
+	<m_SubStateBoneWeights>
+		<weight>0.50</weight>
+	</m_SubStateBoneWeights>
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+</animNode>

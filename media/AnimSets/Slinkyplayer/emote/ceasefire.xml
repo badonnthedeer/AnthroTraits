@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="default.xml">
+	<m_Name>ceasefire</m_Name>
+	<m_AnimName>Bob_Signal_1H_CeaseFire</m_AnimName>
+	<m_Conditions>
+		<m_StringValue>ceasefire</m_StringValue>
+	</m_Conditions>
+</animNode>

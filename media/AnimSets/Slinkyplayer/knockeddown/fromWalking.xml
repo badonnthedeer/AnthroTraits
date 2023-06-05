@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="default.xml">
+	<m_Name>fromWalking</m_Name>
+	<m_Conditions>
+		<m_Name>ismoving</m_Name>
+	</m_Conditions>
+	<m_Conditions>
+		<m_Name>fromBehind</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_StringValue />
+	</m_Conditions>
+</animNode>

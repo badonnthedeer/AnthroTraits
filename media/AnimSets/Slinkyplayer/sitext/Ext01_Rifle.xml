@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="Ext01.xml">
+	<m_Name>Ext01_Rifle</m_Name>
+	<m_AnimName>Bob_IdleRifleExt01</m_AnimName>
+	<m_Conditions />
+	<m_Conditions>
+		<m_Name>Weapon</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_StringValue>firearm</m_StringValue>
+	</m_Conditions>
+</animNode>

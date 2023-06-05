@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="fromWalking.xml">
+	<m_Name>fromWalkingFallSit</m_Name>
+	<m_AnimName>Bob_HitReact02_Walking</m_AnimName>
+	<m_Events>
+		<m_EventName>setSitOnGround</m_EventName>
+		<m_Time>End</m_Time>
+	</m_Events>
+	<m_Events>
+		<m_EventName>setSitOnGround</m_EventName>
+		<m_ParameterValue>TRUE</m_ParameterValue>
+	</m_Events>
+</animNode>

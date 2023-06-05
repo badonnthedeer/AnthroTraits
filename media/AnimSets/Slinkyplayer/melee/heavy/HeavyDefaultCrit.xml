@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="HeavyDefault.xml">
+	<m_Name>HeavyDefaultCrit</m_Name>
+	<m_AnimName>Bob_Attack2H_Heavy01_CritHit</m_AnimName>
+	<m_Conditions />
+	<m_Conditions />
+	<m_Conditions>
+		<m_Name>CriticalHit</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_BoolValue>true</m_BoolValue>
+	</m_Conditions>
+</animNode>

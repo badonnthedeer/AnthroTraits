@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="BlowTorch.xml">
+	<m_Name>BlowTorchMid</m_Name>
+	<m_AnimName>Bob_IdleBlowtorch_WorkBench</m_AnimName>
+	<m_Conditions>
+		<m_StringValue>BlowTorchMid</m_StringValue>
+	</m_Conditions>
+</animNode>

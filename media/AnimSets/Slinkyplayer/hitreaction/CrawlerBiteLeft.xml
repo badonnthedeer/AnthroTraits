@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="CrawlerBite.xml">
+	<m_Name>CrawlerBiteLeft</m_Name>
+	<m_Conditions>
+		<m_StringValue>CrawlerBiteLEFT</m_StringValue>
+	</m_Conditions>
+</animNode>

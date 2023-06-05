@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="SpearDefault.xml">
+	<m_Name>SpearStab</m_Name>
+	<m_AnimName>Bob_AttackSpear01_CritHit</m_AnimName>
+	<m_Conditions />
+	<m_Conditions />
+	<m_Conditions>
+		<m_StringValue>spearStab</m_StringValue>
+	</m_Conditions>
+	<m_Events />
+	<m_Events />
+	<m_Events />
+	<m_Events />
+	<m_Events />
+	<m_Events />
+	<m_Events>
+		<m_ParameterValue>SpearStab</m_ParameterValue>
+	</m_Events>
+</animNode>

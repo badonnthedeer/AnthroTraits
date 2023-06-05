@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode>
+	<m_Name>fitness</m_Name>
+	<m_SpeedScale>0.80</m_SpeedScale>
+	<m_BlendTime>0.2</m_BlendTime>
+</animNode>

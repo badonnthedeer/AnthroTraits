@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="bicepscurl.xml">
+	<m_Name>bicepscurlstruggling</m_Name>
+	<m_AnimName>Bob_Idle_BicepCurl_RHand02</m_AnimName>
+	<m_Conditions />
+	<m_Conditions>
+		<m_Name>FitnessStruggle</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_BoolValue>true</m_BoolValue>
+	</m_Conditions>
+</animNode>

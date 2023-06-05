@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="strike.xml">
+	<m_Name>strikeSit</m_Name>
+	<m_AnimName>Bob_Sit_FishingStrike</m_AnimName>
+	<m_deferredBoneAxis>Y</m_deferredBoneAxis>
+	<m_Conditions />
+	<m_Conditions>
+		<m_Name>sitonground</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_BoolValue>true</m_BoolValue>
+	</m_Conditions>
+</animNode>

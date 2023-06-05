@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="Idle.xml">
+	<m_Name>IdleChainsaw</m_Name>
+	<m_AnimName>Bob_IdleChainsaw</m_AnimName>
+	<m_Conditions>
+		<m_Name>Weapon</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_StringValue>chainsaw</m_StringValue>
+	</m_Conditions>
+	<m_2DBlends>
+		<m_AnimName>Bob_IdleChainsaw</m_AnimName>
+	</m_2DBlends>
+	<m_2DBlends>
+		<m_AnimName>Bob_Idle_HeavyBreathing_Chsaw</m_AnimName>
+	</m_2DBlends>
+	<m_2DBlends>
+		<m_AnimName>Bob_IdleChainsaw</m_AnimName>
+	</m_2DBlends>
+	<m_Transitions>
+		<m_Target>aim_chainsaw</m_Target>
+		<m_AnimName>Bob_IdleToAim_Chainsaw</m_AnimName>
+	</m_Transitions>
+	<m_Transitions>
+		<m_Target>walkChainsaw</m_Target>
+		<m_AnimName>Bob_IdleToWalk_Chainsaw</m_AnimName>
+	</m_Transitions>
+	<m_Transitions>
+		<m_Target>runChainsaw</m_Target>
+		<m_AnimName>Bob_IdleToRun_Chainsaw</m_AnimName>
+	</m_Transitions>
+	<m_Transitions />
+	<m_Transitions />
+	<m_Transitions />
+	<m_Transitions />
+	<m_Transitions />
+</animNode>

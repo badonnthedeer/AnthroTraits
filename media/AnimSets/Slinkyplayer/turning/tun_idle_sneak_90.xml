@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="turn_idle_sneak.xml">
+	<m_Name>tun_idle_sneak_90</m_Name>
+	<m_BlendTime>0.08</m_BlendTime>
+	<m_Conditions />
+	<m_Conditions />
+	<m_Conditions />
+	<m_Conditions />
+	<m_Conditions>
+		<m_Name>isTurningAround</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_BoolValue>false</m_BoolValue>
+	</m_Conditions>
+</animNode>

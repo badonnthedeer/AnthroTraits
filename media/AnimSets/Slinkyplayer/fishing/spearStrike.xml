@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="strike.xml">
+	<m_Name>spearStrike</m_Name>
+	<m_AnimName>Bob_FishingSpearStrike</m_AnimName>
+	<m_deferredBoneAxis>Y</m_deferredBoneAxis>
+	<m_Conditions>
+		<m_StringValue>spearStrike</m_StringValue>
+	</m_Conditions>
+	<m_Events>
+		<m_ParameterValue>FishingStage=spearIdle</m_ParameterValue>
+	</m_Events>
+</animNode>

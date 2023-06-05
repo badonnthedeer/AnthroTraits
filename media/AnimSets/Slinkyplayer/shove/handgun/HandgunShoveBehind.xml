@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="HandgunShove.xml">
+	<m_Name>HandgunShoveBehind</m_Name>
+	<m_AnimName>Bob_AttackPistolWhip01</m_AnimName>
+	<m_Conditions />
+	<m_Conditions />
+	<m_Conditions />
+	<m_Conditions>
+		<m_Name>AttackFromBehind</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_BoolValue>true</m_BoolValue>
+	</m_Conditions>
+	<m_Events>
+		<m_TimePc>0.2</m_TimePc>
+	</m_Events>
+</animNode>

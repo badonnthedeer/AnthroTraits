@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="turn.xml">
+	<m_Name>turn_aim</m_Name>
+	<m_BlendTime>0.08</m_BlendTime>
+	<m_maxTorsoTwist>70.0</m_maxTorsoTwist>
+	<m_Conditions />
+	<m_Conditions>
+		<m_Name>isMoving</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_BoolValue>false</m_BoolValue>
+	</m_Conditions>
+	<m_Conditions>
+		<m_Name>aim</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_BoolValue>true</m_BoolValue>
+	</m_Conditions>
+	<m_Transitions>
+		<m_Target>aim_default</m_Target>
+		<m_blendInTime>0.1</m_blendInTime>
+	</m_Transitions>
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights>
+		<weight>0.50</weight>
+	</m_SubStateBoneWeights>
+	<m_SubStateBoneWeights>
+		<weight>0.20</weight>
+	</m_SubStateBoneWeights>
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+</animNode>

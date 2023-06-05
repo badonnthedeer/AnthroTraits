@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="RemoveBush.xml">
+	<m_Name>RemoveBushLongBlade</m_Name>
+	<m_AnimName>Bob_Attack1Hand01_Hit</m_AnimName>
+	<m_SpeedScale>1.00</m_SpeedScale>
+	<m_BlendTime>0.20</m_BlendTime>
+	<m_BlendOutTime>0.40</m_BlendOutTime>
+	<m_Conditions>
+		<m_StringValue>RemoveBushLongBlade</m_StringValue>
+	</m_Conditions>
+	<m_Events>
+		<m_TimePc>0.33</m_TimePc>
+	</m_Events>
+</animNode>

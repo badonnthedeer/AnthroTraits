@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="HitReaction.xml">
+	<m_Name>HitReactionShot</m_Name>
+	<m_Conditions>
+		<m_Name>HitReaction</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_StringValue>Shot</m_StringValue>
+	</m_Conditions>
+</animNode>

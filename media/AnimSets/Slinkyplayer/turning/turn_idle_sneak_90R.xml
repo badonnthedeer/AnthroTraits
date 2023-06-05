@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="tun_idle_sneak_90.xml">
+	<m_Name>turn_idle_sneak_90R</m_Name>
+	<m_AnimName>Bob_IdleSneak_Turn90R</m_AnimName>
+	<m_Conditions />
+	<m_Conditions />
+	<m_Conditions />
+	<m_Conditions />
+	<m_Conditions />
+	<m_Conditions>
+		<m_Name>twist</m_Name>
+		<m_Type>GTR</m_Type>
+		<m_FloatValue>0</m_FloatValue>
+	</m_Conditions>
+</animNode>

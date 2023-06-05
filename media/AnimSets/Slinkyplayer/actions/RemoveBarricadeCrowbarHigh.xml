@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="RemoveBarricadeCrowbar.xml">
+	<m_Name>RemoveBarricadeCrowbarHigh</m_Name>
+	<m_AnimName>Bob_IdleLeverOpenHigh</m_AnimName>
+	<m_Conditions />
+	<m_Conditions>
+		<m_StringValue>CrowbarHigh</m_StringValue>
+	</m_Conditions>
+</animNode>

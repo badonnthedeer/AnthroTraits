@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode>
+	<m_Name>HitReaction</m_Name>
+	<m_AnimName>Bob_HitReact_01</m_AnimName>
+	<m_deferredBoneAxis>Y</m_deferredBoneAxis>
+	<m_Looped>false</m_Looped>
+	<m_SyncTrackingEnabled>false</m_SyncTrackingEnabled>
+	<m_BlendTime>0.10</m_BlendTime>
+	<m_BlendOutTime>0.20</m_BlendOutTime>
+</animNode>

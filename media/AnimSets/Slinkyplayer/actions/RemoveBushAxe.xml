@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="RemoveBush.xml">
+	<m_Name>RemoveBushAxe</m_Name>
+	<m_AnimName>Bob_IdleChopDownTree</m_AnimName>
+	<m_Conditions>
+		<m_StringValue>RemoveBushAxe</m_StringValue>
+	</m_Conditions>
+	<m_Events>
+		<m_TimePc>0.35</m_TimePc>
+	</m_Events>
+</animNode>

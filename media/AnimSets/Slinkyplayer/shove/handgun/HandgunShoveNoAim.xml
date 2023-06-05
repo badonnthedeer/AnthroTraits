@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="HandgunDefault.xml">
+	<m_Name>HandgunShoveNoAim</m_Name>
+	<m_AnimName>Bob_Shove_Handgun</m_AnimName>
+	<m_deferredBoneAxis>Y</m_deferredBoneAxis>
+	<m_Conditions />
+	<m_Conditions />
+	<m_Conditions>
+		<m_Name>bShoveAiming</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_BoolValue>false</m_BoolValue>
+	</m_Conditions>
+	<m_SubStateBoneWeights>
+		<boneName>Bip01_Spine1</boneName>
+	</m_SubStateBoneWeights>
+	<m_SubStateBoneWeights>
+		<boneName>Bip01_Neck</boneName>
+	</m_SubStateBoneWeights>
+	<m_SubStateBoneWeights>
+		<boneName>Bip01_BackPack</boneName>
+	</m_SubStateBoneWeights>
+	<m_SubStateBoneWeights>
+		<boneName>Bip01_Prop1</boneName>
+	</m_SubStateBoneWeights>
+	<m_SubStateBoneWeights>
+		<boneName>Bip01_Prop2</boneName>
+	</m_SubStateBoneWeights>
+	<m_SubStateBoneWeights>
+		<boneName>Bip01_Spine</boneName>
+		<includeDescendants>false</includeDescendants>
+	</m_SubStateBoneWeights>
+	<m_SubStateBoneWeights>
+		<boneName>Bip01_Pelvis</boneName>
+		<weight>0.50</weight>
+		<includeDescendants>false</includeDescendants>
+	</m_SubStateBoneWeights>
+</animNode>

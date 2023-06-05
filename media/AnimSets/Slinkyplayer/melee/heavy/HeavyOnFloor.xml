@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="HeavyDefault.xml">
+	<m_Name>HeavyOnFloor</m_Name>
+	<m_AnimName>Bob_AttackFloor2H_Heavy</m_AnimName>
+	<m_BlendTime>0.10</m_BlendTime>
+	<m_Conditions />
+	<m_Conditions>
+		<m_BoolValue>true</m_BoolValue>
+	</m_Conditions>
+	<m_Events>
+		<m_ParameterValue>ZombieHitReaction=Floor</m_ParameterValue>
+	</m_Events>
+	<m_Events />
+	<m_Events />
+	<m_Events />
+	<m_Events />
+	<m_Events>
+		<m_Time>End</m_Time>
+	</m_Events>
+	<m_SubStateBoneWeights>
+		<boneName>Dummy01</boneName>
+	</m_SubStateBoneWeights>
+	<m_SubStateBoneWeights>
+		<boneName>Translation_Data</boneName>
+	</m_SubStateBoneWeights>
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights>
+		<boneName>Bip01</boneName>
+	</m_SubStateBoneWeights>
+</animNode>

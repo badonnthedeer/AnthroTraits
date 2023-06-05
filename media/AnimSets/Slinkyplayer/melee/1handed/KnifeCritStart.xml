@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="KnifeDefault.xml">
+	<m_Name>KnifeCritStart</m_Name>
+	<m_AnimName>Bob_AttackKnife01_CritHitStart</m_AnimName>
+	<m_Scalar>targetDist</m_Scalar>
+	<m_Scalar2>targetDist</m_Scalar2>
+	<m_Conditions />
+	<m_Conditions />
+	<m_Conditions>
+		<m_Name>CriticalHit</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_BoolValue>true</m_BoolValue>
+	</m_Conditions>
+	<m_Conditions>
+		<m_Name>prout</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_BoolValue>true</m_BoolValue>
+	</m_Conditions>
+	<m_2DBlends referenceID="1">
+		<m_AnimName>Bob_AttackKnife01_CritHitStepBackStart</m_AnimName>
+		<m_XPos>0.00</m_XPos>
+		<m_YPos>0.37</m_YPos>
+		<m_SpeedScale>0.80</m_SpeedScale>
+	</m_2DBlends>
+	<m_2DBlends referenceID="2">
+		<m_AnimName>Bob_AttackKnife01_CritHitStart</m_AnimName>
+		<m_XPos>0.00</m_XPos>
+		<m_YPos>1.00</m_YPos>
+		<m_SpeedScale>0.80</m_SpeedScale>
+	</m_2DBlends>
+	<m_2DBlends referenceID="3">
+		<m_AnimName>Bob_AttackKnife01_CritHitCloseStart</m_AnimName>
+		<m_XPos>0.00</m_XPos>
+		<m_YPos>0.00</m_YPos>
+		<m_SpeedScale>0.80</m_SpeedScale>
+	</m_2DBlends>
+	<m_2DBlendTri>
+		<node1>1</node1>
+		<node2>2</node2>
+		<node3>3</node3>
+	</m_2DBlendTri>
+	<m_Events>
+		<m_ParameterValue>ZombieHitReaction=KnifeDeath</m_ParameterValue>
+	</m_Events>
+	<m_Events>
+		<m_TimePc>0.5</m_TimePc>
+	</m_Events>
+	<m_Events />
+	<m_Events />
+	<m_Events>
+		<m_EventName>SetVariable</m_EventName>
+		<m_ParameterValue>KnifeCritStarted=true</m_ParameterValue>
+	</m_Events>
+	<m_Events />
+	<m_Events>
+		<m_ParameterValue>0</m_ParameterValue>
+	</m_Events>
+	<m_SubStateBoneWeights>
+		<boneName>Dummy01</boneName>
+	</m_SubStateBoneWeights>
+	<m_SubStateBoneWeights>
+		<boneName>Translation_Data</boneName>
+	</m_SubStateBoneWeights>
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights>
+		<boneName>Bip01</boneName>
+		<weight>0.50</weight>
+		<includeDescendants>false</includeDescendants>
+	</m_SubStateBoneWeights>
+</animNode>

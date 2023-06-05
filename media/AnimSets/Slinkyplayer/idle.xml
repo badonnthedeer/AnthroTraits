@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<animNode>
+	<m_Name>idle</m_Name>
+	<m_AnimName>AnAnim</m_AnimName>
+	<m_Looped>true</m_Looped>
+	<m_Finished>false</m_Finished>
+	<m_UpperOnly>false</m_UpperOnly>
+	<m_Left>true</m_Left>
+	<m_Right>true</m_Right>
+	<m_BlendTime>0.1</m_BlendTime>
+	<m_EarlyBlendOut>false</m_EarlyBlendOut>
+	<m_SpeedScale>0.80</m_SpeedScale>
+	<m_Conditions>
+		<m_Name>weapon</m_Name>
+		<m_Type>3</m_Type>
+		<m_IntValue>0</m_IntValue>
+		<m_FloatValue>0.0</m_FloatValue>
+		<m_BoolValue>false</m_BoolValue>
+		<m_StringValue>bat</m_StringValue>
+	</m_Conditions>
+	<m_Conditions>
+		<m_Name>dead</m_Name>
+		<m_Type>2</m_Type>
+		<m_IntValue>0</m_IntValue>
+		<m_FloatValue>0.0</m_FloatValue>
+		<m_BoolValue>false</m_BoolValue>
+		<m_StringValue></m_StringValue>
+	</m_Conditions>
+</animNode>

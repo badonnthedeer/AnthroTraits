@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="aim_default.xml">
+	<m_Name>aim_rifle</m_Name>
+	<m_AnimName>Bob_IdleAimRifle</m_AnimName>
+	<m_Conditions>
+		<m_Name>Weapon</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_StringValue>firearm</m_StringValue>
+	</m_Conditions>
+	<m_Transitions>
+		<m_Target>IdleRifle</m_Target>
+		<m_AnimName>Bob_AimToIdle_Rifle</m_AnimName>
+	</m_Transitions>
+	<m_Transitions>
+		<m_Target>sneakIdleRifle</m_Target>
+		<m_AnimName>Bob_AimToIdle_Rifle</m_AnimName>
+	</m_Transitions>
+	<m_Transitions>
+		<m_Target>sneakIdleLowRifle</m_Target>
+		<m_AnimName>Bob_AimToIdle_Rifle</m_AnimName>
+	</m_Transitions>
+</animNode>

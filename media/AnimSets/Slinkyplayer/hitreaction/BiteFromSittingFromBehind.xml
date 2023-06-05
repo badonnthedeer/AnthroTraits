@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="BiteFromSitting.xml">
+	<m_Name>BiteFromSittingFromBehind</m_Name>
+	<m_AnimName>Bob_SitGround_BiteLowReact_R</m_AnimName>
+	<m_Conditions />
+	<m_Conditions />
+	<m_Conditions>
+		<m_Name>FromBehind</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_BoolValue>true</m_BoolValue>
+	</m_Conditions>
+</animNode>

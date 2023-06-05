@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode>
+	<m_Name>aimsneak_default</m_Name>
+	<m_AnimName>Bob_IdleSneak</m_AnimName>
+	<m_deferredBoneAxis>Y</m_deferredBoneAxis>
+	<m_SpeedScale>0.80</m_SpeedScale>
+	<m_BlendTime>0.20</m_BlendTime>
+	<m_maxTorsoTwist>70.0</m_maxTorsoTwist>
+	<m_SubStateBoneWeights>
+		<boneName>Bip01_R_Thigh</boneName>
+	</m_SubStateBoneWeights>
+	<m_SubStateBoneWeights>
+		<boneName>Bip01_L_Thigh</boneName>
+	</m_SubStateBoneWeights>
+	<m_SubStateBoneWeights>
+		<boneName>Bip01</boneName>
+		<includeDescendants>false</includeDescendants>
+	</m_SubStateBoneWeights>
+</animNode>

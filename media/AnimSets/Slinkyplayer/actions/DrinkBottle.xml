@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode>
+	<m_Name>DrinkBottle</m_Name>
+	<m_AnimName>Bob_DrinkFromBottle</m_AnimName>
+	<m_deferredBoneAxis>Y</m_deferredBoneAxis>
+	<m_SyncTrackingEnabled>false</m_SyncTrackingEnabled>
+	<m_SpeedScale>0.80</m_SpeedScale>
+	<m_BlendTime>0.30</m_BlendTime>
+	<m_Conditions>
+		<m_Name>PerformingAction</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_StringValue>drink</m_StringValue>
+	</m_Conditions>
+	<m_SubStateBoneWeights>
+		<boneName>Bip01_Spine</boneName>
+		<weight>0.50</weight>
+		<includeDescendants>false</includeDescendants>
+	</m_SubStateBoneWeights>
+	<m_SubStateBoneWeights>
+		<boneName>Bip01_Spine1</boneName>
+		<includeDescendants>false</includeDescendants>
+	</m_SubStateBoneWeights>
+	<m_SubStateBoneWeights>
+		<boneName>Bip01_Neck</boneName>
+		<includeDescendants>false</includeDescendants>
+	</m_SubStateBoneWeights>
+	<m_SubStateBoneWeights>
+		<boneName>Bip01_Head</boneName>
+	</m_SubStateBoneWeights>
+	<m_SubStateBoneWeights>
+		<boneName>Bip01_L_Clavicle</boneName>
+	</m_SubStateBoneWeights>
+	<m_SubStateBoneWeights>
+		<boneName>Bip01_Prop2</boneName>
+	</m_SubStateBoneWeights>
+</animNode>

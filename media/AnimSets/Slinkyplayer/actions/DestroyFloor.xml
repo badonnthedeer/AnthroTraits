@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="Destroy.xml">
+	<m_Name>DestroyFloor</m_Name>
+	<m_AnimName>Bob_AttackFloor2H_Heavy</m_AnimName>
+	<m_Conditions>
+		<m_StringValue>DestroyFloor</m_StringValue>
+	</m_Conditions>
+	<m_Events>
+		<m_TimePc>0.25</m_TimePc>
+	</m_Events>
+	<m_Events>
+		<m_EventName>PlaySwingSound</m_EventName>
+		<m_TimePc>0.15</m_TimePc>
+		<m_ParameterValue></m_ParameterValue>
+	</m_Events>
+</animNode>

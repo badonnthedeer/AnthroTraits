@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="RackDblBarrel.xml">
+	<m_Name>RackDblBarrelSawnoff</m_Name>
+	<m_Conditions />
+	<m_Conditions>
+		<m_StringValue>doublebarrelshotgunsawn</m_StringValue>
+	</m_Conditions>
+	<m_Conditions />
+	<m_Events />
+	<m_Events />
+	<m_Events>
+		<m_ParameterValue>ShotgunDoubleBarrelSawn_OPEN</m_ParameterValue>
+	</m_Events>
+	<m_Events />
+	<m_Events />
+</animNode>

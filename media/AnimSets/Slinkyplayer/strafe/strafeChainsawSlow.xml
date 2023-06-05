@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="strafeChainsaw.xml">
+	<m_Name>strafeChainsawSlow</m_Name>
+	<m_BlendTime>0.10</m_BlendTime>
+	<m_Conditions />
+	<m_Conditions>
+		<m_Name>SlowingMovement</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_BoolValue>true</m_BoolValue>
+	</m_Conditions>
+	<m_2DBlends />
+	<m_2DBlends />
+	<m_2DBlends>
+		<m_AnimName>Bob_WalkBwdAimChainsawSlow</m_AnimName>
+	</m_2DBlends>
+	<m_2DBlends />
+	<m_2DBlends />
+	<m_2DBlends>
+		<m_AnimName>Bob_WalkBwdAimChsaw_DiagLSlow</m_AnimName>
+	</m_2DBlends>
+	<m_2DBlends>
+		<m_AnimName>Bob_WalkBwdAimChsaw_DiagRSlow</m_AnimName>
+	</m_2DBlends>
+	<m_2DBlends />
+	<m_2DBlends />
+</animNode>

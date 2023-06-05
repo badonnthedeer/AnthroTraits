@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="strafeDefaultSlow.xml">
+	<m_Name>strafeKnifeSlow</m_Name>
+	<m_Conditions />
+	<m_Conditions>
+		<m_StringValue>knife</m_StringValue>
+	</m_Conditions>
+</animNode>

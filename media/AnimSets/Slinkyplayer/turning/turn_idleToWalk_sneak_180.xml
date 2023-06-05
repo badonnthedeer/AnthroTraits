@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="turn_walk_sneak.xml">
+	<m_Name>turn_idleToWalk_sneak_180</m_Name>
+	<m_EarlyTransitionOut>true</m_EarlyTransitionOut>
+	<m_Transitions />
+	<m_Transitions>
+		<m_Target>sneakIdle</m_Target>
+		<m_blendInTime>0.1</m_blendInTime>
+	</m_Transitions>
+</animNode>

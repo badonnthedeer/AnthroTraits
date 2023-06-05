@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="squats.xml">
+	<m_Name>squatsloop</m_Name>
+	<m_AnimName>Bob_SquatLoop</m_AnimName>
+	<m_Conditions />
+	<m_Conditions>
+		<m_Name>ExerciseStarted</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_BoolValue>true</m_BoolValue>
+	</m_Conditions>
+	<m_Conditions>
+		<m_Name>ExerciseEnded</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_BoolValue>false</m_BoolValue>
+	</m_Conditions>
+</animNode>

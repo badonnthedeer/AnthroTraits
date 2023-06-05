@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="Dig.xml">
+	<m_Name>DigTrowel</m_Name>
+	<m_AnimName>Bob_Dig_Trowel</m_AnimName>
+	<m_Conditions>
+		<m_StringValue>DigTrowel</m_StringValue>
+	</m_Conditions>
+</animNode>

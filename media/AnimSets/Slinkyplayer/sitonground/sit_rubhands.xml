@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode>
+	<m_Name>sit_rubhands</m_Name>
+	<m_AnimName>Bob_SitGround_RubHands</m_AnimName>
+	<m_deferredBoneAxis>Y</m_deferredBoneAxis>
+	<m_Looped>false</m_Looped>
+	<m_SyncTrackingEnabled>false</m_SyncTrackingEnabled>
+	<m_SpeedScale>0.80</m_SpeedScale>
+	<m_BlendTime>0.20</m_BlendTime>
+	<m_Conditions>
+		<m_Name>SitGroundAnim</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_StringValue>rubhands</m_StringValue>
+	</m_Conditions>
+	<m_Events>
+		<m_EventName>ResetSitOnGroundAnim</m_EventName>
+		<m_Time>End</m_Time>
+		<m_ParameterValue></m_ParameterValue>
+	</m_Events>
+</animNode>

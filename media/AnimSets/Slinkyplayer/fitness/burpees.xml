@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode>
+	<m_Name>burpees</m_Name>
+	<m_AnimName>Bob_Burpees</m_AnimName>
+	<m_deferredBoneAxis>Y</m_deferredBoneAxis>
+	<m_SyncTrackingEnabled>false</m_SyncTrackingEnabled>
+	<m_SpeedScale>FitnessSpeed</m_SpeedScale>
+	<m_BlendTime>0.20</m_BlendTime>
+	<m_BlendOutTime>0.50</m_BlendOutTime>
+	<m_Conditions>
+		<m_Name>ExerciseType</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_StringValue>burpees</m_StringValue>
+	</m_Conditions>
+	<m_Transitions>
+		<m_Target>idle</m_Target>
+		<m_blendInTime>0.5</m_blendInTime>
+		<m_blendOutTime>0.5</m_blendOutTime>
+		<m_speedScale>0.5</m_speedScale>
+	</m_Transitions>
+</animNode>

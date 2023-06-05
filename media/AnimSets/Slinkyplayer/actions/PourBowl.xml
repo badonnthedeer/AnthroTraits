@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="Pour.xml">
+	<m_Name>PourBowl</m_Name>
+	<m_Conditions />
+	<m_Conditions>
+		<m_Name>FoodType</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_StringValue>Bowl</m_StringValue>
+	</m_Conditions>
+</animNode>

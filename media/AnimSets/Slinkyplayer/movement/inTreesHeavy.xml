@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="inTrees.xml">
+	<m_Name>inTreesHeavy</m_Name>
+	<m_AnimName>Bob_WalkTrees_2H_Heavy</m_AnimName>
+	<m_Conditions />
+	<m_Conditions>
+		<m_Name>Weapon</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_StringValue>heavy</m_StringValue>
+	</m_Conditions>
+	<m_Events />
+	<m_Events>
+		<m_TimePc>0.6</m_TimePc>
+	</m_Events>
+</animNode>

@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="FillBottleFromTap.xml">
+	<m_Name>FillMugFromTap</m_Name>
+	<m_AnimName>Bob_IdleFill_Mug</m_AnimName>
+	<m_Conditions />
+	<m_Conditions>
+		<m_Name>FoodType</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_StringValue>Mug</m_StringValue>
+	</m_Conditions>
+</animNode>

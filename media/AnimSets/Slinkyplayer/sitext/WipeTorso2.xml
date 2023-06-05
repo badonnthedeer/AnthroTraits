@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="WipeTorso.xml">
+	<m_Name>WipeTorso2</m_Name>
+	<m_AnimName>Bob_EmoteWipeTorso02</m_AnimName>
+	<m_Conditions>
+		<m_StringValue>WipeTorso2</m_StringValue>
+	</m_Conditions>
+</animNode>

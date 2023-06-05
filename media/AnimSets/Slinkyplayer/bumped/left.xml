@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode>
+	<m_Name>left</m_Name>
+	<m_AnimName>Bob_Run_BumpL</m_AnimName>
+	<m_deferredBoneAxis>Y</m_deferredBoneAxis>
+	<m_Looped>false</m_Looped>
+	<m_EarlyTransitionOut>true</m_EarlyTransitionOut>
+	<m_SpeedScale>0.96</m_SpeedScale>
+	<m_BlendTime>0.10</m_BlendTime>
+	<m_BlendOutTime>0.25</m_BlendOutTime>
+	<m_Conditions>
+		<m_Name>BumpType</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_StringValue>left</m_StringValue>
+	</m_Conditions>
+	<m_Events>
+		<m_EventName>SetVariable</m_EventName>
+		<m_TimePc>0.5</m_TimePc>
+		<m_ParameterValue>BumpDone=true</m_ParameterValue>
+	</m_Events>
+	<m_Events>
+		<m_EventName>SetVariable</m_EventName>
+		<m_TimePc>0.5</m_TimePc>
+		<m_ParameterValue>BumpStaggered=false</m_ParameterValue>
+	</m_Events>
+</animNode>

@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="Idle.xml">
+	<m_Name>IdleRifle</m_Name>
+	<m_AnimName>Bob_IdleRifle</m_AnimName>
+	<m_Conditions>
+		<m_Name>Weapon</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_StringValue>firearm</m_StringValue>
+	</m_Conditions>
+	<m_2DBlends>
+		<m_AnimName>Bob_IdleRifle</m_AnimName>
+	</m_2DBlends>
+	<m_2DBlends>
+		<m_AnimName>Bob_Idle_HeavyBreathing_Rifle</m_AnimName>
+	</m_2DBlends>
+	<m_2DBlends>
+		<m_AnimName>Bob_IdleRifle</m_AnimName>
+	</m_2DBlends>
+	<m_Transitions>
+		<m_Target>aim_rifle</m_Target>
+		<m_AnimName>Bob_IdleToAim_Rifle</m_AnimName>
+	</m_Transitions>
+	<m_Transitions>
+		<m_Target>walkRifle</m_Target>
+	</m_Transitions>
+	<m_Transitions>
+		<m_Target>runRifle</m_Target>
+		<m_AnimName>Bob_IdleToRun_Rifle</m_AnimName>
+	</m_Transitions>
+	<m_Transitions />
+	<m_Transitions />
+	<m_Transitions />
+	<m_Transitions>
+		<m_Target>sneakidleRifle</m_Target>
+	</m_Transitions>
+	<m_Transitions>
+		<m_Target>sneakIdleLowRifle</m_Target>
+	</m_Transitions>
+</animNode>

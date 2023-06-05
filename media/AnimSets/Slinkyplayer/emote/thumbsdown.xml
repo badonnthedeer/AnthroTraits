@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="default.xml">
+	<m_Name>thumbsdown</m_Name>
+	<m_AnimName>Bob_EmoteThumbsDown</m_AnimName>
+	<m_SpeedScale>1.00</m_SpeedScale>
+	<m_Conditions>
+		<m_StringValue>thumbsdown</m_StringValue>
+	</m_Conditions>
+</animNode>

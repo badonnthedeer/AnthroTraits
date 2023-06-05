@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="SneakWipeArmL.xml">
+	<m_Name>SneakWipeArmL_2H</m_Name>
+	<m_AnimName>Bob_StealthEmoteWipeLeftArm2H</m_AnimName>
+	<m_BlendOutTime>0.50</m_BlendOutTime>
+	<m_Conditions />
+	<m_Conditions />
+	<m_Conditions>
+		<m_Name>Weapon</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_StringValue>2handed</m_StringValue>
+	</m_Conditions>
+</animNode>

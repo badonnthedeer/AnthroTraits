@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="SneakPainLegL.xml">
+	<m_Name>SneakPainLegL_Hgun</m_Name>
+	<m_BlendOutTime>0.40</m_BlendOutTime>
+	<m_Conditions />
+	<m_Conditions />
+	<m_Conditions>
+		<m_Name>Weapon</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_StringValue>handgun</m_StringValue>
+	</m_Conditions>
+</animNode>

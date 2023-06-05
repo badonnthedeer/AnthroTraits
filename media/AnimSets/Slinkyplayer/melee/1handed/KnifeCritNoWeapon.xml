@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="KnifeDefault.xml">
+	<m_Name>KnifeCritNoWeapon</m_Name>
+	<m_AnimName>Bob_AttackKnife01_NoBlade</m_AnimName>
+	<m_Conditions>
+		<m_Name>CriticalHit</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_BoolValue>true</m_BoolValue>
+	</m_Conditions>
+	<m_Conditions />
+	<m_Events>
+		<m_ParameterValue>ZombieHitReaction=KnifeDeath</m_ParameterValue>
+	</m_Events>
+	<m_Events />
+	<m_Events />
+	<m_Events />
+	<m_Events>
+		<m_Time>End</m_Time>
+	</m_Events>
+	<m_Events />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights />
+	<m_SubStateBoneWeights>
+		<boneName>Bip01_Head</boneName>
+	</m_SubStateBoneWeights>
+	<m_SubStateBoneWeights>
+		<boneName>Bip01</boneName>
+		<weight>0.50</weight>
+		<includeDescendants>false</includeDescendants>
+	</m_SubStateBoneWeights>
+</animNode>

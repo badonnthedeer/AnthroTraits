@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="HandgunDefault.xml">
+	<m_Name>HandgunOnFloor</m_Name>
+	<m_AnimName>Bob_AttackFloorHandgun</m_AnimName>
+	<m_Conditions />
+	<m_Conditions />
+	<m_Conditions>
+		<m_Name>AimFloorAnim</m_Name>
+		<m_BoolValue>true</m_BoolValue>
+	</m_Conditions>
+	<m_2DBlends>
+		<m_AnimName>Bob_AttackFloorHandgun</m_AnimName>
+	</m_2DBlends>
+	<m_2DBlends>
+		<m_AnimName>Bob_AttackFloorHandgun</m_AnimName>
+	</m_2DBlends>
+	<m_2DBlends>
+		<m_AnimName>Bob_AttackFloorHandgun</m_AnimName>
+	</m_2DBlends>
+	<m_2DBlends>
+		<m_AnimName>Bob_AttackFloorHandgun</m_AnimName>
+	</m_2DBlends>
+	<m_2DBlends>
+		<m_AnimName>Bob_AttackFloorHandgun</m_AnimName>
+	</m_2DBlends>
+	<m_Events>
+		<m_ParameterValue>ZombieHitReaction=Floor</m_ParameterValue>
+	</m_Events>
+	<m_Events>
+		<m_Time>Start</m_Time>
+	</m_Events>
+	<m_Events />
+	<m_Events />
+</animNode>

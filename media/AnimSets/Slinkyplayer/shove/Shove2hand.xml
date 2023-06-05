@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="ShoveDefault.xml">
+	<m_Name>Shove2hand</m_Name>
+	<m_AnimName>Bob_Shove_Bat</m_AnimName>
+	<m_EarlyTransitionOut>true</m_EarlyTransitionOut>
+	<m_Conditions />
+	<m_Conditions>
+		<m_Name>Weapon</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_StringValue>2handed</m_StringValue>
+	</m_Conditions>
+	<m_Transitions>
+		<m_Target>aim_2handed</m_Target>
+		<m_blendOutTime>0.2</m_blendOutTime>
+	</m_Transitions>
+</animNode>

@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="ChainsawDefault.xml">
+	<m_Name>ChainsawMiss</m_Name>
+	<m_AnimName>Bob_AttackChainsaw_Miss</m_AnimName>
+	<m_Conditions />
+	<m_Conditions />
+	<m_Conditions>
+		<m_Name>AttackType</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_StringValue>miss</m_StringValue>
+	</m_Conditions>
+	<m_Events>
+		<m_ParameterValue>ZombieHitReaction=HeadRight</m_ParameterValue>
+	</m_Events>
+	<m_Events />
+</animNode>

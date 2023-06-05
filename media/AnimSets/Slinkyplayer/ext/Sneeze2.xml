@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="Sneeze1.xml">
+	<m_Name>Sneeze2</m_Name>
+	<m_AnimName>Bob_EmoteSneeze02</m_AnimName>
+	<m_Conditions>
+		<m_StringValue>Sneeze2</m_StringValue>
+	</m_Conditions>
+</animNode>
