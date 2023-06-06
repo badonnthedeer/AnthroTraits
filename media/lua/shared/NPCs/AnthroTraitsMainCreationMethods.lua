@@ -153,8 +153,8 @@ local function initAnthroTraits()
     TraitFactory.addTrait("AT_Exclaimer", getText("UI_trait_AT_Exclaimer"), -6, getText("UI_trait_AT_Exclaimer_desc"), false);
     --TTF.Add("AT_Exclaimer", "Human,Anthro");
     -- TraitFactory.addTrait("AT_Sly", getText("UI_trait_AT_Sly"), 1, getText("UI_trait_AT_Sly_desc"), false);
-    --TraitFactory.addTrait("AT_Slinky", getText("UI_trait_AT_Slinky"), 2, getText("UI_trait_AT_Slinky_desc"), false);
-    --TTF.Add("AT_Slinky", "Anthro,Agile");
+    TraitFactory.addTrait("AT_Slinky", getText("UI_trait_AT_Slinky"), 2, getText("UI_trait_AT_Slinky_desc"), false);
+    TTF.Add("AT_Slinky", "Anthro,Agile");
     TraitFactory.addTrait("AT_UnwieldyHands", getText("UI_trait_AT_UnwieldyHands"), -4, getText("UI_trait_AT_UnwieldyHands_desc"), false);
     TTF.Add("AT_UnwieldyHands", "Anthro,ThreeFingers");
     TraitFactory.addTrait("AT_NaturalTumbler", getText("UI_trait_AT_NaturalTumbler"), 3, getText("UI_trait_AT_NaturalTumbler_desc"), false);
