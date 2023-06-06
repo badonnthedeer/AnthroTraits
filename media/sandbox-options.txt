@@ -77,7 +77,7 @@ option AnthroTraits.NaturalTumblerFallTimeMult
 }
 option AnthroTraits.TailTripReduction
 {
-	type = double, min = 0, max = 100, default = 100,
+	type = double, min = 0, max = 100, default = 33,
 	page = AnthroTraits, translation = AnthroTraits_TailTripReduction,
 }
 option AnthroTraits.UnwieldyHandsTimeIncrease

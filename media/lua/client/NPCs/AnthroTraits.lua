@@ -422,42 +422,7 @@ ISBaseTimedAction.create = function(self)
             end
         end
     end
-    if self.character:HasTrait("AT_Slinky")
-    then
-        for _, action in pairs(AnthroTraitsGlobals.SlinkyAffectedTimedActions)
-        do
-            if self.Type == action
-            then
-                if getDebug()
-                then
-                    print("Slinky activated. Old time: "..tostring(self.maxTime).." New time: "..tostring(newTime));
-                end
-                self.maxTime = newTime;
-                break;
-            end
-        end
-    end
 end
-
---[[local OriginalTimedActionStart = ISBaseTimedAction.start;
-ISBaseTimedAction.start = function(self)
-    OriginalTimedActionStart(self);
-    if self.character:HasTrait("AT_Slinky")
-    then
-        for _, action in pairs(AnthroTraitsGlobals.SlinkyAffectedTimedActions)
-        do
-            if self.Type == action
-            then
-                if getDebug()
-                then
-                    print("Slinky activated. Animation replaced.");
-                end
-                self:setActionAnim("Slinky"..self.action);
-                break;
-            end
-        end
-    end
-end]]
 
 --poison gui update?
 --[[local originalRefreshContainer = ISInventoryPane.refreshContainer;
@@ -530,7 +495,6 @@ local function ATInitPlayerData(player)
         atData.oldFallTime = 0.0;
         atData.oldWetness = 0.0;
     end
-    player:setVariable("PlayerIsSlinky", false);
 end
 
 
