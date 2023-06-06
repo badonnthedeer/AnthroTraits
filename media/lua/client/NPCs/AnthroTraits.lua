@@ -257,7 +257,7 @@ local function ExclaimerCheck(player)
     local thresholdMultiplier = SandboxVars.AnthroTraits.ExclaimerExclaimThresholdMultiplier;
 
     local exclaimChance = ZombRand(1,100);
-    local phraseChance = ZombRand(0, AnthroTraitsGlobals.ExclaimPhrases:size() -1)
+    local phraseChance = ZombRand(1, #AnthroTraitsGlobals.ExclaimPhrases)
 
     if (exclaimChance <= (panicLevel * thresholdMultiplier)) and panicLevel > 1
     then
@@ -267,7 +267,7 @@ local function ExclaimerCheck(player)
         --else
         --    player:SayShout("HAHAHAHA!")
         --end
-        player:SayShout(AnthroTraitsGlobals.ExclaimPhrases(phraseChance))
+        player:SayShout(AnthroTraitsGlobals.ExclaimPhrases[phraseChance])
         getWorldSoundManager():addSound(player,
                 playerSquare:getX(),
                 playerSquare:getY(),
@@ -458,6 +458,7 @@ ISBaseTimedAction.start = function(self)
         end
     end
 end]]
+
 --poison gui update?
 --[[local originalRefreshContainer = ISInventoryPane.refreshContainer;
 ISInventoryPane.refreshContainer = function(self)
