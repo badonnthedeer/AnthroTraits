@@ -8,8 +8,6 @@ AnthroTraitsGlobals = {
                                          "ISReloadWeaponAction", "ISRemoveBrokenGlass", "ISRemoveBullet", "ISRemoveWeaponUpgrade", "ISStitch",
                                          "ISTakePillAction" , "ISTrimBeard", "ISUnbarricadeAction", "ISUnloadBulletsFromFirearm",
                                          "ISUnloadBulletsFromMagazine", "ISUpgradeWeapon"},
-    SlinkyAffectedTimedActions = {"ISClimbOverFence", "ISClimbSheetRopeAction", "ISClimbThroughWindow", "ISOpenCloseCurtain", "ISOpenCloseDoor",
-                                  "ISOpenCloseVehicleWindow", "ISOpenContainerTimedAction", "ISSmashVehicleWindow", "ISSmashWindow"},
     ExclaimPhrases = {"AAAH!", "AAAH!", "AAAH!!", "AEIEEEE!", "EAAH!", "AAAGH!"},
     ExclaimPhrasesYeen = {"HAHAHAHAHA!", "HAHAHAHAHA!", "HAHAHAHAHA!!", "HUHEHEHEHAHA!", "HAAAAH!", "HEEEHEEEHAHAHAHA!"},
     ExclaimPhrasesBleater = {"BLEAT!", "BLEAT!", "BLEAT!!", "BLEAAAAT!", "BLEE-EAT!", "EEEEP!"},
