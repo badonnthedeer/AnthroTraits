@@ -439,7 +439,25 @@ ISBaseTimedAction.create = function(self)
     end
 end
 
-
+--[[local OriginalTimedActionStart = ISBaseTimedAction.start;
+ISBaseTimedAction.start = function(self)
+    OriginalTimedActionStart(self);
+    if self.character:HasTrait("AT_Slinky")
+    then
+        for _, action in pairs(AnthroTraitsGlobals.SlinkyAffectedTimedActions)
+        do
+            if self.Type == action
+            then
+                if getDebug()
+                then
+                    print("Slinky activated. Animation replaced.");
+                end
+                self:setActionAnim("Slinky"..self.action);
+                break;
+            end
+        end
+    end
+end]]
 --poison gui update?
 --[[local originalRefreshContainer = ISInventoryPane.refreshContainer;
 ISInventoryPane.refreshContainer = function(self)
