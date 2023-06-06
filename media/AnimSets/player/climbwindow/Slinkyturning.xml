@@ -3,7 +3,7 @@
 	<m_Name>Slinkyturning</m_Name>
 	<m_SpeedScale>1.06</m_SpeedScale>
 	<!--<m_SpeedScale>0.80</m_SpeedScale>-->
-	<m_AnimName>Bob_Idle</m_AnimName>
+	<m_AnimName>SlinkyBob_Idle</m_AnimName>
 	<m_deferredBoneAxis>Y</m_deferredBoneAxis>
 	<m_BlendTime>0.27</m_BlendTime>
 	<!--<m_BlendTime>0.20</m_BlendTime>-->

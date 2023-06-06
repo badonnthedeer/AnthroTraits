@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <animNode>
 	<m_Name>Slinkyrope</m_Name>
-	<m_AnimName>Bob_ClimbWindowGrab</m_AnimName>
+	<m_AnimName>SlinkyBob_ClimbWindowGrab</m_AnimName>
 	<m_Looped>false</m_Looped>
 	<m_UpperOnly>false</m_UpperOnly>
 	<m_EarlyBlendOut>false</m_EarlyBlendOut>

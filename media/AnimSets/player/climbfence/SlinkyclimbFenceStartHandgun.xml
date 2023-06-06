@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <animNode x_extends="SlinkyclimbFenceStart.xml">
 	<m_Name>SlinkyclimbFenceStartHandgun</m_Name>
-	<m_AnimName>Bob_VaultOver_Start_Handgun</m_AnimName>
+	<m_AnimName>SlinkyBob_VaultOver_Start_Handgun</m_AnimName>
 	<m_Conditions />
 	<m_Conditions>
 		<m_Name>Weapon</m_Name>

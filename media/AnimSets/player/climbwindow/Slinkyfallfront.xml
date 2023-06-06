@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <animNode x_extends="Slinkyfallback.xml">
 	<m_Name>Slinkyfallfront</m_Name>
-	<m_AnimName>Bob_ClimbWindowEnd_Fall</m_AnimName>
+	<m_AnimName>SlinkyBob_ClimbWindowEnd_Fall</m_AnimName>
 	<m_Conditions />
 	<m_Conditions>
 		<m_StringValue>fallfront</m_StringValue>

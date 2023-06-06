@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <animNode>
 	<m_Name>Slinkytrying</m_Name>
-	<m_AnimName>Bob_WindowStruggleLoop</m_AnimName>
+	<m_AnimName>SlinkyBob_WindowStruggleLoop</m_AnimName>
 	<m_deferredBoneAxis>Y</m_deferredBoneAxis>
 	<m_SyncTrackingEnabled>false</m_SyncTrackingEnabled>
 	<m_StopAnimOnExit>true</m_StopAnimOnExit>

@@ -3,7 +3,7 @@
 	<m_Name>Slinkyfail</m_Name>
 	<m_SpeedScale>1.06</m_SpeedScale>
 	<!--<m_SpeedScale>0.80</m_SpeedScale>-->
-	<m_AnimName>Bob_WindowStruggle_Fail</m_AnimName>
+	<m_AnimName>SlinkyBob_WindowStruggle_Fail</m_AnimName>
 	<m_deferredBoneAxis>Y</m_deferredBoneAxis>
 	<m_Looped>false</m_Looped>
 	<m_SyncTrackingEnabled>false</m_SyncTrackingEnabled>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <animNode x_extends="Slinkygetupback.xml">
 	<m_Name>Slinkygetupfront</m_Name>
-	<m_AnimName>Bob_GetUp_Front</m_AnimName>
+	<m_AnimName>SlinkyBob_GetUp_Front</m_AnimName>
 	<m_SpeedScale>1.17</m_SpeedScale>
 	<!--<m_SpeedScale>0.88</m_SpeedScale>-->
 	<m_Conditions>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <animNode x_extends="Slinkydefault.xml">
 	<m_Name>Slinky1handed</m_Name>
-	<m_AnimName>Bob_Attack1Hand01_Hit</m_AnimName>
+	<m_AnimName>SlinkyBob_Attack1Hand01_Hit</m_AnimName>
 	<m_SyncTrackingEnabled>true</m_SyncTrackingEnabled>
 	<m_Conditions>
 		<m_Name>Weapon</m_Name>

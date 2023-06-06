@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <animNode>
 	<m_Name>Slinkyback</m_Name>
-	<m_AnimName>Bob_ClimbWindowBack</m_AnimName>
+	<m_AnimName>SlinkyBob_ClimbWindowBack</m_AnimName>
 	<m_Looped>false</m_Looped>
 	<m_SyncTrackingEnabled>true</m_SyncTrackingEnabled>
 	<m_EarlyBlendOut>false</m_EarlyBlendOut>

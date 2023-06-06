@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <animNode x_extends="Slinkyturning.xml">
 	<m_Name>SlinkyturningSneak</m_Name>
-	<m_AnimName>Bob_IdleSneak</m_AnimName>
+	<m_AnimName>SlinkyBob_IdleSneak</m_AnimName>
 	<m_Conditions />
 	<m_Conditions />
 	<m_Conditions>
