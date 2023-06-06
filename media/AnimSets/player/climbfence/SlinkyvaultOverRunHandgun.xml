@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="SlinkyvaultOverRun.xml">
+	<m_Name>SlinkyvaultOverRunHandgun</m_Name>
+	<m_AnimName>Bob_ValultOver_RunHgun</m_AnimName>
+	<m_Conditions />
+	<m_Conditions />
+	<m_Conditions />
+	<m_Conditions>
+		<m_Name>Weapon</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_StringValue>handgun</m_StringValue>
+	</m_Conditions>
+	<m_Conditions>
+		<m_Name>PlayerIsSlinky</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_StringValue>true</m_StringValue>
+	</m_Conditions>
+</animNode>

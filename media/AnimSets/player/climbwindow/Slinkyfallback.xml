@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="Slinkyback.xml">>
+	<m_Name>Slinkyfallback</m_Name>
+	<m_AnimName>Bob_ClimbWindowBackFall</m_AnimName>
+	<m_Conditions/>
+	<m_Conditions>
+		<m_StringValue>fallback</m_StringValue>
+	</m_Conditions>
+	<m_Conditions>
+		<m_Name>PlayerIsSlinky</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_StringValue>true</m_StringValue>
+	</m_Conditions>
+	<m_Events>
+		<m_ParameterValue>ClimbWindowGetUpBack=true</m_ParameterValue>
+	</m_Events>
+</animNode>

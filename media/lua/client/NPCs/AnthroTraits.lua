@@ -530,6 +530,7 @@ local function ATInitPlayerData(player)
         atData.oldFallTime = 0.0;
         atData.oldWetness = 0.0;
     end
+    player:setVariable("PlayerIsSlinky", false);
 end
 
 
@@ -772,6 +773,13 @@ local function ATPlayerUpdate(player)
                 print("Player trip prevented by Tail trait.")
             end
         end
+    end
+    if player:HasTrait("AT_Slinky") and player:getVariable("PlayerIsSlinky") == false
+    then
+        player:setVariable("PlayerIsSlinky", true);
+    elseif not player:HasTrait("AT_Slinky") and player:getVariable("PlayerIsSlinky") == true
+    then
+        player:setVariable("PlayerIsSlinky", false);
     end
     --update oldWetness
     --modData.oldWetness = player:getBodyDamage():getWetness();
