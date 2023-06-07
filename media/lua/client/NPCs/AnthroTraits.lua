@@ -492,6 +492,8 @@ local function ATInitPlayerData(player)
         local atData = modData.ATPlayerData;
 
         atData.trulyInfected = false;
+        atData.canTripChecked = false;
+        atData.tripSafe = false;
         atData.oldFallTime = 0.0;
         atData.oldWetness = 0.0;
     end
@@ -596,6 +598,7 @@ local function ATOnCharacterCollide(collider, collidee)
         -- if you ever figure out math, make it do a percentage taken away instead of a flat number
         local knockdownEndCost = math.max(SandboxVars.AnthroTraits.BullRushKnockdownEndCost - (((collider:getPerkLevel(Perks.Fitness) + collider:getPerkLevel(Perks.Strength)) - 10) / 100), .01)
         local colliderBehindCollidee = collidee:isFacingObject(collider, 0.5);
+        local modData = collider:getModData().ATPlayerData;
         if getDebug()
         then
             print("ATOnCharacterCollide Triggered");
@@ -644,10 +647,79 @@ local function ATOnCharacterCollide(collider, collidee)
                 collider:setBumpStaggered(false);
                 collider:setBumpFall(false);
             end
+        elseif collider:HasTrait("AT_Tail") and modData.canTripChecked == false and (collider:getStats():isTripping() or collider:isBumped())
+        then
+            local a = collider:getStats():isTripping()
+            local b = collider:isBumped()
+            local a2 = modData.canTripChecked
+
+            local rolledChance = ZombRand(0,100);
+
+            if rolledChance <= SandboxVars.AnthroTraits.TailTripReduction
+            then
+                modData.canTripChecked = true;
+                modData.tripSafe = true;
+                collider:getStats():setTripping(false);
+                collider:setBumpFall(false);
+                if getDebug()
+                then
+                    print("Player bump/trip prevented by Tail trait. Rolled Chance:"..rolledChance);
+                end
+            else
+                modData.canTripChecked = true;
+                modData.tripSafe = false;
+            end
+        end
+        if collider:HasTrait("AT_Tail") and modData.canTripChecked == true and modData.tripSafe == true
+        then
+            collider:getStats():setTripping(false);
+            collider:setBumpFall(false);
+            if getDebug()
+            then
+                print("Player bump/trip prevented by Tail trait during minute grace period.");
+            end
         end
     end
 end
 
+local function ATOnObjectCollide(collider, collidee)
+    if instanceof(collider, "IsoPlayer")
+    then
+        print("Object: "..type(object));
+        print("collider: "..type(collider));
+        local modData = collider:getModData().ATPlayerData;
+        if getDebug()
+        then
+            print("ATOnObjectCollide Triggered");
+        end
+        if collider:HasTrait("AT_Tail") and modData.canTripChecked == false and (collider:getStats():isTripping() or collider:isBumped())
+        then
+            local rolledChance = ZombRand(0,100);
+
+            if rolledChance <= SandboxVars.AnthroTraits.TailTripReduction
+            then
+                collider:getStats():setTripping(false);
+                collider:setBumpFall(false);
+                if getDebug()
+                then
+                    print("Player bump/trip prevented by Tail trait. Rolled Chance:"..rolledChance);
+                end
+            else
+                modData.canTripChecked = true;
+                modData.tripSafe = false;
+            end
+        end
+        if collider:HasTrait("AT_Tail") and modData.canTripChecked == true and modData.tripSafe == true
+        then
+            collider:getStats():setTripping(false);
+            collider:setBumpFall(false);
+            if getDebug()
+            then
+                print("Player bump/trip prevented by Tail trait during minute grace period.");
+            end
+        end
+    end
+end
 
 local function ATEveryOneMinute()
     local activePlayers = getNumActivePlayers()-1
@@ -656,17 +728,19 @@ local function ATEveryOneMinute()
         for playerIndex = 0, activePlayers
         do
             local player = getSpecificPlayer(playerIndex)
+            local modData =  player:getModData().ATPlayerData;
             if player and not player:isDead()
             then
                 --add random test functions here:
 
 
                 --
-                if player:HasTrait("AT_Immunity") and not player:getBodyDamage():isInfected() and player:getModData().ATPlayerData.trulyInfected == true
+                if player:HasTrait("AT_Immunity") and not player:getBodyDamage():isInfected() and modData.trulyInfected == true
                 then
                     --if a player is a cheater/debugging or takes a game-made cure
-                    player:getModData().trulyInfected = false;
+                    modData.trulyInfected = false;
                 end
+
                 if player:HasTrait("AT_Exclaimer")
                 then
                     ExclaimerCheck(player);
@@ -675,6 +749,8 @@ local function ATEveryOneMinute()
                 then
                     BeStinky(player);
                 end
+                modData.canTripChecked = false;
+                modData.tripSafe = false;
             end
         end
     end
@@ -727,24 +803,7 @@ local function ATPlayerUpdate(player)
     then
         player:getBodyDamage():getThermoregulator():setMetabolicTarget(Metabolics.Sleeping);
     end]]
-    if player:HasTrait("AT_Tail")
-    then
-        if player:getStats():isTripping() and rolledChance <= SandboxVars.AnthroTraits.TailTripReduction
-        then
-            player:getStats():setTripping(false);
-            if getDebug()
-            then
-                print("Player trip prevented by Tail trait.")
-            end
-        end
-    end
-    if player:HasTrait("AT_Slinky") and player:getVariable("PlayerIsSlinky") == false
-    then
-        player:setVariable("PlayerIsSlinky", true);
-    elseif not player:HasTrait("AT_Slinky") and player:getVariable("PlayerIsSlinky") == true
-    then
-        player:setVariable("PlayerIsSlinky", false);
-    end
+
     --update oldWetness
     --modData.oldWetness = player:getBodyDamage():getWetness();
 end
@@ -752,6 +811,7 @@ end
 
 Events.OnNewGame.Add(ATInitPlayerData);
 Events.OnInitWorld.Add(ATOnInitWorld)
+Events.OnObjectCollide.Add(ATOnObjectCollide);
 Events.OnCharacterCollide.Add(ATOnCharacterCollide)
 Events.EveryOneMinute.Add(ATEveryOneMinute);
 Events.OnPlayerGetDamage.Add(ATPlayerDamageTick);
