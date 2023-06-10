@@ -283,7 +283,7 @@ local function BeStinky(player)
     local stinkyDistance = SandboxVars.AnthroTraits.StinkyDistance
     local stinkyCommentChance = SandboxVars.AnthroTraits.StinkyCommentChance
     local playerSquare = player:getCurrentSquare()
-    local activePlayers = getNumActivePlayers()-1
+    local activePlayers = getNumActivePlayers()
     local playerInQuestion = player;
 
     getWorldSoundManager():addSound(player,
@@ -292,9 +292,9 @@ local function BeStinky(player)
             playerSquare:getZ(),
             stinkyDistance,
             stinkyLoudness);
-    if activePlayers > 0
+    if activePlayers > 1
     then
-        for playerIndex = 0, activePlayers
+        for playerIndex = 0, activePlayers -1
         do
             playerInQuestion = getSpecificPlayer(playerIndex)
             if player == not playerInQuestion
@@ -722,10 +722,10 @@ local function ATOnObjectCollide(collider, collidee)
 end
 
 local function ATEveryOneMinute()
-    local activePlayers = getNumActivePlayers()-1
-    if activePlayers >= 0
+    local activePlayers = getNumActivePlayers()
+    if activePlayers >= 1
     then
-        for playerIndex = 0, activePlayers
+        for playerIndex = 0, (activePlayers - 1)
         do
             local player = getSpecificPlayer(playerIndex)
             local modData =  player:getModData().ATPlayerData;
