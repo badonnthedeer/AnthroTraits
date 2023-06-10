@@ -1,0 +1,4 @@
+version=1
+title=Anthro Traits
+description=Adds furry-themed traits to PZ!
+visibility=private

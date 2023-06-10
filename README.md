@@ -1,5 +1,5 @@
 # AnthroTraits
-A mod for Project Zomboid that adds anthro-themed traits for player characters, and integrates with mods that provide furry player models.
+A mod for Project Zomboid that adds realistic, balanced traits for anthropormorphic player characters, and integrates with mods that provide furry player models.
 <h1>A message from the creator</h1>
 Do you really enjoy this mod, or even better want to build off of it? Please consider <a href="https://ko-fi.com/badonnthedeer">donating to me</a> so I can pay my bills. I'm recently unemployed and every little bit helps!
 <h1>Positive Trait List</h1>
