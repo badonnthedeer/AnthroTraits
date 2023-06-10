@@ -3,11 +3,9 @@ local TTF = require("TraitTagFramework");
 
 -- C:\Program Files (x86)\Steam\3steamapps\common\ProjectZomboid\media\lua | Project Zomboid files
 -- C:\Program Files (x86)\Steam\steamapps\common\ProjectZomboid\media\AnimSets\player
--- C:\Program Files (x86)\Steam\steamapps\workshop\content\108600\2730251452\mods | Expanded Traits
--- C:\Program Files (x86)\Steam\steamapps\workshop\content\108600\1299328280\mods | More Traits
--- C:\Program Files (x86)\Steam\steamapps\workshop\content\108600\2792245343\mods | More Simple Traits
+-- C:\Program Files (x86)\Steam\steamapps\workshop\content\108600\
 
---C:\Users\Zach\Zomboid\mods
+-- C:\Users\Zach\Zomboid\mods
 -- C:\Users\Zach\Zomboid\Logs
 
 
@@ -120,6 +118,7 @@ local function initAnthroTraits()
 
     TraitFactory.addTrait("AT_Immunity", getText("UI_trait_AT_Immunity"), 4, getText("UI_trait_AT_Immunity_desc"), false);
     TTF.Add("AT_Immunity", "Anthro");
+    --add ability to ignore this trait if infected by a former (furry) player?
 
     TraitFactory.addTrait("AT_Herbivore", getText("UI_trait_AT_Herbivore"), 2, getText("UI_trait_AT_Herbivore_desc"), false);
     TTF.Add("AT_Herbivore", "Anthro,Herbivore");
@@ -135,8 +134,11 @@ local function initAnthroTraits()
     --TTF.Add("AT_Bug-o-ssieur", "Human,Anthro");
     -- (see ?lark?)TraitFactory.addTrait("AT_Diurnal", getText("UI_trait_AT_Diurnal"), 1, getText("UI_trait_AT_Diurnal_desc"), false);
     -- (see night owl)TraitFactory.addTrait("AT_Nocturnal", getText("UI_trait_AT_Nocturnal"), 1, getText("UI_trait_AT_Nocturnal_desc"), false);
-    -- TraitFactory.addTrait("AT_Hibernator", getText("UI_trait_AT_Hibernator"), 1, getText("UI_trait_AT_Hibernator_desc"), false);
+    TraitFactory.addTrait("AT_Torpor", getText("UI_trait_AT_Torpor"), -4, getText("UI_trait_AT_Torpor_desc"), false);
+    TTF.Add("AT_Torpor", "Anthro,Hibernator");
 
+    TraitFactory.addTrait("AT_Digitigrade", getText("UI_trait_AT_Digitigrade"), 3, getText("UI_trait_AT_Digitigrade_desc"), false);
+    TTF.Add("AT_Digitigrade", "Anthro");
     --TraitFactory.addTrait("AT_KeenSmell", getText("UI_trait_AT_KeenSmell"), 4, getText("UI_trait_AT_KeenSmell_desc"), false);
     --TTF.Add("AT_KeenSmell", "Anthro,KeenSmell");
     -- (vision can't be updated via lua)TraitFactory.addTrait("AT_KeenEyes", getText("UI_trait_AT_KeenEyes"), 1, getText("UI_trait_AT_KeenEyes_desc"), false);
@@ -164,9 +166,12 @@ local function initAnthroTraits()
     TTF.Add("AT_NaturalTumbler", "Anthro,Agile");
     TraitFactory.addTrait("AT_VestigialWings", getText("UI_trait_AT_VestigialWings"), 5, getText("UI_trait_AT_VestigialWings_desc"), false);
     TTF.Add("AT_VestigialWings", "Anthro,Winged");
-    -- (see stout) TraitFactory.addTrait("AT_BeastOfBurden", getText("UI_trait_AT_BeastOfBurden"), 1, getText("UI_trait_AT_BeastOfBurden_desc"), false);
+    TraitFactory.addTrait("AT_BeastOfBurden", getText("UI_trait_AT_BeastOfBurden"), 1, getText("UI_trait_AT_BeastOfBurden_desc"), false);
+    TTF.Add("AT_NaturalTumbler", "Anthro,Strong");
     TraitFactory.addTrait("AT_BullRush", getText("UI_trait_AT_BullRush"), 6, getText("UI_trait_AT_BullRush_desc"), false);
     TTF.Add("AT_BullRush", "Anthro,Horns");
+    TraitFactory.addTrait("AT_Lonely", getText("UI_trait_AT_Lonely"), -4, getText("UI_trait_AT_Lonely_desc"), false);
+    TTF.Add("AT_Lonely", "Anthro,Social"); --(Xochi suggestion)
     -- TraitFactory.addTrait("AT_NoThoughts", getText("UI_trait_AT_NoThoughts"), 1, getText("UI_trait_AT_NoThoughts_desc"), false);
     -- TraitFactory.addTrait("AT_NotCute", getText("UI_trait_AT_NotCute"), 1, getText("UI_trait_AT_NotCute_desc"), false);
     -- TraitFactory.addTrait("AT_SelfClean", getText("UI_trait_AT_SelfClean"), 1, getText("UI_trait_AT_SelfClean_desc"), false);

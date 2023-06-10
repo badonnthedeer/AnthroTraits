@@ -308,6 +308,24 @@ local function BeStinky(player)
     end
 end
 
+local function LonelyUpdate(player)
+    local lonelyDistance = SandboxVars.AnthroTraits.StinkyDistance
+    local modData = player:getModData().ATPlayerData
+    local activePlayers = getNumActivePlayers()
+    local playerInQuestion = player;
+
+    if activePlayers > 1
+    then
+        for playerIndex = 0, (activePlayers - 1)
+        do
+            playerInQuestion = getSpecificPlayer(playerIndex)
+            if player == not playerInQuestion and playerInQuestion:DistTo() < lonelyDistance
+            then
+                modData.HoursSinceSeenOthers = 0;
+            end
+        end
+    end
+end
 
 --VANILLA LUA FUNCTION HOOKS
 
@@ -406,13 +424,13 @@ end
 local OriginalTimedActionCreate = ISBaseTimedAction.create;
 ISBaseTimedAction.create = function(self)
     OriginalTimedActionCreate(self);
-    local newTime = self.maxTime * (1 + SandboxVars.AnthroTraits.UnwieldyHandsTimeIncrease)
     if self.character:HasTrait("AT_UnwieldyHands")
     then
         for _, action in pairs(AnthroTraitsGlobals.UnwieldyHandsAffectedTimedActions)
         do
             if self.Type == action
             then
+                local newTime = self.maxTime * (1 + SandboxVars.AnthroTraits.UnwieldyHandsTimeIncrease)
                 if getDebug()
                 then
                     print("UnwieldyHands activated. Old time: "..tostring(self.maxTime).." New time: "..tostring(newTime));
@@ -494,6 +512,9 @@ local function ATInitPlayerData(player)
         atData.trulyInfected = false;
         atData.canTripChecked = false;
         atData.tripSafe = false;
+        atData.torporActive = false;
+        atData.UnmoddedMaxWeightBase =  player:getMaxWeightBase();
+        atData.HoursSinceSeenOthers = 0;
         atData.oldFallTime = 0.0;
         atData.oldWetness = 0.0;
     end
@@ -721,6 +742,36 @@ local function ATOnObjectCollide(collider, collidee)
     end
 end
 
+
+local function ATOnClothingUpdated(gameChar)
+    if instanceof(gameChar, "IsoPlayer")
+    then
+        local player = gameChar
+        local shoes = player:getClothingItem_Feet();
+
+        if shoes ~= nil then
+            local vanillaShoes = InventoryItemFactory.CreateItem(shoes:getFullType())
+            local vanillaStomp = vanillaShoes:getStompPower();
+            local digitigradeMultiplier = 1 + SandboxVars.AnthroTraits.DigitigradeStompPowerPctIncrease;
+            if player:HasTrait("AT_Digitigrade")
+            then
+                shoes:setStompPower(vanillaStomp * digitigradeMultiplier);
+            else
+                shoes:setStompPower(vanillaStomp)
+            end
+        else
+            if player:HasTrait("AT_Digitigrade")
+            then
+                --???? do something I guess
+                --shoes:setStompPower(vanillaShoe:getStompPower() * (1 + SandboxVars.AnthroTraits.DigitigradeStompPowerPctIncrease));
+            else
+                --shoes:setStompPower(vanillaShoe:getStompPower())
+            end
+        end
+    end
+end
+
+
 local function ATEveryOneMinute()
     local activePlayers = getNumActivePlayers()
     if activePlayers >= 1
@@ -732,7 +783,6 @@ local function ATEveryOneMinute()
             if player and not player:isDead()
             then
                 --add random test functions here:
-
 
                 --
                 if player:HasTrait("AT_Immunity") and not player:getBodyDamage():isInfected() and modData.trulyInfected == true
@@ -757,11 +807,69 @@ local function ATEveryOneMinute()
 end
 
 
+local function ATEveryHours()
+    local activePlayers = getNumActivePlayers()
+    if activePlayers >= 1
+    then
+        --for playerIndex = 0, (activePlayers - 1)
+        --do
+            local player = getSpecificPlayer(0)
+            local modData =  player:getModData().ATPlayerData;
+            if player:HasTrait("AT_Lonely")
+            then
+                modData.HoursSinceSeenOthers = modData.HoursSinceSeenOthers + 1;
+                if modData.HoursSinceSeenOthers > SandboxVars.AnthroTraits.LonelyHoursToAffect
+                then
+                    player:getBodyDamage():setUnhappynessLevel(player:getBodyDamage():getUnhappynessLevel() + SandboxVars.AnthroTraits.LonelyHourlyUnhappyIncrease)
+                end
+            end
+        --end
+    end
+end
+
+
+local function ATEveryDays()
+    local activePlayers = getNumActivePlayers()
+    local season = getClimateManager():getSeason():getSeasonName();
+
+    if activePlayers >= 1
+    then
+        for playerIndex = 0, (activePlayers - 1)
+        do
+            local player = getSpecificPlayer(playerIndex)
+            local modData =  player:getModData().ATPlayerData;
+            if player:HasTrait("AT_Torpor") and season:lower():contains("winter")
+            then
+                modData.torporActive = true;
+            elseif player:HasTrait("AT_Torpor") and not season:contains("winter")
+            then
+                modData.torporActive = false;
+            end
+        end
+    end
+end
+
+
+local function ATLevelPerk(char, perk, level, increased)
+    if instanceof(char, "IsoPlayer")
+    then
+        local player = char;
+        local modData = player:getModData().ATData;
+        if perk == "Strength" and increased == true
+        then
+            --for beast of burden, mostly. But I should keep this accurate just in case.
+            modData.UnmoddedMaxWeightBase = modData.UnmoddedMaxWeightBase + 1;
+        end
+    end
+end
+
+
 
 local function ATPlayerUpdate(player)
     local fallTimeMult = SandboxVars.AnthroTraits.NaturalTumblerFallTimeMult;
     local modData =  player:getModData().ATPlayerData;
     local beforeFallTime = modData.oldFallTime;
+    local endurance = player:getStats():getEndurance()
     --local beforeWetness = modData.oldWetness;
     local rolledChance = ZombRand(0,100);
     -- wetness experiments
@@ -769,6 +877,19 @@ local function ATPlayerUpdate(player)
     --print("Wetness Difference: "..tostring(player:getBodyDamage():getWetness() - modData.oldWetness));
     --
     --print("Temp: "..tostring(player:getBodyDamage():getTemperature()))
+    if player:HasTrait("AT_BeastOfBurden")
+    then
+        player:setMaxWeightBase(math.floor(modData.UnmoddedMaxWeightBase * (1 + SandboxVars.AnthroTraits.BeastOfBurdenPctIncrease)));
+    else
+        player:setMaxWeightBase(math.floor(modData.UnmoddedMaxWeightBase));
+    end
+    if player:HasTrait("AT_Torpor") and modData.torporActive == true
+    then
+        if endurance > (1.0 - SandboxVars.AnthroTraits.TorporEnduranceDecrease)
+        then
+            player:getStats():setEndurance(1.0 - SandboxVars.AnthroTraits.TorporEnduranceDecrease)
+        end
+    end
     if player:HasTrait("AT_NaturalTumbler")
     then
         --Fall damage reduced
@@ -799,6 +920,7 @@ local function ATPlayerUpdate(player)
             print("FallTime: "..player:getFallTime())
         end
     end
+    LonelyUpdate(player);
     --[[if player:HasTrait("AT_ColdBlooded")
     then
         player:getBodyDamage():getThermoregulator():setMetabolicTarget(Metabolics.Sleeping);
@@ -810,9 +932,13 @@ end
 
 
 Events.OnNewGame.Add(ATInitPlayerData);
-Events.OnInitWorld.Add(ATOnInitWorld)
+Events.OnInitWorld.Add(ATOnInitWorld);
+Events.OnClothingUpdated.Add(ATOnClothingUpdated);
 Events.OnObjectCollide.Add(ATOnObjectCollide);
-Events.OnCharacterCollide.Add(ATOnCharacterCollide)
+Events.OnCharacterCollide.Add(ATOnCharacterCollide);
+Events.LevelPerk.Add(ATLevelPerk)
+Events.EveryDays.Add(ATEveryDays);
+Events.EveryHours.Add(ATEveryHours)
 Events.EveryOneMinute.Add(ATEveryOneMinute);
 Events.OnPlayerGetDamage.Add(ATPlayerDamageTick);
 Events.OnPlayerUpdate.Add(ATPlayerUpdate);
