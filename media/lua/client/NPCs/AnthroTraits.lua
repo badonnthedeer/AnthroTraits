@@ -443,39 +443,36 @@ ISBaseTimedAction.create = function(self)
 end
 
 --poison gui update?
---[[local originalRefreshContainer = ISInventoryPane.refreshContainer;
+local originalRefreshContainer = ISInventoryPane.refreshContainer;
 ISInventoryPane.refreshContainer = function(self)
     --before original
     originalRefreshContainer(self);
     --after original
+    local player = getSpecificPlayer(self.player)
+    local inventory = self.inventory:getItems();
+    for i = 0, inventory:size() - 1
+    do
+        local item = inventory:get(i);
+        print(tostring(type(item)));
+        local itemDisplayName = item:getDisplayName();
 
-    local it = self.inventory:getItems();
-    for i = 0, it:size()-1 do
-        local item = it:get(i);
-        local itemName = item:getName();
-        if item:IsFood() and item:getHerbalistType() and item:getHerbalistType() ~= "" then
-            if playerObj:isRecipeKnown("Herbalist") then
-                if item:getHerbalistType() == "Berry" then
-                    itemName = (item:getPoisonPower() > 0) and getText("IGUI_PoisonousBerry") or getText("IGUI_Berry")
-                end
-                if item:getHerbalistType() == "Mushroom" then
-                    itemName = (item:getPoisonPower() > 0) and getText("IGUI_PoisonousMushroom") or getText("IGUI_Mushroom")
+        if item:IsFood() and item:hasTag("ATFeralPoison")
+        then
+            if player:HasTrait("AT_FeralDigestion")
+            then
+                if not itemDisplayName:contains("Poisonous")
+                then
+                    item:setName("Poisonous "..itemDisplayName);
                 end
             else
-                if item:getHerbalistType() == "Berry"  then
-                    itemName = getText("IGUI_UnknownBerry")
-                end
-                if item:getHerbalistType() == "Mushroom" then
-                    itemName = getText("IGUI_UnknownMushroom")
+                if itemDisplayName:contains("Poisonous ") and item:getPoisonPower() <= 0
+                then
+                   item:setName(itemDisplayName:sub(11));
                 end
             end
-            if itemName ~= item:getDisplayName() then
-                item:setName(itemName);
-            end
-            itemName = item:getName()
         end
     end
-end]]
+end
 
 
 --Accessing trait gui for tags, maybe?
