@@ -775,9 +775,9 @@ local function ATEveryOneMinute()
         for playerIndex = 0, (activePlayers - 1)
         do
             local player = getSpecificPlayer(playerIndex)
-            local modData =  player:getModData().ATPlayerData;
-            if player and not player:isDead()
+            if player ~= nil and not player:isDead()
             then
+                local modData =  player:getModData().ATPlayerData;
                 --add random test functions here:
 
                 --
