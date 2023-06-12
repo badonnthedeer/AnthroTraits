@@ -34,8 +34,6 @@ Do you really enjoy this mod, or even better want to build off of it? Please con
     When sprinting, knock zombies over at a cost of extra endurance.
     [*][h2]Tailed[/h2]
     Your tail allows you to run with more balance, reducing trip chance.
-    [*][h2]Slinky[/h2]
-    Traverse through entryways, over fences, and open and close containers more quickly.
     [*][h2]Unwieldy Hands[/h2]
     Actions requiring fine motor control are slower.
     [*][h2]Beast of Burden[/h2]
@@ -60,7 +58,10 @@ Do you really enjoy this mod, or even better want to build off of it? Please con
     Still affected by the winter, you have less endurance during the cold months.
 [/list]
 [hr][/hr]
-[h1]Special Thanks[/h1] 
+[h1]Special Thanks[/h1]
 to my friend who did the icon art for me, RadicallyRiley. I'd also like to thank the PZ Discord modding community, who were very patient with me in answering my many questions. In particular, I'd like to thank Albion from that group; she has a seemingly encyclopedic knowledge of PZ modding and a heaping portion of patience! Thank you to the other trait mods who I was able to reference when I was incredibly stumped, and thanks to the furry community for inspiring me to create something and give back.
 
-[quote=Badonn]Please don't copy this mod and upload it as your own! Please also ask if you can use this in a mod pack. If you would like to translate the mod, send me a message or leave a comment and I'll work with you to add it in! This mod is under the MIT License.[/quote] 
+[quote=Badonn]Please don't copy this mod and upload it as your own! Please also ask if you can use this in a mod pack. If you would like to translate the mod, send me a message or leave a comment and I'll work with you to add it in! This mod is under the MIT License.[/quote]
+
+Workshop ID: 2987213113
+Mod ID: AnthroTraits
