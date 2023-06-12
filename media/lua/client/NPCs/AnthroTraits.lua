@@ -219,7 +219,7 @@ local function ApplyFoodTypeMod(modifier, character, foodEaten, percentEaten)
     if getDebug()
     then
         print("Item| BaseHunger: "..foodBaseHunger..", ThirstChange: "..foodThirstChange..", BoredomChange: "..foodBoredomChange..", UnhappyChange: "..foodUnhappyChange..", Calories: "..foodCalories);
-        print("Before Mod| Hunger: "..charStats:getHunger()..", Thirst: "..charStats:getThirst()..", Boredom: "..charBodyDmg:getBoredomLevel()..", Unhappiness: "..charBodyDmg:getUnhappynessLevel()..", Calories:"..charNutrition:getCalories());
+        print("After Eat, Before Mod| Hunger: "..charStats:getHunger()..", Thirst: "..charStats:getThirst()..", Boredom: "..charBodyDmg:getBoredomLevel()..", Unhappiness: "..charBodyDmg:getUnhappynessLevel()..", Calories:"..charNutrition:getCalories());
     end
 
     if foodBaseHunger ~= 0
@@ -242,7 +242,6 @@ local function ApplyFoodTypeMod(modifier, character, foodEaten, percentEaten)
     then
         charNutrition:setCalories(charNutrition:getCalories() + ((foodCalories * modifier ) * percentEaten));
     end
-
     if getDebug()
     then
         print("After Mod| Hunger: "..charStats:getHunger()..", Thirst: "..charStats:getThirst()..", Boredom: "..charBodyDmg:getBoredomLevel()..", Unhappiness: "..charBodyDmg:getUnhappynessLevel()..", Calories:"..charNutrition:getCalories());
