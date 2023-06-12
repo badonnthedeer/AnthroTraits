@@ -453,7 +453,6 @@ ISInventoryPane.refreshContainer = function(self)
     for i = 0, inventory:size() - 1
     do
         local item = inventory:get(i);
-        print(tostring(type(item)));
         local itemDisplayName = item:getDisplayName();
 
         if item:IsFood() and item:hasTag("ATFeralPoison")
@@ -703,12 +702,12 @@ end
 local function ATOnObjectCollide(collider, collidee)
     if instanceof(collider, "IsoPlayer")
     then
-        print("Object: "..type(object));
-        print("collider: "..type(collider));
         local modData = collider:getModData().ATPlayerData;
         if getDebug()
         then
             print("ATOnObjectCollide Triggered");
+            print("Object: "..type(object));
+            print("collider: "..type(collider));
         end
         if collider:HasTrait("AT_Tail") and modData.canTripChecked == false and (collider:getStats():isTripping() or collider:isBumped())
         then
