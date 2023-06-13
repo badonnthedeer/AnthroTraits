@@ -637,7 +637,7 @@ local function ATOnCharacterCollide(collider, collidee)
                 collider:setBumpType("");
                 collider:setBumpStaggered(false);
                 collider:setBumpFall(false);
-            elseif instanceof(collidee, "IsoPlayer") and ((collider:getCoopPVP() == true and collidee:getCoopPVP() == true) or collidee.isZombie())
+            elseif instanceof(collidee, "IsoPlayer") and ((collider:getCoopPVP() == true and collidee:getCoopPVP() == true) or collidee:isZombie())
             then
                 collidee:setBumpType("stagger");
                 collidee:setVariable("BumpDone", true);
@@ -659,7 +659,7 @@ local function ATOnCharacterCollide(collider, collidee)
                 collider:setBumpType("");
                 collider:setBumpStaggered(false);
                 collider:setBumpFall(false);
-            elseif instanceof(collidee, "IsoPlayer") and ((collider:getCoopPVP() == true and collidee:getCoopPVP() == true) or collidee.isZombie())
+            elseif instanceof(collidee, "IsoPlayer") and ((collider:getCoopPVP() == true and collidee:getCoopPVP() == true) or collidee:isZombie())
             then
                 collidee:setBumpType("stagger");
                 collidee:setVariable("BumpDone", true);
@@ -707,7 +707,7 @@ local function ATOnCharacterCollide(collider, collidee)
 end
 
 local function ATOnObjectCollide(collider, collidee)
-    if instanceof(collider, "IsoPlayer")
+    if instanceof(collider, "IsoPlayer") and not collider:isZombie()
     then
         local modData = collider:getModData().ATPlayerData;
         if getDebug()
