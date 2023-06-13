@@ -854,6 +854,8 @@ local function ATLevelPerk(char, perk, level, increased)
         then
             --for beast of burden, mostly. But I should keep this accurate just in case.
             modData.UnmoddedMaxWeightBase = modData.UnmoddedMaxWeightBase + 1;
+            --does this up automatically? I would be able to subtract umoddedMaxWeightBase + mod to get the difference and
+            --set it here
         end
     end
 end
