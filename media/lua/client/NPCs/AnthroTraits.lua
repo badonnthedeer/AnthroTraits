@@ -639,8 +639,12 @@ local function ATOnCharacterCollide(collider, collidee)
                 collider:setBumpFall(false);
             elseif instanceof(collidee, "IsoPlayer") and ((collider:getCoopPVP() == true and collidee:getCoopPVP() == true) or collidee.isZombie())
             then
-                collidee:setBumpStaggered(true);
-                collidee:setKnockedDown(true);
+                collidee:setBumpType("stagger");
+                collidee:setVariable("BumpDone", true);
+                collidee:setVariable("BumpFall", true);
+                collidee:setVariable("BumpFallType", "pushedbehind");
+                --collidee:setBumpStaggered(true);
+                --collidee:setKnockedDown(true);
                 collider:getStats():setEndurance(collider:getStats():getEndurance() - knockdownEndCost);
                 collider:setBumpType("");
                 collider:setBumpStaggered(false);
@@ -657,8 +661,12 @@ local function ATOnCharacterCollide(collider, collidee)
                 collider:setBumpFall(false);
             elseif instanceof(collidee, "IsoPlayer") and ((collider:getCoopPVP() == true and collidee:getCoopPVP() == true) or collidee.isZombie())
             then
-                collidee:setBumpStaggered(true);
-                collidee:setKnockedDown(true);
+                collidee:setBumpType("stagger");
+                collidee:setVariable("BumpDone", true);
+                collidee:setVariable("BumpFall", true);
+                collidee:setVariable("BumpFallType", "pushedbehind");
+                --collidee:setBumpStaggered(true);
+                --collidee:setKnockedDown(true);
                 collider:setBumpType("");
                 collider:setBumpStaggered(false);
                 collider:setBumpFall(false);
