@@ -1,4 +1,4 @@
-require('AnthroTraitsGlobals')
+require('AnthroTraitsGlobals');
 local TTF = require("TraitTagFramework");
 
 --UTILITIES
@@ -33,7 +33,7 @@ local function AddItemTagToItemsFromFile(path, tag)
         foundItem = getScriptManager():getItem(line);
         if foundItem ~= nil
         then
-            itemTags = foundItem:getTags()
+            itemTags = foundItem:getTags();
             if not itemTags:contains(tag)
             then
                 itemTags:add(tag);
@@ -43,7 +43,7 @@ local function AddItemTagToItemsFromFile(path, tag)
                 end
             end
         else
-            print("Cannot find item "..line.." to add tag "..tag)
+            print("Cannot find item "..line.." to add tag "..tag);
         end
     end
     reader:close();
@@ -110,7 +110,7 @@ local function HandleInfection(player)
                 local rolledInfectionChance = ZombRand(1, 100);
                 if getDebug()
                 then
-                    print("Rolled " .. rolledInfectionChance)
+                    print("Rolled " .. rolledInfectionChance);
                 end
                 if bodypart:bitten() 
                 then
@@ -252,21 +252,21 @@ end
 local function ExclaimerCheck(player)
     local moodles = player:getMoodles();
     local panicLevel = moodles:getMoodleLevel(MoodleType.Panic);
-    local playerSquare = player:getCurrentSquare()
+    local playerSquare = player:getCurrentSquare();
     local thresholdMultiplier = SandboxVars.AnthroTraits.ExclaimerExclaimThresholdMultiplier;
 
     local exclaimChance = ZombRand(1,100);
-    local phraseChance = ZombRand(1, #AnthroTraitsGlobals.ExclaimPhrases)
+    local phraseChance = ZombRand(1, #AnthroTraitsGlobals.ExclaimPhrases);
 
     if (exclaimChance <= (panicLevel * thresholdMultiplier)) and panicLevel > 1
     then
-        --if player:HasTrait("AT_Hooves")
+        --if player:HasTrait("AT_Hooves");
         --then
-        --    player:SayShout("BLEAT!")
+        --    player:SayShout("BLEAT!");
         --else
-        --    player:SayShout("HAHAHAHA!")
+        --    player:SayShout("HAHAHAHA!");
         --end
-        player:SayShout(AnthroTraitsGlobals.ExclaimPhrases[phraseChance])
+        player:SayShout(AnthroTraitsGlobals.ExclaimPhrases[phraseChance]);
         getWorldSoundManager():addSound(player,
                 playerSquare:getX(),
                 playerSquare:getY(),
@@ -281,8 +281,8 @@ local function BeStinky(player)
     local stinkyLoudness = SandboxVars.AnthroTraits.StinkyLoudness
     local stinkyDistance = SandboxVars.AnthroTraits.StinkyDistance
     local stinkyCommentChance = SandboxVars.AnthroTraits.StinkyCommentChance
-    local playerSquare = player:getCurrentSquare()
-    local activePlayers = getNumActivePlayers()
+    local playerSquare = player:getCurrentSquare();
+    local activePlayers = getNumActivePlayers();
     local playerInQuestion = player;
 
     getWorldSoundManager():addSound(player,
@@ -300,7 +300,7 @@ local function BeStinky(player)
             then
                 if ZombRand(0,1) >= stinkyCommentChance and playerInQuestion:DistTo() < stinkyLoudness and playerInQuestion:getMoodles():getMoodleLevel("Pain") < 2 and playerInQuestion:getMoodles():getMoodleLevel("Panic") < 1
                 then
-                    playerInQuestion:Say("Stinky!")
+                    playerInQuestion:Say("Stinky!");
                 end
             end
         end
@@ -310,14 +310,14 @@ end
 local function LonelyUpdate(player)
     local lonelyDistance = SandboxVars.AnthroTraits.StinkyDistance
     local modData = player:getModData().ATPlayerData
-    local activePlayers = getNumActivePlayers()
+    local activePlayers = getNumActivePlayers();
     local playerInQuestion = player;
 
     if activePlayers > 1
     then
         for playerIndex = 0, (activePlayers - 1)
         do
-            playerInQuestion = getSpecificPlayer(playerIndex)
+            playerInQuestion = getSpecificPlayer(playerIndex);
             if player == not playerInQuestion and playerInQuestion:DistTo() < lonelyDistance
             then
                 modData.HoursSinceSeenOthers = 0;
@@ -352,7 +352,7 @@ ISEatFoodAction.perform = function(self)
     local foodPercentEaten = self.percentage
     local foodDisplayName = foodEaten:getDisplayName();
 
-    OriginalEatPerform(self)
+    OriginalEatPerform(self);
     -- code to run after the original
 
     if PC:HasTrait("AT_Carnivore")
@@ -391,7 +391,7 @@ ISEatFoodAction.perform = function(self)
         if foodEaten:hasTag("ATCarnivore")
         then
             ApplyFoodTypeMod(carrionEaterBonus, PC, foodEaten, foodPercentEaten);
-            NeutralizeFoodPoisoning(charBodyDmg, beforeFoodSickness, beforePoisonLevel)
+            NeutralizeFoodPoisoning(charBodyDmg, beforeFoodSickness, beforePoisonLevel);
 
         end
     end
@@ -447,7 +447,7 @@ ISInventoryPane.refreshContainer = function(self)
     --before original
     originalRefreshContainer(self);
     --after original
-    local player = getSpecificPlayer(self.player)
+    local player = getSpecificPlayer(self.player);
     local inventory = self.inventory:getItems();
     for i = 0, inventory:size() - 1
     do
@@ -485,9 +485,9 @@ ISPlayerStatsChooseTraitUI.create = function(self)
         then
             if trait:getCost() >= 0
             then
-                table.Remove(self.goodTraits, trait)
+                table.Remove(self.goodTraits, trait);
             else
-                table.Remove(self.badTraits, trait)
+                table.Remove(self.badTraits, trait);
             end
         end
     end
@@ -517,10 +517,10 @@ end
 
 
 function ATOnInitWorld()
-    AddItemTagToItemsFromFile("ATCarnivoreItemTag.txt", "ATCarnivore")
-    AddItemTagToItemsFromFile("ATHerbivoreItemTag.txt", "ATHerbivore")
-    AddItemTagToItemsFromFile("ATInsectItemTag.txt", "ATInsect")
-    AddItemTagToItemsFromFile("ATFeralPoisonItemTag.txt", "ATFeralPoison")
+    AddItemTagToItemsFromFile("ATCarnivoreItemTag.txt", "ATCarnivore");
+    AddItemTagToItemsFromFile("ATHerbivoreItemTag.txt", "ATHerbivore");
+    AddItemTagToItemsFromFile("ATInsectItemTag.txt", "ATInsect");
+    AddItemTagToItemsFromFile("ATFeralPoisonItemTag.txt", "ATFeralPoison");
 end
 
 
@@ -627,7 +627,7 @@ local function ATOnCharacterCollide(collider, collidee)
                 print("colliderBehindCollidee: "..tostring(colliderBehindCollidee));
                 print("Is Sprinting: "..tostring(collider:isSprinting()));
                 print("getBeenSprintingFor(): "..tostring(collider:getBeenSprintingFor()));
-                print("Tripping: "..tostring(collider:getStats():isTripping()))
+                print("Tripping: "..tostring(collider:getStats():isTripping()));
             end
             if instanceof(collidee, "IsoZombie")
             then
@@ -639,9 +639,9 @@ local function ATOnCharacterCollide(collider, collidee)
                 collider:setBumpFall(false);
             elseif instanceof(collidee, "IsoPlayer") and ((collider:getCoopPVP() == true and collidee:getCoopPVP() == true) or collidee.isZombie())
             then
-                collidee:setBumpStaggered(true)
+                collidee:setBumpStaggered(true);
                 collidee:setKnockedDown(true);
-                collider:getStats():setEndurance(collider:getStats():getEndurance() - knockdownEndCost)
+                collider:getStats():setEndurance(collider:getStats():getEndurance() - knockdownEndCost);
                 collider:setBumpType("");
                 collider:setBumpStaggered(false);
                 collider:setBumpFall(false);
@@ -657,7 +657,7 @@ local function ATOnCharacterCollide(collider, collidee)
                 collider:setBumpFall(false);
             elseif instanceof(collidee, "IsoPlayer") and ((collider:getCoopPVP() == true and collidee:getCoopPVP() == true) or collidee.isZombie())
             then
-                collidee:setBumpStaggered(true)
+                collidee:setBumpStaggered(true);
                 collidee:setKnockedDown(true);
                 collider:setBumpType("");
                 collider:setBumpStaggered(false);
@@ -665,8 +665,8 @@ local function ATOnCharacterCollide(collider, collidee)
             end
         elseif collider:HasTrait("AT_Tail") and modData.canTripChecked == false and (collider:getStats():isTripping() or collider:isBumped())
         then
-            local a = collider:getStats():isTripping()
-            local b = collider:isBumped()
+            local a = collider:getStats():isTripping();
+            local b = collider:isBumped();
             local a2 = modData.canTripChecked
 
             local rolledChance = ZombRand(0,100);
@@ -705,7 +705,7 @@ local function ATOnObjectCollide(collider, collidee)
         if getDebug()
         then
             print("ATOnObjectCollide Triggered");
-            print("Object: "..type(object));
+            print("Object: "..type(collidee));
             print("collider: "..type(collider));
         end
         if collider:HasTrait("AT_Tail") and modData.canTripChecked == false and (collider:getStats():isTripping() or collider:isBumped())
@@ -752,7 +752,7 @@ local function ATOnClothingUpdated(gameChar)
             then
                 shoes:setStompPower(vanillaStomp * digitigradeMultiplier);
             else
-                shoes:setStompPower(vanillaStomp)
+                shoes:setStompPower(vanillaStomp);
             end
         else
             if player:HasTrait("AT_Digitigrade")
@@ -773,7 +773,7 @@ local function ATEveryOneMinute()
     then
         for playerIndex = 0, (activePlayers - 1)
         do
-            local player = getSpecificPlayer(playerIndex)
+            local player = getSpecificPlayer(playerIndex);
             if player ~= nil and not player:isDead()
             then
                 local modData =  player:getModData().ATPlayerData;
@@ -803,19 +803,19 @@ end
 
 
 local function ATEveryHours()
-    local activePlayers = getNumActivePlayers()
+    local activePlayers = getNumActivePlayers();
     if activePlayers >= 1
     then
         --for playerIndex = 0, (activePlayers - 1)
         --do
-            local player = getSpecificPlayer(0)
+            local player = getSpecificPlayer(0);
             local modData =  player:getModData().ATPlayerData;
             if player:HasTrait("AT_Lonely")
             then
                 modData.HoursSinceSeenOthers = modData.HoursSinceSeenOthers + 1;
                 if modData.HoursSinceSeenOthers > SandboxVars.AnthroTraits.LonelyHoursToAffect
                 then
-                    player:getBodyDamage():setUnhappynessLevel(player:getBodyDamage():getUnhappynessLevel() + SandboxVars.AnthroTraits.LonelyHourlyUnhappyIncrease)
+                    player:getBodyDamage():setUnhappynessLevel(player:getBodyDamage():getUnhappynessLevel() + SandboxVars.AnthroTraits.LonelyHourlyUnhappyIncrease);
                 end
             end
         --end
@@ -824,14 +824,14 @@ end
 
 
 local function ATEveryDays()
-    local activePlayers = getNumActivePlayers()
+    local activePlayers = getNumActivePlayers();
     local season = getClimateManager():getSeason():getSeasonName();
 
     if activePlayers >= 1
     then
         for playerIndex = 0, (activePlayers - 1)
         do
-            local player = getSpecificPlayer(playerIndex)
+            local player = getSpecificPlayer(playerIndex);
             local modData =  player:getModData().ATPlayerData;
             if player:HasTrait("AT_Torpor") and season:lower():contains("winter")
             then
@@ -864,14 +864,14 @@ local function ATPlayerUpdate(player)
     local fallTimeMult = SandboxVars.AnthroTraits.NaturalTumblerFallTimeMult;
     local modData =  player:getModData().ATPlayerData;
     local beforeFallTime = modData.oldFallTime;
-    local endurance = player:getStats():getEndurance()
+    local endurance = player:getStats():getEndurance();
     --local beforeWetness = modData.oldWetness;
     local rolledChance = ZombRand(0,100);
     -- wetness experiments
     --print("Projec. Difference: "..tostring(GameTime.getMultiplier() * WetnessIncrease));
     --print("Wetness Difference: "..tostring(player:getBodyDamage():getWetness() - modData.oldWetness));
     --
-    --print("Temp: "..tostring(player:getBodyDamage():getTemperature()))
+    --print("Temp: "..tostring(player:getBodyDamage():getTemperature()));
     if player:HasTrait("AT_BeastOfBurden")
     then
         player:setMaxWeightBase(math.floor(modData.UnmoddedMaxWeightBase * (1 + SandboxVars.AnthroTraits.BeastOfBurdenPctIncrease)));
@@ -882,7 +882,7 @@ local function ATPlayerUpdate(player)
     then
         if endurance > (1.0 - SandboxVars.AnthroTraits.TorporEnduranceDecrease)
         then
-            player:getStats():setEndurance(1.0 - SandboxVars.AnthroTraits.TorporEnduranceDecrease)
+            player:getStats():setEndurance(1.0 - SandboxVars.AnthroTraits.TorporEnduranceDecrease);
         end
     end
     if player:HasTrait("AT_NaturalTumbler")
@@ -931,9 +931,9 @@ Events.OnInitWorld.Add(ATOnInitWorld);
 Events.OnClothingUpdated.Add(ATOnClothingUpdated);
 Events.OnObjectCollide.Add(ATOnObjectCollide);
 Events.OnCharacterCollide.Add(ATOnCharacterCollide);
-Events.LevelPerk.Add(ATLevelPerk)
+Events.LevelPerk.Add(ATLevelPerk);
 Events.EveryDays.Add(ATEveryDays);
-Events.EveryHours.Add(ATEveryHours)
+Events.EveryHours.Add(ATEveryHours);
 Events.EveryOneMinute.Add(ATEveryOneMinute);
 Events.OnPlayerGetDamage.Add(ATPlayerDamageTick);
 Events.OnPlayerUpdate.Add(ATPlayerUpdate);
