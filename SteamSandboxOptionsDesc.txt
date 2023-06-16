@@ -69,16 +69,16 @@ This mod uses sandbox options to give you the most configurable experience I can
         [/list]
     [*][h2]Anthro Immunity[/h2]
         [list]
-            [*][h3]Anthro Immunity Scratch Chance / AnthroImmunityScratchInfectionChance[/h3]
+            [*][h3]Anthro Immunity Scratch Chance / ImmunityScratchInfectionChance[/h3]
                 Chance to actually be infected after being infected from a scratch.
                 0-100, default .10
-            [*][h3]Anthro Immunity Laceration Chance / AnthroImmunityLacerationInfectionChance[/h3]
+            [*][h3]Anthro Immunity Laceration Chance / ImmunityLacerationInfectionChance[/h3]
                 Chance to actually be infected after being infected from a laceration.
                 0-100, default .15
-            [*][h3]Anthro Immunity Bite Chance / AnthroImmunityBiteInfectionChance[/h3]
+            [*][h3]Anthro Immunity Bite Chance / ImmunityBiteInfectionChance[/h3]
                 Chance to actually be infected after a bite (normally 100%).
                 0-100, default .20
-            [*][h3]Anthro Immunity Bite Infection / AnthroImmunityBiteGetsRegularInfectionOnDefense[/h3]
+            [*][h3]Anthro Immunity Bite Infection / ImmunityBiteGetsRegularInfectionOnDefense[/h3]
                 If you're bitten but not infected with the Knox Infection, replace with wound infection.
                 True/False, default true
         [/list]

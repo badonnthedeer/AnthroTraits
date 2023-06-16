@@ -72,9 +72,9 @@ end
 end]]
 
 local function HandleInfection(player)
-    local biteInfectionChance = SandboxVars.AnthroTraits.AnthroImmunityBiteInfectionChance;
-    local lacerationInfectionChance = SandboxVars.AnthroTraits.AnthroImmunityLacerationInfectionChance;
-    local scratchInfectionChance = SandboxVars.AnthroTraits.AnthroImmunityScratchInfectionChance;
+    local biteInfectionChance = SandboxVars.AnthroTraits.ImmunityBiteInfectionChance;
+    local lacerationInfectionChance = SandboxVars.AnthroTraits.ImmunityLacerationInfectionChance;
+    local scratchInfectionChance = SandboxVars.AnthroTraits.ImmunityScratchInfectionChance;
     if getDebug()
     then
         print("Handle Infection Triggered");
@@ -126,7 +126,7 @@ local function HandleInfection(player)
                         then
                             print("Infection defense successful.");
                         end
-                        if SandboxVars.AnthroTraits.AnthroImmunityBiteGetsRegularInfectionOnDefense
+                        if SandboxVars.AnthroTraits.ImmunityBiteGetsRegularInfectionOnDefense
                         then
                             bodypart:setInfectedWound(true);
                             if getDebug()

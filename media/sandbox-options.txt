@@ -5,113 +5,135 @@ option AnthroTraits.TraitsRestrictSpeciesChoices
 	type = boolean, default = true,
     page = AnthroTraits, translation = AnthroTraits_TraitsRestrictSpeciesChoices,
 }
-option AnthroTraits.AnthroImmunityScratchInfectionChance
-{
-	type = integer, min = 0, max = 100, default = 10,
-	page = AnthroTraits, translation = AnthroTraits_AnthroImmunityScratchInfectionChance,
-}
-option AnthroTraits.AnthroImmunityLacerationInfectionChance
-{
-	type = integer, min = 0, max = 100, default = 15,
-	page = AnthroTraits, translation = AnthroTraits_AnthroImmunityLacerationInfectionChance,
-}
-option AnthroTraits.AnthroImmunityBiteInfectionChance
-{
-	type = integer, min = 0, max = 100, default = 20,
-	page = AnthroTraits, translation = AnthroTraits_AnthroImmunityBiteInfectionChance,
-}
-option AnthroTraits.AnthroImmunityBiteGetsRegularInfectionOnDefense
-{
-	type = boolean, default = true,
-	page = AnthroTraits, translation = AnthroTraits_AnthroImmunityBiteGetsRegularInfectionOnDefense,
-}
-option AnthroTraits.RightFoodBonus
-{
-	type = double, min = -2, max = 0, default = -0.5,
-	page = AnthroTraits, translation = AnthroTraits_RightFoodBonus,
-}
-option AnthroTraits.WrongFoodMalus
-{
-	type = double, min = 0, max = 1, default = 0.5,
-	page = AnthroTraits, translation = AnthroTraits_WrongFoodMalus,
-}
-option AnthroTraits.CarrionEaterBonus
-{
-	type = double, min = 0, max = 1, default = 0.5,
-	page = AnthroTraits, translation = AnthroTraits_CarrionEaterBonus,
-}
-option AnthroTraits.FoodMotivatedBonus
-{
-	type = integer, min = 0, max = 100, default = 5,
-	page = AnthroTraits, translation = AnthroTraits_FoodMotivatedBonus,
-}
-option AnthroTraits.FeralDigestionPoisonAmt
-{
-	type = integer, min = 10, max = 120, default = 20,
-	page = AnthroTraits, translation = AnthroTraits_FeralDigestionPoisonAmt,
-}
-option AnthroTraits.ExclaimerExclaimThresholdMultiplier
-{
-	type = integer, min = 1, max = 33, default = 10,
-	page = AnthroTraits, translation = AnthroTraits_ExclaimerExclaimThresholdMultiplier,
-}
-option AnthroTraits.StinkyDistance
-{
-	type = integer, min = 1, max = 100, default = 3,
-	page = AnthroTraits, translation = AnthroTraits_StinkyDistance,
-}
-option AnthroTraits.StinkyLoudness
-{
-	type = integer, min = 1, max = 100, default = 5,
-	page = AnthroTraits, translation = AnthroTraits_StinkyLoudness,
-}
-option AnthroTraits.StinkyCommentChance
-{
-	type = double, min = 0, max = 1, default = .001,
-	page = AnthroTraits, translation = AnthroTraits_StinkyCommentChance,
-}
-option AnthroTraits.BullRushKnockdownEndCost
-{
-	type = double, min = 0, max = 1, default = 0.10,
-	page = AnthroTraits, translation = AnthroTraits_BullRushKnockdownEndCost,
-}
-option AnthroTraits.NaturalTumblerFallTimeMult
-{
-	type = double, min = 0, max = 1, default = 0.5,
-	page = AnthroTraits, translation = AnthroTraits_NaturalTumblerFallTimeMult,
-}
-option AnthroTraits.TailTripReduction
-{
-	type = double, min = 0, max = 100, default = 33,
-	page = AnthroTraits, translation = AnthroTraits_TailTripReduction,
-}
-option AnthroTraits.UnwieldyHandsTimeIncrease
-{
-	type = double, min = 0, max = 1, default = .2,
-	page = AnthroTraits, translation = AnthroTraits_UnwieldyHandsTimeIncrease,
-}
+
 option AnthroTraits.BeastOfBurdenPctIncrease
 {
 	type = double, min = 0, max = 1, default = .15,
     page = AnthroTraits, translation = AnthroTraits_BeastOfBurdenPctIncrease,
 }
+
+option AnthroTraits.BullRushKnockdownEndCost
+{
+	type = double, min = 0, max = 1, default = 0.10,
+	page = AnthroTraits, translation = AnthroTraits_BullRushKnockdownEndCost,
+}
+
+option AnthroTraits.CarrionEaterBonus
+{
+	type = double, min = 0, max = 1, default = 0.5,
+	page = AnthroTraits, translation = AnthroTraits_CarrionEaterBonus,
+}
+
 option AnthroTraits.DigitigradeStompPowerPctIncrease
 {
 	type = double, min = 0, max = 1, default = .50,
     page = AnthroTraits, translation = AnthroTraits_DigitigradeStompPowerPctIncrease,
 }
+
+option AnthroTraits.ExclaimerExclaimThresholdMultiplier
+{
+	type = integer, min = 1, max = 33, default = 10,
+	page = AnthroTraits, translation = AnthroTraits_ExclaimerExclaimThresholdMultiplier,
+}
+
+option AnthroTraits.FeralDigestionPoisonAmt
+{
+	type = integer, min = 10, max = 120, default = 20,
+	page = AnthroTraits, translation = AnthroTraits_FeralDigestionPoisonAmt,
+}
+
+option AnthroTraits.FoodMotivatedBonus
+{
+	type = integer, min = 0, max = 100, default = 5,
+	page = AnthroTraits, translation = AnthroTraits_FoodMotivatedBonus,
+}
+
+option AnthroTraits.ImmunityBiteInfectionChance
+{
+	type = integer, min = 0, max = 100, default = 20,
+	page = AnthroTraits, translation = AnthroTraits_ImmunityBiteInfectionChance,
+}
+
+option AnthroTraits.ImmunityBiteGetsRegularInfectionOnDefense
+{
+	type = boolean, default = true,
+	page = AnthroTraits, translation = AnthroTraits_ImmunityBiteGetsRegularInfectionOnDefense,
+}
+
+option AnthroTraits.ImmunityLacerationInfectionChance
+{
+	type = integer, min = 0, max = 100, default = 15,
+	page = AnthroTraits, translation = AnthroTraits_ImmunityLacerationInfectionChance,
+}
+
+option AnthroTraits.ImmunityScratchInfectionChance
+{
+	type = integer, min = 0, max = 100, default = 10,
+	page = AnthroTraits, translation = AnthroTraits_ImmunityScratchInfectionChance,
+}
+
 option AnthroTraits.LonelyHoursToAffect
 {
 	type = integer, min = 2, max = 100, default = 6,
     page = AnthroTraits, translation = AnthroTraits_LonelyHoursToAffect,
 }
+
 option AnthroTraits.LonelyHourlyUnhappyIncrease
 {
 	type = double, min = 0, max = 1, default = .05,
     page = AnthroTraits, translation = AnthroTraits_LonelyHourlyUnhappyIncrease,
 }
+
+option AnthroTraits.NaturalTumblerFallTimeMult
+{
+	type = double, min = 0, max = 1, default = 0.5,
+	page = AnthroTraits, translation = AnthroTraits_NaturalTumblerFallTimeMult,
+}
+
+option AnthroTraits.RightFoodBonus
+{
+	type = double, min = -2, max = 0, default = -0.5,
+	page = AnthroTraits, translation = AnthroTraits_RightFoodBonus,
+}
+
+option AnthroTraits.StinkyCommentChance
+{
+	type = double, min = 0, max = 1, default = .001,
+	page = AnthroTraits, translation = AnthroTraits_StinkyCommentChance,
+}
+
+option AnthroTraits.StinkyDistance
+{
+	type = integer, min = 1, max = 100, default = 3,
+	page = AnthroTraits, translation = AnthroTraits_StinkyDistance,
+}
+
+option AnthroTraits.StinkyLoudness
+{
+	type = integer, min = 1, max = 100, default = 5,
+	page = AnthroTraits, translation = AnthroTraits_StinkyLoudness,
+}
+
+option AnthroTraits.TailTripReduction
+{
+	type = double, min = 0, max = 100, default = 33,
+	page = AnthroTraits, translation = AnthroTraits_TailTripReduction,
+}
+
 option AnthroTraits.TorporEnduranceDecrease
 {
 	type = double, min = 0, max = 1, default = .1,
     page = AnthroTraits, translation = AnthroTraits_TorporEnduranceDecrease,
+}
+
+option AnthroTraits.UnwieldyHandsTimeIncrease
+{
+	type = double, min = 0, max = 1, default = .2,
+	page = AnthroTraits, translation = AnthroTraits_UnwieldyHandsTimeIncrease,
+}
+
+option AnthroTraits.WrongFoodMalus
+{
+	type = double, min = 0, max = 1, default = 0.5,
+	page = AnthroTraits, translation = AnthroTraits_WrongFoodMalus,
 }
