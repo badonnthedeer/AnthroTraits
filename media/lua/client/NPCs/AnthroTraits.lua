@@ -610,13 +610,13 @@ end
 
 
 local function ATOnCharacterCollide(collider, collidee)
-    if instanceof(collider, "IsoPlayer")
+    if instanceof(collider, "IsoPlayer") and collider:isLocalPlayer()
     then
         -- take the sandbox cost, modify it by the difference between the player's current strength/fitness and the average strength/fitness of 5. Then turn that into a decimal since endurance is a decimal. Pick .01 if the cost is lower.
         -- if you ever figure out math, make it do a percentage taken away instead of a flat number
         local knockdownEndCost = math.max(SandboxVars.AnthroTraits.BullRushKnockdownEndCost - (((collider:getPerkLevel(Perks.Fitness) + collider:getPerkLevel(Perks.Strength)) - 10) / 100), .01)
         local colliderBehindCollidee = collidee:isFacingObject(collider, 0.5);
-        local modData = collider:getModData().ATPlayerData;
+        local modData = player:getModData().ATPlayerData;
         if getDebug()
         then
             print("ATOnCharacterCollide Triggered");
@@ -710,7 +710,7 @@ end
 
 
 local function ATOnObjectCollide(collider, collidee)
-    if instanceof(collider, "IsoPlayer") and not collider:isZombie()
+    if instanceof(collider, "IsoPlayer") and not collider:isZombie() and collider:isLocalPlayer()
     then
         local modData = collider:getModData().ATPlayerData;
         if getDebug()
