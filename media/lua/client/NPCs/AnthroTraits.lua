@@ -860,7 +860,7 @@ local function ATLevelPerk(char, perk, level, increased)
     if instanceof(char, "IsoPlayer")
     then
         local player = char;
-        local modData = player:getModData().ATData;
+        local modData = player:getModData().ATPlayerData;
         if perk == "Strength" and increased == true
         then
             --for beast of burden, mostly. But I should keep this accurate just in case.
