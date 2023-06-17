@@ -32,7 +32,7 @@ base.FriedOnionRingsCraft
 base.TofuFried
 base.Fries
 base.GingerRoot
-base.Ginsing
+base.Ginseng
 base.GrapeLeaves
 base.Grapefruit
 base.Grapes
@@ -96,7 +96,7 @@ base.Watermelon
 base.WatermelonSmashed
 base.WatermelonSliced
 base.WildGarlic2
-base.Winterberry
+base.WinterBerry
 base.Zucchini
 farming.BroccoliSeed
 farming.CabbageSeed

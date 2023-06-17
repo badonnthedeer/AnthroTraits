@@ -29,6 +29,7 @@ Base.ShrimpFriedCraft
 Base.ShrimpFried
 Base.FrogMeat
 Base.MincedMeat
+Base.Panfish
 Base.Ham
 Base.HamSlice
 Base.BaitFish
@@ -52,7 +53,6 @@ Base.Smallbirdmeat
 Base.Squid
 Base.SquidCalamari
 Base.Steak
-Base.Sunfish
 Base.Trout
 Base.TunaTinOpen
 Base.WildEggs
