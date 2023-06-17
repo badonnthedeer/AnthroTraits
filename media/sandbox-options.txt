@@ -3,13 +3,31 @@ VERSION = 1,
 option AnthroTraits.TraitsRestrictSpeciesChoices
 {
 	type = boolean, default = true,
-    page = AnthroTraits, translation = AnthroTraits_TraitsRestrictSpeciesChoices,
+	page = AnthroTraits, translation = AnthroTraits_TraitsRestrictSpeciesChoices,
+}
+
+option AnthroTraits.BeastOfBurden_Cost
+{
+	type = integer, min = -15, max = 15, default = 4,
+	page = AnthroTraits, translation = AnthroTraits_BeastOfBurden_Cost,
 }
 
 option AnthroTraits.BeastOfBurdenPctIncrease
 {
 	type = double, min = 0, max = 1, default = .15,
-    page = AnthroTraits, translation = AnthroTraits_BeastOfBurdenPctIncrease,
+	page = AnthroTraits, translation = AnthroTraits_BeastOfBurdenPctIncrease,
+}
+
+option AnthroTraits.Bug_o_ssieur_Cost
+{
+	type = integer, min = -15, max = 15, default = 1,
+	page = AnthroTraits, translation = AnthroTraits_Bug_o_ssieur_Cost,
+}
+
+option AnthroTraits.BullRush_Cost
+{
+	type = integer, min = -15, max = 15, default = 6,
+	page = AnthroTraits, translation = AnthroTraits_BullRush_Cost,
 }
 
 option AnthroTraits.BullRushKnockdownEndCost
@@ -18,16 +36,40 @@ option AnthroTraits.BullRushKnockdownEndCost
 	page = AnthroTraits, translation = AnthroTraits_BullRushKnockdownEndCost,
 }
 
+option AnthroTraits.Carnivore_Cost
+{
+	type = integer, min = -15, max = 15, default = 2,
+	page = AnthroTraits, translation = AnthroTraits_Carnivore_Cost,
+}
+
+option AnthroTraits.CarrionEater_Cost
+{
+	type = integer, min = -15, max = 15, default = 3,
+	page = AnthroTraits, translation = AnthroTraits_CarrionEater_Cost,
+}
+
 option AnthroTraits.CarrionEaterBonus
 {
 	type = double, min = 0, max = 1, default = 0.5,
 	page = AnthroTraits, translation = AnthroTraits_CarrionEaterBonus,
 }
 
+option AnthroTraits.Digitigrade_Cost
+{
+	type = integer, min = -15, max = 15, default = 3,
+	page = AnthroTraits, translation = AnthroTraits_Digitigrade_Cost,
+}
+
 option AnthroTraits.DigitigradeStompPowerPctIncrease
 {
 	type = double, min = 0, max = 1, default = .50,
-    page = AnthroTraits, translation = AnthroTraits_DigitigradeStompPowerPctIncrease,
+	page = AnthroTraits, translation = AnthroTraits_DigitigradeStompPowerPctIncrease,
+}
+
+option AnthroTraits.Exclaimer_Cost
+{
+	type = integer, min = -15, max = 15, default = -6,
+	page = AnthroTraits, translation = AnthroTraits_Exclaimer_Cost,
 }
 
 option AnthroTraits.ExclaimerExclaimThresholdMultiplier
@@ -36,16 +78,52 @@ option AnthroTraits.ExclaimerExclaimThresholdMultiplier
 	page = AnthroTraits, translation = AnthroTraits_ExclaimerExclaimThresholdMultiplier,
 }
 
+option AnthroTraits.FeralBody_Cost
+{
+	type = integer, min = -15, max = 15, default = 1,
+	page = AnthroTraits, translation = AnthroTraits_FeralBody_Cost,
+}
+
+option AnthroTraits.FeralDigestion_Cost
+{
+	type = integer, min = -15, max = 15, default = -4,
+	page = AnthroTraits, translation = AnthroTraits_FeralDigestion_Cost,
+}
+
 option AnthroTraits.FeralDigestionPoisonAmt
 {
 	type = integer, min = 10, max = 120, default = 20,
 	page = AnthroTraits, translation = AnthroTraits_FeralDigestionPoisonAmt,
 }
 
+option AnthroTraits.FoodMotivated_Cost
+{
+	type = integer, min = -15, max = 15, default = 1,
+	page = AnthroTraits, translation = AnthroTraits_FoodMotivated_Cost,
+}
+
 option AnthroTraits.FoodMotivatedBonus
 {
 	type = integer, min = 0, max = 100, default = 5,
 	page = AnthroTraits, translation = AnthroTraits_FoodMotivatedBonus,
+}
+
+option AnthroTraits.Herbivore_Cost
+{
+	type = integer, min = -15, max = 15, default = 2,
+	page = AnthroTraits, translation = AnthroTraits_Herbivore_Cost,
+}
+
+option AnthroTraits.Hooves_Cost
+{
+	type = integer, min = -15, max = 15, default = 4,
+	page = AnthroTraits, translation = AnthroTraits_Hooves_Cost,
+}
+
+option AnthroTraits.Immunity_Cost
+{
+	type = integer, min = -15, max = 15, default = 4,
+	page = AnthroTraits, translation = AnthroTraits_Immunity_Cost,
 }
 
 option AnthroTraits.ImmunityBiteInfectionChance
@@ -72,16 +150,28 @@ option AnthroTraits.ImmunityScratchInfectionChance
 	page = AnthroTraits, translation = AnthroTraits_ImmunityScratchInfectionChance,
 }
 
+option AnthroTraits.Lonely_Cost
+{
+	type = integer, min = -15, max = 15, default = -4,
+	page = AnthroTraits, translation = AnthroTraits_Lonely_Cost,
+}
+
 option AnthroTraits.LonelyHoursToAffect
 {
 	type = integer, min = 2, max = 100, default = 6,
-    page = AnthroTraits, translation = AnthroTraits_LonelyHoursToAffect,
+	page = AnthroTraits, translation = AnthroTraits_LonelyHoursToAffect,
 }
 
 option AnthroTraits.LonelyHourlyUnhappyIncrease
 {
 	type = double, min = 0, max = 1, default = .05,
-    page = AnthroTraits, translation = AnthroTraits_LonelyHourlyUnhappyIncrease,
+	page = AnthroTraits, translation = AnthroTraits_LonelyHourlyUnhappyIncrease,
+}
+
+option AnthroTraits.NaturalTumbler_Cost
+{
+	type = integer, min = -15, max = 15, default = 3,
+	page = AnthroTraits, translation = AnthroTraits_NaturalTumbler_Cost,
 }
 
 option AnthroTraits.NaturalTumblerFallTimeMult
@@ -90,10 +180,22 @@ option AnthroTraits.NaturalTumblerFallTimeMult
 	page = AnthroTraits, translation = AnthroTraits_NaturalTumblerFallTimeMult,
 }
 
+option AnthroTraits.Paws_Cost
+{
+	type = integer, min = -15, max = 15, default = 2,
+	page = AnthroTraits, translation = AnthroTraits_Paws_Cost,
+}
+
 option AnthroTraits.RightFoodBonus
 {
 	type = double, min = -2, max = 0, default = -0.5,
 	page = AnthroTraits, translation = AnthroTraits_RightFoodBonus,
+}
+
+option AnthroTraits.Stinky_Cost
+{
+	type = integer, min = -15, max = 15, default = -4,
+	page = AnthroTraits, translation = AnthroTraits_Stinky_Cost,
 }
 
 option AnthroTraits.StinkyCommentChance
@@ -114,22 +216,46 @@ option AnthroTraits.StinkyLoudness
 	page = AnthroTraits, translation = AnthroTraits_StinkyLoudness,
 }
 
+option AnthroTraits.Tail_Cost
+{
+	type = integer, min = -15, max = 15, default = 2,
+	page = AnthroTraits, translation = AnthroTraits_Tail_Cost,
+}
+
 option AnthroTraits.TailTripReduction
 {
 	type = double, min = 0, max = 100, default = 33,
 	page = AnthroTraits, translation = AnthroTraits_TailTripReduction,
 }
 
+option AnthroTraits.Torpor_Cost
+{
+	type = integer, min = -15, max = 15, default = -4,
+	page = AnthroTraits, translation = AnthroTraits_Torpor_Cost,
+}
+
 option AnthroTraits.TorporEnduranceDecrease
 {
 	type = double, min = 0, max = 1, default = .1,
-    page = AnthroTraits, translation = AnthroTraits_TorporEnduranceDecrease,
+	page = AnthroTraits, translation = AnthroTraits_TorporEnduranceDecrease,
+}
+
+option AnthroTraits.UnwieldyHands_Cost
+{
+	type = integer, min = -15, max = 15, default = -4,
+	page = AnthroTraits, translation = AnthroTraits_UnwieldyHands_Cost,
 }
 
 option AnthroTraits.UnwieldyHandsTimeIncrease
 {
 	type = double, min = 0, max = 1, default = .2,
 	page = AnthroTraits, translation = AnthroTraits_UnwieldyHandsTimeIncrease,
+}
+
+option AnthroTraits.VestigialWings_Cost
+{
+	type = integer, min = -15, max = 15, default = 5,
+	page = AnthroTraits, translation = AnthroTraits_VestigialWings_Cost,
 }
 
 option AnthroTraits.WrongFoodMalus
