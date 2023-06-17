@@ -42,6 +42,18 @@ option AnthroTraits.Carnivore_Cost
 	page = AnthroTraits, translation = AnthroTraits_Carnivore_Cost,
 }
 
+option AnthroTraits.CarnivoreBonus
+{
+	type = double, min = -1, max = 0, default = -0.5,
+    page = AnthroTraits, translation = AnthroTraits_CarnivoreBonus,
+}
+
+option AnthroTraits.CarnivoreMalus
+{
+	type = double, min = 0, max = 1, default = 0.5,
+    page = AnthroTraits, translation = AnthroTraits_CarnivoreMalus,
+}
+
 option AnthroTraits.CarrionEater_Cost
 {
 	type = integer, min = -15, max = 15, default = 3,
@@ -112,6 +124,18 @@ option AnthroTraits.Herbivore_Cost
 {
 	type = integer, min = -15, max = 15, default = 2,
 	page = AnthroTraits, translation = AnthroTraits_Herbivore_Cost,
+}
+
+option AnthroTraits.HerbivoreBonus
+{
+	type = double, min = -1, max = 0, default = -0.5,
+    page = AnthroTraits, translation = AnthroTraits_HerbivoreBonus,
+}
+
+option AnthroTraits.HerbivoreMalus
+{
+	type = double, min = 0, max = 1, default = 0.5,
+    page = AnthroTraits, translation = AnthroTraits_HerbivoreMalus,
 }
 
 option AnthroTraits.Hooves_Cost
@@ -186,12 +210,6 @@ option AnthroTraits.Paws_Cost
 	page = AnthroTraits, translation = AnthroTraits_Paws_Cost,
 }
 
-option AnthroTraits.RightFoodBonus
-{
-	type = double, min = -2, max = 0, default = -0.5,
-	page = AnthroTraits, translation = AnthroTraits_RightFoodBonus,
-}
-
 option AnthroTraits.Stinky_Cost
 {
 	type = integer, min = -15, max = 15, default = -4,
@@ -256,10 +274,4 @@ option AnthroTraits.VestigialWings_Cost
 {
 	type = integer, min = -15, max = 15, default = 5,
 	page = AnthroTraits, translation = AnthroTraits_VestigialWings_Cost,
-}
-
-option AnthroTraits.WrongFoodMalus
-{
-	type = double, min = 0, max = 1, default = 0.5,
-	page = AnthroTraits, translation = AnthroTraits_WrongFoodMalus,
 }

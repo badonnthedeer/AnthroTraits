@@ -337,8 +337,10 @@ ISEatFoodAction.perform = function(self)
     local charBodyDmg = PC:getBodyDamage();
     --local charNutrition = PC:getNutrition();
 
-    local rightFoodBonus = SandboxVars.AnthroTraits.RightFoodBonus;
-    local wrongFoodMalus = SandboxVars.AnthroTraits.WrongFoodMalus;
+    local CarnivoreBonus = SandboxVars.AnthroTraits.CarnivoreBonus;
+    local HerbivoreBonus = SandboxVars.AnthroTraits.HerbivoreBonus;
+    local CarnivoreMalus = SandboxVars.AnthroTraits.CarnivoreMalus;
+    local HerbivoreMalus = SandboxVars.AnthroTraits.HerbivoreMalus;
     local carrionEaterBonus = SandboxVars.AnthroTraits.CarrionEaterBonus;
     local foodMotivatedBonus = SandboxVars.AnthroTraits.FoodMotivatedBonus;
     local maxPoisonAmt = SandboxVars.AnthroTraits.FeralDigestionPoisonAmt
@@ -359,14 +361,14 @@ ISEatFoodAction.perform = function(self)
     then
         if foodEaten:hasTag("ATHerbivore")
         then
-            ApplyFoodTypeMod(wrongFoodMalus, PC, foodEaten, foodPercentEaten);
+            ApplyFoodTypeMod(CarnivoreMalus, PC, foodEaten, foodPercentEaten);
         elseif PC:HasTrait("AT_CarrionEater") and foodEaten:isRotten() and foodEaten:hasTag("ATCarnivore")
         then
-            ApplyFoodTypeMod((rightFoodBonus + carrionEaterBonus), PC, foodEaten, foodPercentEaten);
+            ApplyFoodTypeMod((CarnivoreBonus + carrionEaterBonus), PC, foodEaten, foodPercentEaten);
             NeutralizeFoodPoisoning(charBodyDmg, beforeFoodSickness, beforePoisonLevel);
         elseif foodEaten:hasTag("ATCarnivore")
         then
-            ApplyFoodTypeMod(rightFoodBonus, PC, foodEaten, foodPercentEaten);
+            ApplyFoodTypeMod(CarnivoreBonus, PC, foodEaten, foodPercentEaten);
             if not foodEaten:isRotten() and foodEaten:getPoisonPower() == 0
             then
                 NeutralizeFoodPoisoning(charBodyDmg, beforeFoodSickness, beforePoisonLevel);
@@ -376,14 +378,14 @@ ISEatFoodAction.perform = function(self)
     elseif PC:HasTrait("AT_Herbivore") then
         if foodEaten:hasTag("ATHerbivore")
         then
-            ApplyFoodTypeMod(rightFoodBonus, PC, foodEaten, foodPercentEaten);
+            ApplyFoodTypeMod(HerbivoreBonus, PC, foodEaten, foodPercentEaten);
             if not foodEaten:isRotten() and foodEaten:getPoisonPower() == 0
             then
                 NeutralizeFoodPoisoning(charBodyDmg, beforeFoodSickness, beforePoisonLevel);
             end
         elseif foodEaten:hasTag("ATCarnivore")
         then
-            ApplyFoodTypeMod(wrongFoodMalus, PC, foodEaten, foodPercentEaten);
+            ApplyFoodTypeMod(HerbivoreMalus, PC, foodEaten, foodPercentEaten);
         end
         --Necessary if a PC has carrion eater but not carnivore.
     elseif PC:HasTrait("AT_CarrionEater")
@@ -706,6 +708,7 @@ local function ATOnCharacterCollide(collider, collidee)
     end
 end
 
+
 local function ATOnObjectCollide(collider, collidee)
     if instanceof(collider, "IsoPlayer") and not collider:isZombie()
     then
@@ -867,7 +870,6 @@ local function ATLevelPerk(char, perk, level, increased)
         end
     end
 end
-
 
 
 local function ATPlayerUpdate(player)
