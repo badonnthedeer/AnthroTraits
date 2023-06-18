@@ -1,8 +1,8 @@
 UI_EN = {
     UI_trait_AT_Hooves = "Hoofed",
-    UI_trait_AT_Hooves_desc = "You have foot-hooves, which make you move faster, and your feet cannot be scratched, lacerated, or bitten.",
+    UI_trait_AT_Hooves_desc = "You have foot-hooves. Your feet cannot be scratched, lacerated, or bitten.<br>+1 Nimble",
     UI_trait_AT_Paws = "Pawed",
-    UI_trait_AT_Paws_desc = "You have foot-paws, which make you move stealthier.",
+    UI_trait_AT_Paws_desc = "You have foot-paws, which make you move stealthier.<br>+1 Stealth<br>+1 Lightfoot",
     UI_trait_AT_FeralBody = "Feral Body",
     UI_trait_AT_FeralBody_desc = "Like a feral, you are stronger but less fit.",
     UI_trait_AT_Immunity = "Anthro Immunity",
@@ -44,5 +44,5 @@ UI_EN = {
     UI_trait_AT_BeastOfBurden = "Beast of Burden",
     UI_trait_AT_BeastOfBurden_desc = "Your body's frame is well-built for carrying weight."
     UI_trait_AT_Digitigrade = "Digitigrade",
-    UI_trait_AT_Digitigrade_desc = "Your legs aren't straight, giving your stomps increased power."
+    UI_trait_AT_Digitigrade_desc = "Your legs aren't straight, giving your stomps increased power.<br>+1 Sprinting."
 }

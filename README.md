@@ -5,10 +5,13 @@ Do you really enjoy this mod, or even better want to build off of it? Please con
 <h1>Positive Trait List</h1>
 <ul>
     <li><h2>Hoofed</h2><br>
-    You have foot-hooves, which make you move faster, and your feet cannot be scratched, lacerated, or bitten.
+    You have foot-hooves. Your feet cannot be scratched, lacerated, or bitten.
+    +1 Nimble
     </li>
     <li><h2>Pawed</h2><br>
     You have foot-paws, which make you move stealthier.
+    +1 Stealth
+    +1 Lightfoot
     </li>
     <li><h2>Feral Body</h2><br>
     Like a feral, you are stronger but less fit.
@@ -46,9 +49,6 @@ Do you really enjoy this mod, or even better want to build off of it? Please con
     <li><h2>Tailed</h2><br>
     Your tail allows you to run with more balance, reducing trip chance.
     </li>
-    <li><h2>Slinky</h2><br>
-    Traverse through entryways, over fences, and open and close containers more quickly.
-    </li>
     <li><h2>Unwieldy Hands</h2><br>
     Actions requiring fine motor control are slower.
     </li>
@@ -56,7 +56,7 @@ Do you really enjoy this mod, or even better want to build off of it? Please con
     Your body's frame is well-built for carrying weight.<br>
     </li>
     <li><h2>Digitigrade</h2>
-    Your legs aren't straight, giving your stomps increased power.<br>
+    Your legs aren't straight, giving your stomps increased power.<br>+1 Sprinting.
     </li>
     <li><h2>Keen Smell (incoming)</h2>
     Detect corpses (walking or otherwise) by distance.<br>
@@ -113,15 +113,15 @@ This mod uses sandbox options to give you the most configurable experience I can
             </li>
         </ul>
     </li>
-    <li><h2>Carnivore/Herbivore</h2>
+    <li><h2>Carnivore</h2>
         <ul>
-            <li><h3>-ivore Food Bonus / RightFoodBonus</h3>
+            <li><h3>Carnivore Bonus / CarnivoreBonus</h3>
                 The percentage bonus that Carnivore/Herbivore gives you after eating.<br>
-                0-1, default 0.5 bonus
+                -1-0, default -0.5 bonus
             </li>
-            <li><h3>-ivore Food Malus / WrongFoodMalus</h3>
+            <li><h3>Carnivore Malus / CarnivoreMalus</h3>
                 The percentage malus that Carnivore/Herbivore gives you after eating.<br>
-                0-1, default -0.5 malus
+                0-1, default 0.5 malus
             </li>
         </ul>
     </li>
@@ -146,6 +146,18 @@ This mod uses sandbox options to give you the most configurable experience I can
             <li><h3>Feral Digestion Poison Amount / FeralDigestionPoisonAmt</h3>
                 The flat poison amount that Feral Digestion gives after eating the appropriate foods.<br>
                 10-120, default 20 (Note: 120 poison is the strength of bleach)
+            </li>
+        </ul>
+    </li>
+    <li><h2>Herbivore</h2>
+        <ul>
+            <li><h3>Herbivore Bonus / HerbivoreBonus</h3>
+                The percentage bonus that Herbivore gives you after eating.<br>
+                -1-0, default -0.5 bonus
+            </li>
+            <li><h3>Herbivore Malus / HerbivoreMalus</h3>
+                The percentage malus that Herbivore gives you after eating.<br>
+                0-1, default 0.5 malus
             </li>
         </ul>
     </li>

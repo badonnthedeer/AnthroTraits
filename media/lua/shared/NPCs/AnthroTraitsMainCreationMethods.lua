@@ -112,7 +112,8 @@ local function initAnthroTraits()
     TraitFactory.addTrait("AT_CarrionEater", getText("UI_trait_AT_CarrionEater"), 1, getText("UI_trait_AT_CarrionEater_desc"), false);
     TTF.Add("AT_CarrionEater", "Anthro,Carnivore,Scavenger");
 
-    TraitFactory.addTrait("AT_Digitigrade", getText("UI_trait_AT_Digitigrade"), 1, getText("UI_trait_AT_Digitigrade_desc"), false);
+    local AT_Digitigrade = TraitFactory.addTrait("AT_Digitigrade", getText("UI_trait_AT_Digitigrade"), 1, getText("UI_trait_AT_Digitigrade_desc"), false);
+    AT_Digitigrade:addXPBoost(Perks.Sprinting, 1)
     TTF.Add("AT_Digitigrade", "Anthro");
 
     TraitFactory.addTrait("AT_Exclaimer", getText("UI_trait_AT_Exclaimer"), -1, getText("UI_trait_AT_Exclaimer_desc"), false);
@@ -133,7 +134,6 @@ local function initAnthroTraits()
     TTF.Add("AT_Herbivore", "Anthro,Herbivore");
 
     local AT_Hooves = TraitFactory.addTrait("AT_Hooves", getText("UI_trait_AT_Hooves"), 1, getText("UI_trait_AT_Hooves_desc"), false);
-    AT_Hooves:addXPBoost(Perks.Sprinting, 1);
     AT_Hooves:addXPBoost(Perks.Nimble, 1);
     TTF.Add("AT_Hooves", "Anthro,Hooves");
 

@@ -82,15 +82,24 @@ This mod uses sandbox options to give you the most configurable experience I can
                 If you're bitten but not infected with the Knox Infection, replace with wound infection.
                 True/False, default true
         [/list]
-    [*][h2]Carnivore/Herbivore[/h2]
+    [*][h2]Carnivore[/h2]
         [list]
-            [*][h3]-ivore Food Bonus / RightFoodBonus[/h3]
-                The percentage bonus that Carnivore/Herbivore gives you after eating.
-                0-1, default 0.5 bonus
-            [*][h3]-ivore Food Malus / WrongFoodMalus[/h3]
-                The percentage malus that Carnivore/Herbivore gives you after eating.
-                0-1, default -0.5 malus
+            [*][h3] Carnivore Bonus / CarnivoreBonus[/h3]
+                The percentage bonus that Carnivore gives you after eating.
+                -1-0, default -0.5 bonus
+            [*][h3] Carnivore Malus / CarnivoreMalus[/h3]
+                The percentage malus that Carnivore gives you after eating.
+                0-1, default 0.5 malus
         [/list]
+    [*][h2]Herbivore[/h2]
+            [list]
+                [*][h3] Herbivore Bonus / HerbivoreBonus[/h3]
+                    The percentage bonus that Herbivore gives you after eating.
+                    -1-0, default -0.5 bonus
+                [*][h3] Herbivore Malus / HerbivoreMalus[/h3]
+                    The percentage malus that Herbivore gives you after eating.
+                    0-1, default 0.5 malus
+            [/list]
     [*][h2]Carrion Eater[/h2]
         [list]
             [*][h3]Carrion Food Stat Increase / CarrionEaterBonus[/h3]

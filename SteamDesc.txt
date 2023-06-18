@@ -6,9 +6,12 @@ Do you really enjoy this mod, or even better want to build off of it? Please con
 [h1]Positive Trait List[/h1]
 [list]
     [*][h2]Hoofed[/h2]
-    You have foot-hooves, which make you move faster, and your feet cannot be scratched, lacerated, or bitten.
+    You have foot-hooves. Your feet cannot be scratched, lacerated, or bitten.
+    +1 Nimble
     [*][h2]Pawed[/h2]
     You have foot-paws, which make you move stealthier.
+    +1 Stealth
+    +1 Lightfoot
     [*][h2]Feral Body[/h2]
     Like a feral, you are stronger but less fit.
     [*][h2]Anthro Immunity[/h2]
@@ -40,6 +43,7 @@ Do you really enjoy this mod, or even better want to build off of it? Please con
     Your body's frame is well-built for carrying weight.
     [*][h2]Digitigrade[/h2]
     Your legs aren't straight, giving your stomps increased power.
+    +1 Sprinting
     [*][h2]Keen Smell (upcoming)[/h2]
     Detect corpses (walking or otherwise) by distance.
 [/list]
