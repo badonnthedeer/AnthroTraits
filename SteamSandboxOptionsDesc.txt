@@ -133,8 +133,4 @@ It's advised to leave them on default settings.
                 The percentage increase of time it takes to do an action affected by Unwieldy Hands.
                 0-1, default 0.2
         [/list]
-
-
-
-
 [/list]

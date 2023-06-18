@@ -1,67 +1,66 @@
-Anthro Traits adds traits for anthropomorphic player characters, and uses Sandbox Options to create a very customizable experience. Plans are in motion to integrate with other mods to increase immersion!
+A mod for Project Zomboid that adds realistic, balanced traits for anthropomorphic player characters, and integrates with mods that provide furry player models.
 
-[h1]A message from the creator[/h1]
-Do you really enjoy this mod--or even better--want to build on it? Please consider [url=https://ko-fi.com/badonnthedeer]donating to me[/url] so I can pay my bills. I'm recently unemployed and every little bit helps!
-[hr][/hr]
 [h1]Positive Trait List[/h1]
 [list]
-    [*][h2]Hoofed[/h2]
-    You have foot-hooves. Your feet cannot be scratched, lacerated, or bitten.
-    +1 Nimble
-    [*][h2]Pawed[/h2]
-    You have foot-paws, which make you move stealthier.
-    +1 Stealth
-    +1 Lightfoot
-    [*][h2]Feral Body[/h2]
-    Like a feral, you are stronger but less fit.
-    [*][h2]Anthro Immunity[/h2]
-    Knox Infection is very rare, even from bites.
-    [*][h2]Herbivore[/h2]
-    After eating food classified as plant-based, gain an extra percentage of the stats the food affected
-    Note: This also lowers unhappiness gain or other negative effects by the same amount.
+    [*][h2]Beast of Burden[/h2]
+    Your body's frame is well-built for carrying weight.
+    [*][h2]Bug-o-ssieur[/h2]
+    You don't gain unhappiness when eating bugs.
+    [*][h2]Bull Rush[/h2]
+    When sprinting, knock zombies over at a cost of extra endurance.
     [*][h2]Carnivore[/h2]
     After eating food classified as meat, gain an extra percentage of the stats the food affected
     Note: This also lowers unhappiness gain or other negative effects by the same amount.
     [*][h2]Carrion Eater[/h2]
     Rotten meat's stats are more powerful, and don't make you sick.
+    [*][h2]Digitigrade[/h2]
+    Your legs aren't straight, giving your stomps increased power.
+    +1 Sprinting.
+    [*][h2]Feral Body[/h2]
+    Like a feral, you are stronger but less fit.
     [*][h2]Food Motivated[/h2]
     Food makes you slightly less unhappy and bored;
     Dog food doesn't make you unhappy.
+    [*][h2]Herbivore[/h2]
+    After eating food classified as plant-based, gain an extra percentage of the stats the food affected
+    Note: This also lowers unhappiness gain or other negative effects by the same amount.
+    [*][h2]Hoofed[/h2]
+    You have foot-hooves. Your feet cannot be scratched, lacerated, or bitten.
+    +1 Nimble
+    [*][h2]Anthro Immunity[/h2]
+    Knox Infection is very rare, even from bites.
     [*][h2]Natural Tumbler[/h2]
     The damage and severity of your falls are reduced.
-    [*][h2]Vestigial Wings[/h2]
-    You have enough of your ancestor's wings to not take fall damage.
-    [*][h2]Bug-o-ssieur[/h2]
-    You don't gain unhappiness when eating bugs.
-    [*][h2]Bull Rush[/h2]
-    When sprinting, knock zombies over at a cost of extra endurance.
+    [*][h2]Pawed[/h2]
+    You have foot-paws, which make you move stealthier.
+    +1 Stealth
+    +1 Lightfoot
     [*][h2]Tailed[/h2]
     Your tail allows you to run with more balance, reducing trip chance.
-    [*][h2]Unwieldy Hands[/h2]
-    Actions requiring fine motor control are slower.
-    [*][h2]Beast of Burden[/h2]
-    Your body's frame is well-built for carrying weight.
-    [*][h2]Digitigrade[/h2]
-    Your legs aren't straight, giving your stomps increased power.
-    +1 Sprinting
-    [*][h2]Keen Smell (upcoming)[/h2]
-    Detect corpses (walking or otherwise) by distance.
+    [*][h2]Vestigial Wings[/h2]
+    You have enough of your ancestor's wings to not take fall damage.
 [/list]
+
 [h1]Negative Trait List[/h1]
 [list]
+    [*][h2]Exclaimer[/h2]
+    When panicked, you have a good chance to vocalize your fear.
     [*][h2]Feral Digestion[/h2]
     Grape, onion, chocolate, gum, alcohol, and caffeine poison you.
     (Not an exhaustive list for real life, be careful what you feed your pets!)
-    [*][h2]Warning Call[/h2]
-    When panicked, you have a good chance to vocalize your fear.
-    [*][h2]Stinky[/h2]
-    You stink. Zombies will be more attracted to you and other players may comment on your smell.
     [*][h2]Lonely[/h2]
     You need a pack. Time spent away from others makes you unhappy.
+    [*][h2]Stinky[/h2]
+    You stink. Zombies will be more attracted to you and other players may comment on your smell.
     [*][h2]Torpor[/h2]
     Still affected by the winter, you have less endurance during the cold months.
+    [*][h2]Unwieldy Hands[/h2]
+    Actions requiring fine motor control are slower.
 [/list]
 [hr][/hr]
+[h1]A message from the creator[/h1]
+Do you really enjoy this mod--or even better--want to build on it? Please consider [url="https://ko-fi.com/badonnthedeer"]donating to me[/url] so I can pay my bills. I'm recently unemployed and every little bit helps!
+
 [h1]Special Thanks[/h1]
 to my friend who did the icon art for me, RadicallyRiley. I'd also like to thank the PZ Discord modding community, who were very patient with me in answering my many questions. In particular, I'd like to thank Albion from that group; she has a seemingly encyclopedic knowledge of PZ modding and a heaping portion of patience! Thank you to the other trait mods who I was able to reference when I was incredibly stumped, and thanks to the furry community for inspiring me to create something and give back.
 
