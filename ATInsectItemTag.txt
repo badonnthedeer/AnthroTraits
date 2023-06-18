@@ -1,9 +1,5 @@
-base.SilkMothCaterpillar
-base.BandedWoolyBearCaterpillar
-base.MonarchCaterpillar
-base.SawflyLarva
 base.AmericanLadyCaterpillar
-base.SwallowtailCaterpillar
+base.BandedWoolyBearCaterpillar
 base.Centipede
 base.Centipede2
 base.Cockroach
@@ -12,9 +8,13 @@ base.Grasshopper
 base.Maggots
 base.Millipede
 base.Millipede2
+base.MonarchCaterpillar
 base.Pillbug
+base.SawflyLarva
+base.SilkMothCaterpillar
 base.Slug
 base.Slug2
 base.Snail
+base.SwallowtailCaterpillar
 base.Termites
 base.Worm

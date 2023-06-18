@@ -1,7 +1,7 @@
 Anthro Traits adds traits for anthropomorphic player characters, and uses Sandbox Options to create a very customizable experience. Plans are in motion to integrate with other mods to increase immersion!
 
 [h1]A message from the creator[/h1]
-Do you really enjoy this mod, or even better want to build off of it? Please consider [url=https://ko-fi.com/badonnthedeer]donating to me[/url] so I can pay my bills. I'm recently unemployed and every little bit helps!
+Do you really enjoy this mod--or even better--want to build on it? Please consider [url=https://ko-fi.com/badonnthedeer]donating to me[/url] so I can pay my bills. I'm recently unemployed and every little bit helps!
 [hr][/hr]
 [h1]Positive Trait List[/h1]
 [list]
