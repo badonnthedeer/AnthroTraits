@@ -616,7 +616,7 @@ local function ATOnCharacterCollide(collider, collidee)
         -- if you ever figure out math, make it do a percentage taken away instead of a flat number
         local knockdownEndCost = math.max(SandboxVars.AnthroTraits.BullRushKnockdownEndCost - (((collider:getPerkLevel(Perks.Fitness) + collider:getPerkLevel(Perks.Strength)) - 10) / 100), .01)
         local colliderBehindCollidee = collidee:isFacingObject(collider, 0.5);
-        local modData = player:getModData().ATPlayerData;
+        local modData = collider:getModData().ATPlayerData;
         if getDebug()
         then
             print("ATOnCharacterCollide Triggered");
