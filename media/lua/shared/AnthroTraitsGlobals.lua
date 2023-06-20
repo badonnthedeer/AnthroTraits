@@ -1,6 +1,7 @@
 AnthroTraitsGlobals = {
     ModID="AnthroTraits",
-    ModVersion = 1.0,
+    WorkshopID= 2987213113,
+    ModVersion = 1.1,
     UnwieldyHandsAffectedTimedActions = {"ISBuildAction", "ISCureFliesAction", "ISCureMildewAction", "ISHarvestPlantAction", "ISSeedAction",
                                          "ISAddItemInRecipe", "ISAddWaterFromItemAction", "ISBarricadeAction", "ISCraftAction", "ISCutHair",
                                          "ISDismantleAction", "ISDyeHair", "ISEjectMagazine", "ISFixAction", "ISFixGenerator", "ISInsertMagazine",
