@@ -421,6 +421,14 @@ ISEatFoodAction.perform = function(self)
     DoVoreModifier(self.character, self.item, self.percentage)
 end
 
+local OriginalEatStop = ISEatFoodAction.stop;
+ISEatFoodAction.stop = function(self)
+    -- code to run before the original
+    OriginalEatStop(self);
+    -- code to run after the original
+    DoVoreModifier(self.character, self.item, self:getJobDelta())
+end
+
 
 local OriginalTimedActionCreate = ISBaseTimedAction.create;
 ISBaseTimedAction.create = function(self)
