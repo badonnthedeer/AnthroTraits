@@ -249,6 +249,91 @@ local function ApplyFoodTypeMod(modifier, character, foodEaten, percentEaten)
 end
 
 
+local function DoVoreModifier(character, foodEaten, foodPercentEaten)
+
+    --local charStats = PC:getStats();
+    local charBodyDmg = character:getBodyDamage();
+    --local charNutrition = PC:getNutrition();
+
+    local CarnivoreBonus = SandboxVars.AnthroTraits.CarnivoreBonus;
+    local HerbivoreBonus = SandboxVars.AnthroTraits.HerbivoreBonus;
+    local CarnivoreMalus = SandboxVars.AnthroTraits.CarnivoreMalus;
+    local HerbivoreMalus = SandboxVars.AnthroTraits.HerbivoreMalus;
+    local carrionEaterBonus = SandboxVars.AnthroTraits.CarrionEaterBonus;
+    local foodMotivatedBonus = SandboxVars.AnthroTraits.FoodMotivatedBonus;
+    local maxPoisonAmt = SandboxVars.AnthroTraits.FeralDigestionPoisonAmt
+
+    local beforeUnhappiness = charBodyDmg:getUnhappynessLevel();
+    local beforeFoodSickness = charBodyDmg:getFoodSicknessLevel();
+    local beforePoisonLevel = charBodyDmg:getPoisonLevel();
+
+
+    local foodDisplayName = foodEaten:getDisplayName();
+
+    if character:HasTrait("AT_Carnivore")
+    then
+        if foodEaten:hasTag("ATHerbivore")
+        then
+            ApplyFoodTypeMod(CarnivoreMalus, character, foodEaten, foodPercentEaten);
+        elseif character:HasTrait("AT_CarrionEater") and foodEaten:isRotten() and foodEaten:hasTag("ATCarnivore")
+        then
+            ApplyFoodTypeMod((CarnivoreBonus + carrionEaterBonus), character, foodEaten, foodPercentEaten);
+            NeutralizeFoodPoisoning(charBodyDmg, beforeFoodSickness, beforePoisonLevel);
+        elseif foodEaten:hasTag("ATCarnivore")
+        then
+            ApplyFoodTypeMod(CarnivoreBonus, character, foodEaten, foodPercentEaten);
+            if not foodEaten:isRotten() and foodEaten:getPoisonPower() == 0
+            then
+                NeutralizeFoodPoisoning(charBodyDmg, beforeFoodSickness, beforePoisonLevel);
+            end
+        end
+
+    elseif character:HasTrait("AT_Herbivore") then
+        if foodEaten:hasTag("ATHerbivore")
+        then
+            ApplyFoodTypeMod(HerbivoreBonus, character, foodEaten, foodPercentEaten);
+            if not foodEaten:isRotten() and foodEaten:getPoisonPower() == 0
+            then
+                NeutralizeFoodPoisoning(charBodyDmg, beforeFoodSickness, beforePoisonLevel);
+            end
+        elseif foodEaten:hasTag("ATCarnivore")
+        then
+            ApplyFoodTypeMod(HerbivoreMalus, character, foodEaten, foodPercentEaten);
+        end
+        --Necessary if a PC has carrion eater but not carnivore.
+    elseif character:HasTrait("AT_CarrionEater")
+    then
+        if foodEaten:hasTag("ATCarnivore")
+        then
+            ApplyFoodTypeMod(carrionEaterBonus, character, foodEaten, foodPercentEaten);
+            NeutralizeFoodPoisoning(charBodyDmg, beforeFoodSickness, beforePoisonLevel);
+
+        end
+    end
+
+    if character:HasTrait("AT_FoodMotivated")
+    then
+        charBodyDmg:setBoredomLevel(charBodyDmg:getBoredomLevel() - (foodMotivatedBonus * foodPercentEaten));
+        if(foodDisplayName == "Opened Dog Food")
+        then
+            --50 is unhappiness gain from dog food.
+            charBodyDmg:setUnhappynessLevel(charBodyDmg:getUnhappynessLevel() - ((50 + foodMotivatedBonus) * foodPercentEaten));
+        else
+            charBodyDmg:setUnhappynessLevel(charBodyDmg:getUnhappynessLevel() - (foodMotivatedBonus * foodPercentEaten));
+        end
+
+    end
+    if character:HasTrait("AT_FeralDigestion") and foodEaten:hasTag("ATFeralPoison")
+    then
+        charBodyDmg:setPoisonLevel(charBodyDmg:getPoisonLevel() + ((maxPoisonAmt) * foodPercentEaten))
+    end
+    if character:HasTrait("AT_Bug-o-ssieur") and foodEaten:hasTag("ATInsect")
+    then
+        charBodyDmg:setUnhappynessLevel(beforeUnhappiness);
+    end
+end
+
+
 local function ExclaimerCheck(player)
     local moodles = player:getMoodles();
     local panicLevel = moodles:getMoodleLevel(MoodleType.Panic);
@@ -331,94 +416,9 @@ end
 local OriginalEatPerform = ISEatFoodAction.perform;
 ISEatFoodAction.perform = function(self)
     -- code to run before the original
-
-    local PC = self.character
-    --local charStats = PC:getStats();
-    local charBodyDmg = PC:getBodyDamage();
-    --local charNutrition = PC:getNutrition();
-
-    local CarnivoreBonus = SandboxVars.AnthroTraits.CarnivoreBonus;
-    local HerbivoreBonus = SandboxVars.AnthroTraits.HerbivoreBonus;
-    local CarnivoreMalus = SandboxVars.AnthroTraits.CarnivoreMalus;
-    local HerbivoreMalus = SandboxVars.AnthroTraits.HerbivoreMalus;
-    local carrionEaterBonus = SandboxVars.AnthroTraits.CarrionEaterBonus;
-    local foodMotivatedBonus = SandboxVars.AnthroTraits.FoodMotivatedBonus;
-    local maxPoisonAmt = SandboxVars.AnthroTraits.FeralDigestionPoisonAmt
-
-    local beforeUnhappiness = charBodyDmg:getUnhappynessLevel();
-    local beforeFoodSickness = charBodyDmg:getFoodSicknessLevel();
-    local beforePoisonLevel = charBodyDmg:getPoisonLevel();
-
-
-    local foodEaten = self.item
-    local foodPercentEaten = self.percentage
-    local foodDisplayName = foodEaten:getDisplayName();
-
     OriginalEatPerform(self);
     -- code to run after the original
-
-    if PC:HasTrait("AT_Carnivore")
-    then
-        if foodEaten:hasTag("ATHerbivore")
-        then
-            ApplyFoodTypeMod(CarnivoreMalus, PC, foodEaten, foodPercentEaten);
-        elseif PC:HasTrait("AT_CarrionEater") and foodEaten:isRotten() and foodEaten:hasTag("ATCarnivore")
-        then
-            ApplyFoodTypeMod((CarnivoreBonus + carrionEaterBonus), PC, foodEaten, foodPercentEaten);
-            NeutralizeFoodPoisoning(charBodyDmg, beforeFoodSickness, beforePoisonLevel);
-        elseif foodEaten:hasTag("ATCarnivore")
-        then
-            ApplyFoodTypeMod(CarnivoreBonus, PC, foodEaten, foodPercentEaten);
-            if not foodEaten:isRotten() and foodEaten:getPoisonPower() == 0
-            then
-                NeutralizeFoodPoisoning(charBodyDmg, beforeFoodSickness, beforePoisonLevel);
-            end
-        end
-
-    elseif PC:HasTrait("AT_Herbivore") then
-        if foodEaten:hasTag("ATHerbivore")
-        then
-            ApplyFoodTypeMod(HerbivoreBonus, PC, foodEaten, foodPercentEaten);
-            if not foodEaten:isRotten() and foodEaten:getPoisonPower() == 0
-            then
-                NeutralizeFoodPoisoning(charBodyDmg, beforeFoodSickness, beforePoisonLevel);
-            end
-        elseif foodEaten:hasTag("ATCarnivore")
-        then
-            ApplyFoodTypeMod(HerbivoreMalus, PC, foodEaten, foodPercentEaten);
-        end
-        --Necessary if a PC has carrion eater but not carnivore.
-    elseif PC:HasTrait("AT_CarrionEater")
-    then
-        if foodEaten:hasTag("ATCarnivore")
-        then
-            ApplyFoodTypeMod(carrionEaterBonus, PC, foodEaten, foodPercentEaten);
-            NeutralizeFoodPoisoning(charBodyDmg, beforeFoodSickness, beforePoisonLevel);
-
-        end
-    end
-
-    if PC:HasTrait("AT_FoodMotivated")
-    then
-        charBodyDmg:setBoredomLevel(charBodyDmg:getBoredomLevel() - (foodMotivatedBonus * foodPercentEaten));
-        if(foodDisplayName == "Opened Dog Food")
-        then
-            --50 is unhappiness gain from dog food.
-            charBodyDmg:setUnhappynessLevel(charBodyDmg:getUnhappynessLevel() - ((50 + foodMotivatedBonus) * foodPercentEaten));
-        else
-            charBodyDmg:setUnhappynessLevel(charBodyDmg:getUnhappynessLevel() - (foodMotivatedBonus * foodPercentEaten));
-        end
-
-    end
-    if PC:HasTrait("AT_FeralDigestion") and foodEaten:hasTag("ATFeralPoison")
-    then
-        charBodyDmg:setPoisonLevel(charBodyDmg:getPoisonLevel() + ((maxPoisonAmt) * foodPercentEaten))
-    end
-    if PC:HasTrait("AT_Bug-o-ssieur") and foodEaten:hasTag("ATInsect")
-    then
-        charBodyDmg:setUnhappynessLevel(beforeUnhappiness);
-    end
-
+    DoVoreModifier(self.character, self.item, self.percentage)
 end
 
 
