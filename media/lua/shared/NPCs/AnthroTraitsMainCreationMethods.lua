@@ -10,162 +10,162 @@ local TTF = require("TraitTagFramework");
 
 
 local function initAnthroTraits()
-    --TTF.Add("Axeman", "Human,Anthro");
-    --TTF.Add("Handy", "Human,Anthro");
-    --TTF.Add("SpeedDemon", "Human,Anthro");
-    --TTF.Add("SundayDriver", "Human,Anthro");
-    --TTF.Add("Brave", "Human,Anthro");
-    --TTF.Add("Cowardly", "Human,Anthro");
-    --TTF.Add("Clumsy", "Human,Anthro");
-    --TTF.Add("Graceful", "Human,Anthro");
-    --TTF.Add("ShortSighted", "Human,Anthro");
-    --TTF.Add("HardOfHearing", "Human,Anthro");
-    --TTF.Add("Deaf", "Human,Anthro");
-    TTF.Add("KeenHearing", "Anthro,KeenHearing");
-    TTF.Add("EagleEyed", "Anthro,KeenVision");
-    --TTF.Add("HeartyAppitite", "Human,Anthro");
-    --TTF.Add("LightEater", "Human,Anthro");
-    TTF.Add("ThickSkinned", "Anthro,Tough");
-    --TTF.Add("Unfit", "Human,Anthro");
-    --TTF.Add("Out of Shape", "Human,Anthro");
-    --TTF.Add("Fit", "Human,Anthro");
-    --TTF.Add("Athletic", "Human,Anthro");
-    --TTF.Add("Nutritionist", "Human,Anthro");
-    --TTF.Add("Nutritionist2", "Human,Anthro");
-    --TTF.Add("Emaciated", "Human,Anthro");
-    --TTF.Add("Very Underweight", "Human,Anthro");
-    --TTF.Add("Underweight", "Human,Anthro");
-    --TTF.Add("Overweight", "Human,Anthro");
-    --TTF.Add("Obese", "Human,Anthro");
-    --TTF.Add("Strong", "Human,Anthro");
-    --TTF.Add("Stout", "Human,Anthro");
-    --TTF.Add("Weak", "Human,Anthro");
-    --TTF.Add("Feeble", "Human,Anthro");
-    --TTF.Add("Resilient", "Human,Anthro");
-    --TTF.Add("ProneToIllness", "Human,Anthro");
-    --TTF.Add("Agoraphobic", "Human,Anthro");
-    --TTF.Add("Claustophobic", "Human,Anthro");
-    --TTF.Add("Lucky", "Human,Anthro");
-    --TTF.Add("Unlucky", "Human,Anthro");
-    --TTF.Add("Marksman", "Human,Anthro");
-    --TTF.Add("NightOwl", "Human,Anthro");
-    --TTF.Add("Outdoorsman", "Human,Anthro");
-    --TTF.Add("FastHealer", "Human,Anthro");
-    --TTF.Add("FastLearner", "Human,Anthro");
-    --TTF.Add("FastReader", "Human,Anthro");
-    --TTF.Add("AdrenalineJunkie", "Human,Anthro");
-    --TTF.Add("Inconspicuous", "Human,Anthro");
-    --TTF.Add("NeedsLessSleep", "Human,Anthro");
-    TTF.Add("NightVision", "Anthro,KeenVision");
-    --TTF.Add("Organized", "Human,Anthro");
-    --TTF.Add("LowThirst", "Human,Anthro");
-    --TTF.Add("Burglar", "Human,Anthro");
-    --TTF.Add("FirstAid", "Human,Anthro");
-    --TTF.Add("Fishing", "Human,Anthro");
-    --TTF.Add("Gardener", "Human,Anthro");
-    --TTF.Add("Jogger", "Human,Anthro");
-    --TTF.Add("SlowHealer", "Human,Anthro");
-    --TTF.Add("SlowLearner", "Human,Anthro");
-    --TTF.Add("SlowReader", "Human,Anthro");
-    --TTF.Add("NeedsMoreSleep", "Human,Anthro");
-    --TTF.Add("Conspicuous", "Human,Anthro");
-    --TTF.Add("Disorganized", "Human,Anthro");
-    --TTF.Add("HighThirst", "Human,Anthro");
-    --TTF.Add("Illiterate", "Human,Anthro");
-    --TTF.Add("Insomniac", "Human,Anthro");
-    --TTF.Add("Pacifist", "Human,Anthro");
-    --TTF.Add("Thinskinned", "Human,Anthro");
-    --TTF.Add("Smoker", "Human,Anthro");
-    --TTF.Add("Tailor", "Human,Anthro");
-    --TTF.Add("Dextrous", "Human,Anthro");
-    --TTF.Add("AllThumbs", "Human,Anthro");
-    --TTF.Add("Desensitized", "Human,Anthro");
-    --TTF.Add("WeakStomach", "Human,Anthro");
-    TTF.Add("IronGut", "Anthro,Scavenger");
-    --TTF.Add("Hemophobic", "Human,Anthro");
-    --TTF.Add("Asthmatic", "Human,Anthro");
-    --TTF.Add("Cook", "Human,Anthro");
-    --TTF.Add("Cook2", "Human,Anthro");
-    --TTF.Add("Herbalist", "Human,Anthro");
-    --TTF.Add("Brawler", "Human,Anthro");
-    --TTF.Add("Formerscout", "Human,Anthro");
-    --TTF.Add("BaseballPlayer", "Human,Anthro");
-    --TTF.Add("Hiker", "Human,Anthro");
-    --TTF.Add("Hunter", "Human,Anthro");
-    --TTF.Add("Gymnast", "Human,Anthro");
-    --TTF.Add("Mechanics", "Human,Anthro");
-    --TTF.Add("Mechanics2", "Human,Anthro");
+    TTF.Add("Axeman", "Vanilla");
+    TTF.Add("Handy", "Vanilla");
+    TTF.Add("SpeedDemon", "Vanilla");
+    TTF.Add("SundayDriver", "Vanilla");
+    TTF.Add("Brave", "Vanilla");
+    TTF.Add("Cowardly", "Vanilla");
+    TTF.Add("Clumsy", "Vanilla");
+    TTF.Add("Graceful", "Vanilla");
+    TTF.Add("ShortSighted", "Vanilla");
+    TTF.Add("HardOfHearing", "Vanilla");
+    TTF.Add("Deaf", "Vanilla");
+    TTF.Add("KeenHearing", "Vanilla, Anthro,KeenHearing");
+    TTF.Add("EagleEyed", "Vanilla, Anthro,KeenVision");
+    TTF.Add("HeartyAppitite", "Vanilla");
+    TTF.Add("LightEater", "Vanilla");
+    TTF.Add("ThickSkinned", "Vanilla,Anthro,Tough");
+    TTF.Add("Unfit", "Vanilla");
+    TTF.Add("Out of Shape", "Vanilla");
+    TTF.Add("Fit", "Vanilla");
+    TTF.Add("Athletic", "Vanilla");
+    TTF.Add("Nutritionist", "Vanilla");
+    TTF.Add("Nutritionist2", "Vanilla");
+    TTF.Add("Emaciated", "Vanilla");
+    TTF.Add("Very Underweight", "Vanilla");
+    TTF.Add("Underweight", "Vanilla");
+    TTF.Add("Overweight", "Vanilla");
+    TTF.Add("Obese", "Vanilla");
+    TTF.Add("Strong", "Vanilla");
+    TTF.Add("Stout", "Vanilla");
+    TTF.Add("Weak", "Vanilla");
+    TTF.Add("Feeble", "Vanilla");
+    TTF.Add("Resilient", "Vanilla");
+    TTF.Add("ProneToIllness", "Vanilla");
+    TTF.Add("Agoraphobic", "Vanilla");
+    TTF.Add("Claustophobic", "Vanilla");
+    TTF.Add("Lucky", "Vanilla");
+    TTF.Add("Unlucky", "Vanilla");
+    TTF.Add("Marksman", "Vanilla");
+    TTF.Add("NightOwl", "Vanilla");
+    TTF.Add("Outdoorsman", "Vanilla");
+    TTF.Add("FastHealer", "Vanilla");
+    TTF.Add("FastLearner", "Vanilla");
+    TTF.Add("FastReader", "Vanilla");
+    TTF.Add("AdrenalineJunkie", "Vanilla");
+    TTF.Add("Inconspicuous", "Vanilla");
+    TTF.Add("NeedsLessSleep", "Vanilla");
+    TTF.Add("NightVision", "Vanilla,Anthro,KeenVision");
+    TTF.Add("Organized", "Vanilla");
+    TTF.Add("LowThirst", "Vanilla");
+    TTF.Add("Burglar", "Vanilla");
+    TTF.Add("FirstAid", "Vanilla");
+    TTF.Add("Fishing", "Vanilla");
+    TTF.Add("Gardener", "Vanilla");
+    TTF.Add("Jogger", "Vanilla");
+    TTF.Add("SlowHealer", "Vanilla");
+    TTF.Add("SlowLearner", "Vanilla");
+    TTF.Add("SlowReader", "Vanilla");
+    TTF.Add("NeedsMoreSleep", "Vanilla");
+    TTF.Add("Conspicuous", "Vanilla");
+    TTF.Add("Disorganized", "Vanilla");
+    TTF.Add("HighThirst", "Vanilla");
+    TTF.Add("Illiterate", "Vanilla");
+    TTF.Add("Insomniac", "Vanilla");
+    TTF.Add("Pacifist", "Vanilla");
+    TTF.Add("Thinskinned", "Vanilla");
+    TTF.Add("Smoker", "Vanilla");
+    TTF.Add("Tailor", "Vanilla");
+    TTF.Add("Dextrous", "Vanilla");
+    TTF.Add("AllThumbs", "Vanilla");
+    TTF.Add("Desensitized", "Vanilla");
+    TTF.Add("WeakStomach", "Vanilla");
+    TTF.Add("IronGut", "Vanilla,Anthro,Scavenger");
+    TTF.Add("Hemophobic", "Vanilla");
+    TTF.Add("Asthmatic", "Vanilla");
+    TTF.Add("Cook", "Vanilla");
+    TTF.Add("Cook2", "Vanilla");
+    TTF.Add("Herbalist", "Vanilla");
+    TTF.Add("Brawler", "Vanilla");
+    TTF.Add("Formerscout", "Vanilla");
+    TTF.Add("BaseballPlayer", "Vanilla");
+    TTF.Add("Hiker", "Vanilla");
+    TTF.Add("Hunter", "Vanilla");
+    TTF.Add("Gymnast", "Vanilla");
+    TTF.Add("Mechanics", "Vanilla");
+    TTF.Add("Mechanics2", "Vanilla");
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     TraitFactory.addTrait("AT_BeastOfBurden", getText("UI_trait_AT_BeastOfBurden"), 1, getText("UI_trait_AT_BeastOfBurden_desc"), false);
-    TTF.Add("AT_NaturalTumbler", "Anthro,Strong");
+    TTF.Add("AT_NaturalTumbler", "AnthroTraits,CostVariable,Anthro,Strong");
 
     TraitFactory.addTrait("AT_Bug-o-ssieur", getText("UI_trait_AT_Bug-o-ssieur"), 1, getText("UI_trait_AT_Bug-o-ssieur_desc"), false);
-    --TTF.Add("AT_Bug-o-ssieur", "Human,Anthro");
+    TTF.Add("AT_Bug-o-ssieur", "AnthroTraits,CostVariable");
 
     TraitFactory.addTrait("AT_BullRush", getText("UI_trait_AT_BullRush"), 1, getText("UI_trait_AT_BullRush_desc"), false);
-    TTF.Add("AT_BullRush", "Anthro,Horns");
+    TTF.Add("AT_BullRush", "AnthroTraits,CostVariable,Anthro,Horns");
 
     TraitFactory.addTrait("AT_Carnivore", getText("UI_trait_AT_Carnivore"), 1, getText("UI_trait_AT_Carnivore_desc"), false);
-    TTF.Add("AT_Carnivore", "Anthro,Carnivore");
+    TTF.Add("AT_Carnivore", "AnthroTraits,CostVariable,Anthro,Carnivore");
 
     TraitFactory.addTrait("AT_CarrionEater", getText("UI_trait_AT_CarrionEater"), 1, getText("UI_trait_AT_CarrionEater_desc"), false);
-    TTF.Add("AT_CarrionEater", "Anthro,Carnivore,Scavenger");
+    TTF.Add("AT_CarrionEater", "AnthroTraits,CostVariable,Anthro,Carnivore,Scavenger");
 
     local AT_Digitigrade = TraitFactory.addTrait("AT_Digitigrade", getText("UI_trait_AT_Digitigrade"), 1, getText("UI_trait_AT_Digitigrade_desc"), false);
     AT_Digitigrade:addXPBoost(Perks.Sprinting, 1)
-    TTF.Add("AT_Digitigrade", "Anthro");
+    TTF.Add("AT_Digitigrade", "AnthroTraits,CostVariable,Anthro");
 
     TraitFactory.addTrait("AT_Exclaimer", getText("UI_trait_AT_Exclaimer"), -1, getText("UI_trait_AT_Exclaimer_desc"), false);
-    --TTF.Add("AT_Exclaimer", "Human,Anthro");
+    TTF.Add("AT_Exclaimer", "AnthroTraits,CostVariable");
 
     local AT_FeralBody = TraitFactory.addTrait("AT_FeralBody", getText("UI_trait_AT_FeralBody"), 1, getText("UI_trait_AT_FeralBody_desc"), false);
     AT_FeralBody:addXPBoost(Perks.Strength, 1);
     AT_FeralBody:addXPBoost(Perks.Fitness, -1);
-    TTF.Add("AT_FeralBody", "Anthro");
+    TTF.Add("AT_FeralBody", "AnthroTraits,CostVariable,Anthro");
 
     TraitFactory.addTrait("AT_FeralDigestion", getText("UI_trait_AT_FeralDigestion"), -1, getText("UI_trait_AT_FeralDigestion_desc"), false);
-    TTF.Add("AT_FeralDigestion", "Anthro");
+    TTF.Add("AT_FeralDigestion", "AnthroTraits,CostVariable,Anthro");
 
     TraitFactory.addTrait("AT_FoodMotivated", getText("UI_trait_AT_FoodMotivated"), 1, getText("UI_trait_AT_FoodMotivated_desc"), false);
-    TTF.Add("AT_FoodMotivated", "Anthro");
+    TTF.Add("AT_FoodMotivated", "AnthroTraits,CostVariable,Anthro");
 
     TraitFactory.addTrait("AT_Herbivore", getText("UI_trait_AT_Herbivore"), 1, getText("UI_trait_AT_Herbivore_desc"), false);
-    TTF.Add("AT_Herbivore", "Anthro,Herbivore");
+    TTF.Add("AT_Herbivore", "AnthroTraits,CostVariable,Anthro,Herbivore");
 
     local AT_Hooves = TraitFactory.addTrait("AT_Hooves", getText("UI_trait_AT_Hooves"), 1, getText("UI_trait_AT_Hooves_desc"), false);
     AT_Hooves:addXPBoost(Perks.Nimble, 1);
-    TTF.Add("AT_Hooves", "Anthro,Hooves");
+    TTF.Add("AT_Hooves", "AnthroTraits,CostVariable,Anthro,Hooves");
 
     TraitFactory.addTrait("AT_Immunity", getText("UI_trait_AT_Immunity"), 1, getText("UI_trait_AT_Immunity_desc"), false);
-    TTF.Add("AT_Immunity", "Anthro");
+    TTF.Add("AT_Immunity", "AnthroTraits,CostVariable,Anthro");
     --add ability to ignore this trait if infected by a former (furry) player?
 
     TraitFactory.addTrait("AT_Lonely", getText("UI_trait_AT_Lonely"), -1, getText("UI_trait_AT_Lonely_desc"), false);
-    TTF.Add("AT_Lonely", "Anthro,Social"); --(Xochi suggestion)
+    TTF.Add("AT_Lonely", "AnthroTraits,CostVariable,Anthro,Social"); --(Xochi suggestion)
 
     TraitFactory.addTrait("AT_NaturalTumbler", getText("UI_trait_AT_NaturalTumbler"), 1, getText("UI_trait_AT_NaturalTumbler_desc"), false);
-    TTF.Add("AT_NaturalTumbler", "Anthro,Agile");
+    TTF.Add("AT_NaturalTumbler", "AnthroTraits,CostVariable,Anthro,Agile");
 
     local AT_Paws = TraitFactory.addTrait("AT_Paws", getText("UI_trait_AT_Paws"), 1, getText("UI_trait_AT_Paws_desc"), false);
     AT_Paws:addXPBoost(Perks.Lightfoot, 1);
     AT_Paws:addXPBoost(Perks.Sneak, 1);
-    TTF.Add("AT_Paws", "Anthro,Paws");
+    TTF.Add("AT_Paws", "AnthroTraits,CostVariable,Anthro,Paws");
 
     TraitFactory.addTrait("AT_Stinky", getText("UI_trait_AT_Stinky"), -1, getText("UI_trait_AT_Stinky_desc"), false);
-    --TTF.Add("AT_Stinky", "Human,Anthro");
+    TTF.Add("AT_Stinky", "AnthroTraits,CostVariable,");
 
     TraitFactory.addTrait("AT_Tail", getText("UI_trait_AT_Tail"), 1, getText("UI_trait_AT_Tail_desc"), false);
-    TTF.Add("AT_Tail", "Anthro,Tail");
+    TTF.Add("AT_Tail", "AnthroTraits,CostVariable,Anthro,Tail");
 
     TraitFactory.addTrait("AT_Torpor", getText("UI_trait_AT_Torpor"), -1, getText("UI_trait_AT_Torpor_desc"), false);
-    TTF.Add("AT_Torpor", "Anthro,Hibernator");
+    TTF.Add("AT_Torpor", "AnthroTraits,CostVariable,Anthro,Hibernator");
 
     TraitFactory.addTrait("AT_UnwieldyHands", getText("UI_trait_AT_UnwieldyHands"), -1, getText("UI_trait_AT_UnwieldyHands_desc"), false);
-    TTF.Add("AT_UnwieldyHands", "Anthro,ThreeFingers");
+    TTF.Add("AT_UnwieldyHands", "AnthroTraits,CostVariable,Anthro,ThreeFingers");
 
     TraitFactory.addTrait("AT_VestigialWings", getText("UI_trait_AT_VestigialWings"), 1, getText("UI_trait_AT_VestigialWings_desc"), false);
-    TTF.Add("AT_VestigialWings", "Anthro,Winged");
+    TTF.Add("AT_VestigialWings", "AnthroTraits,CostVariable,Anthro,Winged");
 
     -- (see ?lark?)TraitFactory.addTrait("AT_Diurnal", getText("UI_trait_AT_Diurnal"), 1, getText("UI_trait_AT_Diurnal_desc"), false);
 
