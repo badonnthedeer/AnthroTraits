@@ -413,6 +413,66 @@ end
 
 --VANILLA LUA FUNCTION HOOKS
 
+local OriginalEvolvedRecipeAdd = ISAddItemInRecipe.perform
+ISAddItemInRecipe.perform = function(self)
+
+    OriginalEvolvedRecipeAdd(self);
+    --get items in the recipe
+    local ingredients = self.baseItem:getExtraItems();
+    local tags = {}
+
+    --get all tags relating to food, and init table with string keys so their count can be added to
+    for _, tag in pairs(AnthroTraitsGlobals.EvolvedRecipeFoodTags)
+    do
+        tags[tag] = 0;
+    end
+
+    local tagWithLargestCount = "";
+    local tagWithLargestCountCount = 0;
+
+    --for each ingredient...
+    for i = 0, ingredients:size() -1
+    do
+        -- for each tag...
+        for tag, _ in pairs(tags)
+        do
+            --if the ingredient has this tag, up the count for that key in tags
+            local ingredient = ingredients:get(i) ;
+            local ingredientTags = getScriptManager():getItem(ingredient):getTags()
+            if ingredientTags:contains(tag)
+            then
+                tags[tag] = tags[tag] + 1;
+            end
+        end
+    end
+
+    --for each tag...
+    for tag, count in pairs(tags)
+    do
+        --record if the count is larger than the previous
+        if count > tagWithLargestCountCount
+        then
+            tagWithLargestCount = tag;
+            tagWithLargestCountCount = count;
+        end
+        --and remove the tag from the recipe to reset what food-tags it may already have
+        if self.baseItem:hasTag(tag)
+        then
+            self.baseItem:getTags():remove(tag);
+            --local tagB, tagE = allItemTags:find(tag);
+            --allItemTags = allItemTags:sub(0, tagB)..allItemTags:sub(tagE + 1, allItemTags:size()-1)
+        end
+    end
+
+    --if the largest count tag is present on greater than 50% of the recipe's items...
+    if tagWithLargestCountCount / ingredients:size() > .5
+    then
+        --add the tag to the item, so it can be handled appropriately when eaten.
+        self.baseItem:getTags():add(tagWithLargestCount);
+    end
+end
+
+
 local OriginalEatPerform = ISEatFoodAction.perform;
 ISEatFoodAction.perform = function(self)
     -- code to run before the original
