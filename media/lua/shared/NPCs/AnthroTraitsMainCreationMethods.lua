@@ -202,49 +202,50 @@ local function initAnthroTraits()
 
 end
 
---Cost modifier
 
-local traitMetatable = __classmetatables[Trait.class].__index
-local old_getCost = traitMetatable.getCost
----@param self Trait
-traitMetatable.getCost = function(self)
-    --can I use the "CostVariable" tag here, return all traits with that, compare self:getType() against that list, and if so
-    --can I grab SandboxVars.AnthroTraits[self:getType().."_cost"]?
-    --or maybe SandboxVars.AnthroTraits[self:getType().."_cost"] ~= nil?
-    if SandboxVars.AnthroTraits[self:getType().."_Cost"] ~= nil
-    then
-        return SandboxVars.AnthroTraits[self:getType().."_Cost"]
-    else
-        return old_getCost(self)
+local function refreshTraitCosts()
+    local affectedTraits = TTF.GetAllTraitsWithTag("CostVariable");
+
+    local ccp = MainScreen.instance.charCreationProfession
+
+    for _, trait in pairs(affectedTraits)
+    do
+        local label = trait:getLabel()
+        print("Right Label "..trait:getRightLabel());
+        print("Label "..trait:getLabel())
+        local newItem;
+        --remove traits in selected box
+        local selectedItems = ccp.listboxTraitSelected.items
+        for i=1, #selectedItems do
+            if selectedItems[i].item == trait then
+                ccp.pointToSpend = ccp.pointToSpend + toInt(trait:getRightLabel())
+                ccp.listboxTraitSelected:removeItem(label)
+                if trait:getCost() > 0
+                then
+                    newItem = ccp.listboxTrait:addItem(label, trait)
+                    newItem.tooltip = trait:getDescription()
+                else
+                    newItem = ccp.listboxBadTrait:addItem(label, trait)
+                    newItem.tooltip = trait:getDescription()
+                end
+                break
+            end
+        end
+        if toInt(trait:getRightLabel()) > 0
+        then
+            ccp.listboxTrait:removeItem(label)
+            newItem = ccp.listboxTrait:addItem(label, trait)
+            newItem.tooltip = trait:getDescription()
+        else
+            ccp.listboxBadTrait:removeItem(label)
+            ccp.listboxBadTrait:addItem(label, trait)
+        end
     end
+    CharacterCreationMain.sort(ccp.listboxTrait.items)
+    CharacterCreationMain.invertSort(ccp.listboxBadTrait.items)
+    CharacterCreationMain.sort(ccp.listboxTraitSelected.items)
 end
 
-local old_getRightLabel = traitMetatable.getRightLabel
----@param self Trait
-traitMetatable.getRightLabel = function(self)
-
-    if SandboxVars.AnthroTraits[self:getType().."_Cost"] ~= nil
-    then
-        local cost = SandboxVars.AnthroTraits[self:getType().."_Cost"];
-        local label = "+"
-
-        if cost > 0
-        then
-            label = "-"
-        elseif cost == 0
-        then
-            label = ""
-        end
-
-        if cost < 0
-        then
-            cost = cost * -1
-        end
-
-        return label..cost
-    else
-        return old_getRightLabel(self)
-    end
-end
 
 Events.OnGameBoot.Add(initAnthroTraits);
+Events.OnConnected.Add(refreshTraitCosts);
