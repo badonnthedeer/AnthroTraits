@@ -230,11 +230,11 @@ local function ApplyFoodTypeMod(modifier, character, foodEaten, percentEaten)
     then
         charStats:setThirst(charStats:getThirst() - ((foodThirstChange * modifier) * percentEaten));
     end
-    if foodBoredomChange ~= 0
+    if foodBoredomChange ~= 0 and foodBoredomChange < 0
     then
         charBodyDmg:setBoredomLevel(charBodyDmg:getBoredomLevel() - ((foodBoredomChange * modifier ) * percentEaten));
     end
-    if foodUnhappyChange ~= 0
+    if foodUnhappyChange ~= 0 and foodUnhappyChange < 0
     then
         charBodyDmg:setUnhappynessLevel(charBodyDmg:getUnhappynessLevel() - ((foodUnhappyChange * modifier ) * percentEaten));
     end
