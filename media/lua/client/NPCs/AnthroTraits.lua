@@ -72,9 +72,9 @@ end
 end]]
 
 local function HandleInfection(player)
-    local biteInfectionChance = SandboxVars.AnthroTraits.ImmunityBiteInfectionChance;
-    local lacerationInfectionChance = SandboxVars.AnthroTraits.ImmunityLacerationInfectionChance;
-    local scratchInfectionChance = SandboxVars.AnthroTraits.ImmunityScratchInfectionChance;
+    local biteInfectionChance = SandboxVars.AnthroTraits.AT_ImmunityBiteInfectionChance;
+    local lacerationInfectionChance = SandboxVars.AnthroTraits.AT_ImmunityLacerationInfectionChance;
+    local scratchInfectionChance = SandboxVars.AnthroTraits.AT_ImmunityScratchInfectionChance;
     if getDebug()
     then
         print("Handle Infection Triggered");
@@ -126,7 +126,7 @@ local function HandleInfection(player)
                         then
                             print("Infection defense successful.");
                         end
-                        if SandboxVars.AnthroTraits.ImmunityBiteGetsRegularInfectionOnDefense
+                        if SandboxVars.AnthroTraits.AT_ImmunityBiteGetsRegularInfectionOnDefense
                         then
                             bodypart:setInfectedWound(true);
                             if getDebug()
@@ -255,13 +255,13 @@ local function DoVoreModifier(character, foodEaten, foodPercentEaten)
     local charBodyDmg = character:getBodyDamage();
     --local charNutrition = PC:getNutrition();
 
-    local CarnivoreBonus = SandboxVars.AnthroTraits.CarnivoreBonus;
-    local HerbivoreBonus = SandboxVars.AnthroTraits.HerbivoreBonus;
-    local CarnivoreMalus = SandboxVars.AnthroTraits.CarnivoreMalus;
-    local HerbivoreMalus = SandboxVars.AnthroTraits.HerbivoreMalus;
-    local carrionEaterBonus = SandboxVars.AnthroTraits.CarrionEaterBonus;
-    local foodMotivatedBonus = SandboxVars.AnthroTraits.FoodMotivatedBonus;
-    local maxPoisonAmt = SandboxVars.AnthroTraits.FeralDigestionPoisonAmt
+    local CarnivoreBonus = SandboxVars.AnthroTraits.AT_CarnivoreBonus;
+    local HerbivoreBonus = SandboxVars.AnthroTraits.AT_HerbivoreBonus;
+    local CarnivoreMalus = SandboxVars.AnthroTraits.AT_CarnivoreMalus;
+    local HerbivoreMalus = SandboxVars.AnthroTraits.AT_HerbivoreMalus;
+    local carrionEaterBonus = SandboxVars.AnthroTraits.AT_CarrionEaterBonus;
+    local foodMotivatedBonus = SandboxVars.AnthroTraits.AT_FoodMotivatedBonus;
+    local maxPoisonAmt = SandboxVars.AnthroTraits.AT_FeralDigestionPoisonAmt
 
     local beforeUnhappiness = charBodyDmg:getUnhappynessLevel();
     local beforeFoodSickness = charBodyDmg:getFoodSicknessLevel();
@@ -338,7 +338,7 @@ local function ExclaimerCheck(player)
     local moodles = player:getMoodles();
     local panicLevel = moodles:getMoodleLevel(MoodleType.Panic);
     local playerSquare = player:getCurrentSquare();
-    local thresholdMultiplier = SandboxVars.AnthroTraits.ExclaimerExclaimThresholdMultiplier;
+    local thresholdMultiplier = SandboxVars.AnthroTraits.AT_ExclaimerExclaimThresholdMultiplier;
 
     local exclaimChance = ZombRand(1,100);
     local phraseChance = ZombRand(1, #AnthroTraitsGlobals.ExclaimPhrases);
@@ -363,9 +363,9 @@ end
 
 
 local function BeStinky(player)
-    local stinkyLoudness = SandboxVars.AnthroTraits.StinkyLoudness
-    local stinkyDistance = SandboxVars.AnthroTraits.StinkyDistance
-    local stinkyCommentChance = SandboxVars.AnthroTraits.StinkyCommentChance
+    local stinkyLoudness = SandboxVars.AnthroTraits.AT_StinkyLoudness
+    local stinkyDistance = SandboxVars.AnthroTraits.AT_StinkyDistance
+    local stinkyCommentChance = SandboxVars.AnthroTraits.AT_StinkyCommentChance
     local playerSquare = player:getCurrentSquare();
     local activePlayers = getNumActivePlayers();
     local playerInQuestion = player;
@@ -393,7 +393,7 @@ local function BeStinky(player)
 end
 
 local function LonelyUpdate(player)
-    local lonelyDistance = SandboxVars.AnthroTraits.StinkyDistance
+    local lonelyDistance = SandboxVars.AnthroTraits.AT_StinkyDistance
     local modData = player:getModData().ATPlayerData
     local activePlayers = getNumActivePlayers();
     local playerInQuestion = player;
@@ -499,7 +499,7 @@ ISBaseTimedAction.create = function(self)
         do
             if self.Type == action
             then
-                local newTime = self.maxTime * (1 + SandboxVars.AnthroTraits.UnwieldyHandsTimeIncrease)
+                local newTime = self.maxTime * (1 + SandboxVars.AnthroTraits.AT_UnwieldyHandsTimeIncrease)
                 if getDebug()
                 then
                     print("UnwieldyHands activated. Old time: "..tostring(self.maxTime).." New time: "..tostring(newTime));
@@ -535,7 +535,7 @@ ISInventoryPane.refreshContainer = function(self)
             else
                 if itemDisplayName:contains("Poisonous ") and item:getPoisonPower() <= 0
                 then
-                   item:setName(itemDisplayName:sub(11));
+                    item:setName(itemDisplayName:sub(11));
                 end
             end
         end
@@ -682,7 +682,7 @@ local function ATOnCharacterCollide(collider, collidee)
     then
         -- take the sandbox cost, modify it by the difference between the player's current strength/fitness and the average strength/fitness of 5. Then turn that into a decimal since endurance is a decimal. Pick .01 if the cost is lower.
         -- if you ever figure out math, make it do a percentage taken away instead of a flat number
-        local knockdownEndCost = math.max(SandboxVars.AnthroTraits.BullRushKnockdownEndCost - (((collider:getPerkLevel(Perks.Fitness) + collider:getPerkLevel(Perks.Strength)) - 10) / 100), .01)
+        local knockdownEndCost = math.max(SandboxVars.AnthroTraits.AT_BullRushKnockdownEndCost - (((collider:getPerkLevel(Perks.Fitness) + collider:getPerkLevel(Perks.Strength)) - 10) / 100), .01)
         local colliderBehindCollidee = collidee:isFacingObject(collider, 0.5);
         local modData = collider:getModData().ATPlayerData;
         if getDebug()
@@ -749,7 +749,7 @@ local function ATOnCharacterCollide(collider, collidee)
 
             local rolledChance = ZombRand(0,100);
 
-            if rolledChance <= SandboxVars.AnthroTraits.TailTripReduction
+            if rolledChance <= SandboxVars.AnthroTraits.AT_TailTripReduction
             then
                 modData.canTripChecked = true;
                 modData.tripSafe = true;
@@ -791,7 +791,7 @@ local function ATOnObjectCollide(collider, collidee)
         then
             local rolledChance = ZombRand(0,100);
 
-            if rolledChance <= SandboxVars.AnthroTraits.TailTripReduction
+            if rolledChance <= SandboxVars.AnthroTraits.AT_TailTripReduction
             then
                 collider:getStats():setTripping(false);
                 collider:setBumpFall(false);
@@ -826,7 +826,7 @@ local function ATOnClothingUpdated(gameChar)
         if shoes ~= nil then
             local vanillaShoes = InventoryItemFactory.CreateItem(shoes:getFullType())
             local vanillaStomp = vanillaShoes:getStompPower();
-            local digitigradeMultiplier = 1 + SandboxVars.AnthroTraits.DigitigradeStompPowerPctIncrease;
+            local digitigradeMultiplier = 1 + SandboxVars.AnthroTraits.AT_DigitigradeStompPowerPctIncrease;
             if player:HasTrait("AT_Digitigrade")
             then
                 shoes:setStompPower(vanillaStomp * digitigradeMultiplier);
@@ -837,7 +837,7 @@ local function ATOnClothingUpdated(gameChar)
             if player:HasTrait("AT_Digitigrade")
             then
                 --???? do something I guess
-                --shoes:setStompPower(vanillaShoe:getStompPower() * (1 + SandboxVars.AnthroTraits.DigitigradeStompPowerPctIncrease));
+                --shoes:setStompPower(vanillaShoe:getStompPower() * (1 + SandboxVars.AnthroTraits.AT_DigitigradeStompPowerPctIncrease));
             else
                 --shoes:setStompPower(vanillaShoe:getStompPower())
             end
@@ -892,9 +892,9 @@ local function ATEveryHours()
             if player:HasTrait("AT_Lonely")
             then
                 modData.HoursSinceSeenOthers = modData.HoursSinceSeenOthers + 1;
-                if modData.HoursSinceSeenOthers > SandboxVars.AnthroTraits.LonelyHoursToAffect
+                if modData.HoursSinceSeenOthers > SandboxVars.AnthroTraits.AT_LonelyHoursToAffect
                 then
-                    player:getBodyDamage():setUnhappynessLevel(player:getBodyDamage():getUnhappynessLevel() + SandboxVars.AnthroTraits.LonelyHourlyUnhappyIncrease);
+                    player:getBodyDamage():setUnhappynessLevel(player:getBodyDamage():getUnhappynessLevel() + SandboxVars.AnthroTraits.AT_LonelyHourlyUnhappyIncrease);
                 end
             end
         --end
@@ -941,7 +941,7 @@ end
 
 
 local function ATPlayerUpdate(player)
-    local fallTimeMult = SandboxVars.AnthroTraits.NaturalTumblerFallTimeMult;
+    local fallTimeMult = SandboxVars.AnthroTraits.AT_NaturalTumblerFallTimeMult;
     local modData =  player:getModData().ATPlayerData;
     local beforeFallTime = modData.oldFallTime;
     local endurance = player:getStats():getEndurance();
@@ -954,15 +954,15 @@ local function ATPlayerUpdate(player)
     --print("Temp: "..tostring(player:getBodyDamage():getTemperature()));
     if player:HasTrait("AT_BeastOfBurden")
     then
-        player:setMaxWeightBase(math.floor(modData.UnmoddedMaxWeightBase * (1 + SandboxVars.AnthroTraits.BeastOfBurdenPctIncrease)));
+        player:setMaxWeightBase(math.floor(modData.UnmoddedMaxWeightBase * (1 + SandboxVars.AnthroTraits.AT_BeastOfBurdenPctIncrease)));
     else
         player:setMaxWeightBase(math.floor(modData.UnmoddedMaxWeightBase));
     end
     if player:HasTrait("AT_Torpor") and modData.torporActive == true
     then
-        if endurance > (1.0 - SandboxVars.AnthroTraits.TorporEnduranceDecrease)
+        if endurance > (1.0 - SandboxVars.AnthroTraits.AT_TorporEnduranceDecrease)
         then
-            player:getStats():setEndurance(1.0 - SandboxVars.AnthroTraits.TorporEnduranceDecrease);
+            player:getStats():setEndurance(1.0 - SandboxVars.AnthroTraits.AT_TorporEnduranceDecrease);
         end
     end
     if player:HasTrait("AT_NaturalTumbler")

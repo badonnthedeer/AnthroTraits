@@ -208,167 +208,24 @@ local traitMetatable = __classmetatables[Trait.class].__index
 local old_getCost = traitMetatable.getCost
 ---@param self Trait
 traitMetatable.getCost = function(self)
-    if self:getType() == "AT_BeastOfBurden"
+    --can I use the "CostVariable" tag here, return all traits with that, compare self:getType() against that list, and if so
+    --can I grab SandboxVars.AnthroTraits[self:getType().."_cost"]?
+    --or maybe SandboxVars.AnthroTraits[self:getType().."_cost"] ~= nil?
+    if SandboxVars.AnthroTraits[self:getType().."_Cost"] ~= nil
     then
-        return SandboxVars.AnthroTraits.BeastOfBurden_Cost
-    elseif self:getType() == "AT_Bug-o-ssieur"
-    then
-        return SandboxVars.AnthroTraits.Bug_o_ssieur_Cost
-    elseif self:getType() == "AT_BullRush"
-    then
-        return SandboxVars.AnthroTraits.BullRush_Cost
-    elseif self:getType() == "AT_Carnivore"
-    then
-        return SandboxVars.AnthroTraits.Carnivore_Cost
-    elseif self:getType() == "AT_CarrionEater"
-    then
-        return SandboxVars.AnthroTraits.CarrionEater_Cost
-    elseif self:getType() == "AT_Digitigrade"
-    then
-        return SandboxVars.AnthroTraits.Digitigrade_Cost
-    elseif self:getType() == "AT_Exclaimer"
-    then
-        return SandboxVars.AnthroTraits.Exclaimer_Cost
-    elseif self:getType() == "AT_FeralBody"
-    then
-        return SandboxVars.AnthroTraits.FeralBody_Cost
-    elseif self:getType() == "AT_FeralDigestion"
-    then
-        return SandboxVars.AnthroTraits.FeralDigestion_Cost
-    elseif self:getType() == "AT_FoodMotivated"
-    then
-        return SandboxVars.AnthroTraits.FoodMotivated_Cost
-    elseif self:getType() == "AT_Herbivore"
-    then
-        return SandboxVars.AnthroTraits.Herbivore_Cost
-    elseif self:getType() == "AT_Hooves"
-    then
-        return SandboxVars.AnthroTraits.Hooves_Cost
-    elseif self:getType() == "AT_Immunity"
-    then
-        return SandboxVars.AnthroTraits.Immunity_Cost
-    elseif self:getType() == "AT_Lonely"
-    then
-        return SandboxVars.AnthroTraits.Lonely_Cost
-    elseif self:getType() == "AT_NaturalTumbler"
-    then
-        return SandboxVars.AnthroTraits.NaturalTumbler_Cost
-    elseif self:getType() == "AT_Paws"
-    then
-        return SandboxVars.AnthroTraits.Paws_Cost
-    elseif self:getType() == "AT_Stinky"
-    then
-        return SandboxVars.AnthroTraits.Stinky_Cost
-    elseif self:getType() == "AT_Tail"
-    then
-        return SandboxVars.AnthroTraits.Tail_Cost
-    elseif self:getType() == "AT_Torpor"
-    then
-        return SandboxVars.AnthroTraits.Torpor_Cost
-    elseif self:getType() == "AT_UnwieldyHands"
-    then
-        return SandboxVars.AnthroTraits.UnwieldyHands_Cost
-    elseif self:getType() == "AT_VestigialWings"
-    then
-        return SandboxVars.AnthroTraits.VestigialWings_Cost
+        return SandboxVars.AnthroTraits[self:getType().."_Cost"]
+    else
+        return old_getCost(self)
     end
-    return old_getCost(self)
 end
 
 local old_getRightLabel = traitMetatable.getRightLabel
 ---@param self Trait
 traitMetatable.getRightLabel = function(self)
-    local cost = 0;
-    local AT_Trait = false;
 
-    if self:getType() == "AT_BeastOfBurden"
+    if SandboxVars.AnthroTraits[self:getType().."_Cost"] ~= nil
     then
-        cost = SandboxVars.AnthroTraits.BeastOfBurden_Cost
-        AT_Trait = true;
-    elseif self:getType() == "AT_Bug-o-ssieur"
-    then
-        cost = SandboxVars.AnthroTraits.Bug_o_ssieur_Cost
-        AT_Trait = true;
-    elseif self:getType() == "AT_BullRush"
-    then
-        cost = SandboxVars.AnthroTraits.BullRush_Cost
-        AT_Trait = true;
-    elseif self:getType() == "AT_Carnivore"
-    then
-        cost = SandboxVars.AnthroTraits.Carnivore_Cost
-        AT_Trait = true;
-    elseif self:getType() == "AT_CarrionEater"
-    then
-        cost = SandboxVars.AnthroTraits.CarrionEater_Cost
-        AT_Trait = true;
-    elseif self:getType() == "AT_Digitigrade"
-    then
-        cost = SandboxVars.AnthroTraits.Digitigrade_Cost
-        AT_Trait = true;
-    elseif self:getType() == "AT_Exclaimer"
-    then
-        cost = SandboxVars.AnthroTraits.Exclaimer_Cost
-        AT_Trait = true;
-    elseif self:getType() == "AT_FeralBody"
-    then
-        cost = SandboxVars.AnthroTraits.FeralBody_Cost
-        AT_Trait = true;
-    elseif self:getType() == "AT_FeralDigestion"
-    then
-        cost = SandboxVars.AnthroTraits.FeralDigestion_Cost
-        AT_Trait = true;
-    elseif self:getType() == "AT_FoodMotivated"
-    then
-        cost = SandboxVars.AnthroTraits.FoodMotivated_Cost
-        AT_Trait = true;
-    elseif self:getType() == "AT_Herbivore"
-    then
-        cost = SandboxVars.AnthroTraits.Herbivore_Cost
-        AT_Trait = true;
-    elseif self:getType() == "AT_Hooves"
-    then
-        cost = SandboxVars.AnthroTraits.Hooves_Cost
-        AT_Trait = true;
-    elseif self:getType() == "AT_Immunity"
-    then
-        cost = SandboxVars.AnthroTraits.Immunity_Cost
-        AT_Trait = true;
-    elseif self:getType() == "AT_Lonely"
-    then
-        cost = SandboxVars.AnthroTraits.Lonely_Cost
-        AT_Trait = true;
-    elseif self:getType() == "AT_NaturalTumbler"
-    then
-        cost = SandboxVars.AnthroTraits.NaturalTumbler_Cost
-        AT_Trait = true;
-    elseif self:getType() == "AT_Paws"
-    then
-        cost = SandboxVars.AnthroTraits.Paws_Cost
-        AT_Trait = true;
-    elseif self:getType() == "AT_Stinky"
-    then
-        cost = SandboxVars.AnthroTraits.Stinky_Cost
-        AT_Trait = true;
-    elseif self:getType() == "AT_Tail"
-    then
-        cost = SandboxVars.AnthroTraits.Tail_Cost
-        AT_Trait = true;
-    elseif self:getType() == "AT_Torpor"
-    then
-        cost = SandboxVars.AnthroTraits.Torpor_Cost
-        AT_Trait = true;
-    elseif self:getType() == "AT_UnwieldyHands"
-    then
-        cost = SandboxVars.AnthroTraits.UnwieldyHands_Cost
-        AT_Trait = true;
-    elseif self:getType() == "AT_VestigialWings"
-    then
-        cost = SandboxVars.AnthroTraits.VestigialWings_Cost
-        AT_Trait = true;
-    end
-
-    if AT_Trait == true
-    then
+        local cost = SandboxVars.AnthroTraits[self:getType().."_Cost"];
         local label = "+"
 
         if cost > 0
