@@ -140,7 +140,7 @@ option AnthroTraits.HerbivoreMalus
 
 option AnthroTraits.Hooves_Cost
 {
-	type = integer, min = -15, max = 15, default = 4,
+	type = integer, min = -15, max = 15, default = 2,
 	page = AnthroTraits, translation = AnthroTraits_Hooves_Cost,
 }
 
