@@ -242,12 +242,16 @@ AnthroTraitsMainCreationMethods.sortTraits = function()
     do
         local label = trait:getLabel()
         local newItem;
+
+        --remove beforehand, since traits can not be removed
+        --from the other list if the new value is *-1
+        ccp.listboxTrait:removeItem(label)
+        ccp.listboxBadTrait:removeItem(label)
+
         if tonumber(trait:getRightLabel()) < 0
         then
-            ccp.listboxTrait:removeItem(label)
             newItem = ccp.listboxTrait:addItem(label, trait)
         else
-            ccp.listboxBadTrait:removeItem(label)
             ccp.listboxBadTrait:addItem(label, trait)
         end
     end
@@ -258,3 +262,10 @@ end
 
 return AnthroTraitsMainCreationMethods;
 
+--[[
+for i=1,BloodBodyPartType.MAX:index() do
+    local part = BloodBodyPartType.FromIndex(i-1)
+    if visual:getBlood(part) + visual:getDirt(part) > 0 then
+        units = units + 1
+    end
+end]]
