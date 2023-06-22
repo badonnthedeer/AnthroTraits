@@ -199,16 +199,9 @@ ISPlayerStatsChooseTraitUI.create = function(self)
 end]]
 
 
-local oldCCPOOMD = CharacterCreationProfession.onOptionMouseDown
-CharacterCreationProfession.onOptionMouseDown = function(...)
-    oldCCPOOMD(...);
-    ATCreation.refreshTraitCosts();
+local oldSOSMD = SandboxOptionsScreen.onOptionMouseDown
+SandboxOptionsScreen.onOptionMouseDown = function(...)
+    ATC.refundSelectedAffectedTraits();
+    oldSOSMD(...);
+    ATC.sortTraits();
 end
-
-
---[[local old_setSandboxVars = SandboxOptionsScreen.setSandboxVars
----@param self SandboxOptionsScreen
-SandboxOptionsScreen.setSandboxVars = function(self)
-    old_setSandboxVars(self)
-    refreshTraitCosts()
-end]]

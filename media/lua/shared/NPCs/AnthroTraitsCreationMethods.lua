@@ -203,40 +203,49 @@ AnthroTraitsMainCreationMethods.initAnthroTraits = function()
 
 end
 
-
-local function refreshTraitCosts()
-    local affectedTraits = TTF.GetAllTraitsWithTag("CostVariable");
-
+AnthroTraitsMainCreationMethods.refundSelectedAffectedTraits = function()
+    local this = AnthroTraitsMainCreationMethods;
     local ccp = MainScreen.instance.charCreationProfession
+    local affectedTraits = this.TTF.GetAllTraitsWithTag("CostVariable");
+    local selectedItems = ccp.listboxTraitSelected.items
+
+    if selectedItems ~= nil
+    then
+        for _, trait in pairs(affectedTraits)
+        do
+            local label = trait:getLabel()
+            local newItem;
+            --remove traits in selected box
+            for _, entry in pairs(selectedItems) do
+                if entry.item == trait then
+                    ccp.pointToSpend = ccp.pointToSpend - tonumber(trait:getRightLabel());
+                    ccp.listboxTraitSelected:removeItem(label);
+                    if trait:getCost() > 0
+                    then
+                        newItem = ccp.listboxTrait:addItem(label, trait)
+                    else
+                        newItem = ccp.listboxBadTrait:addItem(label, trait)
+                    end
+                    break
+                end
+            end
+        end
+    end
+end
+
+AnthroTraitsMainCreationMethods.sortTraits = function()
+    local this = AnthroTraitsMainCreationMethods;
+    local ccp = MainScreen.instance.charCreationProfession;
+    local affectedTraits = this.TTF.GetAllTraitsWithTag("CostVariable");
 
     for _, trait in pairs(affectedTraits)
     do
         local label = trait:getLabel()
-        print("Right Label "..trait:getRightLabel());
-        print("Label "..trait:getLabel())
         local newItem;
-        --remove traits in selected box
-        local selectedItems = ccp.listboxTraitSelected.items
-        for i=1, #selectedItems do
-            if selectedItems[i].item == trait then
-                ccp.pointToSpend = ccp.pointToSpend + toInt(trait:getRightLabel())
-                ccp.listboxTraitSelected:removeItem(label)
-                if trait:getCost() > 0
-                then
-                    newItem = ccp.listboxTrait:addItem(label, trait)
-                    newItem.tooltip = trait:getDescription()
-                else
-                    newItem = ccp.listboxBadTrait:addItem(label, trait)
-                    newItem.tooltip = trait:getDescription()
-                end
-                break
-            end
-        end
-        if toInt(trait:getRightLabel()) > 0
+        if tonumber(trait:getRightLabel()) < 0
         then
             ccp.listboxTrait:removeItem(label)
             newItem = ccp.listboxTrait:addItem(label, trait)
-            newItem.tooltip = trait:getDescription()
         else
             ccp.listboxBadTrait:removeItem(label)
             ccp.listboxBadTrait:addItem(label, trait)
