@@ -1,4 +1,4 @@
-AnthroTraitsMainCreationMethods = {}
+local AnthroTraitsMainCreationMethods = {}
 AnthroTraitsMainCreationMethods.TTF = require("TraitTagFramework");
 
 -- C:\Program Files (x86)\Steam\3steamapps\common\ProjectZomboid\media\lua | Project Zomboid files
@@ -259,6 +259,9 @@ AnthroTraitsMainCreationMethods.sortTraits = function()
     CharacterCreationMain.invertSort(ccp.listboxBadTrait.items)
     CharacterCreationMain.sort(ccp.listboxTraitSelected.items)
 end
+
+Events.OnGameBoot.Add(AnthroTraitsMainCreationMethods.initAnthroTraits);
+Events.OnConnected.Add(AnthroTraitsMainCreationMethods.refreshTraitCosts);
 
 return AnthroTraitsMainCreationMethods;
 

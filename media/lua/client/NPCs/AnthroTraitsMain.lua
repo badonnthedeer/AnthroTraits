@@ -1,4 +1,4 @@
-AnthroTraitsMain = {};
+local AnthroTraitsMain = {};
 
 
 AnthroTraitsMain.HandleInfection = function(player)
@@ -803,9 +803,6 @@ Events.EveryHours.Add(AnthroTraitsMain.ATEveryHours);
 Events.EveryOneMinute.Add(AnthroTraitsMain.ATEveryOneMinute);
 Events.OnPlayerGetDamage.Add(AnthroTraitsMain.ATPlayerDamageTick);
 Events.OnPlayerUpdate.Add(AnthroTraitsMain.ATPlayerUpdate);
-
-Events.OnGameBoot.Add(AnthroTraitsMainCreationMethods.initAnthroTraits);
-Events.OnConnected.Add(AnthroTraitsMainCreationMethods.refreshTraitCosts);
 
 
 return AnthroTraitsMain;

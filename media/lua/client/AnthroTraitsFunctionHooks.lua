@@ -1,5 +1,5 @@
-local ATM = AnthroTraitsMain;
-local ATC = AnthroTraitsMainCreationMethods;
+local ATM = require("NPCs/AnthroTraitsMain");
+local ATC = require("NPCs/AnthroTraitsCreationMethods");
 require('AnthroTraitsGlobals');
 
 

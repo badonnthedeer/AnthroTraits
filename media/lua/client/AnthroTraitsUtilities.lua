@@ -1,4 +1,4 @@
-AnthroTraitsUtilities = {}
+local AnthroTraitsUtilities = {}
 
 
 --UTILITIES
