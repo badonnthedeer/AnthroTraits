@@ -1,77 +1,7 @@
-require('AnthroTraitsGlobals');
-local TTF = require("TraitTagFramework");
-
---UTILITIES
-local function FileExists(path)
-
-    local reader = getModFileReader(AnthroTraitsGlobals.ModID, path, false);
-    if not reader
-    then
-        return false
-    else
-        reader:close();
-        return true
-    end
-end
+AnthroTraitsMain = {};
 
 
-local function AddItemTagToItemsFromFile(path, tag)
-    if not FileExists(path)
-    then
-        print("Cannot find file");
-        return {};
-    end
-
-    local reader = getModFileReader(AnthroTraitsGlobals.ModID, path, false);
-    local line;
-    local foundItem;
-    local itemTags;
-
-    while reader:ready()
-    do
-        line = reader:readLine();
-        foundItem = getScriptManager():getItem(line);
-        if foundItem ~= nil
-        then
-            itemTags = foundItem:getTags();
-            if not itemTags:contains(tag)
-            then
-                itemTags:add(tag);
-                if getDebug()
-                then
-                    print("tag "..tag.." added to "..line);
-                end
-            end
-        else
-            print("Cannot find item "..line.." to add tag "..tag);
-        end
-    end
-    reader:close();
-end
-
---[[local function InitTableFromFile(path)
-    if not FileExists(path)
-    then
-        print("Cannot find file");
-        return {};
-    end
-
-    local reader = getModFileReader(AnthroTraitsGlobals.ModID, path, false);
-    local line;
-    local returnTable = {}
-    local returnTableCurrentIndex = 1;
-
-    while reader:ready()
-    do
-        line = reader:readLine();
-        returnTable[returnTableCurrentIndex] = line;
-        returnTableCurrentIndex = returnTableCurrentIndex + 1;
-    end
-    reader:close();
-    return returnTable;
-end]]
-
-local function HandleInfection(player)
+AnthroTraitsMain.HandleInfection = function(player)
     local biteInfectionChance = SandboxVars.AnthroTraits.AT_ImmunityBiteInfectionChance;
     local lacerationInfectionChance = SandboxVars.AnthroTraits.AT_ImmunityLacerationInfectionChance;
     local scratchInfectionChance = SandboxVars.AnthroTraits.AT_ImmunityScratchInfectionChance;
@@ -194,7 +124,7 @@ local function HandleInfection(player)
 end
 
 
-local function NeutralizeFoodPoisoning(charBodyDmg, beforeFoodSickness, beforePoisonLevel)
+AnthroTraitsMain.NeutralizeFoodPoisoning = function(charBodyDmg, beforeFoodSickness, beforePoisonLevel)
     if getDebug()
     then
         print("Food Poisoning neutralized.");
@@ -204,7 +134,7 @@ local function NeutralizeFoodPoisoning(charBodyDmg, beforeFoodSickness, beforePo
 end
 
 
-local function ApplyFoodTypeMod(modifier, character, foodEaten, percentEaten)
+AnthroTraitsMain.ApplyFoodTypeMod = function(modifier, character, foodEaten, percentEaten)
     local foodBaseHunger = foodEaten:getBaseHunger();
     --local foodHungChange = foodEaten:getHungerChange();
     local foodThirstChange = foodEaten:getThirstChange();
@@ -249,7 +179,7 @@ local function ApplyFoodTypeMod(modifier, character, foodEaten, percentEaten)
 end
 
 
-local function DoVoreModifier(character, foodEaten, foodPercentEaten)
+AnthroTraitsMain.DoVoreModifier = function(character, foodEaten, foodPercentEaten)
 
     --local charStats = PC:getStats();
     local charBodyDmg = character:getBodyDamage();
@@ -267,46 +197,49 @@ local function DoVoreModifier(character, foodEaten, foodPercentEaten)
     local beforeFoodSickness = charBodyDmg:getFoodSicknessLevel();
     local beforePoisonLevel = charBodyDmg:getPoisonLevel();
 
-
     local foodDisplayName = foodEaten:getDisplayName();
+
+    local this = AnthroTraitsMain;
+
+
 
     if character:HasTrait("AT_Carnivore")
     then
         if foodEaten:hasTag("ATHerbivore")
         then
-            ApplyFoodTypeMod(CarnivoreMalus, character, foodEaten, foodPercentEaten);
+            this.ApplyFoodTypeMod(CarnivoreMalus, character, foodEaten, foodPercentEaten);
         elseif character:HasTrait("AT_CarrionEater") and foodEaten:isRotten() and foodEaten:hasTag("ATCarnivore")
         then
-            ApplyFoodTypeMod((CarnivoreBonus + carrionEaterBonus), character, foodEaten, foodPercentEaten);
-            NeutralizeFoodPoisoning(charBodyDmg, beforeFoodSickness, beforePoisonLevel);
+            this.ApplyFoodTypeMod((CarnivoreBonus + carrionEaterBonus), character, foodEaten, foodPercentEaten);
+            this.NeutralizeFoodPoisoning(charBodyDmg, beforeFoodSickness, beforePoisonLevel);
         elseif foodEaten:hasTag("ATCarnivore")
         then
-            ApplyFoodTypeMod(CarnivoreBonus, character, foodEaten, foodPercentEaten);
+            this.ApplyFoodTypeMod(CarnivoreBonus, character, foodEaten, foodPercentEaten);
             if not foodEaten:isRotten() and foodEaten:getPoisonPower() == 0
             then
-                NeutralizeFoodPoisoning(charBodyDmg, beforeFoodSickness, beforePoisonLevel);
+                this.NeutralizeFoodPoisoning(charBodyDmg, beforeFoodSickness, beforePoisonLevel);
             end
         end
 
     elseif character:HasTrait("AT_Herbivore") then
         if foodEaten:hasTag("ATHerbivore")
         then
-            ApplyFoodTypeMod(HerbivoreBonus, character, foodEaten, foodPercentEaten);
+            this.ApplyFoodTypeMod(HerbivoreBonus, character, foodEaten, foodPercentEaten);
             if not foodEaten:isRotten() and foodEaten:getPoisonPower() == 0
             then
-                NeutralizeFoodPoisoning(charBodyDmg, beforeFoodSickness, beforePoisonLevel);
+                this.NeutralizeFoodPoisoning(charBodyDmg, beforeFoodSickness, beforePoisonLevel);
             end
         elseif foodEaten:hasTag("ATCarnivore")
         then
-            ApplyFoodTypeMod(HerbivoreMalus, character, foodEaten, foodPercentEaten);
+            this.ApplyFoodTypeMod(HerbivoreMalus, character, foodEaten, foodPercentEaten);
         end
         --Necessary if a PC has carrion eater but not carnivore.
     elseif character:HasTrait("AT_CarrionEater")
     then
         if foodEaten:hasTag("ATCarnivore")
         then
-            ApplyFoodTypeMod(carrionEaterBonus, character, foodEaten, foodPercentEaten);
-            NeutralizeFoodPoisoning(charBodyDmg, beforeFoodSickness, beforePoisonLevel);
+            this.ApplyFoodTypeMod(carrionEaterBonus, character, foodEaten, foodPercentEaten);
+            this.NeutralizeFoodPoisoning(charBodyDmg, beforeFoodSickness, beforePoisonLevel);
 
         end
     end
@@ -334,7 +267,7 @@ local function DoVoreModifier(character, foodEaten, foodPercentEaten)
 end
 
 
-local function ExclaimerCheck(player)
+AnthroTraitsMain.ExclaimerCheck = function(player)
     local moodles = player:getMoodles();
     local panicLevel = moodles:getMoodleLevel(MoodleType.Panic);
     local playerSquare = player:getCurrentSquare();
@@ -362,7 +295,7 @@ local function ExclaimerCheck(player)
 end
 
 
-local function BeStinky(player)
+AnthroTraitsMain.BeStinky = function(player)
     local stinkyLoudness = SandboxVars.AnthroTraits.AT_StinkyLoudness
     local stinkyDistance = SandboxVars.AnthroTraits.AT_StinkyDistance
     local stinkyCommentChance = SandboxVars.AnthroTraits.AT_StinkyCommentChance
@@ -392,7 +325,7 @@ local function BeStinky(player)
     end
 end
 
-local function LonelyUpdate(player)
+AnthroTraitsMain.LonelyUpdate = function(player)
     local lonelyDistance = SandboxVars.AnthroTraits.AT_StinkyDistance
     local modData = player:getModData().ATPlayerData
     local activePlayers = getNumActivePlayers();
@@ -414,7 +347,7 @@ end
 
 --EVENT HANDLERS
 
-local function ATInitPlayerData(player)
+AnthroTraitsMain.ATInitPlayerData = function(player)
 
     local modData = player:getModData();
 
@@ -434,15 +367,18 @@ local function ATInitPlayerData(player)
 end
 
 
-function ATOnInitWorld()
-    AddItemTagToItemsFromFile("ATCarnivoreItemTag.txt", "ATCarnivore");
-    AddItemTagToItemsFromFile("ATHerbivoreItemTag.txt", "ATHerbivore");
-    AddItemTagToItemsFromFile("ATInsectItemTag.txt", "ATInsect");
-    AddItemTagToItemsFromFile("ATFeralPoisonItemTag.txt", "ATFeralPoison");
+AnthroTraitsMain.ATOnInitWorld = function()
+    local ATU = AnthroTraitsUtilities;
+    ATU.AddItemTagToItemsFromFile("ATCarnivoreItemTag.txt", "ATCarnivore");
+    ATU.AddItemTagToItemsFromFile("ATHerbivoreItemTag.txt", "ATHerbivore");
+    ATU.AddItemTagToItemsFromFile("ATInsectItemTag.txt", "ATInsect");
+    ATU.AddItemTagToItemsFromFile("ATFeralPoisonItemTag.txt", "ATFeralPoison");
 end
 
 
-local function ATPlayerDamageTick(player)
+AnthroTraitsMain.ATPlayerDamageTick = function(player)
+    local this = AnthroTraitsMain;
+
     if player:isZombie()
     then
         return
@@ -456,7 +392,7 @@ local function ATPlayerDamageTick(player)
         then
             print("Handle Infection about to be triggered");
         end
-        playerData.trulyInfected = HandleInfection(player);
+        playerData.trulyInfected = this.HandleInfection(player);
     end
 
     if player:HasTrait("AT_Hooves")
@@ -525,7 +461,7 @@ local function ATPlayerDamageTick(player)
 end
 
 
-local function ATOnCharacterCollide(collider, collidee)
+AnthroTraitsMain.ATOnCharacterCollide = function(collider, collidee)
     if instanceof(collider, "IsoPlayer") and collider:isLocalPlayer()
     then
         -- take the sandbox cost, modify it by the difference between the player's current strength/fitness and the average strength/fitness of 5. Then turn that into a decimal since endurance is a decimal. Pick .01 if the cost is lower.
@@ -625,7 +561,7 @@ local function ATOnCharacterCollide(collider, collidee)
 end
 
 
-local function ATOnObjectCollide(collider, collidee)
+AnthroTraitsMain.ATOnObjectCollide = function(collider, collidee)
     if instanceof(collider, "IsoPlayer") and not collider:isZombie() and collider:isLocalPlayer()
     then
         local modData = collider:getModData().ATPlayerData;
@@ -665,7 +601,7 @@ local function ATOnObjectCollide(collider, collidee)
 end
 
 
-local function ATOnClothingUpdated(gameChar)
+AnthroTraitsMain.ATOnClothingUpdated = function(gameChar)
     if instanceof(gameChar, "IsoPlayer")
     then
         local player = gameChar
@@ -694,7 +630,8 @@ local function ATOnClothingUpdated(gameChar)
 end
 
 
-local function ATEveryOneMinute()
+AnthroTraitsMain.ATEveryOneMinute = function()
+    local this = AnthroTraitsMain;
     local activePlayers = getNumActivePlayers()
     if activePlayers >= 1
     then
@@ -715,11 +652,11 @@ local function ATEveryOneMinute()
 
                 if player:HasTrait("AT_Exclaimer")
                 then
-                    ExclaimerCheck(player);
+                    this.ExclaimerCheck(player);
                 end
                 if player:HasTrait("AT_Stinky")
                 then
-                    BeStinky(player);
+                    this.BeStinky(player);
                 end
                 modData.canTripChecked = false;
                 modData.tripSafe = false;
@@ -729,7 +666,7 @@ local function ATEveryOneMinute()
 end
 
 
-local function ATEveryHours()
+AnthroTraitsMain.ATEveryHours = function()
     local activePlayers = getNumActivePlayers();
     if activePlayers >= 1
     then
@@ -750,7 +687,7 @@ local function ATEveryHours()
 end
 
 
-local function ATEveryDays()
+AnthroTraitsMain.ATEveryDays = function()
     local activePlayers = getNumActivePlayers();
     local season = getClimateManager():getSeason():getSeasonName();
 
@@ -772,7 +709,7 @@ local function ATEveryDays()
 end
 
 
-local function ATLevelPerk(char, perk, level, increased)
+AnthroTraitsMain.ATLevelPerk = function(char, perk, level, increased)
     if instanceof(char, "IsoPlayer")
     then
         local player = char;
@@ -788,7 +725,8 @@ local function ATLevelPerk(char, perk, level, increased)
 end
 
 
-local function ATPlayerUpdate(player)
+AnthroTraitsMain.ATPlayerUpdate = function(player)
+    local this = AnthroTraitsMain;
     local fallTimeMult = SandboxVars.AnthroTraits.AT_NaturalTumblerFallTimeMult;
     local modData =  player:getModData().ATPlayerData;
     local beforeFallTime = modData.oldFallTime;
@@ -843,7 +781,7 @@ local function ATPlayerUpdate(player)
             print("FallTime: "..player:getFallTime())
         end
     end
-    LonelyUpdate(player);
+    this.LonelyUpdate(player);
     --[[if player:HasTrait("AT_ColdBlooded")
     then
         player:getBodyDamage():getThermoregulator():setMetabolicTarget(Metabolics.Sleeping);
@@ -854,14 +792,20 @@ local function ATPlayerUpdate(player)
 end
 
 
-Events.OnNewGame.Add(ATInitPlayerData);
-Events.OnInitWorld.Add(ATOnInitWorld);
-Events.OnClothingUpdated.Add(ATOnClothingUpdated);
-Events.OnObjectCollide.Add(ATOnObjectCollide);
-Events.OnCharacterCollide.Add(ATOnCharacterCollide);
-Events.LevelPerk.Add(ATLevelPerk);
-Events.EveryDays.Add(ATEveryDays);
-Events.EveryHours.Add(ATEveryHours);
-Events.EveryOneMinute.Add(ATEveryOneMinute);
-Events.OnPlayerGetDamage.Add(ATPlayerDamageTick);
-Events.OnPlayerUpdate.Add(ATPlayerUpdate);
+Events.OnNewGame.Add(AnthroTraitsMain.ATInitPlayerData);
+Events.OnInitWorld.Add(AnthroTraitsMain.ATOnInitWorld);
+Events.OnClothingUpdated.Add(AnthroTraitsMain.ATOnClothingUpdated);
+Events.OnObjectCollide.Add(AnthroTraitsMain.ATOnObjectCollide);
+Events.OnCharacterCollide.Add(AnthroTraitsMain.ATOnCharacterCollide);
+Events.LevelPerk.Add(AnthroTraitsMain.ATLevelPerk);
+Events.EveryDays.Add(AnthroTraitsMain.ATEveryDays);
+Events.EveryHours.Add(AnthroTraitsMain.ATEveryHours);
+Events.EveryOneMinute.Add(AnthroTraitsMain.ATEveryOneMinute);
+Events.OnPlayerGetDamage.Add(AnthroTraitsMain.ATPlayerDamageTick);
+Events.OnPlayerUpdate.Add(AnthroTraitsMain.ATPlayerUpdate);
+
+Events.OnGameBoot.Add(AnthroTraitsMainCreationMethods.initAnthroTraits);
+Events.OnConnected.Add(AnthroTraitsMainCreationMethods.refreshTraitCosts);
+
+
+return AnthroTraitsMain;

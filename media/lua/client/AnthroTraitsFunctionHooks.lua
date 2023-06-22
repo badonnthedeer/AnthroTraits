@@ -1,5 +1,5 @@
-local ATMain = require("NPCs/AnthroTraits")
-local ATCreation = require("NPCs/AnthroTraitsMainCreationMethods")
+local ATM = AnthroTraitsMain;
+local ATC = AnthroTraitsMainCreationMethods;
 require('AnthroTraitsGlobals');
 
 
@@ -9,9 +9,6 @@ local traitMetatable = __classmetatables[Trait.class].__index
 local old_getCost = traitMetatable.getCost
 ---@param self Trait
 traitMetatable.getCost = function(self)
-    --can I use the "CostVariable" tag here, return all traits with that, compare self:getType() against that list, and if so
-    --can I grab SandboxVars.AnthroTraits[self:getType().."_cost"]?
-    --or maybe SandboxVars.AnthroTraits[self:getType().."_cost"] ~= nil?
     if SandboxVars.AnthroTraits[self:getType().."_Cost"] ~= nil
     then
         return SandboxVars.AnthroTraits[self:getType().."_Cost"]
@@ -116,7 +113,7 @@ ISEatFoodAction.perform = function(self)
     -- code to run before the original
     OriginalEatPerform(self);
     -- code to run after the original
-    ATMain.DoVoreModifier(self.character, self.item, self.percentage)
+    ATM.DoVoreModifier(self.character, self.item, self.percentage)
 end
 
 local OriginalEatStop = ISEatFoodAction.stop;
@@ -124,7 +121,7 @@ ISEatFoodAction.stop = function(self)
     -- code to run before the original
     OriginalEatStop(self);
     -- code to run after the original
-    ATMain.DoVoreModifier(self.character, self.item, self:getJobDelta())
+    ATM.DoVoreModifier(self.character, self.item, self:getJobDelta())
 end
 
 
