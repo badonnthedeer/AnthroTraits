@@ -1,4 +1,4 @@
-AnthroTraitsMainCreationMethods = {}
+local AnthroTraitsMainCreationMethods = {}
 AnthroTraitsMainCreationMethods.TTF = require("TraitTagFramework");
 
 -- C:\Program Files (x86)\Steam\3steamapps\common\ProjectZomboid\media\lua | Project Zomboid files
@@ -211,13 +211,14 @@ AnthroTraitsMainCreationMethods.refundSelectedAffectedTraits = function()
 
     if selectedItems ~= nil
     then
-        for _, trait in pairs(affectedTraits)
+        for i = 1, #affectedTraits
         do
+            local trait = affectedTraits[i]
             local label = trait:getLabel()
             local newItem;
             --remove traits in selected box
-            for _, entry in pairs(selectedItems) do
-                if entry.item == trait then
+            for j = 1, #selectedItems do
+                if selectedItems[j].item == trait then
                     ccp.pointToSpend = ccp.pointToSpend - tonumber(trait:getRightLabel());
                     ccp.listboxTraitSelected:removeItem(label);
                     if trait:getCost() > 0
@@ -238,8 +239,9 @@ AnthroTraitsMainCreationMethods.sortTraits = function()
     local ccp = MainScreen.instance.charCreationProfession;
     local affectedTraits = this.TTF.GetAllTraitsWithTag("CostVariable");
 
-    for _, trait in pairs(affectedTraits)
+    for i = 1, #affectedTraits
     do
+        local trait = affectedTraits[i]
         local label = trait:getLabel()
         local newItem;
 
@@ -259,6 +261,9 @@ AnthroTraitsMainCreationMethods.sortTraits = function()
     CharacterCreationMain.invertSort(ccp.listboxBadTrait.items)
     CharacterCreationMain.sort(ccp.listboxTraitSelected.items)
 end
+
+Events.OnGameBoot.Add(AnthroTraitsMainCreationMethods.initAnthroTraits);
+Events.OnConnected.Add(AnthroTraitsMainCreationMethods.refreshTraitCosts);
 
 return AnthroTraitsMainCreationMethods;
 
