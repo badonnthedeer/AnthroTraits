@@ -11,7 +11,4 @@ AnthroTraitsGlobals = {
                                          "ISUnloadBulletsFromMagazine", "ISUpgradeWeapon"},
     FoodTags = {"ATCarnivore", "ATHerbivore", "ATInsect", "ATFeralPoison"},
     EvolvedRecipeFoodTags = {"ATCarnivore", "ATHerbivore"},
-    ExclaimPhrases = {"AAAH!", "AAAH!", "AAAH!!", "AEIEEEE!", "EAAH!", "AAAGH!"},
-    ExclaimPhrasesYeen = {"HAHAHAHAHA!", "HAHAHAHAHA!", "HAHAHAHAHA!!", "HUHEHEHEHAHA!", "HAAAAH!", "HEEEHEEEHAHAHAHA!"},
-    ExclaimPhrasesBleater = {"BLEAT!", "BLEAT!", "BLEAT!!", "BLEAAAAT!", "BLEE-EAT!", "EEEEP!"},
 }

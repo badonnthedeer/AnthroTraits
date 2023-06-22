@@ -266,25 +266,31 @@ AnthroTraitsMain.DoVoreModifier = function(character, foodEaten, foodPercentEate
     end
 end
 
+AnthroTraitsMain.ExclaimPhrases = {
+    generic = {"AAAH!", "AAAH!", "AAAH!!", "AEIEEEE!", "EAAH!", "AAAGH!"},
+    yeen = {"HAHAHAHAHA!", "HAHAHAHAHA!", "HAHAHAHAHA!!", "HUHEHEHEHAHA!", "HAAAAH!", "HEEEHEEEHAHAHAHA!"},
+    bleater = {"BLEAT!", "BLEAT!", "BLEAT!!", "BLEAAAAT!", "BLEE-EAT!", "EEEEP!"}
+}
 
 AnthroTraitsMain.ExclaimerCheck = function(player)
     local moodles = player:getMoodles();
     local panicLevel = moodles:getMoodleLevel(MoodleType.Panic);
-    local playerSquare = player:getCurrentSquare();
     local thresholdMultiplier = SandboxVars.AnthroTraits.AT_ExclaimerExclaimThresholdMultiplier;
 
     local exclaimChance = ZombRand(1,100);
-    local phraseChance = ZombRand(1, #AnthroTraitsGlobals.ExclaimPhrases);
 
     if (exclaimChance <= (panicLevel * thresholdMultiplier)) and panicLevel > 1
     then
+        local phrases = AnthroTraitsMain.ExclaimPhrases.generic
+        local phraseChance = ZombRand(1, #phrases);
+        local playerSquare = player:getCurrentSquare();
         --if player:HasTrait("AT_Hooves");
         --then
         --    player:SayShout("BLEAT!");
         --else
         --    player:SayShout("HAHAHAHA!");
         --end
-        player:SayShout(AnthroTraitsGlobals.ExclaimPhrases[phraseChance]);
+        player:SayShout(phrases[phraseChance]);
         getWorldSoundManager():addSound(player,
                 playerSquare:getX(),
                 playerSquare:getY(),
