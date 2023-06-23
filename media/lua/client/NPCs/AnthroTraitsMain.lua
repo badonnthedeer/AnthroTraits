@@ -1,5 +1,5 @@
 local AnthroTraitsMain = {};
-
+local ATU = require("AnthroTraitsUtilities");
 
 AnthroTraitsMain.HandleInfection = function(player)
     local biteInfectionChance = SandboxVars.AnthroTraits.AT_ImmunityBiteInfectionChance;
@@ -374,7 +374,6 @@ end
 
 
 AnthroTraitsMain.ATOnInitWorld = function()
-    local ATU = AnthroTraitsUtilities;
     ATU.AddItemTagToItemsFromFile("ATCarnivoreItemTag.txt", "ATCarnivore");
     ATU.AddItemTagToItemsFromFile("ATHerbivoreItemTag.txt", "ATHerbivore");
     ATU.AddItemTagToItemsFromFile("ATInsectItemTag.txt", "ATInsect");
