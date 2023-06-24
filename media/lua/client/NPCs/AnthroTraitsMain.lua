@@ -1,6 +1,15 @@
 local AnthroTraitsMain = {};
 local ATU = require("AnthroTraitsUtilities");
 
+-- C:\Program Files (x86)\Steam\3steamapps\common\ProjectZomboid\media\lua | Project Zomboid files
+-- C:\Program Files (x86)\Steam\steamapps\common\ProjectZomboid\media\AnimSets\player
+-- C:\Program Files (x86)\Steam\steamapps\workshop\content\108600\
+
+-- C:\Users\[user]\Zomboid\mods
+-- C:\Users\[user]\Zomboid\Logs
+
+
+
 AnthroTraitsMain.HandleInfection = function(player)
     local biteInfectionChance = SandboxVars.AnthroTraits.AT_ImmunityBiteInfectionChance;
     local lacerationInfectionChance = SandboxVars.AnthroTraits.AT_ImmunityLacerationInfectionChance;

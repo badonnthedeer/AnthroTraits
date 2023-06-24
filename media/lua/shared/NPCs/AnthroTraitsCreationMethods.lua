@@ -1,13 +1,6 @@
 local AnthroTraitsMainCreationMethods = {}
 AnthroTraitsMainCreationMethods.TTF = require("TraitTagFramework");
 
--- C:\Program Files (x86)\Steam\3steamapps\common\ProjectZomboid\media\lua | Project Zomboid files
--- C:\Program Files (x86)\Steam\steamapps\common\ProjectZomboid\media\AnimSets\player
--- C:\Program Files (x86)\Steam\steamapps\workshop\content\108600\
-
--- C:\Users\[user]\Zomboid\mods
--- C:\Users\[user]\Zomboid\Logs
-
 AnthroTraitsMainCreationMethods.initAnthroTraits = function()
     local this = AnthroTraitsMainCreationMethods;
 
