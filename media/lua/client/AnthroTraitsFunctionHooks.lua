@@ -1,5 +1,6 @@
 local ATM = require("NPCs/AnthroTraitsMain");
 local ATC = require("NPCs/AnthroTraitsCreationMethods");
+local ATU = require("AnthroTraitsUtilities");
 require('AnthroTraitsGlobals');
 
 
@@ -47,6 +48,27 @@ traitMetatable.getRightLabel = function(self)
 end
 
 --VANILLA LUA FUNCTION HOOKS
+
+--fail 2
+--local oldAddEatTooltip = ISInventoryPaneContextMenu.addEatTooltip
+--ISInventoryPaneContextMenu.addEatTooltip = function(self, option, items, percent)
+--    oldAddEatTooltip(self);
+--    local itemTags = item:getTags()
+--    if itemTags:contains("AT_Herbivore") then
+--        table.insert(self.notes, "Extra nutritious for Herbivores.");
+--        table.insert(self.notes, true)
+--
+--        --table.insert(self.notes, getText("Tooltip_food_CookedInMicrowave"))
+--        --table.insert(self.notes, true)
+--    end
+--end
+
+-- fail 1
+--local oldDoTooltip = InventoryItem.DoTooltip
+--InventoryItem.DoTooltip = function(self)
+--    oldDoTooltip(self);
+--    self.tooltip = "This has been modified!\n"..self.tooltip;
+--end
 
 local OriginalEvolvedRecipeAdd = ISAddItemInRecipe.perform
 ISAddItemInRecipe.perform = function(self)
@@ -146,7 +168,7 @@ ISBaseTimedAction.create = function(self)
     end
 end
 
---poison gui update?
+--[[--poison gui update?
 local originalRefreshContainer = ISInventoryPane.refreshContainer;
 ISInventoryPane.refreshContainer = function(self)
     --before original
@@ -175,28 +197,98 @@ ISInventoryPane.refreshContainer = function(self)
             end
         end
     end
+end]]
+--GUI
+
+
+local oldRender = ISToolTipInv.render
+ISToolTipInv.render = function(self)
+    if ISContextMenu.instance and ISContextMenu.instance.visibleCheck then
+        oldRender(self);
+    end
+
+    if not self.item and not self.item:isFood() then
+        oldRender(self);
+    end
+
+    local player = self.tooltip.character;
+    local tooltipTextTable = {}
+    if (self.item:hasTag("ATHerbivore") or self.item:hasTag("ATCarnivore") or self.item:hasTag("ATFeralPoison")
+            and  (player:HasTrait("AT_Herbivore") or player:HasTrait("AT_Carnivore") or player:HasTrait("AT_CarrionEater") or player:HasTrait("AT_FeralDigestion")))
+    then
+        if self.item:hasTag("ATHerbivore")
+        then
+            if player:HasTrait("AT_Herbivore")
+            then
+                tooltipTextTable = ATU.BuildFoodDescription("This food is more nutritious for you.", self.item, SandboxVars.AnthroTraits.HerbivoreBonus)
+            elseif player:HasTrait("AT_Carnivore")
+            then
+                tooltipTextTable = ATU.BuildFoodDescription("This food is less nutritious for you.", self.item, SandboxVars.AnthroTraits.CarnivoreMalus)
+            end
+        elseif self.item:hasTag("ATCarnivore")
+        then
+            if player:HasTrait("AT_Carnivore") and player:HasTrait("AT_CarrionEater")
+            then
+                tooltipTextTable = ATU.BuildFoodDescription("This food is extra nutritious for you.", self.item, (SandboxVars.AnthroTraits.CarnivoreBonus + SandboxVars.AnthroTraits.CarrionEaterBonus))
+            elseif player:HasTrait("AT_Carnivore")
+            then
+                tooltipTextTable = ATU.BuildFoodDescription("This food is more nutritious for you.", self.item, SandboxVars.AnthroTraits.CarnivoreBonus)
+            elseif player:HasTrait("AT_CarrionEater")
+            then
+                tooltipTextTable = ATU.BuildFoodDescription("This food is more nutritious for you.", self.item, SandboxVars.AnthroTraits.CarrionEaterBonus)
+            elseif player:HasTrait("AT_Herbivore")
+            then
+                tooltipTextTable = ATU.BuildFoodDescription("This food is less nutritious for you.", self.item, SandboxVars.AnthroTraits.HerbivoreMalus)
+            end
+        end
+        if self.item:hasTag("ATFeralPoison")
+        then
+            table.insert(tooltipTextTable, 1, "This food is poisonous to you!")
+        end
+    else
+        oldRender(self);
+    end
+
+    local startPos = self.tooltip:getHeight() + self.tooltip:getLineSpacing() / 2;
+    local widestText = 0
+    for i = 1, #tooltipTextTable do
+        widestText = math.max(
+                widestText,
+                getTextManager():MeasureStringX(UIFont[getCore():getOptionTooltipFont()], ITE.Lines[i]["Text"])
+        )
+
+    end
+    local spacing = self.tooltip:getLineSpacing()
+    local width = math.max(self.tooltip:getWidth(), widestText + spacing / 2) + spacing
+    self.tooltip:setWidth(width)
+
+
+
+
+    local count = 0
+    for i = 1, #tooltipTextTable do count = count + 1 end
+    if count > 0 then count = count + 1 end
+    self.tooltip:setHeight(#tooltipTextTable + self.tooltip:getLineSpacing() * count)
+
+    local startPos = self.tooltip:getHeight() + self.tooltip:getLineSpacing() / 2
+
+    for i = 1, #tooltipTextTable do
+        local position = startPos + self.tooltip:getLineSpacing() * (i - 1)
+        local color = tooltipTextTable[i]["Color"] or Colors.LemonChiffon
+        local text = tooltipTextTable[i]
+
+        -- local name = Colors.GetColorNames():get(ZombRand(1, Colors.GetColorsCount()))
+        -- color = Colors.GetColorByName(name)
+
+        self.tooltip:DrawText(text, 5, position,
+                color:getRedFloat(),
+                color:getGreenFloat(),
+                color:getBlueFloat(),
+                color:getAlphaFloat())
+    end
 end
 
 
---Accessing trait gui for tags, maybe?
---[[local OriginalStatsScreenPopulateTraits = ISPlayerStatsChooseTraitUI.create
-ISPlayerStatsChooseTraitUI.create = function(self)
-    OriginalStatsScreenPopulateTraits(self);
-
-    for i=0,TraitFactory.getTraits():size()-1
-    do
-        local trait = TraitFactory.getTraits():get(i);
-        if not self.chr:getTraits():contains(trait:getType())
-        then
-            if trait:getCost() >= 0
-            then
-                table.Remove(self.goodTraits, trait);
-            else
-                table.Remove(self.badTraits, trait);
-            end
-        end
-    end
-end]]
 
 
 local oldSOSMD = SandboxOptionsScreen.onOptionMouseDown

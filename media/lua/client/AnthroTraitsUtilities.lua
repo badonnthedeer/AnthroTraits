@@ -50,6 +50,48 @@ AnthroTraitsUtilities.AddItemTagToItemsFromFile = function(path, tag)
     reader:close();
 end
 
+AnthroTraitsUtilities.BuildFoodDescription = function(description, item, statModifier)
+    local returnTable = {}
+
+    local foodBaseHunger = item:getBaseHunger();
+    --local foodHungChange = item:getHungerChange();
+    local foodThirstChange = item:getThirstChange();
+    local foodBoredomChange = item:getBoredomChange();
+    local foodUnhappyChange = item:getUnhappyChange();
+    local foodCalories = item:getCalories();
+
+    table.insert(returnTable, description);
+
+    if foodBaseHunger ~= nil
+    then
+        table.insert(returnTable, "Hunger: "..foodBaseHunger * statModifier);
+    end
+    if foodThirstChange ~= nil
+    then
+        table.insert(returnTable, "Thirst: "..foodThirstChange * statModifier);
+    end
+    if foodBoredomChange ~= nil and foodBoredomChange < 0
+    then
+        table.insert(returnTable, "Boredom: "..foodBoredomChange * statModifier);
+    else
+        table.insert(returnTable, "Boredom: "..foodBoredomChange);
+    end
+    if foodUnhappyChange ~= nil and foodUnhappyChange < 0
+    then
+        table.insert(returnTable, "Unhappiness: "..foodUnhappyChange * statModifier);
+    else
+        table.insert(returnTable, "Unhappiness: "..foodUnhappyChange);
+    end
+    if foodCalories ~= nil
+    then
+        table.insert(returnTable, "Unhappiness: "..foodUnhappyChange * statModifier);
+    end
+
+    return returnTable;
+end
+
+
+
 --[[AnthroTraitsUtilities.InitTableFromFile = function(path)
     if not FileExists(path)
     then
