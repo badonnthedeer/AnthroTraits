@@ -234,6 +234,12 @@ option AnthroTraits.AT_StinkyLoudness
 	page = AnthroTraits, translation = AnthroTraits_StinkyLoudness,
 }
 
+option AnthroTraits.AT_StinkyThreshold
+{
+	type = double, min = 0.01, max = 17, default = 4.5,
+	page = AnthroTraits, translation = AnthroTraits_StinkyThreshold,
+}
+
 option AnthroTraits.AT_Tail_Cost
 {
 	type = integer, min = -15, max = 15, default = 2,

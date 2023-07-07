@@ -70,7 +70,7 @@ Do you really enjoy this mod--or even better--want to build on it? Please consid
     You need a pack. Time spent away from others makes you unhappy.
     </li>
     <li><h2>Stinky</h2>
-    You stink. Zombies will be more attracted to you and other players may comment on your smell.
+    You have a tendency to stink. Worse, you're nose-blind to it. If you're too dirty, Zombies will be more attracted to you and other players may comment on your smell.
     </li>
     <li><h2>Torpor</h2>
     Still affected by the winter, you have less endurance during the cold months.
@@ -212,6 +212,13 @@ It's advised to leave them on default settings.
             <li><h3>Stinky Comment Chance / StinkyCommentChance</h3>
                 The chance per minute that another (non-panicked, non-pained) player within StinkyDistance will comment on the smell. 
                 0-1, default 0.001
+            </li>
+            <li><h3>Stinky Threshold / AT_StinkyThreshold</h3>
+                How dirty a player needs to be before activating the Stinky trait.
+                There are 17 body parts, each with a dirtiness rating from 0-1.
+                0.01 is any dirtiness on the body at all, 17 is very hard to achieve with full dirtiness on every body part.
+                Does not include clothing.
+                0.01-17, default 5
             </li>
         </ul>
     <li><h2>Tailed</h2>

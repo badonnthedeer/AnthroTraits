@@ -314,26 +314,38 @@ AnthroTraitsMain.BeStinky = function(player)
     local stinkyLoudness = SandboxVars.AnthroTraits.AT_StinkyLoudness
     local stinkyDistance = SandboxVars.AnthroTraits.AT_StinkyDistance
     local stinkyCommentChance = SandboxVars.AnthroTraits.AT_StinkyCommentChance
+    local stinkyThreshold = SandboxVars.AnthroTraits.AT_StinkyThreshold
     local playerSquare = player:getCurrentSquare();
     local activePlayers = getNumActivePlayers();
     local playerInQuestion = player;
+    local bloodBodyPartType = BloodBodyPartType.FromIndex(0)
+    local totalDirtiness = 0;
+    local visual = player:getHumanVisual();
 
-    getWorldSoundManager():addSound(player,
-            playerSquare:getX(),
-            playerSquare:getY(),
-            playerSquare:getZ(),
-            stinkyDistance,
-            stinkyLoudness);
-    if activePlayers > 1
+    for i = 0, BloodBodyPartType.MAX:index()-1 do
+        bloodBodyPartType = BloodBodyPartType.FromIndex(i)
+        totalDirtiness = totalDirtiness + visual:getDirt(bloodBodyPartType);
+    end
+
+    if(totalDirtiness >= stinkyThreshold)
     then
-        for playerIndex = 0, activePlayers -1
-        do
-            playerInQuestion = getSpecificPlayer(playerIndex)
-            if player == not playerInQuestion
-            then
-                if ZombRand(0,1) >= stinkyCommentChance and playerInQuestion:DistTo() < stinkyLoudness and playerInQuestion:getMoodles():getMoodleLevel("Pain") < 2 and playerInQuestion:getMoodles():getMoodleLevel("Panic") < 1
+        getWorldSoundManager():addSound(player,
+                playerSquare:getX(),
+                playerSquare:getY(),
+                playerSquare:getZ(),
+                stinkyDistance,
+                stinkyLoudness);
+        if activePlayers > 1
+        then
+            for playerIndex = 0, activePlayers -1
+            do
+                playerInQuestion = getSpecificPlayer(playerIndex)
+                if player == not playerInQuestion
                 then
-                    playerInQuestion:Say("Stinky!");
+                    if ZombRand(0,1) >= stinkyCommentChance and playerInQuestion:DistTo() < stinkyLoudness and playerInQuestion:getMoodles():getMoodleLevel("Pain") < 2 and playerInQuestion:getMoodles():getMoodleLevel("Panic") < 1
+                    then
+                        playerInQuestion:Say("Stinky!");
+                    end
                 end
             end
         end

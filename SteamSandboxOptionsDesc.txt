@@ -114,6 +114,12 @@ It's advised to leave them on default settings.
             [*][h3]Stinky Comment Chance / AT_StinkyCommentChance[/h3]
                 The chance per minute that another (non-panicked, non-pained) player within StinkyDistance will comment on the smell. 
                 0-1, default 0.001
+            [*][h3]Stinky Threshold / AT_StinkyThreshold[/h3]
+                How dirty a player needs to be before activating the Stinky trait.
+                There are 17 body parts, each with a dirtiness rating from 0-1.
+                0.01 is any dirtiness on the body at all, 17 is very hard to achieve with full dirtiness on every body part.
+                Does not factor in clothing dirtiness.
+                0.01-17, default 5
         [/list]
     [*][h2]Tailed[/h2]
         [list]

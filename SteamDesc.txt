@@ -51,7 +51,8 @@ A mod for Project Zomboid that adds realistic, balanced traits for anthropomorph
     [*][h2]Lonely[/h2]
     You need a pack. Time spent away from others makes you unhappy.
     [*][h2]Stinky[/h2]
-    You stink. Zombies will be more attracted to you and other players may comment on your smell.
+    You have a tendency to stink. Worse, you're nose-blind to it.
+    If you're too dirty, Zombies will be more attracted to you and other players may comment on your smell.
     [*][h2]Torpor[/h2]
     Still affected by the winter, you have less endurance during the cold months.
     [*][h2]Unwieldy Hands[/h2]
