@@ -49,26 +49,6 @@ end
 
 --VANILLA LUA FUNCTION HOOKS
 
---fail 2
---local oldAddEatTooltip = ISInventoryPaneContextMenu.addEatTooltip
---ISInventoryPaneContextMenu.addEatTooltip = function(self, option, items, percent)
---    oldAddEatTooltip(self);
---    local itemTags = item:getTags()
---    if itemTags:contains("AT_Herbivore") then
---        table.insert(self.notes, "Extra nutritious for Herbivores.");
---        table.insert(self.notes, true)
---
---        --table.insert(self.notes, getText("Tooltip_food_CookedInMicrowave"))
---        --table.insert(self.notes, true)
---    end
---end
-
--- fail 1
---local oldDoTooltip = InventoryItem.DoTooltip
---InventoryItem.DoTooltip = function(self)
---    oldDoTooltip(self);
---    self.tooltip = "This has been modified!\n"..self.tooltip;
---end
 
 local OriginalEvolvedRecipeAdd = ISAddItemInRecipe.perform
 ISAddItemInRecipe.perform = function(self)
@@ -167,38 +147,6 @@ ISBaseTimedAction.create = function(self)
         end
     end
 end
-
---[[--poison gui update?
-local originalRefreshContainer = ISInventoryPane.refreshContainer;
-ISInventoryPane.refreshContainer = function(self)
-    --before original
-    originalRefreshContainer(self);
-    --after original
-    local player = getSpecificPlayer(self.player);
-    local inventory = self.inventory:getItems();
-    for i = 0, inventory:size() - 1
-    do
-        local item = inventory:get(i);
-        local itemDisplayName = item:getDisplayName();
-
-        if item:IsFood() and item:hasTag("ATFeralPoison")
-        then
-            if player:HasTrait("AT_FeralDigestion")
-            then
-                if not itemDisplayName:contains("Poisonous")
-                then
-                    item:setName("Poisonous "..itemDisplayName);
-                end
-            else
-                if itemDisplayName:contains("Poisonous ") and item:getPoisonPower() <= 0
-                then
-                    item:setName(itemDisplayName:sub(11));
-                end
-            end
-        end
-    end
-end]]
---GUI
 
 
 local oldSOSMD = SandboxOptionsScreen.onOptionMouseDown

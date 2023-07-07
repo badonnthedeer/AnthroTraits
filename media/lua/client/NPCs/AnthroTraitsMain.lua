@@ -275,11 +275,6 @@ AnthroTraitsMain.DoVoreModifier = function(character, foodEaten, foodPercentEate
     end
 end
 
-AnthroTraitsMain.ExclaimPhrases = {
-    generic = {"AAAH!", "AAAH!", "AAAH!!", "AEIEEEE!", "EAAH!", "AAAGH!"},
-    yeen = {"HAHAHAHAHA!", "HAHAHAHAHA!", "HAHAHAHAHA!!", "HUHEHEHEHAHA!", "HAAAAH!", "HEEEHEEEHAHAHAHA!"},
-    bleater = {"BLEAT!", "BLEAT!", "BLEAT!!", "BLEAAAAT!", "BLEE-EAT!", "EEEEP!"}
-}
 
 AnthroTraitsMain.ExclaimerCheck = function(player)
     local moodles = player:getMoodles();
@@ -475,6 +470,7 @@ AnthroTraitsMain.ATPlayerDamageTick = function(player)
         end
 
     end
+    -- Tough Feet Trait?
     -- if player:HasTrait("anthroPaws")
     -- then
     --     --immune to scratches?

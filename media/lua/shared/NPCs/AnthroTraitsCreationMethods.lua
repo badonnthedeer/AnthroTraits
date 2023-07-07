@@ -259,11 +259,3 @@ Events.OnGameBoot.Add(AnthroTraitsMainCreationMethods.initAnthroTraits);
 Events.OnConnected.Add(AnthroTraitsMainCreationMethods.refreshTraitCosts);
 
 return AnthroTraitsMainCreationMethods;
-
---[[
-for i=1,BloodBodyPartType.MAX:index() do
-    local part = BloodBodyPartType.FromIndex(i-1)
-    if visual:getBlood(part) + visual:getDirt(part) > 0 then
-        units = units + 1
-    end
-end]]

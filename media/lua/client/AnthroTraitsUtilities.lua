@@ -51,26 +51,4 @@ AnthroTraitsUtilities.AddItemTagToItemsFromFile = function(path, tag)
 end
 
 
---[[AnthroTraitsUtilities.InitTableFromFile = function(path)
-    if not FileExists(path)
-    then
-        print("Cannot find file");
-        return {};
-    end
-
-    local reader = getModFileReader(AnthroTraitsGlobals.ModID, path, false);
-    local line;
-    local returnTable = {}
-    local returnTableCurrentIndex = 1;
-
-    while reader:ready()
-    do
-        line = reader:readLine();
-        returnTable[returnTableCurrentIndex] = line;
-        returnTableCurrentIndex = returnTableCurrentIndex + 1;
-    end
-    reader:close();
-    return returnTable;
-end]]
-
 return AnthroTraitsUtilities;
