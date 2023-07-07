@@ -211,7 +211,7 @@ ISToolTipInv.render = function(self)
         oldRender(self);
     end
 
-    local player = self.tooltip.character;
+    local player = self.tooltip:getCharacter();
     local tooltipTextTable = {}
     if (self.item:hasTag("ATHerbivore") or self.item:hasTag("ATCarnivore") or self.item:hasTag("ATFeralPoison")
             and  (player:HasTrait("AT_Herbivore") or player:HasTrait("AT_Carnivore") or player:HasTrait("AT_CarrionEater") or player:HasTrait("AT_FeralDigestion")))
@@ -220,25 +220,25 @@ ISToolTipInv.render = function(self)
         then
             if player:HasTrait("AT_Herbivore")
             then
-                tooltipTextTable = ATU.BuildFoodDescription("This food is more nutritious for you.", self.item, SandboxVars.AnthroTraits.HerbivoreBonus)
+                tooltipTextTable = ATU.BuildFoodDescription("This food is more nutritious for you.", self.item, SandboxVars.AnthroTraits.AT_HerbivoreBonus)
             elseif player:HasTrait("AT_Carnivore")
             then
-                tooltipTextTable = ATU.BuildFoodDescription("This food is less nutritious for you.", self.item, SandboxVars.AnthroTraits.CarnivoreMalus)
+                tooltipTextTable = ATU.BuildFoodDescription("This food is less nutritious for you.", self.item, SandboxVars.AnthroTraits.AT_CarnivoreMalus)
             end
         elseif self.item:hasTag("ATCarnivore")
         then
             if player:HasTrait("AT_Carnivore") and player:HasTrait("AT_CarrionEater")
             then
-                tooltipTextTable = ATU.BuildFoodDescription("This food is extra nutritious for you.", self.item, (SandboxVars.AnthroTraits.CarnivoreBonus + SandboxVars.AnthroTraits.CarrionEaterBonus))
+                tooltipTextTable = ATU.BuildFoodDescription("This food is extra nutritious for you.", self.item, (SandboxVars.AnthroTraits.AT_CarnivoreBonus + SandboxVars.AnthroTraits.AT_CarrionEaterBonus))
             elseif player:HasTrait("AT_Carnivore")
             then
-                tooltipTextTable = ATU.BuildFoodDescription("This food is more nutritious for you.", self.item, SandboxVars.AnthroTraits.CarnivoreBonus)
+                tooltipTextTable = ATU.BuildFoodDescription("This food is more nutritious for you.", self.item, SandboxVars.AnthroTraits.AT_CarnivoreBonus)
             elseif player:HasTrait("AT_CarrionEater")
             then
-                tooltipTextTable = ATU.BuildFoodDescription("This food is more nutritious for you.", self.item, SandboxVars.AnthroTraits.CarrionEaterBonus)
+                tooltipTextTable = ATU.BuildFoodDescription("This food is more nutritious for you.", self.item, SandboxVars.AnthroTraits.AT_CarrionEaterBonus)
             elseif player:HasTrait("AT_Herbivore")
             then
-                tooltipTextTable = ATU.BuildFoodDescription("This food is less nutritious for you.", self.item, SandboxVars.AnthroTraits.HerbivoreMalus)
+                tooltipTextTable = ATU.BuildFoodDescription("This food is less nutritious for you.", self.item, SandboxVars.AnthroTraits.AT_HerbivoreMalus)
             end
         end
         if self.item:hasTag("ATFeralPoison")
@@ -254,7 +254,7 @@ ISToolTipInv.render = function(self)
     for i = 1, #tooltipTextTable do
         widestText = math.max(
                 widestText,
-                getTextManager():MeasureStringX(UIFont[getCore():getOptionTooltipFont()], ITE.Lines[i]["Text"])
+                getTextManager():MeasureStringX(UIFont[getCore():getOptionTooltipFont()], tooltipTextTable[i])
         )
 
     end
