@@ -213,6 +213,8 @@ AnthroTraitsMain.DoVoreModifier = function(character, foodEaten, foodPercentEate
     local beforePoisonLevel = charBodyDmg:getPoisonLevel();
 
     local foodDisplayName = foodEaten:getDisplayName();
+    local foodIngredients = foodEaten:getExtraItems();
+    local foodIngredientTags = nil;
 
     local this = AnthroTraitsMain;
 
@@ -274,6 +276,16 @@ AnthroTraitsMain.DoVoreModifier = function(character, foodEaten, foodPercentEate
     if character:HasTrait("AT_FeralDigestion") and foodEaten:hasTag("ATFeralPoison")
     then
         charBodyDmg:setPoisonLevel(charBodyDmg:getPoisonLevel() + ((maxPoisonAmt) * foodPercentEaten))
+    elseif character:HasTrait("AT_FeralDigestion") and foodIngredients ~= nil
+    then
+        for i = 0, foodIngredients:size() -1
+        do
+            foodIngredientTags = getScriptManager():getItem(foodIngredients:get(i)):getTags()
+            if foodIngredientTags:contains("ATFeralPoison")
+            then
+                charBodyDmg:setPoisonLevel(charBodyDmg:getPoisonLevel() + ((maxPoisonAmt) * foodPercentEaten))
+            end
+        end
     end
     if character:HasTrait("AT_Bug-o-ssieur") and foodEaten:hasTag("ATInsect")
     then
