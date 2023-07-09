@@ -9,6 +9,12 @@ local ATU = require("AnthroTraitsUtilities");
 -- C:\Users\[user]\Zomboid\Logs
 
 
+AnthroTraitsMain.ExclaimPhrases = {
+    generic = {"AAAH!", "AAAH!", "AAAH!!", "AEIEEEE!", "EAAH!", "AAAGH!"},
+    yeen = {"HAHAHAHAHA!", "HAHAHAHAHA!", "HAHAHAHAHA!!", "HUHEHEHEHAHA!", "HAAAAH!", "HEEEHEEEHAHAHAHA!"},
+    bleater = {"BLEAT!", "BLEAT!", "BLEAT!!", "BLEAAAAT!", "BLEE-EAT!", "EEEEP!"}
+}
+
 
 AnthroTraitsMain.HandleInfection = function(player)
     local biteInfectionChance = SandboxVars.AnthroTraits.AT_ImmunityBiteInfectionChance;

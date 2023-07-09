@@ -60,7 +60,7 @@ A mod for Project Zomboid that adds realistic, balanced traits for anthropomorph
 [/list]
 [hr][/hr]
 [h1]A message from the creator[/h1]
-Do you really enjoy this mod--or even better--want to build on it? Please consider [url="https://ko-fi.com/badonnthedeer"]donating to me[/url] so I can pay my bills. I'm recently unemployed and every little bit helps!
+Do you really enjoy this mod--or even better--want to build on it? Please consider [url=https://ko-fi.com/badonnthedeer]donating to me[/url] so I can pay my bills. I'm recently unemployed and every little bit helps!
 
 [h1]Special Thanks[/h1]
 to my friend who did the icon art for me, RadicallyRiley. I'd also like to thank the PZ Discord modding community, who were very patient with me in answering my many questions. In particular, I'd like to thank Albion from that group; she has a seemingly encyclopedic knowledge of PZ modding and a heaping portion of patience! Thank you to the other trait mods who I was able to reference when I was incredibly stumped, and thanks to the furry community for inspiring me to create something and give back.
