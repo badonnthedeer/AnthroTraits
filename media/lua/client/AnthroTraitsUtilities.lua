@@ -59,32 +59,38 @@ AnthroTraitsUtilities.BuildFoodDescription = function(description, item, statMod
     local foodBoredomChange = item:getBoredomChange();
     local foodUnhappyChange = item:getUnhappyChange();
     local foodCalories = item:getCalories();
+    local rightRenderColor = "%Green%"
+
+    if statModifier > 0
+    then
+        rightRenderColor = "%Red%"
+    end
 
     table.insert(returnTable, description);
 
     if foodBaseHunger ~= nil
     then
-        table.insert(returnTable, "Hunger: "..foodBaseHunger * statModifier);
+        table.insert(returnTable, "Hunger: "..rightRenderColor..(foodBaseHunger * statModifier) % 1);
     end
     if foodThirstChange ~= nil
     then
-        table.insert(returnTable, "Thirst: "..foodThirstChange * statModifier);
+        table.insert(returnTable, "Thirst: "..rightRenderColor..(foodThirstChange * statModifier) % 1);
     end
     if foodBoredomChange ~= nil and foodBoredomChange < 0
     then
-        table.insert(returnTable, "Boredom: "..foodBoredomChange * statModifier);
+        table.insert(returnTable, "Boredom: "..rightRenderColor..(foodBoredomChange * statModifier) % 1);
     else
         table.insert(returnTable, "Boredom: "..foodBoredomChange);
     end
     if foodUnhappyChange ~= nil and foodUnhappyChange < 0
     then
-        table.insert(returnTable, "Unhappiness: "..foodUnhappyChange * statModifier);
+        table.insert(returnTable, "Unhappiness: "..rightRenderColor..(foodUnhappyChange * statModifier) % 1);
     else
         table.insert(returnTable, "Unhappiness: "..foodUnhappyChange);
     end
     if foodCalories ~= nil
     then
-        table.insert(returnTable, "Unhappiness: "..foodUnhappyChange * statModifier);
+        table.insert(returnTable, "Calories: "..rightRenderColor..(foodCalories * statModifier) % 1);
     end
 
     return returnTable;
