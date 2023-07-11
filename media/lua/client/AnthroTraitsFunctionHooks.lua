@@ -161,78 +161,118 @@ ISToolTipInv.render = function(self)
 
     local player = self.tooltip:getCharacter();
     local tooltipTextTable = {}
-    if (self.item:hasTag("ATHerbivore") or self.item:hasTag("ATCarnivore") or self.item:hasTag("ATFeralPoison")
-            and  (player:HasTrait("AT_Herbivore") or player:HasTrait("AT_Carnivore") or player:HasTrait("AT_CarrionEater") or player:HasTrait("AT_FeralDigestion")))
+    if (((self.item:hasTag("ATHerbivore") or self.item:hasTag("ATCarnivore")) and (player:HasTrait("AT_Herbivore") or player:HasTrait("AT_Carnivore") or player:HasTrait("AT_CarrionEater")))
+            or (self.item:hasTag("ATFeralPoison") and player:HasTrait("AT_FeralDigestion")))
     then
         if self.item:hasTag("ATHerbivore")
         then
             if player:HasTrait("AT_Herbivore")
             then
-                tooltipTextTable = ATU.BuildFoodDescription("This food is more nutritious for you.", self.item, SandboxVars.AnthroTraits.AT_HerbivoreBonus)
+                tooltipTextTable = ATU.BuildFoodDescription("%Green%This food is more nutritious for you.", self.item, SandboxVars.AnthroTraits.AT_HerbivoreBonus)
             elseif player:HasTrait("AT_Carnivore")
             then
-                tooltipTextTable = ATU.BuildFoodDescription("This food is less nutritious for you.", self.item, SandboxVars.AnthroTraits.AT_CarnivoreMalus)
+                tooltipTextTable = ATU.BuildFoodDescription("%Red%This food is less nutritious for you.", self.item, SandboxVars.AnthroTraits.AT_CarnivoreMalus)
             end
         elseif self.item:hasTag("ATCarnivore")
         then
             if player:HasTrait("AT_Carnivore") and player:HasTrait("AT_CarrionEater")
             then
-                tooltipTextTable = ATU.BuildFoodDescription("This food is extra nutritious for you.", self.item, (SandboxVars.AnthroTraits.AT_CarnivoreBonus + SandboxVars.AnthroTraits.AT_CarrionEaterBonus))
+                tooltipTextTable = ATU.BuildFoodDescription("%Green%This food is extra nutritious for you.", self.item, (SandboxVars.AnthroTraits.AT_CarnivoreBonus + SandboxVars.AnthroTraits.AT_CarrionEaterBonus))
             elseif player:HasTrait("AT_Carnivore")
             then
-                tooltipTextTable = ATU.BuildFoodDescription("This food is more nutritious for you.", self.item, SandboxVars.AnthroTraits.AT_CarnivoreBonus)
+                tooltipTextTable = ATU.BuildFoodDescription("%Green%This food is more nutritious for you.", self.item, SandboxVars.AnthroTraits.AT_CarnivoreBonus)
             elseif player:HasTrait("AT_CarrionEater")
             then
-                tooltipTextTable = ATU.BuildFoodDescription("This food is more nutritious for you.", self.item, SandboxVars.AnthroTraits.AT_CarrionEaterBonus)
+                tooltipTextTable = ATU.BuildFoodDescription("%Green%This food is more nutritious for you.", self.item, SandboxVars.AnthroTraits.AT_CarrionEaterBonus)
             elseif player:HasTrait("AT_Herbivore")
             then
-                tooltipTextTable = ATU.BuildFoodDescription("This food is less nutritious for you.", self.item, SandboxVars.AnthroTraits.AT_HerbivoreMalus)
+                tooltipTextTable = ATU.BuildFoodDescription("%Red%This food is less nutritious for you.", self.item, SandboxVars.AnthroTraits.AT_HerbivoreMalus)
             end
         end
         if self.item:hasTag("ATFeralPoison")
         then
-            table.insert(tooltipTextTable, 1, "This food is poisonous to you!")
+            table.insert(tooltipTextTable, 1, "%Red%This food is poisonous to you!")
+        end
+
+        local startPos = self.tooltip:getHeight() + self.tooltip:getLineSpacing() / 2;
+        local widestText = 0
+        for i = 1, #tooltipTextTable do
+            widestText = math.max(
+                    widestText,
+                    getTextManager():MeasureStringX(UIFont[getCore():getOptionTooltipFont()], tooltipTextTable[i])
+            )
+
+        end
+        local spacing = self.tooltip:getLineSpacing()
+        local width = widestText + spacing / 2 + spacing
+
+        local count = 0
+        for i = 1, #tooltipTextTable do count = count + 1 end
+        if count > 0 then count = count + 1 end
+        --self.tooltip:setHeight(#tooltipTextTable + self.tooltip:getLineSpacing() * count)
+
+        local startPos = self.tooltip:getHeight() - self.tooltip:getLineSpacing() / 2
+        self:drawRect(0, self.tooltip:getHeight()-1, width, self.tooltip:getLineSpacing() * #tooltipTextTable, math.min(1, self.backgroundColor.a + 0.4), self.backgroundColor.r, self.backgroundColor.g, self.backgroundColor.b)
+        self:drawRectBorder(0, self.tooltip:getHeight()-1, width, self.tooltip:getLineSpacing() * #tooltipTextTable, self.borderColor.a, self.borderColor.r, self.borderColor.g, self.borderColor.b)
+
+        for i = 1, #tooltipTextTable do
+            local yPos = startPos + (self.tooltip:getLineSpacing() * (i - 1))
+            local defaultColor = Colors.LemonChiffon
+            local text = tooltipTextTable[i]
+            if text:contains(": ")
+            then
+                local leftText = text:sub(0, text:find(": ") + 1)
+                local leftTextColor = leftText:match("%%.+%%")
+                if leftTextColor ~= nil
+                then
+                    local colorsnipB,colorsnipE  = leftText:find("%%.+%%");
+                    leftText = leftText:sub(colorsnipE +1, #leftText)
+                    leftTextColor = leftTextColor:sub(2, #leftTextColor - 1)
+                end
+                local rightText = text:sub(text:find(": ") + 1, #text)
+                local rightTextColor = rightText:match("%%.+%%")
+                if rightTextColor ~= nil
+                then
+                    local colorsnipB,colorsnipE  = rightText:find("%%.+%%");
+                    rightText = rightText:sub(colorsnipE +1, #rightText)
+                    rightTextColor = rightTextColor:sub(2, #rightTextColor - 1)
+                end
+                local color = Colors[leftTextColor] or defaultColor;
+
+                self.tooltip:DrawText(leftText, 10, yPos,
+                        color:getRedFloat(),
+                        color:getGreenFloat(),
+                        color:getBlueFloat(),
+                        color:getAlphaFloat())
+
+                color = Colors[rightTextColor] or defaultColor;
+                if rightText ~= nil
+                then
+                    self.tooltip:DrawTextRight(rightText, width - 15, yPos,
+                            color:getRedFloat(),
+                            color:getGreenFloat(),
+                            color:getBlueFloat(),
+                            color:getAlphaFloat())
+                end
+
+            else
+                local textColor = text:match("%%.+%%")
+                if textColor ~= nil
+                then
+                    local colorsnipB,colorsnipE  = text:find("%%.+%%");
+                    text = text:sub(colorsnipE +1, #text)
+                    textColor = textColor:sub(2, #textColor - 1)
+                end
+                local color = Colors[textColor] or defaultColor;
+                self.tooltip:DrawText(text, 10, yPos,
+                        color:getRedFloat(),
+                        color:getGreenFloat(),
+                        color:getBlueFloat(),
+                        color:getAlphaFloat())
+            end
         end
     else
         oldRender(self);
-    end
-
-    local startPos = self.tooltip:getHeight() + self.tooltip:getLineSpacing() / 2;
-    local widestText = 0
-    for i = 1, #tooltipTextTable do
-        widestText = math.max(
-                widestText,
-                getTextManager():MeasureStringX(UIFont[getCore():getOptionTooltipFont()], tooltipTextTable[i])
-        )
-
-    end
-    local spacing = self.tooltip:getLineSpacing()
-    local width = math.max(self.tooltip:getWidth(), widestText + spacing / 2) + spacing
-    self.tooltip:setWidth(width)
-
-
-
-
-    local count = 0
-    for i = 1, #tooltipTextTable do count = count + 1 end
-    if count > 0 then count = count + 1 end
-    self.tooltip:setHeight(#tooltipTextTable + self.tooltip:getLineSpacing() * count)
-
-    local startPos = self.tooltip:getHeight() + self.tooltip:getLineSpacing() / 2
-
-    for i = 1, #tooltipTextTable do
-        local position = startPos + self.tooltip:getLineSpacing() * (i - 1)
-        local color = tooltipTextTable[i]["Color"] or Colors.LemonChiffon
-        local text = tooltipTextTable[i]
-
-        -- local name = Colors.GetColorNames():get(ZombRand(1, Colors.GetColorsCount()))
-        -- color = Colors.GetColorByName(name)
-
-        self.tooltip:DrawText(text, 5, position,
-                color:getRedFloat(),
-                color:getGreenFloat(),
-                color:getBlueFloat(),
-                color:getAlphaFloat())
     end
 end
 
