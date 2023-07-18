@@ -240,7 +240,7 @@ AnthroTraitsMain.DoVoreModifier = function(character, foodEaten, foodPercentEate
     local beforeFoodSickness = charBodyDmg:getFoodSicknessLevel();
     local beforePoisonLevel = charBodyDmg:getPoisonLevel();
 
-    local foodDisplayName = foodEaten:getDisplayName();
+    local foodID = foodEaten:getFullType();
     local foodIngredients = foodEaten:getExtraItems();
     local foodIngredientTags = nil;
 
@@ -292,10 +292,9 @@ AnthroTraitsMain.DoVoreModifier = function(character, foodEaten, foodPercentEate
     if character:HasTrait("AT_FoodMotivated")
     then
         charBodyDmg:setBoredomLevel(charBodyDmg:getBoredomLevel() - (foodMotivatedBonus * foodPercentEaten));
-        if(foodDisplayName == "Opened Dog Food")
+        if(foodID == "Base.DogfoodOpen")
         then
-            --50 is unhappiness gain from dog food.
-            charBodyDmg:setUnhappynessLevel(charBodyDmg:getUnhappynessLevel() - ((50 + foodMotivatedBonus) * foodPercentEaten));
+            charBodyDmg:setUnhappynessLevel(charBodyDmg:getUnhappynessLevel() - ((foodEaten:getUnhappyChange() + foodMotivatedBonus) * foodPercentEaten));
         else
             charBodyDmg:setUnhappynessLevel(charBodyDmg:getUnhappynessLevel() - (foodMotivatedBonus * foodPercentEaten));
         end
