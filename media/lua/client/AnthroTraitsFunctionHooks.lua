@@ -151,131 +151,195 @@ end
 
 local oldRender = ISToolTipInv.render
 ISToolTipInv.render = function(self)
-    if ISContextMenu.instance and ISContextMenu.instance.visibleCheck then
-        oldRender(self);
+    --redirect back to oldrender if tooltip isn't for food.
+    if ISContextMenu.instance and ISContextMenu.instance.visibleCheck
+    then
+        return oldRender(self);
     end
 
-    if not self.item and not self.item:isFood() then
-        oldRender(self);
+    if not self.item and not self.item:isFood()
+    then
+        return oldRender(self);
     end
 
+    --declare and get vars
     local player = self.tooltip:getCharacter();
-    local tooltipTextTable = {}
+    local mx = getMouseX() + 32;
+    local my = getMouseY() + 10;
+    local tooltipOffsetX = -8;
+    local tooltipOffsetY = 15;
+    local tooltipPaddingLeft = 15;
+    local tooltipPaddingRight = 5;
+    local tooltipPaddingTop = 7;
+    local tooltipPaddingBottom = 0;
+    local tooltipTextTable = {};
+    local textWidth = 0;
+    local textHeight = 0;
+    local lineSpacing = self.tooltip:getLineSpacing();
+    local defaultColor = Colors.LemonChiffon;
+
     if (((self.item:hasTag("ATHerbivore") or self.item:hasTag("ATCarnivore")) and (player:HasTrait("AT_Herbivore") or player:HasTrait("AT_Carnivore") or player:HasTrait("AT_CarrionEater")))
-            or (self.item:hasTag("ATFeralPoison") and player:HasTrait("AT_FeralDigestion")))
+            or (self.item:hasTag("ATFeralPoison") and player:HasTrait("AT_FeralDigestion"))
+            or (self.item:hasTag("ATInsect") and player:HasTrait("AT_Bug-o-ssieur"))
+            or (player:HasTrait("AT_FoodMotivated")))
     then
         if self.item:hasTag("ATHerbivore")
         then
             if player:HasTrait("AT_Herbivore")
             then
-                tooltipTextTable = ATU.BuildFoodDescription("%Green%This food is more nutritious for you.", self.item, SandboxVars.AnthroTraits.AT_HerbivoreBonus)
+                tooltipTextTable = ATU.BuildFoodDescription(player, "%Lime%This food is more nutritious for you.", self.item, SandboxVars.AnthroTraits.AT_HerbivoreBonus)
             elseif player:HasTrait("AT_Carnivore")
             then
-                tooltipTextTable = ATU.BuildFoodDescription("%Red%This food is less nutritious for you.", self.item, SandboxVars.AnthroTraits.AT_CarnivoreMalus)
+                tooltipTextTable = ATU.BuildFoodDescription(player, "%LavenderBlush%This food is less nutritious for you.", self.item, SandboxVars.AnthroTraits.AT_CarnivoreMalus)
             end
         elseif self.item:hasTag("ATCarnivore")
         then
             if player:HasTrait("AT_Carnivore") and player:HasTrait("AT_CarrionEater")
             then
-                tooltipTextTable = ATU.BuildFoodDescription("%Green%This food is extra nutritious for you.", self.item, (SandboxVars.AnthroTraits.AT_CarnivoreBonus + SandboxVars.AnthroTraits.AT_CarrionEaterBonus))
+                tooltipTextTable = ATU.BuildFoodDescription(player, "%Lime%This food is better for you.", self.item, (SandboxVars.AnthroTraits.AT_CarnivoreBonus + SandboxVars.AnthroTraits.AT_CarrionEaterBonus))
             elseif player:HasTrait("AT_Carnivore")
             then
-                tooltipTextTable = ATU.BuildFoodDescription("%Green%This food is more nutritious for you.", self.item, SandboxVars.AnthroTraits.AT_CarnivoreBonus)
+                tooltipTextTable = ATU.BuildFoodDescription(player, "%Lime%This food is better for you.", self.item, SandboxVars.AnthroTraits.AT_CarnivoreBonus)
             elseif player:HasTrait("AT_CarrionEater")
             then
-                tooltipTextTable = ATU.BuildFoodDescription("%Green%This food is more nutritious for you.", self.item, SandboxVars.AnthroTraits.AT_CarrionEaterBonus)
+                tooltipTextTable = ATU.BuildFoodDescription(player, "%Lime%This food is better for you.", self.item, SandboxVars.AnthroTraits.AT_CarrionEaterBonus)
             elseif player:HasTrait("AT_Herbivore")
             then
-                tooltipTextTable = ATU.BuildFoodDescription("%Red%This food is less nutritious for you.", self.item, SandboxVars.AnthroTraits.AT_HerbivoreMalus)
+                tooltipTextTable = ATU.BuildFoodDescription(player, "%LavenderBlush%This food is worse for you.", self.item, SandboxVars.AnthroTraits.AT_HerbivoreMalus)
             end
         end
         if self.item:hasTag("ATFeralPoison")
         then
-            table.insert(tooltipTextTable, 1, "%Red%This food is poisonous to you!")
-        end
-
-        local startPos = self.tooltip:getHeight() + self.tooltip:getLineSpacing() / 2;
-        local widestText = 0
-        for i = 1, #tooltipTextTable do
-            widestText = math.max(
-                    widestText,
-                    getTextManager():MeasureStringX(UIFont[getCore():getOptionTooltipFont()], tooltipTextTable[i])
-            )
-
-        end
-        local spacing = self.tooltip:getLineSpacing()
-        local width = widestText + spacing / 2 + spacing
-
-        local count = 0
-        for i = 1, #tooltipTextTable do count = count + 1 end
-        if count > 0 then count = count + 1 end
-        --self.tooltip:setHeight(#tooltipTextTable + self.tooltip:getLineSpacing() * count)
-
-        local startPos = self.tooltip:getHeight() - self.tooltip:getLineSpacing() / 2
-        self:drawRect(0, self.tooltip:getHeight()-1, width, self.tooltip:getLineSpacing() * #tooltipTextTable, math.min(1, self.backgroundColor.a + 0.4), self.backgroundColor.r, self.backgroundColor.g, self.backgroundColor.b)
-        self:drawRectBorder(0, self.tooltip:getHeight()-1, width, self.tooltip:getLineSpacing() * #tooltipTextTable, self.borderColor.a, self.borderColor.r, self.borderColor.g, self.borderColor.b)
-
-        for i = 1, #tooltipTextTable do
-            local yPos = startPos + (self.tooltip:getLineSpacing() * (i - 1))
-            local defaultColor = Colors.LemonChiffon
-            local text = tooltipTextTable[i]
-            if text:contains(": ")
-            then
-                local leftText = text:sub(0, text:find(": ") + 1)
-                local leftTextColor = leftText:match("%%.+%%")
-                if leftTextColor ~= nil
-                then
-                    local colorsnipB,colorsnipE  = leftText:find("%%.+%%");
-                    leftText = leftText:sub(colorsnipE +1, #leftText)
-                    leftTextColor = leftTextColor:sub(2, #leftTextColor - 1)
-                end
-                local rightText = text:sub(text:find(": ") + 1, #text)
-                local rightTextColor = rightText:match("%%.+%%")
-                if rightTextColor ~= nil
-                then
-                    local colorsnipB,colorsnipE  = rightText:find("%%.+%%");
-                    rightText = rightText:sub(colorsnipE +1, #rightText)
-                    rightTextColor = rightTextColor:sub(2, #rightTextColor - 1)
-                end
-                local color = Colors[leftTextColor] or defaultColor;
-
-                self.tooltip:DrawText(leftText, 10, yPos,
-                        color:getRedFloat(),
-                        color:getGreenFloat(),
-                        color:getBlueFloat(),
-                        color:getAlphaFloat())
-
-                color = Colors[rightTextColor] or defaultColor;
-                if rightText ~= nil
-                then
-                    self.tooltip:DrawTextRight(rightText, width - 15, yPos,
-                            color:getRedFloat(),
-                            color:getGreenFloat(),
-                            color:getBlueFloat(),
-                            color:getAlphaFloat())
-                end
-
-            else
-                local textColor = text:match("%%.+%%")
-                if textColor ~= nil
-                then
-                    local colorsnipB,colorsnipE  = text:find("%%.+%%");
-                    text = text:sub(colorsnipE +1, #text)
-                    textColor = textColor:sub(2, #textColor - 1)
-                end
-                local color = Colors[textColor] or defaultColor;
-                self.tooltip:DrawText(text, 10, yPos,
-                        color:getRedFloat(),
-                        color:getGreenFloat(),
-                        color:getBlueFloat(),
-                        color:getAlphaFloat())
-            end
+            table.insert(tooltipTextTable, 3, "%Violet%This food is poisonous to you!")
         end
     else
-        oldRender(self);
+        --If it doesn't have any relevant tags, go instead to oldRender
+        return oldRender(self);
+    end
+
+    for i = 1, #tooltipTextTable do
+        textWidth = math.max(textWidth, getTextManager():MeasureStringX(UIFont[getCore():getOptionTooltipFont()], tooltipTextTable[i]));
+    end
+    for i = 1, #tooltipTextTable do
+        if tooltipTextTable[i] ~= nil
+        then
+            textHeight = textHeight + self.tooltip:getLineSpacing();
+        else
+            textHeight = self.tooltip:getLineSpacing() / 2;
+        end
+
+
+    end
+    textHeight = self.tooltip:getLineSpacing() * #tooltipTextTable;
+
+    if not self.followMouse then
+        mx = self:getX();
+        my = self:getY();
+    end
+    if self.desiredX and self.desiredY then
+        mx = self.desiredX;
+        my = self.desiredY;
+    end
+
+    --update tooltip objects with calculated vars
+    self:setX(mx + tooltipOffsetX);
+    self:setY(my + tooltipOffsetY);
+
+    self.tooltip:setX(mx + tooltipOffsetX);
+    self.tooltip:setY(my + tooltipOffsetY);
+
+    --[[if self.contextMenu and self.contextMenu.joyfocus then
+        local playerNum = self.contextMenu.player
+        self:setX(getPlayerScreenLeft(playerNum) + 60);
+        self:setY(getPlayerScreenTop(playerNum) + 60);
+    elseif self.contextMenu and self.contextMenu.currentOptionRect then
+        if self.contextMenu.currentOptionRect.height > 32 then
+            self:setY(my + self.contextMenu.currentOptionRect.height)
+        end
+        self:adjustPositionToAvoidOverlap(self.contextMenu.currentOptionRect)
+    elseif self.owner and self.owner.isButton then
+        local ownerRect = { x = self.owner:getAbsoluteX(), y = self.owner:getAbsoluteY(), width = self.owner.width, height = self.owner.height }
+        self:adjustPositionToAvoidOverlap(ownerRect)
+    end]]
+
+    --Draw tooltip
+
+    self:drawRect(0, 0, (textWidth + tooltipPaddingLeft + tooltipPaddingRight), (textHeight + tooltipPaddingTop + tooltipPaddingBottom), self.backgroundColor.a, self.backgroundColor.r, self.backgroundColor.g, self.backgroundColor.b)
+    self:drawRectBorder(0, 0, (textWidth + tooltipPaddingLeft + tooltipPaddingRight), (textHeight + tooltipPaddingTop + tooltipPaddingBottom), self.borderColor.a, self.borderColor.r, self.borderColor.g, self.borderColor.b)
+
+    local lineY = tooltipPaddingTop;
+
+    for i = 1, #tooltipTextTable do
+        local lineX = tooltipPaddingLeft;
+        local lineRightX = tooltipPaddingLeft + textWidth;
+        local currColor = defaultColor;
+        local leftText;
+        local leftTextColor;
+        local rightText;
+        local rightTextColor;
+        local textFindBeg;
+        local textFindEnd;
+
+        local text = tooltipTextTable[i]
+
+        if text:contains(":")
+        then
+            leftText = text:sub(0, text:find(":"))
+            leftTextColor = leftText:match("%%.+%%")
+            if leftTextColor ~= nil
+            then
+                textFindBeg,textFindEnd  = leftText:find("%%.+%%");
+                leftText = leftText:sub(textFindEnd +1, #leftText)
+                leftTextColor = leftTextColor:sub(2, #leftTextColor - 1)
+            end
+            rightText = text:sub(text:find(":") + 1, #text)
+            rightTextColor = rightText:match("%%.+%%")
+            if rightTextColor ~= nil
+            then
+                textFindBeg,textFindEnd  = rightText:find("%%.+%%");
+                rightText = rightText:sub(textFindEnd +1, #rightText)
+                rightTextColor = rightTextColor:sub(2, #rightTextColor - 1)
+            end
+            currColor = Colors[leftTextColor] or defaultColor;
+
+            self.tooltip:DrawText(leftText, lineX, lineY,
+                    currColor:getRedFloat(),
+                    currColor:getGreenFloat(),
+                    currColor:getBlueFloat(),
+                    currColor:getAlphaFloat())
+
+            currColor = Colors[rightTextColor] or defaultColor;
+            if rightText ~= nil
+            then
+                self.tooltip:DrawTextRight(rightText, lineRightX, lineY,
+                        currColor:getRedFloat(),
+                        currColor:getGreenFloat(),
+                        currColor:getBlueFloat(),
+                        currColor:getAlphaFloat())
+                lineY = lineY + lineSpacing
+            end
+        elseif text == nil or text == ""
+        then
+            lineY = lineY + (lineSpacing / 2)
+        else
+            leftTextColor = text:match("%%.+%%")
+            if leftTextColor ~= nil
+            then
+                textFindBeg,textFindEnd  = text:find("%%.+%%");
+                text = text:sub(textFindEnd +1, #text)
+                leftTextColor = leftTextColor:sub(2, #leftTextColor - 1)
+            end
+            currColor = Colors[leftTextColor] or defaultColor;
+            self.tooltip:DrawText(text,  lineX, lineY,
+                    currColor:getRedFloat(),
+                    currColor:getGreenFloat(),
+                    currColor:getBlueFloat(),
+                    currColor:getAlphaFloat())
+            lineY = lineY + lineSpacing
+        end
     end
 end
-
+--ISInventoryPaneContextMenu.addEatTooltip = function(option, items, percent)
 
 
 
