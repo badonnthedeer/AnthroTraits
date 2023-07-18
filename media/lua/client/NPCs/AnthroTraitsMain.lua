@@ -150,12 +150,25 @@ end
 
 
 AnthroTraitsMain.ApplyFoodTypeMod = function(modifier, character, foodEaten, percentEaten)
-    local foodBaseHunger = foodEaten:getBaseHunger();
-    --local foodHungChange = foodEaten:getHungerChange();
+    local foodName = foodEaten:getName();
+    local foodHungerChange = foodEaten:getHungerChange();
     local foodThirstChange = foodEaten:getThirstChange();
+    local foodEndChange = foodEaten:getEnduranceChange();
+    local foodStressChange = foodEaten:getStressChange();
     local foodBoredomChange = foodEaten:getBoredomChange();
     local foodUnhappyChange = foodEaten:getUnhappyChange();
     local foodCalories = foodEaten:getCalories();
+    local foodCarbs = foodEaten:getCarbohydrates();
+    local foodProtein = foodEaten:getProteins();
+    local foodFat = foodEaten:getLipids();
+
+    local extraFoodHungerChange;
+    local extraFoodThirstChange;
+    local extraFoodEndChange;
+    local extraFoodStressChange;
+    local extraFoodBoredomChange;
+    local extraFoodUnhappyChange;
+    local extraFoodCalories;
 
     local charStats = character:getStats();
     local charBodyDmg = character:getBodyDamage();
@@ -163,29 +176,44 @@ AnthroTraitsMain.ApplyFoodTypeMod = function(modifier, character, foodEaten, per
 
     if getDebug()
     then
-        print("Item| BaseHunger: "..foodBaseHunger..", ThirstChange: "..foodThirstChange..", BoredomChange: "..foodBoredomChange..", UnhappyChange: "..foodUnhappyChange..", Calories: "..foodCalories);
+        print(foodName.."| HungerChange: "..foodHungerChange..", ThirstChange: "..foodThirstChange..", BoredomChange: "..foodBoredomChange..", UnhappyChange: "..foodUnhappyChange..", Calories: "..foodCalories);
         print("After Eat, Before Mod| Hunger: "..charStats:getHunger()..", Thirst: "..charStats:getThirst()..", Boredom: "..charBodyDmg:getBoredomLevel()..", Unhappiness: "..charBodyDmg:getUnhappynessLevel()..", Calories:"..charNutrition:getCalories());
     end
 
-    if foodBaseHunger ~= 0
+    if foodHungerChange ~= 0
     then
-        charStats:setHunger(charStats:getHunger() - ((foodBaseHunger * modifier ) * percentEaten));
+        extraFoodHungerChange = (foodHungerChange * modifier) * percentEaten;
+        charStats:setHunger(charStats:getHunger() - extraFoodHungerChange);
     end
     if foodThirstChange ~= 0
     then
-        charStats:setThirst(charStats:getThirst() - ((foodThirstChange * modifier) * percentEaten));
+        extraFoodThirstChange = (foodThirstChange * modifier) * percentEaten
+        charStats:setThirst(charStats:getThirst() - extraFoodThirstChange);
     end
-    if foodBoredomChange ~= 0 and foodBoredomChange < 0
+    if foodEndChange ~= 0
     then
-        charBodyDmg:setBoredomLevel(charBodyDmg:getBoredomLevel() - ((foodBoredomChange * modifier ) * percentEaten));
+        extraFoodEndChange = (foodEndChange * modifier) * percentEaten
+        charStats:setEndurance(charStats:getEndurance() - extraFoodEndChange);
     end
-    if foodUnhappyChange ~= 0 and foodUnhappyChange < 0
+    if foodStressChange ~= 0
     then
-        charBodyDmg:setUnhappynessLevel(charBodyDmg:getUnhappynessLevel() - ((foodUnhappyChange * modifier ) * percentEaten));
+        extraFoodStressChange = (foodStressChange * modifier) * percentEaten
+        charStats:setStress(charStats:getStress() - extraFoodStressChange);
+    end
+    if foodBoredomChange ~= 0
+    then
+        extraFoodBoredomChange = (foodBoredomChange * modifier) * percentEaten
+        charBodyDmg:setBoredomLevel(charBodyDmg:getBoredomLevel() + extraFoodBoredomChange);
+    end
+    if foodUnhappyChange ~= 0
+    then
+        extraFoodUnhappyChange = (foodUnhappyChange * modifier) * percentEaten
+        charBodyDmg:setUnhappynessLevel(charBodyDmg:getUnhappynessLevel() + extraFoodUnhappyChange);
     end
     if foodCalories ~= 0
     then
-        charNutrition:setCalories(charNutrition:getCalories() + ((foodCalories * modifier ) * percentEaten));
+        extraFoodCalories = (foodCalories * modifier) * percentEaten;
+        charNutrition:setCalories(charNutrition:getCalories() + extraFoodCalories);
     end
     if getDebug()
     then
