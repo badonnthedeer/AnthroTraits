@@ -114,9 +114,9 @@ AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item,
     local foodCookedMicrowave = item:isCookedInMicrowave();
     --local remainingFoodUses = (item:getUses() - item:getCurrentUses());
     --print ("uses: "..item:getUses().." Curr Uses: "..item:getCurrentUses())
-    --local baseFeralDigestionPoisonAmount = SandboxVars.AnthroTraits.AT_FeralDigestionPoisonAmt;
+    local baseFeralDigestionPoisonAmount = SandboxVars.AnthroTraits.AT_FeralDigestionPoisonAmt;
     --local feralDigestionPoisonAmount = remainingFoodUses * baseFeralDigestionPoisonAmount;
-    --local totalPoisonPower = 0;
+    local totalPoisonPower = 0;
     --local bleach = getScriptManager():getItem("Base.Bleach");
     --local bleachPoisonAmt = bleach:getPoisonPower();
     --local bleachPoisonAmt = 120;
@@ -254,14 +254,15 @@ AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item,
             foodIngredientTags = getScriptManager():getItem(foodIngredients:get(i)):getTags()
             if foodIngredientTags:contains("ATFeralPoison")
             then
-                --totalPoisonPower = totalPoisonPower + baseFeralDigestionPoisonAmount;
+                totalPoisonPower = totalPoisonPower + baseFeralDigestionPoisonAmount;
             end
         end
     end
-    --if totalPoisonPower ~= 0
-    --then
+    if totalPoisonPower ~= 0
+    then
+        table.insert(returnTable, 2, "%Violet%This food is poisonous to you!")
         --table.insert(returnTable, 2, "%Violet%This food is poisonous to you! ("..string.format("%3.2f",totalPoisonPower / bleachPoisonAmt).." full bleach bottle(s))")
-    --end
+    end
     return returnTable;
 end
 
