@@ -253,10 +253,16 @@ AnthroTraitsMain.DoVoreModifier = function(character, foodEaten, foodPercentEate
         if foodEaten:hasTag("ATHerbivore")
         then
             this.ApplyFoodTypeMod(CarnivoreMalus, character, foodEaten, foodPercentEaten);
-        elseif character:HasTrait("AT_CarrionEater") and foodEaten:isRotten() and foodEaten:hasTag("ATCarnivore")
+        elseif character:HasTrait("AT_CarrionEater") and foodEaten:hasTag("ATCarnivore")
         then
-            this.ApplyFoodTypeMod((CarnivoreBonus + carrionEaterBonus), character, foodEaten, foodPercentEaten);
-            this.NeutralizeFoodPoisoning(charBodyDmg, beforeFoodSickness, beforePoisonLevel);
+            if foodEaten:isRotten()
+            then
+                this.ApplyFoodTypeMod((CarnivoreBonus + carrionEaterBonus), character, foodEaten, foodPercentEaten);
+                this.NeutralizeFoodPoisoning(charBodyDmg, beforeFoodSickness, beforePoisonLevel);
+            else
+                this.ApplyFoodTypeMod((CarnivoreBonus), character, foodEaten, foodPercentEaten);
+                this.NeutralizeFoodPoisoning(charBodyDmg, beforeFoodSickness, beforePoisonLevel);
+            end
         elseif foodEaten:hasTag("ATCarnivore")
         then
             this.ApplyFoodTypeMod(CarnivoreBonus, character, foodEaten, foodPercentEaten);
