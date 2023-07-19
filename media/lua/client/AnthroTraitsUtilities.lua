@@ -59,13 +59,19 @@ AnthroTraitsUtilities.getTooltipValueColor = function(oldValChangeAmt, newValCha
         color = "%Crimson%";
     elseif (positiveBad and newValChangeAmt < 0 and oldValChangeAmt > newValChangeAmt) or (not positiveBad and newValChangeAmt > 0 and oldValChangeAmt < newValChangeAmt)
     then
-        color = "%Lime%";
+        color = "%LightGreen%";
     elseif (positiveBad and newValChangeAmt > 0 and oldValChangeAmt > newValChangeAmt) or (not positiveBad and newValChangeAmt < 0 and oldValChangeAmt < newValChangeAmt)
     then
         color = "%LavenderBlush%";
     elseif (positiveBad and newValChangeAmt < 0 and oldValChangeAmt < newValChangeAmt) or (not positiveBad and newValChangeAmt > 0 and oldValChangeAmt > newValChangeAmt)
     then
         color = "%Yellow%";
+    elseif (positiveBad and newValChangeAmt > 0 and oldValChangeAmt == newValChangeAmt) or (not positiveBad and newValChangeAmt < 0 and oldValChangeAmt == newValChangeAmt)
+    then
+        color = "%Red%";
+    elseif (positiveBad and newValChangeAmt < 0 and oldValChangeAmt == newValChangeAmt) or (not positiveBad and newValChangeAmt > 0 and oldValChangeAmt == newValChangeAmt)
+    then
+        color = "%Lime%";
     end
 
     return color;
@@ -90,7 +96,10 @@ AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item,
     local returnTable = {}
 
     local foodName = item:getName();
-    local encumbrance = item:getWeight();
+    local foodID = item:getFullType();
+    local foodIngredients = item:getExtraItems();
+    local foodIngredientTags;
+    local encumbrance = item:getActualWeight();
     local stackEncum = item:getCount() * encumbrance
     local foodHungerChange = item:getHungerChange();
     local foodThirstChange = item:getThirstChange();
@@ -103,6 +112,14 @@ AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item,
     local foodProtein = item:getProteins();
     local foodFat = item:getLipids();
     local foodCookedMicrowave = item:isCookedInMicrowave();
+    --local remainingFoodUses = (item:getUses() - item:getCurrentUses());
+    --print ("uses: "..item:getUses().." Curr Uses: "..item:getCurrentUses())
+    --local baseFeralDigestionPoisonAmount = SandboxVars.AnthroTraits.AT_FeralDigestionPoisonAmt;
+    --local feralDigestionPoisonAmount = remainingFoodUses * baseFeralDigestionPoisonAmount;
+    --local totalPoisonPower = 0;
+    --local bleach = getScriptManager():getItem("Base.Bleach");
+    --local bleachPoisonAmt = bleach:getPoisonPower();
+    --local bleachPoisonAmt = 120;
 
     if (player:HasTrait("AT_Bug-o-ssieur") and item:hasTag("ATInsect")) or (player:HasTrait("AT_FoodMotivated") and item:getFullType() == "base.DogfoodOpen")
     then
@@ -117,16 +134,37 @@ AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item,
     local newFoodThirstChange = (foodThirstChange + (foodThirstChange * statModifier));
     local newFoodEndChange = (foodEndChange + (foodEndChange * statModifier));
     local newFoodStressChange = (foodStressChange + (foodStressChange * statModifier));
-    local newFoodBoredomChange = (foodBoredomChange - (foodBoredomChange * statModifier));
-    local newFoodUnhappyChange = (foodUnhappyChange - (foodUnhappyChange * statModifier));
+    local newFoodBoredomChange = (foodBoredomChange + (foodBoredomChange * statModifier));
+    local newFoodUnhappyChange = (foodUnhappyChange + (foodUnhappyChange * statModifier));
     local newFoodCalories = (foodCalories + (foodCalories * statModifier));
+
+    if foodBoredomChange > 0
+    then
+        newFoodBoredomChange = (foodBoredomChange + (foodBoredomChange * (statModifier * -1)));
+    end
+    if foodUnhappyChange > 0
+    then
+        newFoodUnhappyChange = (foodUnhappyChange + (foodUnhappyChange * (statModifier * -1)));
+    end
+    if foodID == "Base.DogfoodOpen" and player:HasTrait("AT_FoodMotivated")
+    then
+        newFoodUnhappyChange = -SandboxVars.AnthroTraits.AT_FoodMotivatedBonus;
+    end
 
     if foodName ~= nil
     then
-        table.insert(returnTable, foodName);
+        if item:isRotten() and not player:HasTrait("AT_CarrionEater")
+        then
+            table.insert(returnTable, "%Red%"..foodName);
+        elseif item:isRotten() and player:HasTrait("AT_CarrionEater")
+        then
+            table.insert(returnTable, "%LightGreen%"..foodName);
+        else
+            table.insert(returnTable, foodName);
+        end
         table.insert(returnTable, description);
         table.insert(returnTable, ""); --spacer line
-    end
+        end
 
 
     if encumbrance ~= nil
@@ -186,7 +224,14 @@ AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item,
         then
             table.insert(returnTable, "%LavenderBlush%"..getText("Tooltip_food_SlightDanger_uncooked"));
         else
-            table.insert(returnTable, "%Red%"..getText("Tooltip_food_Dangerous_uncooked"));
+            if ((player:HasTrait("AT_Carnivore") and item:hasTag("ATCarnivore") and not item:isRotten())
+                    or (player:HasTrait("AT_Herbivore") and item:hasTag("ATHerbivore") and not item:isRotten())
+                    or (player:HasTrait("AT_CarrionEater")))
+            then
+                --do nothing
+            else
+                table.insert(returnTable, "%Red%"..getText("Tooltip_food_Dangerous_uncooked"));
+            end
         end
     end
     if (item:isGoodHot() or item:isBadCold()) and item:getHeat() < 1.3
@@ -197,6 +242,26 @@ AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item,
     then
         table.insert(returnTable, getText("Tooltip_food_CookedInMicrowave"));
     end
+
+    if item:hasTag("ATFeralPoison") and player:HasTrait("AT_FeralDigestion")
+    then
+        table.insert(returnTable, 2, "%Violet%This food is poisonous to you!")
+        --table.insert(returnTable, 2, "%Violet%This food is poisonous to you! ("..string.format("%3.2f",feralDigestionPoisonAmount / bleachPoisonAmt).." full bleach bottle(s))")
+    elseif player:HasTrait("AT_FeralDigestion") and foodIngredients ~= nil
+    then
+        for i = 0, foodIngredients:size() -1
+        do
+            foodIngredientTags = getScriptManager():getItem(foodIngredients:get(i)):getTags()
+            if foodIngredientTags:contains("ATFeralPoison")
+            then
+                --totalPoisonPower = totalPoisonPower + baseFeralDigestionPoisonAmount;
+            end
+        end
+    end
+    --if totalPoisonPower ~= 0
+    --then
+        --table.insert(returnTable, 2, "%Violet%This food is poisonous to you! ("..string.format("%3.2f",totalPoisonPower / bleachPoisonAmt).." full bleach bottle(s))")
+    --end
     return returnTable;
 end
 
