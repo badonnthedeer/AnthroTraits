@@ -16,6 +16,7 @@ A mod for Project Zomboid that adds realistic, balanced traits for anthropomorph
     [*][h2]Digitigrade[/h2]
     Your legs aren't straight, giving your stomps increased power.
     +1 Sprinting.
+    Those with bare feet may find hooves more useful.
     [*][h2]Feral Body[/h2]
     Like a feral, you are stronger but less fit.
     [*][h2]Food Motivated[/h2]
