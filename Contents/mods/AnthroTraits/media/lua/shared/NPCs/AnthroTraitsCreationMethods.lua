@@ -94,8 +94,8 @@ AnthroTraitsMainCreationMethods.initAnthroTraits = function()
     TraitFactory.addTrait("AT_BeastOfBurden", getText("UI_trait_AT_BeastOfBurden"), 1, getText("UI_trait_AT_BeastOfBurden_desc"), false);
     this.TTF.Add("AT_BeastOfBurden", "AnthroTraits,CostVariable,Anthro,Strong");
 
-    TraitFactory.addTrait("AT_Bug-o-ssieur", getText("UI_trait_AT_Bug-o-ssieur"), 1, getText("UI_trait_AT_Bug-o-ssieur_desc"), false);
-    this.TTF.Add("AT_Bug-o-ssieur", "AnthroTraits,CostVariable");
+    TraitFactory.addTrait("AT_Bug_o_ssieur", getText("UI_trait_AT_Bug_o_ssieur"), 1, getText("UI_trait_AT_Bug_o_ssieur_desc"), false);
+    this.TTF.Add("AT_Bug_o_ssieur", "AnthroTraits,CostVariable");
 
     TraitFactory.addTrait("AT_BullRush", getText("UI_trait_AT_BullRush"), 1, getText("UI_trait_AT_BullRush_desc"), false);
     this.TTF.Add("AT_BullRush", "AnthroTraits,CostVariable,Anthro,Horns");

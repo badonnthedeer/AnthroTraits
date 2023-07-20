@@ -173,7 +173,7 @@ AnthroTraitsMain.ApplyFoodTypeMod = function(modifier, character, foodEaten, per
     local extraFoodUnhappyChange = (foodUnhappyChange * modifier) * percentEaten;
     local extraFoodCalories = (foodCalories * modifier) * percentEaten;
 
-   if (character:HasTrait("AT_Bug-o-ssieur") and item:hasTag("ATInsect")) or (character:HasTrait("AT_FoodMotivated") and item:getFullType() == "base.DogfoodOpen")
+   if (character:HasTrait("AT_Bug_o_ssieur") and foodEaten:hasTag("ATInsect")) or (character:HasTrait("AT_FoodMotivated") and foodEaten:getFullType() == "base.DogfoodOpen")
     then
         extraFoodUnhappyChange = extraFoodUnhappyChange - (foodUnhappyChange * percentEaten);
         extraFoodBoredomChange = extraFoodBoredomChange - (SandboxVars.AnthroTraits.AT_FoodMotivatedBonus * percentEaten);
@@ -705,7 +705,7 @@ AnthroTraitsMain.ATOnClothingUpdated = function(character)
         else
             if wornShoes ~= nil
             then
-                character:setStompPower(vanillaStomp);
+                wornShoes:setStompPower(vanillaStomp);
             else
                 --do nothing
             end
