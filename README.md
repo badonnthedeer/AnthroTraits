@@ -8,7 +8,7 @@ Do you really enjoy this mod--or even better--want to build on it? Please consid
     Your body's frame is well-built for carrying weight.
     </li>
     <li><h2>Bug-o-ssieur</h2>
-    You don't gain unhappiness when eating bugs.
+    You don't gain unhappiness or boredom when eating bugs.
     </li>
     <li><h2>Bull Rush</h2>
     When sprinting, knock zombies over at a cost of extra endurance.
@@ -63,7 +63,7 @@ Do you really enjoy this mod--or even better--want to build on it? Please consid
     When panicked, you have a good chance to vocalize your fear.
     </li>
     <li><h2>Feral Digestion</h2>
-    Grape, onion, chocolate, gum, alcohol, and caffeine poison you.<br>
+    Foods poisonous to ferals poison you.<br>
     (Not an exhaustive list for real life, be careful what you feed your pets!)
     </li>
     <li><h2>Lonely</h2>
