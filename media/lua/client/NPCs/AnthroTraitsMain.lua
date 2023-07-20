@@ -446,6 +446,8 @@ AnthroTraitsMain.ATOnInitWorld = function()
     ATU.AddItemTagToItemsFromFile("ATHerbivoreItemTag.txt", "ATHerbivore");
     ATU.AddItemTagToItemsFromFile("ATInsectItemTag.txt", "ATInsect");
     ATU.AddItemTagToItemsFromFile("ATFeralPoisonItemTag.txt", "ATFeralPoison");
+
+    Colors["LavenderBlush"] = Color.new(1, 229/255, 229/255, 1);
 end
 
 
