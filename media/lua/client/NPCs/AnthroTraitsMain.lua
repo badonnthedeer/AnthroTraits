@@ -1,7 +1,7 @@
 local AnthroTraitsMain = {};
 local ATU = require("AnthroTraitsUtilities");
 
--- C:\Program Files (x86)\Steam\3steamapps\common\ProjectZomboid\media\lua | Project Zomboid files
+-- C:\Program Files (x86)\Steam\steamapps\common\ProjectZomboid\media\lua | Project Zomboid files
 -- C:\Program Files (x86)\Steam\steamapps\common\ProjectZomboid\media\AnimSets\player
 -- C:\Program Files (x86)\Steam\steamapps\workshop\content\108600\
 
@@ -677,30 +677,39 @@ AnthroTraitsMain.ATOnObjectCollide = function(collider, collidee)
 end
 
 
-AnthroTraitsMain.ATOnClothingUpdated = function(gameChar)
-    if instanceof(gameChar, "IsoPlayer")
+AnthroTraitsMain.ATOnClothingUpdated = function(character)
+    if instanceof(character, "IsoPlayer")
     then
-        local player = gameChar
-        local shoes = player:getClothingItem_Feet();
+        local wornShoes = character:getClothingItem_Feet();
+        local vanillaStomp;
+        if wornShoes ~= nil
+        then
+            vanillaStomp = InventoryItemFactory.CreateItem(wornShoes:getFullType()):getStompPower();
+        end
+        local digitigradeMultiplier = 1 + SandboxVars.AnthroTraits.AT_DigitigradeStompPowerPctIncrease;
 
-        if shoes ~= nil then
-            local vanillaShoes = InventoryItemFactory.CreateItem(shoes:getFullType())
-            local vanillaStomp = vanillaShoes:getStompPower();
-            local digitigradeMultiplier = 1 + SandboxVars.AnthroTraits.AT_DigitigradeStompPowerPctIncrease;
-            if player:HasTrait("AT_Digitigrade")
+        if character:HasTrait("AT_Digitigrade")
+        then
+            if wornShoes ~= nil
             then
-                shoes:setStompPower(vanillaStomp * digitigradeMultiplier);
+                wornShoes:setStompPower(vanillaStomp * digitigradeMultiplier);
             else
-                shoes:setStompPower(vanillaStomp);
+                if character:HasTrait("AT_Hooves")
+                then
+                    character:setClothingItem_Feet(InventoryItemFactory.CreateItem("Base.DigitigradeHoofers"))
+                else
+                    character:setClothingItem_Feet(InventoryItemFactory.CreateItem("Base.DigitigradePaws"))
+                end
+
             end
         else
-            if player:HasTrait("AT_Digitigrade")
+            if wornShoes ~= nil
             then
-                --???? do something I guess
-                --shoes:setStompPower(vanillaShoe:getStompPower() * (1 + SandboxVars.AnthroTraits.AT_DigitigradeStompPowerPctIncrease));
+                character:setStompPower(vanillaStomp);
             else
-                --shoes:setStompPower(vanillaShoe:getStompPower())
+                --do nothing
             end
+
         end
     end
 end
