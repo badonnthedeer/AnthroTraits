@@ -705,7 +705,7 @@ AnthroTraitsMain.ATOnClothingUpdated = function(character)
         else
             if wornShoes ~= nil
             then
-                character:setStompPower(vanillaStomp);
+                wornShoes:setStompPower(vanillaStomp);
             else
                 --do nothing
             end
