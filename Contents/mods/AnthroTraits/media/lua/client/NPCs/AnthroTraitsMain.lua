@@ -567,18 +567,22 @@ AnthroTraitsMain.ATOnCharacterCollide = function(collider, collidee)
                 collider:setBumpType("");
                 collider:setBumpStaggered(false);
                 collider:setBumpFall(false);
-            elseif instanceof(collidee, "IsoPlayer") and (collider:getCoopPVP() == true and collidee:getCoopPVP() == true)
+            elseif instanceof(collidee, "IsoPlayer")
             then
-                collidee:setBumpType("stagger");
-                collidee:setVariable("BumpDone", true);
-                collidee:setVariable("BumpFall", true);
-                collidee:setVariable("BumpFallType", "pushedbehind");
-                --collidee:setBumpStaggered(true);
-                --collidee:setKnockedDown(true);
-                collider:getStats():setEndurance(collider:getStats():getEndurance() - knockdownEndCost);
-                collider:setBumpType("");
-                collider:setBumpStaggered(false);
-                collider:setBumpFall(false);
+                if (collider:getCoopPVP() == true and
+                        collidee:getCoopPVP() == true)
+                then
+                    collidee:setBumpType("stagger");
+                    collidee:setVariable("BumpDone", true);
+                    collidee:setVariable("BumpFall", true);
+                    collidee:setVariable("BumpFallType", "pushedbehind");
+                    --collidee:setBumpStaggered(true);
+                    --collidee:setKnockedDown(true);
+                    collider:getStats():setEndurance(collider:getStats():getEndurance() - knockdownEndCost);
+                    collider:setBumpType("");
+                    collider:setBumpStaggered(false);
+                    collider:setBumpFall(false);
+                end
             end
         elseif collidee:isKnockedDown() and collider:HasTrait("AT_BullRush") and collider:isSprinting() and collider:getBeenSprintingFor() >= 10
         then
