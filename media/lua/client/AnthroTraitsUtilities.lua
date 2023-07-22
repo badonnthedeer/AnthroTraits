@@ -112,6 +112,11 @@ AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item,
     local foodProtein = item:getProteins();
     local foodFat = item:getLipids();
     local foodCookedMicrowave = item:isCookedInMicrowave();
+
+    local currCookTime = item:getCookingTime();
+    local minutesTillCooked = item:getMinutesToCook();
+    local minutesTillBurned = item:getMinutesToBurn();
+
     --local remainingFoodUses = (item:getUses() - item:getCurrentUses());
     --print ("uses: "..item:getUses().." Curr Uses: "..item:getCurrentUses())
     local baseFeralDigestionPoisonAmount = SandboxVars.AnthroTraits.AT_FeralDigestionPoisonAmt;
@@ -198,6 +203,29 @@ AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item,
     if foodUnhappyChange ~= nil and foodUnhappyChange ~=0
     then
         table.insert(returnTable, getText("Tooltip_food_Unhappiness")..":"..this.getTooltipValueColor(foodUnhappyChange, newFoodUnhappyChange, true)..this.getTooltipValueSymbol(newFoodUnhappyChange)..string.format("%3.1f",newFoodUnhappyChange));
+    end
+    if item:isIsCookable() and not item:isFrozen() and item:getHeat() > 1.6 then
+        currCookTime = item:getCookingTime();
+        minutesTillCooked = item:getMinutesToCook();
+        minutesTillBurned = item:getMinutesToBurn();
+        if currCookTime > minutesTillCooked
+        then
+            table.insert(returnTable, "%Lime%"..getText("IGUI_invpanel_Cooking").."|".."%Lime%"..string.format("%3.2f",currCookTime / minutesTillCooked));
+        elseif currCookTime > minutesTillCooked
+        then
+            table.insert(returnTable, "%Red%"..getText("IGUI_invpanel_Burning").."|".."%Red%"..string.format("%3.2f",currCookTime / minutesTillBurned));
+        elseif currCookTime > minutesTillBurned
+        then
+            table.insert(returnTable, "%Red%"..getText("IGUI_invpanel_Burnt"));
+        end
+    elseif item:getFreezingTime() > 0 and item:getFreezingTime() < 100
+    then
+        if item:isThawing()
+        then
+            table.insert(returnTable, getText("IGUI_invpanel_Melting").."|".."%Green%"..string.format("%3.2f", item:getFreezingTime() / 100));
+        else
+            table.insert(returnTable, getText("IGUI_invpanel_FreezingTime").."|".."%Green%"..string.format("%3.2f", item:getFreezingTime() / 100));
+        end
     end
     if item:isPackaged() or player:HasTrait("Nutritionist") or player:HasTrait("Nutritionist2")
     then

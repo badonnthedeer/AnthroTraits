@@ -171,10 +171,17 @@ ISToolTipInv.render = function(self)
             local tooltipPaddingTop = 7;
             local tooltipPaddingBottom = 0;
             local tooltipTextTable = {};
-            local textWidth = 0;
+            local longestTextWidth = 0;
+            local longestLeftTextWidth = 0;
             local textHeight = 0;
+            local barPaddingLeft = 5;
+            local barPaddingRight = 5;
+            local rightTextLeftPadding = 5;
+            local barHeight = 3;
             local lineSpacing = self.tooltip:getLineSpacing();
             local defaultColor = Colors.LemonChiffon;
+            local text = "";
+            local leftText = "";
 
             if (((self.item:hasTag("ATHerbivore") or self.item:hasTag("ATCarnivore")) and (player:HasTrait("AT_Herbivore") or player:HasTrait("AT_Carnivore") or player:HasTrait("AT_CarrionEater")))
                     or (self.item:hasTag("ATFeralPoison") and player:HasTrait("AT_FeralDigestion"))
@@ -221,7 +228,14 @@ ISToolTipInv.render = function(self)
             end
 
             for i = 1, #tooltipTextTable do
-                textWidth = math.max(textWidth, getTextManager():MeasureStringX(UIFont[getCore():getOptionTooltipFont()], tooltipTextTable[i]));
+                text = tooltipTextTable[i]
+                longestTextWidth = math.max(longestTextWidth, getTextManager():MeasureStringX(UIFont[getCore():getOptionTooltipFont()], text));
+                if tooltipTextTable[i]:find(":")
+                then
+                    leftText = text:sub(0, text:find(":"))
+                    longestLeftTextWidth = math.max(longestLeftTextWidth, getTextManager():MeasureStringX(UIFont[getCore():getOptionTooltipFont()],  leftText));
+                end
+
             end
             for i = 1, #tooltipTextTable do
                 if tooltipTextTable[i] ~= nil
@@ -274,16 +288,19 @@ ISToolTipInv.render = function(self)
 
             for i = 1, #tooltipTextTable do
                 local lineX = tooltipPaddingLeft;
-                local lineRightX = tooltipPaddingLeft + textWidth;
+                local lineRightX = tooltipPaddingLeft + longestLeftTextWidth + rightTextLeftPadding;
+                local lineYBar;
                 local currColor = defaultColor;
-                local leftText;
+                local leftTextWidth;
                 local leftTextColor;
                 local rightText;
                 local rightTextColor;
+                local barLength;
                 local textFindBeg;
                 local textFindEnd;
 
-                local text = tooltipTextTable[i]
+                text = tooltipTextTable[i]
+                leftText = nil;
 
                 if text:contains(":")
                 then
@@ -295,7 +312,7 @@ ISToolTipInv.render = function(self)
                         leftText = leftText:sub(textFindEnd +1, #leftText)
                         leftTextColor = leftTextColor:sub(2, #leftTextColor - 1)
                     end
-                    rightText = text:sub(text:find(":") + 1, #text)
+                    rightText = text:sub((text:find(":")  +1), #text)
                     rightTextColor = rightText:match("%%.+%%")
                     if rightTextColor ~= nil
                     then
@@ -314,13 +331,49 @@ ISToolTipInv.render = function(self)
                     currColor = Colors[rightTextColor] or defaultColor;
                     if rightText ~= nil
                     then
-                        self.tooltip:DrawTextRight(rightText, lineRightX, lineY,
+                        self.tooltip:DrawText(rightText, lineRightX, lineY,
                                 currColor:getRedFloat(),
                                 currColor:getGreenFloat(),
                                 currColor:getBlueFloat(),
                                 currColor:getAlphaFloat())
-                        lineY = lineY + lineSpacing
                     end
+                        lineY = lineY + lineSpacing
+                elseif text:contains("|")
+                then
+                    leftText = text:sub(0, text:find("|") - 1)
+                    leftTextWidth = getTextManager():MeasureStringX(UIFont[getCore():getOptionTooltipFont()], leftText)
+                    leftTextColor = leftText:match("%%.+%%")
+                    if leftTextColor ~= nil
+                    then
+                        textFindBeg,textFindEnd  = leftText:find("%%.+%%");
+                        leftText = leftText:sub(textFindEnd +1, #leftText)
+                        leftTextColor = leftTextColor:sub(2, #leftTextColor - 1)
+                    end
+                    rightText = text:sub(text:find("|") +1, #text)
+                    rightTextColor = rightText:match("%%.+%%")
+                    if rightTextColor ~= nil
+                    then
+                        textFindBeg,textFindEnd  = rightText:find("%%.+%%");
+                        rightText = rightText:sub(textFindEnd +1, #rightText)
+                        rightTextColor = rightTextColor:sub(2, #rightTextColor - 1)
+                    end
+                    currColor = Colors[leftTextColor] or defaultColor;
+
+                    self.tooltip:DrawText(leftText, lineX, lineY,
+                            currColor:getRedFloat(),
+                            currColor:getGreenFloat(),
+                            currColor:getBlueFloat(),
+                            currColor:getAlphaFloat())
+
+                    currColor = Colors[rightTextColor] or defaultColor;
+                    if rightText ~= nil
+                    then
+                        barLength = (longestTextWidth - leftTextWidth - barPaddingLeft - barPaddingRight);
+                        --center the bar in the available line space
+                        lineYBar = (lineY + (self.tooltip:getLineSpacing() / 2) - 1)
+                        self.tooltip:DrawProgressBar(lineX + leftTextWidth + barPaddingLeft, lineYBar, barLength, 12, tonumber(rightText), currColor:getRedFloat(), currColor:getGreenFloat(), currColor:getBlueFloat(), currColor:getAlphaFloat())
+                    end
+                    lineY = lineY + lineSpacing
                 elseif text == nil or text == ""
                 then
                     lineY = lineY + (lineSpacing / 2)
@@ -345,6 +398,7 @@ ISToolTipInv.render = function(self)
     end
 end
 --ISInventoryPaneContextMenu.addEatTooltip = function(option, items, percent)
+--ISInventoryPane.drawItemDetails =
 
 
 
