@@ -567,7 +567,7 @@ AnthroTraitsMain.ATOnCharacterCollide = function(collider, collidee)
                 collider:setBumpType("");
                 collider:setBumpStaggered(false);
                 collider:setBumpFall(false);
-            elseif instanceof(collidee, "IsoPlayer") and ((collider:getCoopPVP() == true and collidee:getCoopPVP() == true) or collidee:isZombie())
+            elseif instanceof(collidee, "IsoPlayer") and (collider:getCoopPVP() == true and collidee:getCoopPVP() == true)
             then
                 collidee:setBumpType("stagger");
                 collidee:setVariable("BumpDone", true);
