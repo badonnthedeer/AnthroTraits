@@ -569,8 +569,7 @@ AnthroTraitsMain.ATOnCharacterCollide = function(collider, collidee)
                 collider:setBumpFall(false);
             elseif instanceof(collidee, "IsoPlayer")
             then
-                if (collider:getCoopPVP() == true and
-                        collidee:getCoopPVP() == true)
+                if SwipeStatePlayer:checkPVP(collider, collidee) or collidee:isZombie()
                 then
                     collidee:setBumpType("stagger");
                     collidee:setVariable("BumpDone", true);
@@ -593,17 +592,20 @@ AnthroTraitsMain.ATOnCharacterCollide = function(collider, collidee)
                 collider:setBumpType("");
                 collider:setBumpStaggered(false);
                 collider:setBumpFall(false);
-            elseif instanceof(collidee, "IsoPlayer") and ((collider:getCoopPVP() == true and collidee:getCoopPVP() == true) or collidee:isZombie())
+            elseif instanceof(collidee, "IsoPlayer")
             then
-                collidee:setBumpType("stagger");
-                collidee:setVariable("BumpDone", true);
-                collidee:setVariable("BumpFall", true);
-                collidee:setVariable("BumpFallType", "pushedbehind");
-                --collidee:setBumpStaggered(true);
-                --collidee:setKnockedDown(true);
-                collider:setBumpType("");
-                collider:setBumpStaggered(false);
-                collider:setBumpFall(false);
+                if SwipeStatePlayer:checkPVP(collider, collidee) or collidee:isZombie()
+                then
+                    collidee:setBumpType("stagger");
+                    collidee:setVariable("BumpDone", true);
+                    collidee:setVariable("BumpFall", true);
+                    collidee:setVariable("BumpFallType", "pushedbehind");
+                    --collidee:setBumpStaggered(true);
+                    --collidee:setKnockedDown(true);
+                    collider:setBumpType("");
+                    collider:setBumpStaggered(false);
+                    collider:setBumpFall(false);
+                end
             end
         elseif collider:HasTrait("AT_Tail") and modData.canTripChecked == false and (collider:getStats():isTripping() or collider:isBumped())
         then
