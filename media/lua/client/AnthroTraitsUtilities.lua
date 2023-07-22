@@ -121,7 +121,7 @@ AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item,
     --local bleachPoisonAmt = bleach:getPoisonPower();
     --local bleachPoisonAmt = 120;
 
-    if (player:HasTrait("AT_Bug-o-ssieur") and item:hasTag("ATInsect")) or (player:HasTrait("AT_FoodMotivated") and item:getFullType() == "base.DogfoodOpen")
+    if (player:HasTrait("AT_Bug_o_ssieur") and item:hasTag("ATInsect")) or (player:HasTrait("AT_FoodMotivated") and item:getFullType() == "base.DogfoodOpen")
     then
         foodUnhappyChange = 0;
     end

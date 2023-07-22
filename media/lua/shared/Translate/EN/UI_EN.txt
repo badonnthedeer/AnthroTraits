@@ -1,8 +1,8 @@
 UI_EN = {
     UI_trait_AT_BeastOfBurden = "Beast of Burden",
     UI_trait_AT_BeastOfBurden_desc = "Your body's frame is well-built for carrying weight."
-    UI_trait_AT_Bug-o-ssieur="Bug-o-ssieur",
-    UI_trait_AT_Bug-o-ssieur_desc= "You don't gain unhappiness or boredom when eating bugs.",
+    UI_trait_AT_Bug_o_ssieur="Bug-o-ssieur",
+    UI_trait_AT_Bug_o_ssieur_desc= "You don't gain unhappiness or boredom when eating bugs.",
     UI_trait_AT_BullRush="Bull Rush",
     UI_trait_AT_BullRush_desc= "When sprinting, knock zombies over at a cost of extra endurance."
     UI_trait_AT_Carnivore = "Carnivore",

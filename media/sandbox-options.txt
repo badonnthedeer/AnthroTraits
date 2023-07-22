@@ -18,10 +18,10 @@ option AnthroTraits.AT_BeastOfBurdenPctIncrease
 	page = AnthroTraits, translation = AnthroTraits_BeastOfBurdenPctIncrease,
 }
 
-option AnthroTraits.AT_Bug-o-ssieur_Cost
+option AnthroTraits.AT_Bug_o_ssieur_Cost
 {
 	type = integer, min = -15, max = 15, default = 1,
-	page = AnthroTraits, translation = AnthroTraits_Bug-o-ssieur_Cost,
+	page = AnthroTraits, translation = AnthroTraits_Bug_o_ssieur_Cost,
 }
 
 option AnthroTraits.AT_BullRush_Cost

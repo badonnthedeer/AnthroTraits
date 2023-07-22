@@ -178,7 +178,7 @@ ISToolTipInv.render = function(self)
 
             if (((self.item:hasTag("ATHerbivore") or self.item:hasTag("ATCarnivore")) and (player:HasTrait("AT_Herbivore") or player:HasTrait("AT_Carnivore") or player:HasTrait("AT_CarrionEater")))
                     or (self.item:hasTag("ATFeralPoison") and player:HasTrait("AT_FeralDigestion"))
-                    or (self.item:hasTag("ATInsect") and player:HasTrait("AT_Bug-o-ssieur"))
+                    or (self.item:hasTag("ATInsect") and player:HasTrait("AT_Bug_o_ssieur"))
                     or (player:HasTrait("AT_FoodMotivated")))
             then
                 if self.item:hasTag("ATHerbivore")
