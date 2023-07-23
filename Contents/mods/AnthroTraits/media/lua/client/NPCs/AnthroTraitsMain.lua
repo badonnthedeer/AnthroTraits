@@ -569,7 +569,7 @@ AnthroTraitsMain.ATOnCharacterCollide = function(collider, collidee)
                 collider:setBumpFall(false);
             elseif instanceof(collidee, "IsoPlayer")
             then
-                if SwipeStatePlayer:checkPVP(collider, collidee) or collidee:isZombie()
+                if SwipeStatePlayer.checkPVP(collider, collidee) or collidee:isZombie()
                 then
                     collidee:setBumpType("stagger");
                     collidee:setVariable("BumpDone", true);
@@ -594,7 +594,7 @@ AnthroTraitsMain.ATOnCharacterCollide = function(collider, collidee)
                 collider:setBumpFall(false);
             elseif instanceof(collidee, "IsoPlayer")
             then
-                if SwipeStatePlayer:checkPVP(collider, collidee) or collidee:isZombie()
+                if SwipeStatePlayer.checkPVP(collider, collidee) or collidee:isZombie()
                 then
                     collidee:setBumpType("stagger");
                     collidee:setVariable("BumpDone", true);
