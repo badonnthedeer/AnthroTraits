@@ -563,6 +563,10 @@ AnthroTraitsMain.ATOnCharacterCollide = function(collider, collidee)
             then
                 collidee:setStaggerBack(true);
                 collidee:knockDown(colliderBehindCollidee);
+                if isServer()
+                then
+                    collidee:reportEvent("wasHit");
+                end
                 collider:getStats():setEndurance(collider:getStats():getEndurance() - knockdownEndCost);
                 collider:setBumpType("");
                 collider:setBumpStaggered(false);
@@ -574,7 +578,16 @@ AnthroTraitsMain.ATOnCharacterCollide = function(collider, collidee)
                     collidee:setBumpType("stagger");
                     collidee:setVariable("BumpDone", true);
                     collidee:setVariable("BumpFall", true);
-                    collidee:setVariable("BumpFallType", "pushedbehind");
+                    if colliderBehindCollidee
+                    then
+                        collidee:setVariable("BumpFallType", "pushedbehind");
+                    else
+                        collidee:setVariable("BumpFallType", "pushedFront")
+                    end
+                    if isServer()
+                    then
+                        collidee:reportEvent("wasHit");
+                    end
                     --collidee:setBumpStaggered(true);
                     --collidee:setKnockedDown(true);
                     collider:getStats():setEndurance(collider:getStats():getEndurance() - knockdownEndCost);
@@ -589,6 +602,10 @@ AnthroTraitsMain.ATOnCharacterCollide = function(collider, collidee)
             then
                 collidee:setStaggerBack(true);
                 collidee:knockDown(colliderBehindCollidee);
+                if isServer()
+                then
+                    collidee:reportEvent("wasHit");
+                end
                 collider:setBumpType("");
                 collider:setBumpStaggered(false);
                 collider:setBumpFall(false);
@@ -599,7 +616,16 @@ AnthroTraitsMain.ATOnCharacterCollide = function(collider, collidee)
                     collidee:setBumpType("stagger");
                     collidee:setVariable("BumpDone", true);
                     collidee:setVariable("BumpFall", true);
-                    collidee:setVariable("BumpFallType", "pushedbehind");
+                    if colliderBehindCollidee
+                    then
+                        collidee:setVariable("BumpFallType", "pushedbehind");
+                    else
+                        collidee:setVariable("BumpFallType", "pushedFront")
+                    end
+                    if isServer()
+                    then
+                        collidee:reportEvent("wasHit");
+                    end
                     --collidee:setBumpStaggered(true);
                     --collidee:setKnockedDown(true);
                     collider:setBumpType("");
@@ -882,9 +908,25 @@ AnthroTraitsMain.ATPlayerUpdate = function(player)
     --modData.oldWetness = player:getBodyDamage():getWetness();
 end
 
+--[[AnthroTraitsMain.ATOnClientCommand = function(module, command, args)
+    if module == "AnthroTraits"
+    then
+        if command == "knockdownZombie"
+        then
+            args.collidee:setBumpType("stagger");
+            args.collidee:setVariable("BumpDone", true);
+            args.collidee:setVariable("BumpFall", true);
+            args.collidee:setVariable("BumpFallType", "pushedbehind");
+        end
+    end
+end]]
+
+
 
 Events.OnNewGame.Add(AnthroTraitsMain.ATInitPlayerData);
 Events.OnInitWorld.Add(AnthroTraitsMain.ATOnInitWorld);
+--[[Events.OnClientCommand.Add(AnthroTraitsMain.ATOnClientCommand)
+Events.OnServerCommand.Add(AnthroTraitsMain.ATOnServerCommand)]]
 Events.OnClothingUpdated.Add(AnthroTraitsMain.ATOnClothingUpdated);
 Events.OnObjectCollide.Add(AnthroTraitsMain.ATOnObjectCollide);
 Events.OnCharacterCollide.Add(AnthroTraitsMain.ATOnCharacterCollide);
