@@ -368,10 +368,10 @@ ISToolTipInv.render = function(self)
                     currColor = Colors[rightTextColor] or defaultColor;
                     if rightText ~= nil
                     then
-                        barLength = (longestTextWidth - leftTextWidth - barPaddingLeft - barPaddingRight);
+                        barLength = (longestTextWidth - leftTextWidth - barPaddingRight);
                         --center the bar in the available line space
                         lineYBar = (lineY + (self.tooltip:getLineSpacing() / 2) - 1)
-                        self.tooltip:DrawProgressBar(lineX + leftTextWidth + barPaddingLeft, lineYBar, barLength, 12, tonumber(rightText), currColor:getRedFloat(), currColor:getGreenFloat(), currColor:getBlueFloat(), currColor:getAlphaFloat())
+                        self.tooltip:DrawProgressBar(lineX + leftTextWidth, lineYBar, barLength, 12, tonumber(rightText), currColor:getRedFloat(), currColor:getGreenFloat(), currColor:getBlueFloat(), currColor:getAlphaFloat())
                     end
                     lineY = lineY + lineSpacing
                 elseif text == nil or text == ""
