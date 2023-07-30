@@ -216,10 +216,10 @@ AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item,
         if currCookTime < minutesTillCooked
         then
             table.insert(returnTable, "%Lime%"..getText("IGUI_invpanel_Cooking").."|".."%Lime%"..string.format("%3.2f",currCookTime / minutesTillCooked));
-        elseif currCookTime >= minutesTillCooked
+        elseif currCookTime < minutesTillBurned
         then
-            table.insert(returnTable, "%Red%"..getText("IGUI_invpanel_Burning").."|".."%Red%"..string.format("%3.2f",currCookTime / minutesTillBurned));
-        elseif currCookTime >= minutesTillBurned
+            table.insert(returnTable, "%Red%"..getText("IGUI_invpanel_Burning").."|".."%Red%"..string.format("%3.2f",(currCookTime - minutesTillCooked ) / (minutesTillBurned - minutesTillCooked)));
+        elseif currCookTime > minutesTillBurned
         then
             table.insert(returnTable, "%Red%"..getText("IGUI_invpanel_Burnt"));
         end
