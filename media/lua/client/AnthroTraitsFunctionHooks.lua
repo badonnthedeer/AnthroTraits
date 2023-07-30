@@ -229,11 +229,11 @@ ISToolTipInv.render = function(self)
 
             for i = 1, #tooltipTextTable do
                 text = tooltipTextTable[i]
-                longestTextWidth = math.max(longestTextWidth, getTextManager():MeasureStringX(UIFont[getCore():getOptionTooltipFont()], text));
+                longestTextWidth = math.max(longestTextWidth, getTextManager():MeasureStringX(UIFont[getCore():getOptionTooltipFont()], string.gsub(text, "%%.*%%", " ")));
                 if tooltipTextTable[i]:find(":")
                 then
                     leftText = text:sub(0, text:find(":"))
-                    longestLeftTextWidth = math.max(longestLeftTextWidth, getTextManager():MeasureStringX(UIFont[getCore():getOptionTooltipFont()],  leftText));
+                    longestLeftTextWidth = math.max(longestLeftTextWidth, getTextManager():MeasureStringX(UIFont[getCore():getOptionTooltipFont()],  string.gsub(leftText, "%%.*%%", " ")));
                 end
 
             end
