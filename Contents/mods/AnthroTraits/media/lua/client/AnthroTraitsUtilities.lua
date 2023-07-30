@@ -204,17 +204,17 @@ AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item,
     then
         table.insert(returnTable, getText("Tooltip_food_Unhappiness")..":"..this.getTooltipValueColor(foodUnhappyChange, newFoodUnhappyChange, true)..this.getTooltipValueSymbol(newFoodUnhappyChange)..string.format("%3.1f",newFoodUnhappyChange));
     end
-    if item:isIsCookable() and not item:isFrozen() and item:getHeat() > 1.6 then
+    if item:isCookable() and not item:isFrozen() and item:getHeat() > 1.6 then
         currCookTime = item:getCookingTime();
         minutesTillCooked = item:getMinutesToCook();
         minutesTillBurned = item:getMinutesToBurn();
-        if currCookTime > minutesTillCooked
+        if currCookTime < minutesTillCooked
         then
             table.insert(returnTable, "%Lime%"..getText("IGUI_invpanel_Cooking").."|".."%Lime%"..string.format("%3.2f",currCookTime / minutesTillCooked));
-        elseif currCookTime > minutesTillCooked
+        elseif currCookTime >= minutesTillCooked
         then
             table.insert(returnTable, "%Red%"..getText("IGUI_invpanel_Burning").."|".."%Red%"..string.format("%3.2f",currCookTime / minutesTillBurned));
-        elseif currCookTime > minutesTillBurned
+        elseif currCookTime >= minutesTillBurned
         then
             table.insert(returnTable, "%Red%"..getText("IGUI_invpanel_Burnt"));
         end
