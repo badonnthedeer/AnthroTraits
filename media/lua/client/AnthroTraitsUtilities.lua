@@ -208,6 +208,11 @@ AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item,
         currCookTime = item:getCookingTime();
         minutesTillCooked = item:getMinutesToCook();
         minutesTillBurned = item:getMinutesToBurn();
+        --for found "cooked" items in the beginning of the game
+        if (currCookTime == nil or currCookTime == 0) and item:isCooked()
+        then
+            currCookTime = minutesTillCooked;
+        end
         if currCookTime < minutesTillCooked
         then
             table.insert(returnTable, "%Lime%"..getText("IGUI_invpanel_Cooking").."|".."%Lime%"..string.format("%3.2f",currCookTime / minutesTillCooked));
