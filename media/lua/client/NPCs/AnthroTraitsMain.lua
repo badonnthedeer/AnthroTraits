@@ -565,6 +565,9 @@ AnthroTraitsMain.ATOnCharacterCollide = function(collider, collidee)
                 collidee:knockDown(colliderBehindCollidee);
                 if isServer()
                 then
+                    collidee:setHitReaction("");
+                    collidee:setPlayerAttackPosition("FRONT");
+                    collidee:setHitForce(2.0);
                     collidee:reportEvent("wasHit");
                 end
                 collider:getStats():setEndurance(collider:getStats():getEndurance() - knockdownEndCost);
@@ -586,6 +589,9 @@ AnthroTraitsMain.ATOnCharacterCollide = function(collider, collidee)
                     end
                     if isServer()
                     then
+                        collidee:setHitReaction("");
+                        collidee:setPlayerAttackPosition("FRONT");
+                        collidee:setHitForce(2.0);
                         collidee:reportEvent("wasHit");
                     end
                     --collidee:setBumpStaggered(true);
@@ -604,6 +610,9 @@ AnthroTraitsMain.ATOnCharacterCollide = function(collider, collidee)
                 collidee:knockDown(colliderBehindCollidee);
                 if isServer()
                 then
+                    collidee:setHitReaction("");
+                    collidee:setPlayerAttackPosition("FRONT");
+                    collidee:setHitForce(2.0);
                     collidee:reportEvent("wasHit");
                 end
                 collider:setBumpType("");
@@ -624,6 +633,9 @@ AnthroTraitsMain.ATOnCharacterCollide = function(collider, collidee)
                     end
                     if isServer()
                     then
+                        collidee:setHitReaction("");
+                        collidee:setPlayerAttackPosition("FRONT");
+                        collidee:setHitForce(2.0);
                         collidee:reportEvent("wasHit");
                     end
                     --collidee:setBumpStaggered(true);
