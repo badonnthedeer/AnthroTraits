@@ -329,6 +329,24 @@ ISToolTipInv.render = function(self)
                 self:adjustPositionToAvoidOverlap(ownerRect)
             end]]
 
+            -- screen bounding
+            --right-side bounding
+            local exposedX = (self:getX() + longestLeftTextWidth + tooltipPaddingLeft + tooltipPaddingRight);
+            local exposedY = (self:getY() + (textHeight + tooltipPaddingTop + tooltipPaddingBottom))
+            local exposedWidth = getPlayerScreenWidth(player:getPlayerNum());
+            local exposedHeight = getPlayerScreenHeight(player:getPlayerNum());
+            if (self:getX() + longestLeftTextWidth + tooltipPaddingLeft + tooltipPaddingRight) > getPlayerScreenWidth(player:getPlayerNum())
+            then
+                self:setX(getPlayerScreenWidth(player:getPlayerNum()) - (longestLeftTextWidth + tooltipPaddingLeft + tooltipPaddingRight))
+                self.tooltip:setX(getPlayerScreenWidth(player:getPlayerNum()) - (longestLeftTextWidth + tooltipPaddingLeft + tooltipPaddingRight))
+            end
+            --bottom-side bounding
+            if (self:getY() + (textHeight + tooltipPaddingTop + tooltipPaddingBottom)) > getPlayerScreenHeight(player:getPlayerNum())
+            then
+                self:setY(getPlayerScreenHeight(player:getPlayerNum()) - (textHeight + tooltipPaddingTop + tooltipPaddingBottom))
+                self.tooltip:setY(getPlayerScreenHeight(player:getPlayerNum()) - (textHeight + tooltipPaddingTop + tooltipPaddingBottom))
+            end
+
             --Draw tooltip
 
             self:drawRect(0, 0, (longestTextWidth + tooltipPaddingLeft + tooltipPaddingRight), (textHeight + tooltipPaddingTop + tooltipPaddingBottom), self.backgroundColor.a, self.backgroundColor.r, self.backgroundColor.g, self.backgroundColor.b)
