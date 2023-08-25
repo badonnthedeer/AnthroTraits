@@ -1,3 +1,53 @@
+--
+--                                  @*x/||x8
+--                                   %8%n&v]`Ic
+--                                     *)   }``W
+--                                     *>&  1``n
+--                                  &@ tI1/^`"@
+--                                 &11\]"``^v
+--                                M"`````,[&@@@@@
+--                            &#cv(`:[/];"`````^r%
+--                        @z);^`^;}"~}"........;&
+--                 @WM##n~;+"`^^^.<[}}+,`'''`:tB
+--                 #*xj<;).`i"``"l}}}}}}}%@B
+--                 j^'..`+..,}}}}}}}}}}}(
+--                  /,'.'...I}}}}}}}}}}}r
+--                    @Muj/x*c"`'';}}}}}n
+--                           !..'!}}}}}}x
+--                          r`^;[}}}}}}}t                        @|M
+--                         8{}}}}}}}}}}}{&                       B?>|@
+--                         \}}}}}}}}}}}}})W                      x}?'<
+--                        v}}}}}}}}}}}}}}}}/v#&%B  @@          Bj}}:.`
+--                        :,}}}}}}}}}}}}}}}}}}}}}}}{{{1)(|/jnzr{}+"..-
+--                        :.;}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}]l,;_c
+--                        (.:}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}t
+--                      &r_^']}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}+*
+--                   Mt-I,,,^`[}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}"W
+--               *\+;,,,,,,,,",}}}}}}}}}}}]??]]}}}}}}}}}}}}}}}]""*
+--             c;,,,,:;+{rW8BBB!+}}}}}}}}}>,:;!}}}}}}}}}}}}-"^`"l\%
+--             W:,,,?@         n'+}}}}}}}?:,,,:[}}}}}}}}}}}:.,,,+|f@
+--              /,,,i8          ,"}}}}}}|vnrrrrt}}}}}}}}}}}"`,,,:1|\v@
+--               xI,,;rB%%B     [:}}}}{u        c(}}}}}}}}},`,,,,;}||/8
+--                @fl]trrrrr    *}}}}}t           &vf(}}}}}]`:,,,,,?||t
+--                  @*rrrrrx    *}}}}})@              &/}}}}-nxj\{[)|||xc#
+--                     Mrrrv    v}}}}}c                 u}}}}}}r   8t|||||8
+--                      8nr*    x}}}}n                   j}}}}}v    Bj|||?t
+--                        &B    r}}}\                    %}}}}>%     &_]}:u
+--                              j}}}z                    _"~l`1    Bx<,,,;B
+--                              njxt@                @z}"....!   z[;;;;:;}
+--                           %MvnnnnM               *~"^^^``iB  B*xrrrffrrB
+--                         Wunnnnnnn*             &cnnnnnnnv   @*z*****zz#
+--                        &MWWWWWWMWB            WMWWWWWWMWB
+------------------------------------------------------------------------------------------------------
+-- AUTHOR: Badonn the Deer
+-- LICENSE: MIT
+-- REFERENCES: More Simple Traits (hea), More Traits (HypnoToadTrance), Others?
+-- Did this code help you write your own mod? Consider donating to me at https://ko-fi.com/badonnthedeer!
+-- I'm in financial need and every little bit helps!!
+--
+-- Have a problem or question? Reach me on Discord: badonn
+------------------------------------------------------------------------------------------------------
+
 local AnthroTraitsMain = {};
 local ATU = require("AnthroTraitsUtilities");
 
@@ -565,6 +615,9 @@ AnthroTraitsMain.ATOnCharacterCollide = function(collider, collidee)
                 collidee:knockDown(colliderBehindCollidee);
                 if isServer()
                 then
+                    collidee:setHitReaction("");
+                    collidee:setPlayerAttackPosition("FRONT");
+                    collidee:setHitForce(2.0);
                     collidee:reportEvent("wasHit");
                 end
                 collider:getStats():setEndurance(collider:getStats():getEndurance() - knockdownEndCost);
@@ -586,6 +639,9 @@ AnthroTraitsMain.ATOnCharacterCollide = function(collider, collidee)
                     end
                     if isServer()
                     then
+                        collidee:setHitReaction("");
+                        collidee:setPlayerAttackPosition("FRONT");
+                        collidee:setHitForce(2.0);
                         collidee:reportEvent("wasHit");
                     end
                     --collidee:setBumpStaggered(true);
@@ -604,6 +660,9 @@ AnthroTraitsMain.ATOnCharacterCollide = function(collider, collidee)
                 collidee:knockDown(colliderBehindCollidee);
                 if isServer()
                 then
+                    collidee:setHitReaction("");
+                    collidee:setPlayerAttackPosition("FRONT");
+                    collidee:setHitForce(2.0);
                     collidee:reportEvent("wasHit");
                 end
                 collider:setBumpType("");
@@ -624,6 +683,9 @@ AnthroTraitsMain.ATOnCharacterCollide = function(collider, collidee)
                     end
                     if isServer()
                     then
+                        collidee:setHitReaction("");
+                        collidee:setPlayerAttackPosition("FRONT");
+                        collidee:setHitForce(2.0);
                         collidee:reportEvent("wasHit");
                     end
                     --collidee:setBumpStaggered(true);
@@ -848,13 +910,7 @@ AnthroTraitsMain.ATPlayerUpdate = function(player)
     local modData =  player:getModData().ATPlayerData;
     local beforeFallTime = modData.oldFallTime;
     local endurance = player:getStats():getEndurance();
-    --local beforeWetness = modData.oldWetness;
     local rolledChance = ZombRand(0,100);
-    -- wetness experiments
-    --print("Projec. Difference: "..tostring(GameTime.getMultiplier() * WetnessIncrease));
-    --print("Wetness Difference: "..tostring(player:getBodyDamage():getWetness() - modData.oldWetness));
-    --
-    --print("Temp: "..tostring(player:getBodyDamage():getTemperature()));
     if player:HasTrait("AT_BeastOfBurden")
     then
         player:setMaxWeightBase(math.floor(modData.UnmoddedMaxWeightBase * (1 + SandboxVars.AnthroTraits.AT_BeastOfBurdenPctIncrease)));
@@ -899,13 +955,6 @@ AnthroTraitsMain.ATPlayerUpdate = function(player)
         end
     end
     this.LonelyUpdate(player);
-    --[[if player:HasTrait("AT_ColdBlooded")
-    then
-        player:getBodyDamage():getThermoregulator():setMetabolicTarget(Metabolics.Sleeping);
-    end]]
-
-    --update oldWetness
-    --modData.oldWetness = player:getBodyDamage():getWetness();
 end
 
 --[[AnthroTraitsMain.ATOnClientCommand = function(module, command, args)

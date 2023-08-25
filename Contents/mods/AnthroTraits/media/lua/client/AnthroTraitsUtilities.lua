@@ -1,3 +1,53 @@
+--
+--                                  @*x/||x8
+--                                   %8%n&v]`Ic
+--                                     *)   }``W
+--                                     *>&  1``n
+--                                  &@ tI1/^`"@
+--                                 &11\]"``^v
+--                                M"`````,[&@@@@@
+--                            &#cv(`:[/];"`````^r%
+--                        @z);^`^;}"~}"........;&
+--                 @WM##n~;+"`^^^.<[}}+,`'''`:tB
+--                 #*xj<;).`i"``"l}}}}}}}%@B
+--                 j^'..`+..,}}}}}}}}}}}(
+--                  /,'.'...I}}}}}}}}}}}r
+--                    @Muj/x*c"`'';}}}}}n
+--                           !..'!}}}}}}x
+--                          r`^;[}}}}}}}t                        @|M
+--                         8{}}}}}}}}}}}{&                       B?>|@
+--                         \}}}}}}}}}}}}})W                      x}?'<
+--                        v}}}}}}}}}}}}}}}}/v#&%B  @@          Bj}}:.`
+--                        :,}}}}}}}}}}}}}}}}}}}}}}}{{{1)(|/jnzr{}+"..-
+--                        :.;}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}]l,;_c
+--                        (.:}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}t
+--                      &r_^']}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}+*
+--                   Mt-I,,,^`[}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}"W
+--               *\+;,,,,,,,,",}}}}}}}}}}}]??]]}}}}}}}}}}}}}}}]""*
+--             c;,,,,:;+{rW8BBB!+}}}}}}}}}>,:;!}}}}}}}}}}}}-"^`"l\%
+--             W:,,,?@         n'+}}}}}}}?:,,,:[}}}}}}}}}}}:.,,,+|f@
+--              /,,,i8          ,"}}}}}}|vnrrrrt}}}}}}}}}}}"`,,,:1|\v@
+--               xI,,;rB%%B     [:}}}}{u        c(}}}}}}}}},`,,,,;}||/8
+--                @fl]trrrrr    *}}}}}t           &vf(}}}}}]`:,,,,,?||t
+--                  @*rrrrrx    *}}}}})@              &/}}}}-nxj\{[)|||xc#
+--                     Mrrrv    v}}}}}c                 u}}}}}}r   8t|||||8
+--                      8nr*    x}}}}n                   j}}}}}v    Bj|||?t
+--                        &B    r}}}\                    %}}}}>%     &_]}:u
+--                              j}}}z                    _"~l`1    Bx<,,,;B
+--                              njxt@                @z}"....!   z[;;;;:;}
+--                           %MvnnnnM               *~"^^^``iB  B*xrrrffrrB
+--                         Wunnnnnnn*             &cnnnnnnnv   @*z*****zz#
+--                        &MWWWWWWMWB            WMWWWWWWMWB
+------------------------------------------------------------------------------------------------------
+-- AUTHOR: Badonn the Deer
+-- LICENSE: MIT
+-- REFERENCES: Named Literature (Chuckleberry Finn)
+-- Did this code help you write your own mod? Consider donating to me at https://ko-fi.com/badonnthedeer!
+-- I'm in financial need and every little bit helps!!
+--
+-- Have a problem or question? Reach me on Discord: badonn
+------------------------------------------------------------------------------------------------------
+
 local AnthroTraitsUtilities = {}
 
 
@@ -208,13 +258,18 @@ AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item,
         currCookTime = item:getCookingTime();
         minutesTillCooked = item:getMinutesToCook();
         minutesTillBurned = item:getMinutesToBurn();
+        --for found "cooked" items in the beginning of the game
+        if (currCookTime == nil or currCookTime == 0) and item:isCooked()
+        then
+            currCookTime = minutesTillCooked;
+        end
         if currCookTime < minutesTillCooked
         then
             table.insert(returnTable, "%Lime%"..getText("IGUI_invpanel_Cooking").."|".."%Lime%"..string.format("%3.2f",currCookTime / minutesTillCooked));
-        elseif currCookTime >= minutesTillCooked
+        elseif currCookTime < minutesTillBurned
         then
-            table.insert(returnTable, "%Red%"..getText("IGUI_invpanel_Burning").."|".."%Red%"..string.format("%3.2f",currCookTime / minutesTillBurned));
-        elseif currCookTime >= minutesTillBurned
+            table.insert(returnTable, "%Red%"..getText("IGUI_invpanel_Burning").."|".."%Red%"..string.format("%3.2f",(currCookTime - minutesTillCooked ) / (minutesTillBurned - minutesTillCooked)));
+        elseif currCookTime > minutesTillBurned
         then
             table.insert(returnTable, "%Red%"..getText("IGUI_invpanel_Burnt"));
         end

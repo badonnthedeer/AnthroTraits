@@ -1,3 +1,53 @@
+--
+--                                  @*x/||x8
+--                                   %8%n&v]`Ic
+--                                     *)   }``W
+--                                     *>&  1``n
+--                                  &@ tI1/^`"@
+--                                 &11\]"``^v
+--                                M"`````,[&@@@@@
+--                            &#cv(`:[/];"`````^r%
+--                        @z);^`^;}"~}"........;&
+--                 @WM##n~;+"`^^^.<[}}+,`'''`:tB
+--                 #*xj<;).`i"``"l}}}}}}}%@B
+--                 j^'..`+..,}}}}}}}}}}}(
+--                  /,'.'...I}}}}}}}}}}}r
+--                    @Muj/x*c"`'';}}}}}n
+--                           !..'!}}}}}}x
+--                          r`^;[}}}}}}}t                        @|M
+--                         8{}}}}}}}}}}}{&                       B?>|@
+--                         \}}}}}}}}}}}}})W                      x}?'<
+--                        v}}}}}}}}}}}}}}}}/v#&%B  @@          Bj}}:.`
+--                        :,}}}}}}}}}}}}}}}}}}}}}}}{{{1)(|/jnzr{}+"..-
+--                        :.;}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}]l,;_c
+--                        (.:}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}t
+--                      &r_^']}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}+*
+--                   Mt-I,,,^`[}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}"W
+--               *\+;,,,,,,,,",}}}}}}}}}}}]??]]}}}}}}}}}}}}}}}]""*
+--             c;,,,,:;+{rW8BBB!+}}}}}}}}}>,:;!}}}}}}}}}}}}-"^`"l\%
+--             W:,,,?@         n'+}}}}}}}?:,,,:[}}}}}}}}}}}:.,,,+|f@
+--              /,,,i8          ,"}}}}}}|vnrrrrt}}}}}}}}}}}"`,,,:1|\v@
+--               xI,,;rB%%B     [:}}}}{u        c(}}}}}}}}},`,,,,;}||/8
+--                @fl]trrrrr    *}}}}}t           &vf(}}}}}]`:,,,,,?||t
+--                  @*rrrrrx    *}}}}})@              &/}}}}-nxj\{[)|||xc#
+--                     Mrrrv    v}}}}}c                 u}}}}}}r   8t|||||8
+--                      8nr*    x}}}}n                   j}}}}}v    Bj|||?t
+--                        &B    r}}}\                    %}}}}>%     &_]}:u
+--                              j}}}z                    _"~l`1    Bx<,,,;B
+--                              njxt@                @z}"....!   z[;;;;:;}
+--                           %MvnnnnM               *~"^^^``iB  B*xrrrffrrB
+--                         Wunnnnnnn*             &cnnnnnnnv   @*z*****zz#
+--                        &MWWWWWWMWB            WMWWWWWWMWB
+------------------------------------------------------------------------------------------------------
+-- AUTHOR: Badonn the Deer
+-- LICENSE: MIT
+-- REFERENCES: Named Literature (Chuckleberry Finn)
+-- Did this code help you write your own mod? Consider donating to me at https://ko-fi.com/badonnthedeer!
+-- I'm in financial need and every little bit helps!!
+--
+-- Have a problem or question? Reach me on Discord: badonn
+------------------------------------------------------------------------------------------------------
+
 local ATM = require("NPCs/AnthroTraitsMain");
 local ATC = require("NPCs/AnthroTraitsCreationMethods");
 local ATU = require("AnthroTraitsUtilities");
@@ -228,12 +278,12 @@ ISToolTipInv.render = function(self)
             end
 
             for i = 1, #tooltipTextTable do
-                text = tooltipTextTable[i]
-                longestTextWidth = math.max(longestTextWidth, getTextManager():MeasureStringX(UIFont[getCore():getOptionTooltipFont()], string.gsub(text, "%%.*%%", " ")));
+                text = string.gsub(tooltipTextTable[i], "%%.*%%", "")
+                longestTextWidth = math.max(longestTextWidth, getTextManager():MeasureStringX(UIFont[getCore():getOptionTooltipFont()], text));
                 if tooltipTextTable[i]:find(":")
                 then
                     leftText = text:sub(0, text:find(":"))
-                    longestLeftTextWidth = math.max(longestLeftTextWidth, getTextManager():MeasureStringX(UIFont[getCore():getOptionTooltipFont()],  string.gsub(leftText, "%%.*%%", " ")));
+                    longestLeftTextWidth = math.max(longestLeftTextWidth, getTextManager():MeasureStringX(UIFont[getCore():getOptionTooltipFont()], leftText));
                 end
 
             end
@@ -279,6 +329,11 @@ ISToolTipInv.render = function(self)
                 self:adjustPositionToAvoidOverlap(ownerRect)
             end]]
 
+            -- screen bounding
+            if self.followMouse then
+                --needs adjustment but fine for now.
+                self:adjustPositionToAvoidOverlap({ x = mx - 24 * 2, y = my - 24 * 2, width = 24 * 2, height = 24 * 2 })
+            end
             --Draw tooltip
 
             self:drawRect(0, 0, (longestTextWidth + tooltipPaddingLeft + tooltipPaddingRight), (textHeight + tooltipPaddingTop + tooltipPaddingBottom), self.backgroundColor.a, self.backgroundColor.r, self.backgroundColor.g, self.backgroundColor.b)
@@ -368,10 +423,10 @@ ISToolTipInv.render = function(self)
                     currColor = Colors[rightTextColor] or defaultColor;
                     if rightText ~= nil
                     then
-                        barLength = (longestTextWidth - leftTextWidth - barPaddingLeft - barPaddingRight);
+                        barLength = (longestTextWidth - leftTextWidth - barPaddingRight);
                         --center the bar in the available line space
                         lineYBar = (lineY + (self.tooltip:getLineSpacing() / 2) - 1)
-                        self.tooltip:DrawProgressBar(lineX + leftTextWidth + barPaddingLeft, lineYBar, barLength, 12, tonumber(rightText), currColor:getRedFloat(), currColor:getGreenFloat(), currColor:getBlueFloat(), currColor:getAlphaFloat())
+                        self.tooltip:DrawProgressBar(lineX + leftTextWidth, lineYBar, barLength, 12, tonumber(rightText), currColor:getRedFloat(), currColor:getGreenFloat(), currColor:getBlueFloat(), currColor:getAlphaFloat())
                     end
                     lineY = lineY + lineSpacing
                 elseif text == nil or text == ""
