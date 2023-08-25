@@ -910,13 +910,7 @@ AnthroTraitsMain.ATPlayerUpdate = function(player)
     local modData =  player:getModData().ATPlayerData;
     local beforeFallTime = modData.oldFallTime;
     local endurance = player:getStats():getEndurance();
-    --local beforeWetness = modData.oldWetness;
     local rolledChance = ZombRand(0,100);
-    -- wetness experiments
-    --print("Projec. Difference: "..tostring(GameTime.getMultiplier() * WetnessIncrease));
-    --print("Wetness Difference: "..tostring(player:getBodyDamage():getWetness() - modData.oldWetness));
-    --
-    --print("Temp: "..tostring(player:getBodyDamage():getTemperature()));
     if player:HasTrait("AT_BeastOfBurden")
     then
         player:setMaxWeightBase(math.floor(modData.UnmoddedMaxWeightBase * (1 + SandboxVars.AnthroTraits.AT_BeastOfBurdenPctIncrease)));
@@ -961,13 +955,6 @@ AnthroTraitsMain.ATPlayerUpdate = function(player)
         end
     end
     this.LonelyUpdate(player);
-    --[[if player:HasTrait("AT_ColdBlooded")
-    then
-        player:getBodyDamage():getThermoregulator():setMetabolicTarget(Metabolics.Sleeping);
-    end]]
-
-    --update oldWetness
-    --modData.oldWetness = player:getBodyDamage():getWetness();
 end
 
 --[[AnthroTraitsMain.ATOnClientCommand = function(module, command, args)
