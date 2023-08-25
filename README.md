@@ -10,9 +10,6 @@ Do you really enjoy this mod--or even better--want to build on it? Please consid
     <li><h2>Bug-o-ssieur</h2>
     You don't gain unhappiness or boredom when eating bugs.
     </li>
-    <li><h2>Bull Rush</h2>
-    When sprinting, knock zombies over at a cost of extra endurance.
-    </li>
     <li><h2>Carnivore</h2>
     After eating food classified as meat, gain an extra percentage of the stats the food affected<br>
     Note: This also lowers unhappiness gain or other negative effects by the same amount.
@@ -54,7 +51,7 @@ Do you really enjoy this mod--or even better--want to build on it? Please consid
     Your tail allows you to run with more balance, reducing trip chance.
     </li>
     <li><h2>Vestigial Wings</h2>
-    You have enough of your ancestor's wings to not take fall damage.
+    Your wings work well enough to prevent fall damage.
     </li>
 </ul>
 <h1>Negative Trait List</h1>
@@ -64,7 +61,8 @@ Do you really enjoy this mod--or even better--want to build on it? Please consid
     </li>
     <li><h2>Feral Digestion</h2>
     Foods poisonous to ferals poison you.<br>
-    (Not an exhaustive list for real life, be careful what you feed your pets!)
+    (Foods listed in this mod cannot cover poisonous foods to every species.<br>
+    Please be careful what you feed your pets!)
     </li>
     <li><h2>Lonely</h2>
     You need a pack. Time spent away from others makes you unhappy.
@@ -95,13 +93,6 @@ It's advised to leave them on default settings.
             <li><h3>Beast of Burden Increase / BeastOfBurdenPctIncrease</h3>
                 Percentage increase of total max weight attribute with Beast of Burden.
                 0-1, default .15,
-            </li>
-        </ul>
-    <li><h2>Bull Rush</h2>
-        <ul>
-            <li><h3>Bull Rush Endurance Cost / BullRushKnockdownEndCost</h3>
-                The amount that knocking over a zombie with Bull Rush subtracts from your endurance.
-                0-1, default 0.1 (Endurance is a max of 1, so setting this to 1 will completely drain endurance.)  
             </li>
         </ul>
     <li><h2>Carnivore</h2>
@@ -218,7 +209,7 @@ It's advised to leave them on default settings.
                 There are 17 body parts, each with a dirtiness rating from 0-1.
                 0.01 is any dirtiness on the body at all, 17 is very hard to achieve with full dirtiness on every body part.
                 Does not include clothing.
-                0.01-17, default 5
+                0.01-17, default 4.5
             </li>
         </ul>
     <li><h2>Tailed</h2>
