@@ -150,6 +150,7 @@ AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item,
     local foodIngredientTags;
     local encumbrance = item:getActualWeight();
     local stackEncum = item:getCount() * encumbrance
+    local foodBaseHunger = item:getBaseHunger();
     local foodHungerChange = item:getHungerChange();
     local foodThirstChange = item:getThirstChange();
     local foodEndChange = item:getEnduranceChange();
@@ -175,13 +176,18 @@ AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item,
     --local bleachPoisonAmt = bleach:getPoisonPower();
     --local bleachPoisonAmt = 120;
 
-    if (player:HasTrait("AT_Bug_o_ssieur") and item:hasTag("ATInsect")) or (player:HasTrait("AT_FoodMotivated") and item:getFullType() == "base.DogfoodOpen")
+    if (player:HasTrait("AT_Bug_o_ssieur") and item:hasTag("ATInsect"))
     then
         foodUnhappyChange = 0;
     end
-    if player:HasTrait("AT_FoodMotivated")
+    if (player:HasTrait("AT_FoodMotivated") and item:getFullType() == "Base.DogfoodOpen")
+    then
+        foodUnhappyChange = 50 - foodUnhappyChange - SandboxVars.AnthroTraits.AT_FoodMotivatedBonus;
+        foodBoredomChange = foodBoredomChange - SandboxVars.AnthroTraits.AT_FoodMotivatedBonus;
+    elseif player:HasTrait("AT_FoodMotivated")
     then
         foodUnhappyChange = foodUnhappyChange - SandboxVars.AnthroTraits.AT_FoodMotivatedBonus;
+        foodBoredomChange = foodBoredomChange - SandboxVars.AnthroTraits.AT_FoodMotivatedBonus;
     end
 
     local newFoodHungerChange = (foodHungerChange + (foodHungerChange * statModifier));
@@ -199,10 +205,6 @@ AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item,
     if foodUnhappyChange > 0
     then
         newFoodUnhappyChange = (foodUnhappyChange + (foodUnhappyChange * (statModifier * -1)));
-    end
-    if foodID == "Base.DogfoodOpen" and player:HasTrait("AT_FoodMotivated")
-    then
-        newFoodUnhappyChange = -SandboxVars.AnthroTraits.AT_FoodMotivatedBonus;
     end
 
     if foodName ~= nil
