@@ -204,6 +204,7 @@ AnthroTraitsMain.ApplyFoodTypeMod = function(modifier, character, foodEaten, per
     local foodID = foodEaten:getFullType();
     local encumbrance = foodEaten:getWeight();
     local stackEncum = foodEaten:getCount() * encumbrance
+    local foodBaseHunger = foodEaten:getBaseHunger();
     local foodHungerChange = foodEaten:getHungerChange();
     local foodThirstChange = foodEaten:getThirstChange();
     local foodEndChange = foodEaten:getEnduranceChange();
@@ -223,24 +224,29 @@ AnthroTraitsMain.ApplyFoodTypeMod = function(modifier, character, foodEaten, per
     local extraFoodUnhappyChange = (foodUnhappyChange * modifier) * percentEaten;
     local extraFoodCalories = (foodCalories * modifier) * percentEaten;
 
-   if (character:HasTrait("AT_Bug_o_ssieur") and foodEaten:hasTag("ATInsect")) or (character:HasTrait("AT_FoodMotivated") and foodEaten:getFullType() == "base.DogfoodOpen")
-    then
-        extraFoodUnhappyChange = extraFoodUnhappyChange - (foodUnhappyChange * percentEaten);
-        extraFoodBoredomChange = extraFoodBoredomChange - (SandboxVars.AnthroTraits.AT_FoodMotivatedBonus * percentEaten);
-    end
-    if character:HasTrait("AT_FoodMotivated")
-    then
-        extraFoodUnhappyChange = extraFoodUnhappyChange - (SandboxVars.AnthroTraits.AT_FoodMotivatedBonus * percentEaten);
-        extraFoodBoredomChange = extraFoodBoredomChange - (SandboxVars.AnthroTraits.AT_FoodMotivatedBonus * percentEaten);
-    end
-
     if foodBoredomChange > 0
     then
         extraFoodBoredomChange = (extraFoodBoredomChange * (modifier * -1)) * percentEaten;
     end
     if foodUnhappyChange > 0
     then
-        extraFoodUnhappyChange = (extraFoodBoredomChange * (modifier * -1)) * percentEaten;
+        extraFoodUnhappyChange = (extraFoodUnhappyChange * (modifier * -1)) * percentEaten;
+    end
+
+    if (character:HasTrait("AT_Bug_o_ssieur") and foodEaten:hasTag("ATInsect"))
+    then
+        extraFoodUnhappyChange = extraFoodUnhappyChange - (foodUnhappyChange * percentEaten);
+    end
+
+    if (character:HasTrait("AT_FoodMotivated") and foodID == "Base.DogfoodOpen")
+    then
+        --minus below since dog food decreases boredom by default.
+        extraFoodUnhappyChange =  -50 - (extraFoodUnhappyChange - (foodUnhappyChange * percentEaten)) - (SandboxVars.AnthroTraits.AT_FoodMotivatedBonus * percentEaten);
+        extraFoodBoredomChange = extraFoodBoredomChange - (SandboxVars.AnthroTraits.AT_FoodMotivatedBonus * percentEaten);
+    elseif character:HasTrait("AT_FoodMotivated")
+    then
+        extraFoodUnhappyChange = extraFoodUnhappyChange - (SandboxVars.AnthroTraits.AT_FoodMotivatedBonus * percentEaten);
+        extraFoodBoredomChange = extraFoodBoredomChange - (SandboxVars.AnthroTraits.AT_FoodMotivatedBonus * percentEaten);
     end
 
 
@@ -254,31 +260,31 @@ AnthroTraitsMain.ApplyFoodTypeMod = function(modifier, character, foodEaten, per
         print("After Eat, Before Mod| Hunger: "..charStats:getHunger()..", Thirst: "..charStats:getThirst()..", Boredom: "..charBodyDmg:getBoredomLevel()..", Unhappiness: "..charBodyDmg:getUnhappynessLevel()..", Calories:"..charNutrition:getCalories());
     end
 
-    if foodHungerChange ~= 0
+    if extraFoodHungerChange ~= 0
     then
         charStats:setHunger(charStats:getHunger() + extraFoodHungerChange);
     end
-    if foodThirstChange ~= 0
+    if extraFoodThirstChange ~= 0
     then
         charStats:setThirst(charStats:getThirst() + extraFoodThirstChange);
     end
-    if foodEndChange ~= 0
+    if extraFoodEndChange ~= 0
     then
         charStats:setEndurance(charStats:getEndurance() + extraFoodEndChange);
     end
-    if foodStressChange ~= 0
+    if extraFoodStressChange ~= 0
     then
         charStats:setStress(charStats:getStress() + extraFoodStressChange);
     end
-    if foodBoredomChange ~= 0
+    if extraFoodBoredomChange ~= 0
     then
         charBodyDmg:setBoredomLevel(charBodyDmg:getBoredomLevel() + extraFoodBoredomChange);
     end
-    if foodUnhappyChange ~= 0
+    if extraFoodUnhappyChange ~= 0
     then
         charBodyDmg:setUnhappynessLevel(charBodyDmg:getUnhappynessLevel() + extraFoodUnhappyChange);
     end
-    if foodCalories ~= 0
+    if extraFoodCalories ~= 0
     then
         charNutrition:setCalories(charNutrition:getCalories() + extraFoodCalories);
     end
@@ -338,7 +344,6 @@ AnthroTraitsMain.DoVoreModifier = function(character, foodEaten, foodPercentEate
                 this.NeutralizeFoodPoisoning(charBodyDmg, beforeFoodSickness, beforePoisonLevel);
             end
         end
-
     elseif character:HasTrait("AT_Herbivore") then
         if foodEaten:hasTag("ATHerbivore")
         then
@@ -360,6 +365,9 @@ AnthroTraitsMain.DoVoreModifier = function(character, foodEaten, foodPercentEate
             this.NeutralizeFoodPoisoning(charBodyDmg, beforeFoodSickness, beforePoisonLevel);
 
         end
+    elseif character:HasTrait("AT_FoodMotivated")
+    then
+        this.ApplyFoodTypeMod(1, character, foodEaten, foodPercentEaten);
     end
     if character:HasTrait("AT_FeralDigestion") and foodEaten:hasTag("ATFeralPoison")
     then
