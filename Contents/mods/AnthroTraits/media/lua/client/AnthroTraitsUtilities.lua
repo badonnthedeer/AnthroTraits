@@ -65,23 +65,21 @@ AnthroTraitsUtilities.FileExists = function(path)
 end
 
 
-AnthroTraitsUtilities.AddItemTagToItemsFromFile = function(path, tag)
+AnthroTraitsUtilities.AddItemTagToItemsFromSandbox = function(itemList, tag)
     local this = AnthroTraitsUtilities;
-    if not this.FileExists(path)
-    then
-        print("Cannot find file");
-        return {};
-    end
 
-    local reader = getModFileReader(AnthroTraitsGlobals.ModID, path, false);
-    local line;
+    local itemTable = {};
     local foundItem;
     local itemTags;
 
-    while reader:ready()
+    for str in string.gmatch(itemList, "([^;]+)")
     do
-        line = reader:readLine();
-        foundItem = getScriptManager():getItem(line);
+        table.insert(itemTable, str)
+    end
+
+    for _, tableEntry in ipairs(itemTable)
+    do
+        foundItem = getScriptManager():getItem(tableEntry);
         if foundItem ~= nil
         then
             itemTags = foundItem:getTags();
@@ -90,14 +88,13 @@ AnthroTraitsUtilities.AddItemTagToItemsFromFile = function(path, tag)
                 itemTags:add(tag);
                 if getDebug()
                 then
-                    print("tag "..tag.." added to "..line);
+                    print("tag "..tag.." added to "..tableEntry);
                 end
             end
         else
-            print("Cannot find item "..line.." to add tag "..tag);
+            print("Cannot find item "..tableEntry.." to add tag "..tag);
         end
     end
-    reader:close();
 end
 
 
@@ -127,6 +124,7 @@ AnthroTraitsUtilities.getTooltipValueColor = function(oldValChangeAmt, newValCha
     return color;
 end
 
+
 AnthroTraitsUtilities.getTooltipValueSymbol = function(newValChangeAmt)
     local symbol = "~";
 
@@ -140,6 +138,7 @@ AnthroTraitsUtilities.getTooltipValueSymbol = function(newValChangeAmt)
 
     return symbol
 end
+
 
 AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item, statModifier)
     local this = AnthroTraitsUtilities;
