@@ -492,10 +492,10 @@ end
 
 
 AnthroTraitsMain.ATOnInitWorld = function()
-    ATU.AddItemTagToItemsFromFile("ATCarnivoreItemTag.txt", "ATCarnivore");
-    ATU.AddItemTagToItemsFromFile("ATHerbivoreItemTag.txt", "ATHerbivore");
-    ATU.AddItemTagToItemsFromFile("ATInsectItemTag.txt", "ATInsect");
-    ATU.AddItemTagToItemsFromFile("ATFeralPoisonItemTag.txt", "ATFeralPoison");
+    ATU.AddItemTagToItemsFromSandbox(SandboxVars.AnthroTraits.AT_Carnivore_Items, "ATCarnivore");
+    ATU.AddItemTagToItemsFromSandbox(SandboxVars.AnthroTraits.AT_Herbivore_Items, "ATHerbivore");
+    ATU.AddItemTagToItemsFromSandbox(SandboxVars.AnthroTraits.AT_Bug_o_ssieur_Items, "ATInsect");
+    ATU.AddItemTagToItemsFromSandbox(SandboxVars.AnthroTraits.AT_FeralDigestion_Items, "ATFeralPoison");
 
     Colors["LavenderBlush"] = Color.new(1, 229/255, 229/255, 1);
 end
