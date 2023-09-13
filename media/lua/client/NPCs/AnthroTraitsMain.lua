@@ -199,187 +199,65 @@ AnthroTraitsMain.NeutralizeFoodPoisoning = function(charBodyDmg, beforeFoodSickn
 end
 
 
-AnthroTraitsMain.ApplyFoodTypeMod = function(modifier, character, foodEaten, percentEaten)
-    local foodName = foodEaten:getName();
-    local foodID = foodEaten:getFullType();
-    local encumbrance = foodEaten:getWeight();
-    local stackEncum = foodEaten:getCount() * encumbrance
-    local foodBaseHunger = foodEaten:getBaseHunger();
-    local foodHungerChange = foodEaten:getHungerChange();
-    local foodThirstChange = foodEaten:getThirstChange();
-    local foodEndChange = foodEaten:getEnduranceChange();
-    local foodStressChange = foodEaten:getStressChange();
-    local foodBoredomChange = foodEaten:getBoredomChange();
-    local foodUnhappyChange = foodEaten:getUnhappyChange();
-    local foodCalories = foodEaten:getCalories();
-    local foodCarbs = foodEaten:getCarbohydrates();
-    local foodProtein = foodEaten:getProteins();
-    local foodFat = foodEaten:getLipids();
+AnthroTraitsMain.ApplyFoodChanges = function(character, foodEaten, percentEaten)
+    local foodChanges = AnthroTraitsMain.CalculateFoodChanges(character, foodEaten)
+    local charStats = character:getStats()
+    local charBodyDmg = character:getBodyDamage()
+    local charNutrition = character:getNutrition()
 
-    local extraFoodHungerChange = (foodHungerChange * modifier) * percentEaten;
-    local extraFoodThirstChange = (foodThirstChange * modifier) * percentEaten;
-    local extraFoodEndChange = (foodEndChange * modifier) * percentEaten;
-    local extraFoodStressChange = (foodStressChange * modifier) * percentEaten;
-    local extraFoodBoredomChange = (foodBoredomChange * modifier) * percentEaten;
-    local extraFoodUnhappyChange = (foodUnhappyChange * modifier) * percentEaten;
-    local extraFoodCalories = (foodCalories * modifier) * percentEaten;
-
-    if foodBoredomChange > 0
-    then
-        extraFoodBoredomChange = (extraFoodBoredomChange * (modifier * -1)) * percentEaten;
-    end
-    if foodUnhappyChange > 0
-    then
-        extraFoodUnhappyChange = (extraFoodUnhappyChange * (modifier * -1)) * percentEaten;
-    end
-
-    if (character:HasTrait("AT_Bug_o_ssieur") and foodEaten:hasTag("ATInsect"))
-    then
-        extraFoodUnhappyChange = extraFoodUnhappyChange - (foodUnhappyChange * percentEaten);
-    end
-
-    if (character:HasTrait("AT_FoodMotivated") and foodID == "Base.DogfoodOpen")
-    then
-        --minus below since dog food decreases boredom by default.
-        extraFoodUnhappyChange =  -50 - (extraFoodUnhappyChange - (foodUnhappyChange * percentEaten)) - (SandboxVars.AnthroTraits.AT_FoodMotivatedBonus * percentEaten);
-        extraFoodBoredomChange = extraFoodBoredomChange - (SandboxVars.AnthroTraits.AT_FoodMotivatedBonus * percentEaten);
-    elseif character:HasTrait("AT_FoodMotivated")
-    then
-        extraFoodUnhappyChange = extraFoodUnhappyChange - (SandboxVars.AnthroTraits.AT_FoodMotivatedBonus * percentEaten);
-        extraFoodBoredomChange = extraFoodBoredomChange - (SandboxVars.AnthroTraits.AT_FoodMotivatedBonus * percentEaten);
-    end
-
-
-    local charStats = character:getStats();
-    local charBodyDmg = character:getBodyDamage();
-    local charNutrition = character:getNutrition();
-
-    if getDebug()
-    then
-        print(foodName.."| HungerChange: "..foodHungerChange..", ThirstChange: "..foodThirstChange..", BoredomChange: "..foodBoredomChange..", UnhappyChange: "..foodUnhappyChange..", Calories: "..foodCalories);
-        print("After Eat, Before Mod| Hunger: "..charStats:getHunger()..", Thirst: "..charStats:getThirst()..", Boredom: "..charBodyDmg:getBoredomLevel()..", Unhappiness: "..charBodyDmg:getUnhappynessLevel()..", Calories:"..charNutrition:getCalories());
-    end
-
-    if extraFoodHungerChange ~= 0
-    then
-        charStats:setHunger(charStats:getHunger() + extraFoodHungerChange);
-    end
-    if extraFoodThirstChange ~= 0
-    then
-        charStats:setThirst(charStats:getThirst() + extraFoodThirstChange);
-    end
-    if extraFoodEndChange ~= 0
-    then
-        charStats:setEndurance(charStats:getEndurance() + extraFoodEndChange);
-    end
-    if extraFoodStressChange ~= 0
-    then
-        charStats:setStress(charStats:getStress() + extraFoodStressChange);
-    end
-    if extraFoodBoredomChange ~= 0
-    then
-        charBodyDmg:setBoredomLevel(charBodyDmg:getBoredomLevel() + extraFoodBoredomChange);
-    end
-    if extraFoodUnhappyChange ~= 0
-    then
-        charBodyDmg:setUnhappynessLevel(charBodyDmg:getUnhappynessLevel() + extraFoodUnhappyChange);
-    end
-    if extraFoodCalories ~= 0
-    then
-        charNutrition:setCalories(charNutrition:getCalories() + extraFoodCalories);
-    end
-    if getDebug()
-    then
-        print("After Mod| Hunger: "..charStats:getHunger()..", Thirst: "..charStats:getThirst()..", Boredom: "..charBodyDmg:getBoredomLevel()..", Unhappiness: "..charBodyDmg:getUnhappynessLevel()..", Calories:"..charNutrition:getCalories());
-    end
-end
-
-
-AnthroTraitsMain.DoVoreModifier = function(character, foodEaten, foodPercentEaten)
-
-    --local charStats = PC:getStats();
-    local charBodyDmg = character:getBodyDamage();
-    --local charNutrition = PC:getNutrition();
-
-    local CarnivoreBonus = SandboxVars.AnthroTraits.AT_CarnivoreBonus;
-    local HerbivoreBonus = SandboxVars.AnthroTraits.AT_HerbivoreBonus;
-    local CarnivoreMalus = SandboxVars.AnthroTraits.AT_CarnivoreMalus;
-    local HerbivoreMalus = SandboxVars.AnthroTraits.AT_HerbivoreMalus;
-    local carrionEaterBonus = SandboxVars.AnthroTraits.AT_CarrionEaterBonus;
-    local foodMotivatedBonus = SandboxVars.AnthroTraits.AT_FoodMotivatedBonus;
-    local maxPoisonAmt = SandboxVars.AnthroTraits.AT_FeralDigestionPoisonAmt
-
-    local beforeUnhappiness = charBodyDmg:getUnhappynessLevel();
     local beforeFoodSickness = charBodyDmg:getFoodSicknessLevel();
     local beforePoisonLevel = charBodyDmg:getPoisonLevel();
 
-    local foodID = foodEaten:getFullType();
-    local foodIngredients = foodEaten:getExtraItems();
-    local foodIngredientTags = nil;
-
-    local this = AnthroTraitsMain;
-
-
-
-    if character:HasTrait("AT_Carnivore")
+    if foodChanges.addHungerChange ~= 0
     then
-        if foodEaten:hasTag("ATHerbivore")
-        then
-            this.ApplyFoodTypeMod(CarnivoreMalus, character, foodEaten, foodPercentEaten);
-        elseif character:HasTrait("AT_CarrionEater") and foodEaten:hasTag("ATCarnivore")
-        then
-            if foodEaten:isRotten()
-            then
-                this.ApplyFoodTypeMod((CarnivoreBonus + carrionEaterBonus), character, foodEaten, foodPercentEaten);
-                this.NeutralizeFoodPoisoning(charBodyDmg, beforeFoodSickness, beforePoisonLevel);
-            else
-                this.ApplyFoodTypeMod((CarnivoreBonus), character, foodEaten, foodPercentEaten);
-                this.NeutralizeFoodPoisoning(charBodyDmg, beforeFoodSickness, beforePoisonLevel);
-            end
-        elseif foodEaten:hasTag("ATCarnivore")
-        then
-            this.ApplyFoodTypeMod(CarnivoreBonus, character, foodEaten, foodPercentEaten);
-            if not foodEaten:isRotten() and foodEaten:getPoisonPower() == 0
-            then
-                this.NeutralizeFoodPoisoning(charBodyDmg, beforeFoodSickness, beforePoisonLevel);
-            end
-        end
-    elseif character:HasTrait("AT_Herbivore") then
-        if foodEaten:hasTag("ATHerbivore")
-        then
-            this.ApplyFoodTypeMod(HerbivoreBonus, character, foodEaten, foodPercentEaten);
-            if not foodEaten:isRotten() and foodEaten:getPoisonPower() == 0
-            then
-                this.NeutralizeFoodPoisoning(charBodyDmg, beforeFoodSickness, beforePoisonLevel);
-            end
-        elseif foodEaten:hasTag("ATCarnivore")
-        then
-            this.ApplyFoodTypeMod(HerbivoreMalus, character, foodEaten, foodPercentEaten);
-        end
-        --Necessary if a PC has carrion eater but not carnivore.
-    elseif character:HasTrait("AT_CarrionEater")
-    then
-        if foodEaten:hasTag("ATCarnivore")
-        then
-            this.ApplyFoodTypeMod(carrionEaterBonus, character, foodEaten, foodPercentEaten);
-            this.NeutralizeFoodPoisoning(charBodyDmg, beforeFoodSickness, beforePoisonLevel);
-
-        end
-    elseif character:HasTrait("AT_FoodMotivated")
-    then
-        this.ApplyFoodTypeMod(1, character, foodEaten, foodPercentEaten);
+        charStats:setHunger(charStats:getHunger() + (foodChanges.addHungerChange * percentEaten) );
     end
-    if character:HasTrait("AT_FeralDigestion") and foodEaten:hasTag("ATFeralPoison")
+    if foodChanges.addThirstChange ~= 0
     then
-        charBodyDmg:setPoisonLevel(charBodyDmg:getPoisonLevel() + ((maxPoisonAmt) * foodPercentEaten))
-    elseif character:HasTrait("AT_FeralDigestion") and foodIngredients ~= nil
+        charStats:setThirst(charStats:getThirst() + (foodChanges.addThirstChange * percentEaten));
+    end
+    if foodChanges.addEndChange ~= 0
     then
-        for i = 0, foodIngredients:size() -1
-        do
-            foodIngredientTags = getScriptManager():getItem(foodIngredients:get(i)):getTags()
-            if foodIngredientTags:contains("ATFeralPoison")
+        charStats:setEndurance(charStats:getEndurance() + (foodChanges.addEndChange * percentEaten));
+    end
+    if foodChanges.addStressChange ~= 0
+    then
+        charStats:setStress(charStats:getStress() + (foodChanges.addStressChange * percentEaten));
+    end
+    if foodChanges.addBoredomChange ~= 0
+    then
+        charBodyDmg:setBoredomLevel(charBodyDmg:getBoredomLevel() + (foodChanges.addBoredomChange * percentEaten));
+    end
+    if foodChanges.addUnhappyChange ~= 0
+    then
+        charBodyDmg:setUnhappynessLevel(charBodyDmg:getUnhappynessLevel() + (foodChanges.addUnhappyChange * percentEaten));
+    end
+    if foodChanges.addCalories ~= 0
+    then
+        charNutrition:setCalories(charNutrition:getCalories() + (foodChanges.addCalories * percentEaten));
+    end
+    if foodChanges.addPoison ~= 0
+    then
+        charBodyDmg:setPoisonLevel(charBodyDmg:getPoisonLevel() + (foodChanges.addPoison * percentEaten))
+    end
+
+
+    if foodEaten:hasTag("ATCarnivore") and foodEaten:getPoisonPower() <= 0
+    then
+        if (character:HasTrait("AT_Carnivore") or character:HasTrait("AT_CarrionEater")) and not foodEaten:isRotten()
+        then
+            AnthroTraitsMain.NeutralizeFoodPoisoning(charBodyDmg, beforeFoodSickness, beforePoisonLevel);
+        elseif foodEaten:isRotten() and character:HasTrait("AT_CarrionEater")
+        then
+            AnthroTraitsMain.NeutralizeFoodPoisoning(charBodyDmg, beforeFoodSickness, beforePoisonLevel);
+        end
+    elseif foodEaten:hasTag("ATHerbivore") and foodEaten:getPoisonPower() <= 0
+    then
+        if character:HasTrait("AT_Herbivore")
+        then
+            if not foodEaten:isRotten()
             then
-                charBodyDmg:setPoisonLevel(charBodyDmg:getPoisonLevel() + ((maxPoisonAmt) * foodPercentEaten))
+                AnthroTraitsMain.NeutralizeFoodPoisoning(charBodyDmg, beforeFoodSickness, beforePoisonLevel);
             end
         end
     end

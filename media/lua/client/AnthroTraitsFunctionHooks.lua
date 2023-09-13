@@ -165,7 +165,7 @@ ISEatFoodAction.perform = function(self)
     -- code to run before the original
     OriginalEatPerform(self);
     -- code to run after the original
-    ATM.DoVoreModifier(self.character, self.item, self.percentage)
+    ATM.ApplyFoodChanges(self.character, self.item, self.percentage)
 end
 
 local OriginalEatStop = ISEatFoodAction.stop;
@@ -173,7 +173,7 @@ ISEatFoodAction.stop = function(self)
     -- code to run before the original
     OriginalEatStop(self);
     -- code to run after the original
-    ATM.DoVoreModifier(self.character, self.item, self:getJobDelta())
+    ATM.ApplyFoodChanges(self.character, self.item, self:getJobDelta())
 end
 
 
