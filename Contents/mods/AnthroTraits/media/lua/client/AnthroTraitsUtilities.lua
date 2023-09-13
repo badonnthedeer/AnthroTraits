@@ -142,13 +142,13 @@ end
 ---For basic food modifiers. This is built upon by CalculateFoodChanges later.
 AnthroTraitsUtilities.CalculateFoodModifiers = function(character, food)
     local modifiers = {
-        multHunger = 1,
-        multThirst = 1,
-        multEndurance = 1,
-        multStress = 1,
-        multBoredom = 1,
-        multUnhappiness = 1,
-        multCalories = 1,
+        multHunger = 0,
+        multThirst = 0,
+        multEndurance = 0,
+        multStress = 0,
+        multBoredom = 0,
+        multUnhappiness = 0,
+        multCalories = 0,
     }
 
     if food:hasTag("ATHerbivore") then
@@ -209,13 +209,9 @@ AnthroTraitsUtilities.CalculateFoodModifiers = function(character, food)
             modifiers.multUnhappiness = SandboxVars.AnthroTraits.AT_CarrionEaterBonus;
             modifiers.multCalories = SandboxVars.AnthroTraits.AT_CarrionEaterBonus;
         end
-        if character:HasTrait("AT_FoodMotivated") then
-            modifiers.multBoredom = modifiers.multBoredom + SandboxVars.AnthroTraits.AT_FoodMotivatedBonus;
-            modifiers.multUnhappiness = modifiers.multUnhappiness + SandboxVars.AnthroTraits.AT_FoodMotivatedBonus;
-        end
-
-        return modifiers
     end
+
+    return modifiers
 end
 
 
@@ -246,11 +242,11 @@ AnthroTraitsUtilities.CalculateFoodChanges = function(character, food)
     local extraPoison = 0;
 
 
-    if origBoredomChange > 0
+    if origBoredomChange > 0 and extraFoodBoredomChange ~= 0
     then
         extraFoodBoredomChange = (extraFoodBoredomChange * (modifiers.multBoredom * -1));
     end
-    if origUnhappyChange > 0
+    if origUnhappyChange > 0 and extraFoodUnhappyChange ~= 0
     then
         extraFoodUnhappyChange = (extraFoodUnhappyChange * (modifiers.multUnhappiness * -1));
     end
@@ -260,23 +256,33 @@ AnthroTraitsUtilities.CalculateFoodChanges = function(character, food)
         extraFoodUnhappyChange = extraFoodUnhappyChange - origUnhappyChange;
     end
 
-    if (character:HasTrait("AT_FoodMotivated") and foodID == "Base.DogfoodOpen")
+    --and food:getFoodType() ~= nil is workaround for closed canned foods affected by FoodMotivated
+    if (character:HasTrait("AT_FoodMotivated") and foodID == "Base.DogfoodOpen") and food:getFoodType() ~= nil
     then
-        extraFoodUnhappyChange =  extraFoodUnhappyChange -50;
+        extraFoodBoredomChange =  extraFoodUnhappyChange - SandboxVars.AnthroTraits.AT_FoodMotivatedBonus;
+        extraFoodUnhappyChange =  extraFoodUnhappyChange - (50 + SandboxVars.AnthroTraits.AT_FoodMotivatedBonus);
+    elseif character:HasTrait("AT_FoodMotivated") and food:getFoodType() ~= nil
+    then
+        extraFoodBoredomChange = extraFoodBoredomChange - SandboxVars.AnthroTraits.AT_FoodMotivatedBonus;
+        extraFoodUnhappyChange = extraFoodUnhappyChange - SandboxVars.AnthroTraits.AT_FoodMotivatedBonus;
     end
 
-    if character:HasTrait("AT_FeralDigestion") then
+    if character:HasTrait("AT_FeralDigestion")
+    then
         local maxPoisonAmt = SandboxVars.AnthroTraits.AT_FeralDigestionPoisonAmt
         if food:getExtraItems() ~= nil
         then
             local foodIngredients = food:getExtraItems()
-            for i = 0, foodIngredients:size() - 1 do
+            for i = 0, foodIngredients:size() - 1
+            do
                 local foodIngredientTags = getScriptManager():getItem(foodIngredients:get(i)):getTags()
-                if foodIngredientTags:contains("ATFeralPoison") then
+                if foodIngredientTags:contains("ATFeralPoison")
+                then
                     extraPoison = extraPoison + maxPoisonAmt
                 end
             end
-        elseif food:hasTag("ATFeralPoison") then
+        elseif food:hasTag("ATFeralPoison")
+        then
             extraPoison = maxPoisonAmt
         end
     end
@@ -367,27 +373,27 @@ AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item,
     then
         table.insert(returnTable, getText("Tooltip_item_StackWeight")..":"..string.format("%5.1f", stackEncum))
     end
-    if foodHungerChange ~= nil and foodHungerChange ~= 0
+    if newFoodHungerChange ~= 0
     then
         table.insert(returnTable, getText("Tooltip_food_Hunger")..":"..this.getTooltipValueColor(foodHungerChange, newFoodHungerChange, true)..this.getTooltipValueSymbol(newFoodHungerChange)..string.format("%3.1f",(newFoodHungerChange * 100)));
     end
-    if foodThirstChange ~= nil and foodThirstChange ~= 0
+    if newFoodThirstChange ~= 0
     then
         table.insert(returnTable, getText("Tooltip_food_Thirst")..":"..this.getTooltipValueColor(foodThirstChange, newFoodThirstChange, true)..this.getTooltipValueSymbol(newFoodThirstChange)..string.format("%3.1f",(newFoodThirstChange * 100)));
     end
-    if foodEndChange ~= nil and foodEndChange ~=0
+    if newFoodEndChange ~= 0
     then
         table.insert(returnTable, getText("Tooltip_food_Endurance")..":"..this.getTooltipValueColor(foodEndChange, newFoodEndChange, false)..this.getTooltipValueSymbol(newFoodEndChange)..string.format("%3.1f",(newFoodEndChange * 100)));
     end
-    if foodStressChange ~= nil and foodStressChange ~=0
+    if newFoodStressChange ~= 0
     then
         table.insert(returnTable, getText("Tooltip_food_Stress")..":"..this.getTooltipValueColor(foodStressChange, newFoodStressChange, true)..this.getTooltipValueSymbol(newFoodStressChange)..string.format("%3.1f",newFoodStressChange));
     end
-    if foodBoredomChange ~= nil and foodBoredomChange ~=0
+    if newFoodBoredomChange ~= 0
     then
         table.insert(returnTable, getText("Tooltip_food_Boredom")..":"..this.getTooltipValueColor(foodBoredomChange, newFoodBoredomChange, true)..this.getTooltipValueSymbol(newFoodBoredomChange)..string.format("%3.1f",newFoodBoredomChange));
     end
-    if foodUnhappyChange ~= nil and foodUnhappyChange ~=0
+    if newFoodUnhappyChange ~= 0
     then
         table.insert(returnTable, getText("Tooltip_food_Unhappiness")..":"..this.getTooltipValueColor(foodUnhappyChange, newFoodUnhappyChange, true)..this.getTooltipValueSymbol(newFoodUnhappyChange)..string.format("%3.1f",newFoodUnhappyChange));
     end
@@ -421,7 +427,7 @@ AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item,
     end
     if item:isPackaged() or player:HasTrait("Nutritionist") or player:HasTrait("Nutritionist2")
     then
-        if foodCalories ~= nil and foodCalories ~= 0
+        if foodCalories ~= nil and (foodCalories + newFoodCalories) ~= 0
         then
             table.insert(returnTable, getText("Tooltip_food_Calories")..":"..this.getTooltipValueColor(foodCalories, newFoodCalories, false)..string.format("%5.1f", newFoodCalories));
         end

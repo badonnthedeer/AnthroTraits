@@ -200,7 +200,7 @@ end
 
 
 AnthroTraitsMain.ApplyFoodChanges = function(character, foodEaten, percentEaten)
-    local foodChanges = AnthroTraitsMain.CalculateFoodChanges(character, foodEaten)
+    local foodChanges = ATU.CalculateFoodChanges(character, foodEaten)
     local charStats = character:getStats()
     local charBodyDmg = character:getBodyDamage()
     local charNutrition = character:getNutrition()
