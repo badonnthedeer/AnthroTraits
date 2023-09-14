@@ -185,10 +185,6 @@ AnthroTraitsUtilities.CalculateFoodModifiers = function(character, food)
         then
             modifiers.multHunger = SandboxVars.AnthroTraits.AT_CarnivoreBonus + SandboxVars.AnthroTraits.AT_CarrionEaterBonus;
             modifiers.multThirst = SandboxVars.AnthroTraits.AT_CarnivoreBonus + SandboxVars.AnthroTraits.AT_CarrionEaterBonus;
-            modifiers.multEndurance = SandboxVars.AnthroTraits.AT_CarnivoreBonus + SandboxVars.AnthroTraits.AT_CarrionEaterBonus;
-            modifiers.multStress = SandboxVars.AnthroTraits.AT_CarnivoreBonus + SandboxVars.AnthroTraits.AT_CarrionEaterBonus;
-            modifiers.multBoredom = SandboxVars.AnthroTraits.AT_CarnivoreBonus + SandboxVars.AnthroTraits.AT_CarrionEaterBonus;
-            modifiers.multUnhappiness = SandboxVars.AnthroTraits.AT_CarnivoreBonus + SandboxVars.AnthroTraits.AT_CarrionEaterBonus;
             modifiers.multCalories = SandboxVars.AnthroTraits.AT_CarnivoreBonus + SandboxVars.AnthroTraits.AT_CarrionEaterBonus;
         elseif character:HasTrait("AT_Carnivore")
         then
@@ -203,10 +199,6 @@ AnthroTraitsUtilities.CalculateFoodModifiers = function(character, food)
         then
             modifiers.multHunger = SandboxVars.AnthroTraits.AT_CarrionEaterBonus;
             modifiers.multThirst = SandboxVars.AnthroTraits.AT_CarrionEaterBonus;
-            modifiers.multEndurance = SandboxVars.AnthroTraits.AT_CarrionEaterBonus;
-            modifiers.multStress = SandboxVars.AnthroTraits.AT_CarrionEaterBonus;
-            modifiers.multBoredom = SandboxVars.AnthroTraits.AT_CarrionEaterBonus;
-            modifiers.multUnhappiness = SandboxVars.AnthroTraits.AT_CarrionEaterBonus;
             modifiers.multCalories = SandboxVars.AnthroTraits.AT_CarrionEaterBonus;
         end
     end
@@ -251,17 +243,17 @@ AnthroTraitsUtilities.CalculateFoodChanges = function(character, food)
         extraFoodUnhappyChange = (extraFoodUnhappyChange * (modifiers.multUnhappiness * -1));
     end
 
-    if (character:HasTrait("AT_Bug_o_ssieur") and food:hasTag("ATInsect"))
+    if (character:HasTrait("AT_Bug_o_ssieur") and food:hasTag("ATInsect")) or (character:HasTrait("AT_CarrionEater") and food:hasTag("ATCarnivore") and (food:HowRotten() > 0))
     then
         extraFoodUnhappyChange = extraFoodUnhappyChange - origUnhappyChange;
+        extraFoodBoredomChange =  extraFoodBoredomChange - origBoredomChange;
     end
 
-    --and food:getFoodType() ~= nil is workaround for closed canned foods affected by FoodMotivated
-    if (character:HasTrait("AT_FoodMotivated") and foodID == "Base.DogfoodOpen") and food:getFoodType() ~= nil
+    if (character:HasTrait("AT_FoodMotivated") and foodID == "Base.DogfoodOpen")
     then
         extraFoodBoredomChange =  extraFoodUnhappyChange - SandboxVars.AnthroTraits.AT_FoodMotivatedBonus;
         extraFoodUnhappyChange =  extraFoodUnhappyChange - (50 + SandboxVars.AnthroTraits.AT_FoodMotivatedBonus);
-    elseif character:HasTrait("AT_FoodMotivated") and food:getFoodType() ~= nil
+    elseif character:HasTrait("AT_FoodMotivated")
     then
         extraFoodBoredomChange = extraFoodBoredomChange - SandboxVars.AnthroTraits.AT_FoodMotivatedBonus;
         extraFoodUnhappyChange = extraFoodUnhappyChange - SandboxVars.AnthroTraits.AT_FoodMotivatedBonus;

@@ -189,13 +189,12 @@ AnthroTraitsMain.HandleInfection = function(player)
 end
 
 
-AnthroTraitsMain.NeutralizeFoodPoisoning = function(charBodyDmg, beforeFoodSickness, beforePoisonLevel)
+AnthroTraitsMain.NeutralizeFoodPoisoning = function(charBodyDmg, prevPoisonLvl)
     if getDebug()
     then
         print("Food Poisoning neutralized.");
     end
-    charBodyDmg:setFoodSicknessLevel(beforeFoodSickness);
-    charBodyDmg:setPoisonLevel(beforePoisonLevel);
+    charBodyDmg:setPoisonLevel(prevPoisonLvl);
 end
 
 
@@ -204,9 +203,6 @@ AnthroTraitsMain.ApplyFoodChanges = function(character, foodEaten, percentEaten)
     local charStats = character:getStats()
     local charBodyDmg = character:getBodyDamage()
     local charNutrition = character:getNutrition()
-
-    local beforeFoodSickness = charBodyDmg:getFoodSicknessLevel();
-    local beforePoisonLevel = charBodyDmg:getPoisonLevel();
 
     if foodChanges.addHungerChange ~= 0
     then
@@ -240,29 +236,32 @@ AnthroTraitsMain.ApplyFoodChanges = function(character, foodEaten, percentEaten)
     then
         charBodyDmg:setPoisonLevel(charBodyDmg:getPoisonLevel() + (foodChanges.addPoison * percentEaten))
     end
+end
 
 
-    if foodEaten:hasTag("ATCarnivore") and foodEaten:getPoisonPower() <= 0
+AnthroTraitsMain.ApplyAfterEatFoodChanges = function(character, foodEaten, percentEaten, prevPoisonLvl)
+    local charBodyDmg = character:getBodyDamage()
+
+    if foodEaten:hasTag("ATCarnivore")
     then
         if (character:HasTrait("AT_Carnivore") or character:HasTrait("AT_CarrionEater")) and not foodEaten:isRotten()
         then
-            AnthroTraitsMain.NeutralizeFoodPoisoning(charBodyDmg, beforeFoodSickness, beforePoisonLevel);
+            AnthroTraitsMain.NeutralizeFoodPoisoning(charBodyDmg, prevPoisonLvl);
         elseif foodEaten:isRotten() and character:HasTrait("AT_CarrionEater")
         then
-            AnthroTraitsMain.NeutralizeFoodPoisoning(charBodyDmg, beforeFoodSickness, beforePoisonLevel);
+            AnthroTraitsMain.NeutralizeFoodPoisoning(charBodyDmg, prevPoisonLvl);
         end
-    elseif foodEaten:hasTag("ATHerbivore") and foodEaten:getPoisonPower() <= 0
+    elseif foodEaten:hasTag("ATHerbivore")
     then
         if character:HasTrait("AT_Herbivore")
         then
             if not foodEaten:isRotten()
             then
-                AnthroTraitsMain.NeutralizeFoodPoisoning(charBodyDmg, beforeFoodSickness, beforePoisonLevel);
+                AnthroTraitsMain.NeutralizeFoodPoisoning(charBodyDmg, prevPoisonLvl);
             end
         end
     end
 end
-
 
 AnthroTraitsMain.ExclaimerCheck = function(player)
     local moodles = player:getMoodles();

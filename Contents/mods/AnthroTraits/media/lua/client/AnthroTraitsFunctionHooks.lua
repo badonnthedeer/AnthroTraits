@@ -163,17 +163,20 @@ end
 local OriginalEatPerform = ISEatFoodAction.perform;
 ISEatFoodAction.perform = function(self)
     -- code to run before the original
+    local currPoisonLvl = self.character:getBodyDamage():getPoisonLevel();
+    ATM.ApplyFoodChanges(self.character, self.item, self.percentage)
     OriginalEatPerform(self);
     -- code to run after the original
-    ATM.ApplyFoodChanges(self.character, self.item, self.percentage)
+    ATM.ApplyAfterEatFoodChanges(self.character, self.item, self.percentage, currPoisonLvl)
 end
 
 local OriginalEatStop = ISEatFoodAction.stop;
 ISEatFoodAction.stop = function(self)
     -- code to run before the original
+    ATM.ApplyFoodChanges(self.character, self.item, self.percentage * self:getJobDelta())
     OriginalEatStop(self);
     -- code to run after the original
-    ATM.ApplyFoodChanges(self.character, self.item, self:getJobDelta())
+    ATM.ApplyAfterEatFoodChanges(self.character, self.item, self.percentage * self:getJobDelta());
 end
 
 
@@ -268,7 +271,7 @@ ISToolTipInv.render = function(self)
                     then
                         tooltipTextTable = ATU.BuildFoodDescription(player, nil, self.item, 0)
                     end
-                elseif player:HasTrait("AT_FoodMotivated") or player:HasTrait("AT_FeralDigestion")
+                elseif player:HasTrait("AT_FoodMotivated") or player:HasTrait("AT_Bug_o_ssieur") or player:HasTrait("AT_FeralDigestion")
                 then
                     tooltipTextTable = ATU.BuildFoodDescription(player, nil, self.item, 0)
                 end
