@@ -858,6 +858,7 @@ end]]
 
 
 Events.OnNewGame.Add(AnthroTraitsMain.ATInitPlayerData);
+Events.OnGameStart.Add(AnthroTraitsMain.ATInitPlayerData);
 Events.OnInitWorld.Add(AnthroTraitsMain.ATOnInitWorld);
 --[[Events.OnClientCommand.Add(AnthroTraitsMain.ATOnClientCommand)
 Events.OnServerCommand.Add(AnthroTraitsMain.ATOnServerCommand)]]
