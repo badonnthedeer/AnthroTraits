@@ -358,6 +358,10 @@ end
 
 AnthroTraitsMain.ATInitPlayerData = function(player)
 
+    if player == nil
+    then
+        player = getPlayer();
+    end    
     local modData = player:getModData();
 
     if modData.ATPlayerData == nil then
@@ -858,7 +862,7 @@ end]]
 
 
 Events.OnNewGame.Add(AnthroTraitsMain.ATInitPlayerData);
-Events.OnGameStart.Add(AnthroTraitsMain.ATInitPlayerData);
+Events.OnLoad.Add(AnthroTraitsMain.ATInitPlayerData);
 Events.OnInitWorld.Add(AnthroTraitsMain.ATOnInitWorld);
 --[[Events.OnClientCommand.Add(AnthroTraitsMain.ATOnClientCommand)
 Events.OnServerCommand.Add(AnthroTraitsMain.ATOnServerCommand)]]
