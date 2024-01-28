@@ -332,8 +332,10 @@ AnthroTraitsMainCreationMethods.sortTraits = function()
         if tonumber(trait:getRightLabel()) < 0
         then
             newItem = ccp.listboxTrait:addItem(label, trait)
+            newItem.tooltip = trait:getDescription();
         else
-            ccp.listboxBadTrait:addItem(label, trait)
+            newItem = ccp.listboxBadTrait:addItem(label, trait)
+            newItem.tooltip = trait:getDescription();
         end
     end
     CharacterCreationMain.sort(ccp.listboxTrait.items)
@@ -341,7 +343,9 @@ AnthroTraitsMainCreationMethods.sortTraits = function()
     CharacterCreationMain.sort(ccp.listboxTraitSelected.items)
 end
 
+
+
 Events.OnGameBoot.Add(AnthroTraitsMainCreationMethods.initAnthroTraits);
-Events.OnConnected.Add(AnthroTraitsMainCreationMethods.refreshTraitCosts);
+
 
 return AnthroTraitsMainCreationMethods;
