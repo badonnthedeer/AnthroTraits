@@ -353,6 +353,53 @@ AnthroTraitsMain.LonelyUpdate = function(player)
     end
 end
 
+AnthroTraitsMain.CarryWeightUpdate = function(player)
+    local strength = player:getPerkLevel(Perks.Strength);
+    local defaultBaseWeight = math.floor(8 + (strength / 2));
+
+    local newBaseWeight = defaultBaseWeight;
+
+    if getActivatedMods():contains("ToadTraits")
+    then
+        local moreTraitsGlobalMod = SandboxVars.MoreTraits.WeightGlobalMod or 0;
+        local moreTraitsPackMuleBase = SandboxVars.MoreTraits.WeightPackMule or 10;
+        local moreTraitsPackMouseBase = SandboxVars.MoreTraits.WeightPackMouse or 6;
+        if player:HasTrait("packmouse")
+        then
+            newBaseWeight =  moreTraitsPackMuleBase + moreTraitsGlobalMod;
+        elseif player:HasTrait("packmule")
+        then
+            newBaseWeight =  moreTraitsPackMouseBase + moreTraitsGlobalMod;
+        end
+    end
+    if (getActivatedMods():contains("MoreSimpleTraits") 
+    or getActivatedMods():contains("MoreSimpleTraitsVanilla")
+    or getActivatedMods():contains("SimpleOverhaulTraitsAndOccupations"))
+    then
+        local SOTOStrongBackBase =  9;
+        local SOTOWeakBackBase = 7;
+        if player:HasTrait("StrongBack") or player:HasTrait("StrongBack2")
+        then
+            newBaseWeight = newBaseWeight + (SOTOStrongBackBase - defaultBaseWeight);
+        elseif player:HasTrait("WeakBack")
+        then
+            newBaseWeight = newBaseWeight - (defaultBaseWeight - SOTOWeakBackBase);
+        end
+    end
+    if getActivatedMods():contains("DracoExpandedTraits")
+    then
+        local DracoHoarderPctIncrease = .25;
+        if player:HasTrait("Hoarder")
+        then
+            newBaseWeight = (math.floor(newBaseWeight * 1 + DracoHoarderPctIncrease))
+        end
+    end
+    if player:HasTrait("AT_BeastOfBurden")
+    then
+        newBaseWeight = (math.floor(newBaseWeight * 1 + SandboxVars.AnthroTraits.AT_BeastOfBurdenPctIncrease));
+    end
+    player:setMaxWeightBase(newBaseWeight)
+end
 
 --EVENT HANDLERS
 
@@ -800,12 +847,6 @@ AnthroTraitsMain.ATPlayerUpdate = function(player)
     local beforeFallTime = modData.oldFallTime;
     local endurance = player:getStats():getEndurance();
     local rolledChance = ZombRand(0,100);
-    if player:HasTrait("AT_BeastOfBurden")
-    then
-        player:setMaxWeightBase(math.floor(modData.UnmoddedMaxWeightBase * (1 + SandboxVars.AnthroTraits.AT_BeastOfBurdenPctIncrease)));
-    else
-        player:setMaxWeightBase(math.floor(modData.UnmoddedMaxWeightBase));
-    end
     if player:HasTrait("AT_Torpor") and modData.torporActive == true
     then
         if endurance > (1.0 - SandboxVars.AnthroTraits.AT_TorporEnduranceDecrease)
@@ -844,6 +885,7 @@ AnthroTraitsMain.ATPlayerUpdate = function(player)
         end
     end
     this.LonelyUpdate(player);
+    this.CarryWeightUpdate(player);
 end
 
 --[[AnthroTraitsMain.ATOnClientCommand = function(module, command, args)
