@@ -464,5 +464,6 @@ local oldSOSMD = SandboxOptionsScreen.onOptionMouseDown
 SandboxOptionsScreen.onOptionMouseDown = function(...)
     ATC.refundSelectedAffectedTraits();
     oldSOSMD(...);
+    ATC.setTraitDescriptions();
     ATC.sortTraits();
 end
