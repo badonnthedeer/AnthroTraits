@@ -334,6 +334,21 @@ AnthroTraitsMain.BeStinky = function(player)
     end
 end
 
+AnthroTraitsMain.PerformModOverrides = function ()
+--MoreTraits Overrides
+--C:\Program Files (x86)\Steam\steamapps\workshop\content\108600\1299328280\mods\More Traits
+checkWeight = AnthroTraitsMain.CarryWeightUpdate;
+
+--More Simple Traits / SOTO Overrides
+--C:\Program Files (x86)\Steam\steamapps\workshop\content\108600\2840805724\mods\SimpleOverhaulTraitsAndOccupations
+SOcheckWeight = AnthroTraitsMain.CarryWeightUpdate;
+
+--Expanded Traits Overrides
+--C:\Program Files (x86)\Steam\steamapps\workshop\content\108600\2730251452\mods\ExpandedTraits
+CheckWeightLimit = AnthroTraitsMain.CarryWeightUpdate;
+
+end
+
 AnthroTraitsMain.LonelyUpdate = function(player)
     local lonelyDistance = SandboxVars.AnthroTraits.AT_StinkyDistance
     local modData = player:getModData().ATPlayerData
@@ -355,50 +370,85 @@ end
 
 AnthroTraitsMain.CarryWeightUpdate = function(player)
     local strength = player:getPerkLevel(Perks.Strength);
-    local defaultBaseWeight = math.floor(8 + (strength / 2));
+    local defaultMaxWeight = {6,7,8,9,11,12,14,15,16,18,20}
+    local traits = player:getTraits();
 
-    local newBaseWeight = defaultBaseWeight;
+    -- Unsure why there needs to be a +2 here, but without traits max weight
+    -- is otherwise off by 2.
+    local newMaxWeightBase = defaultMaxWeight[strength + 1] + 2;
+    print(string.format("Base: %f", newMaxWeightBase));
 
     if getActivatedMods():contains("ToadTraits")
     then
-        local moreTraitsGlobalMod = SandboxVars.MoreTraits.WeightGlobalMod or 0;
-        local moreTraitsPackMuleBase = SandboxVars.MoreTraits.WeightPackMule or 10;
-        local moreTraitsPackMouseBase = SandboxVars.MoreTraits.WeightPackMouse or 6;
-        if player:HasTrait("packmouse")
+        local MTGlobalMod = SandboxVars.MoreTraits.WeightGlobalMod or 0;
+        local MTPackMuleBonus = SandboxVars.MoreTraits.WeightPackMule or 2;
+        local MTPackMouseMalus = SandboxVars.MoreTraits.WeightPackMouse or -2;
+        --default weight is actually 12 but go off queen
+        local MTDefaultWeight = SandboxVars.MoreTraits.WeightDefault or 8;
+
+        if MTPackMuleBonus
         then
-            newBaseWeight =  moreTraitsPackMuleBase + moreTraitsGlobalMod;
-        elseif player:HasTrait("packmule")
+            MTPackMuleBonus = (MTPackMuleBonus - MTDefaultWeight);
+            if MTPackMuleBonus < 0
+            then
+                MTPackMuleBonus = 2;
+            end
+            MTPackMuleBonus = MTPackMuleBonus + math.floor(strength / 5) + MTGlobalMod;
+        end
+        
+        if MTPackMouseMalus
         then
-            newBaseWeight =  moreTraitsPackMouseBase + moreTraitsGlobalMod;
+            MTPackMouseMalus = (MTPackMuleBonus - MTDefaultWeight) + MTGlobalMod;
+            if MTPackMouseMalus > 0
+            then
+                MTPackMouseMalus = -2;
+            end
+        end
+
+        if player:HasTrait("packmule")
+        then
+            newMaxWeightBase =  newMaxWeightBase + MTPackMuleBonus;
+            print(string.format("packmule: %f", newMaxWeightBase));
+        elseif player:HasTrait("packmouse")
+        then
+            newMaxWeightBase =  newMaxWeightBase + MTPackMouseMalus;
+            print(string.format("packmouse: %f", newMaxWeightBase));
         end
     end
     if (getActivatedMods():contains("MoreSimpleTraits") 
     or getActivatedMods():contains("MoreSimpleTraitsVanilla")
     or getActivatedMods():contains("SimpleOverhaulTraitsAndOccupations"))
     then
-        local SOTOStrongBackBase =  9;
-        local SOTOWeakBackBase = 7;
+        local SOTOStrongBackBonus =  2;
+        local SOTOWeakBackMalus = -1;
         if player:HasTrait("StrongBack") or player:HasTrait("StrongBack2")
         then
-            newBaseWeight = newBaseWeight + (SOTOStrongBackBase - defaultBaseWeight);
+            newMaxWeightBase = newMaxWeightBase + SOTOStrongBackBonus;
+            print(string.format("StrongBack: %f", newMaxWeightBase));
         elseif player:HasTrait("WeakBack")
         then
-            newBaseWeight = newBaseWeight - (defaultBaseWeight - SOTOWeakBackBase);
+            newMaxWeightBase = newMaxWeightBase + SOTOWeakBackMalus;
+            print(string.format("WeakBack: %f", newMaxWeightBase));
         end
     end
     if getActivatedMods():contains("DracoExpandedTraits")
     then
         local DracoHoarderPctIncrease = .25;
-        if player:HasTrait("Hoarder")
+    if player:HasTrait("Hoarder")
         then
-            newBaseWeight = (math.floor(newBaseWeight * 1 + DracoHoarderPctIncrease))
+            local hBonus = (math.floor(newMaxWeightBase *  DracoHoarderPctIncrease));
+            newMaxWeightBase = newMaxWeightBase + hBonus;
+            print(string.format("Hoarder: %f", newMaxWeightBase));
         end
     end
+    local BobPctIncrease = SandboxVars.AnthroTraits.AT_BeastOfBurdenPctIncrease;
     if player:HasTrait("AT_BeastOfBurden")
     then
-        newBaseWeight = (math.floor(newBaseWeight * 1 + SandboxVars.AnthroTraits.AT_BeastOfBurdenPctIncrease));
+        local bobBonus = (math.floor(newMaxWeightBase * BobPctIncrease));
+        newMaxWeightBase = newMaxWeightBase + bobBonus;
+        print(string.format("BOB: %f", newMaxWeightBase));
     end
-    player:setMaxWeightBase(newBaseWeight)
+    player:setMaxWeightBase(newMaxWeightBase)
 end
 
 --EVENT HANDLERS
@@ -419,11 +469,12 @@ AnthroTraitsMain.ATInitPlayerData = function(player)
         atData.canTripChecked = false;
         atData.tripSafe = false;
         atData.torporActive = false;
-        atData.UnmoddedMaxWeightBase =  player:getMaxWeightBase();
         atData.HoursSinceSeenOthers = 0;
         atData.oldFallTime = 0.0;
         atData.oldWetness = 0.0;
     end
+
+    AnthroTraitsMain.PerformModOverrides();
 end
 
 
@@ -434,6 +485,7 @@ AnthroTraitsMain.ATOnInitWorld = function()
     ATU.AddItemTagToItemsFromSandbox(SandboxVars.AnthroTraits.AT_FeralDigestion_Items, "ATFeralPoison");
 
     Colors["LavenderBlush"] = Color.new(1, 229/255, 229/255, 1);
+
 end
 
 
@@ -775,6 +827,7 @@ AnthroTraitsMain.ATEveryOneMinute = function()
                 end
                 modData.canTripChecked = false;
                 modData.tripSafe = false;
+                this.CarryWeightUpdate(player);
             end
         end
     end
@@ -819,22 +872,6 @@ AnthroTraitsMain.ATEveryDays = function()
             then
                 modData.torporActive = false;
             end
-        end
-    end
-end
-
-
-AnthroTraitsMain.ATLevelPerk = function(char, perk, level, increased)
-    if instanceof(char, "IsoPlayer")
-    then
-        local player = char;
-        local modData = player:getModData().ATPlayerData;
-        if perk == "Strength" and increased == true
-        then
-            --for beast of burden, mostly. But I should keep this accurate just in case.
-            modData.UnmoddedMaxWeightBase = modData.UnmoddedMaxWeightBase + 1;
-            --does this up automatically? I would be able to subtract umoddedMaxWeightBase + mod to get the difference and
-            --set it here
         end
     end
 end
@@ -885,7 +922,6 @@ AnthroTraitsMain.ATPlayerUpdate = function(player)
         end
     end
     this.LonelyUpdate(player);
-    this.CarryWeightUpdate(player);
 end
 
 --[[AnthroTraitsMain.ATOnClientCommand = function(module, command, args)
