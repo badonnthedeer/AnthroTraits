@@ -335,18 +335,48 @@ AnthroTraitsMain.BeStinky = function(player)
 end
 
 AnthroTraitsMain.PerformModOverrides = function ()
---MoreTraits Overrides
---C:\Program Files (x86)\Steam\steamapps\workshop\content\108600\1299328280\mods\More Traits
-checkWeight = AnthroTraitsMain.CarryWeightUpdate;
+    --MoreTraits Overrides
+    --C:\Program Files (x86)\Steam\steamapps\workshop\content\108600\1299328280\mods\More Traits
+    --Last Update: Sep 14, 2023 @ 10:27pm
+    if getActivatedMods():contains("ToadTraits")
+    then
+        Events.EveryOneMinute.Remove(CheckWeightLimit)
+        Events.EveryTenMinutes.Remove(CheckWeightLimit)
+    end
+    --SOTO Overrides
+    --C:\Program Files (x86)\Steam\steamapps\workshop\content\108600\2840805724\mods\SimpleOverhaulTraitsAndOccupations
+    --Last Update: Jun 30, 2023
+    if (getActivatedMods():contains("MoreSimpleTraits")
+    or getActivatedMods():contains("MoreSimpleTraitsVanilla"))
+    then
+        Events.OnCreatePlayer.Remove(cangrabmorecalc);
+        Events.OnCreatePlayer.Remove(cangrablesscalc);
+    end
+    --More Simple Traits Overrides
+    --C:\Program Files (x86)\Steam\steamapps\workshop\content\108600\2792245343\mods
+    --Last Update: Dec 23, 2023 @ 8:54am
+    if getActivatedMods():contains("SimpleOverhaulTraitsAndOccupations")
+    then
+        Events.EveryHours.Remove(SOcheckWeight);
+        Events.OnGameStart.Remove(SOcheckWeight);
+        Events.OnCreatePlayer.Remove(SOcheckWeight);
+    end
+    --Expanded Traits Overrides
+    --C:\Program Files (x86)\Steam\steamapps\workshop\content\108600\2730251452\mods\ExpandedTraits
+    --Last Update: Jan 27, 2022 @ 9:34pm
+    if  getActivatedMods():contains("DracoExpandedTraits")
+    then
+        Events.EveryOneMinute.Remove(OneMinuteUpdate);
 
---More Simple Traits / SOTO Overrides
---C:\Program Files (x86)\Steam\steamapps\workshop\content\108600\2840805724\mods\SimpleOverhaulTraitsAndOccupations
-SOcheckWeight = AnthroTraitsMain.CarryWeightUpdate;
+        local function OneMinuteUpdate()
+            local player = getPlayer();
+            local pData = player:getModData();
+            local modData = pData.ExpTraitsData;
+        end
 
---Expanded Traits Overrides
---C:\Program Files (x86)\Steam\steamapps\workshop\content\108600\2730251452\mods\ExpandedTraits
-CheckWeightLimit = AnthroTraitsMain.CarryWeightUpdate;
+        Events.EveryOneMinute.Add(OneMinuteUpdate);
 
+    end
 end
 
 AnthroTraitsMain.LonelyUpdate = function(player)
