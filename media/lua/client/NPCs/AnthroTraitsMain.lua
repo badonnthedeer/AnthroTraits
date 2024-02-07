@@ -381,7 +381,7 @@ AnthroTraitsMain.CarryWeightUpdate = function(player)
         then
             MTPackMuleBonus = MTPackMuleBonus + math.floor(strength / 5) + MTGlobalMod;
         end
-
+        
         if player:HasTrait("packmule")
         then
             baseWeightChanged = true;
@@ -433,7 +433,7 @@ AnthroTraitsMain.CarryWeightUpdate = function(player)
     end
     if baseWeightChanged
     then
-    player:setMaxWeightBase(newMaxWeightBase)
+        player:setMaxWeightBase(newMaxWeightBase)
     else
         player:setMaxWeightBase(defaultMaxWeightBase);
     end
@@ -863,6 +863,11 @@ AnthroTraitsMain.ATEveryDays = function()
     end
 end
 
+AnthroTraitsMain.ATOnLoad = function()
+
+    local player = getPlayer();
+    AnthroTraitsMain.ATInitPlayerData(player);
+end
 
 AnthroTraitsMain.ATPlayerUpdate = function(player)
     local this = AnthroTraitsMain;
@@ -926,8 +931,8 @@ end]]
 
 
 
-Events.OnNewGame.Add(AnthroTraitsMain.ATInitPlayerData);
-Events.OnLoad.Add(AnthroTraitsMain.ATInitPlayerData);
+Events.OnNewGame.Add(AnthroTraitsMain.ATOnLoad);
+Events.OnLoad.Add(AnthroTraitsMain.ATOnLoad);
 Events.OnInitWorld.Add(AnthroTraitsMain.ATOnInitWorld);
 --[[Events.OnClientCommand.Add(AnthroTraitsMain.ATOnClientCommand)
 Events.OnServerCommand.Add(AnthroTraitsMain.ATOnServerCommand)]]
