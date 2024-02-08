@@ -9,6 +9,7 @@ description=    [*][h2]Beast of Burden[/h2]
 description=    Your body's frame is well-built for carrying weight.
 description=    [*][h2]Bug-o-ssieur[/h2]
 description=    You don't gain unhappiness or boredom when eating bugs.
+
 description=    [*][h2]Carnivore[/h2]
 description=    After eating food classified as meat, gain an extra percentage of the stats the food affected
 description=    Note: This also lowers unhappiness gain or other negative effects by the same amount.

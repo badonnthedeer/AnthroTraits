@@ -141,73 +141,94 @@ AnthroTraitsMainCreationMethods.initAnthroTraits = function()
     this.TTF.Add("Mechanics2", "Vanilla");
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    TraitFactory.addTrait("AT_BeastOfBurden", getText("UI_trait_AT_BeastOfBurden"), 1, getText("UI_trait_AT_BeastOfBurden_desc"), false);
+    --BEAST OF BURDEN
+    TraitFactory.addTrait("AT_BeastOfBurden", getText("UI_trait_AT_BeastOfBurden"), 1, workString, false);
     this.TTF.Add("AT_BeastOfBurden", "AnthroTraits,CostVariable,Anthro,Strong");
 
+    --BUG_O_SSIEUR
     TraitFactory.addTrait("AT_Bug_o_ssieur", getText("UI_trait_AT_Bug_o_ssieur"), 1, getText("UI_trait_AT_Bug_o_ssieur_desc"), false);
     this.TTF.Add("AT_Bug_o_ssieur", "AnthroTraits,CostVariable");
 
-    --TraitFactory.addTrait("AT_BullRush", getText("UI_trait_AT_BullRush"), 1, getText("UI_trait_AT_BullRush_desc"), false);
+    --BULL RUSH
+    --TraitFactory.addTrait("AT_BullRush", getText("UI_trait_AT_BullRush"), 1, workString, false);
     --this.TTF.Add("AT_BullRush", "AnthroTraits,CostVariable,Anthro,Horns");
 
-    TraitFactory.addTrait("AT_Carnivore", getText("UI_trait_AT_Carnivore"), 1, getText("UI_trait_AT_Carnivore_desc"), false);
+    --CARNIVORE
+    TraitFactory.addTrait("AT_Carnivore", getText("UI_trait_AT_Carnivore"), 1, workString, false);
     this.TTF.Add("AT_Carnivore", "AnthroTraits,CostVariable,Anthro,Carnivore");
 
-    TraitFactory.addTrait("AT_CarrionEater", getText("UI_trait_AT_CarrionEater"), 1, getText("UI_trait_AT_CarrionEater_desc"), false);
+    --CARRION EATER
+    TraitFactory.addTrait("AT_CarrionEater", getText("UI_trait_AT_CarrionEater"), 1, workString, false);
     this.TTF.Add("AT_CarrionEater", "AnthroTraits,CostVariable,Anthro,Carnivore,Scavenger");
 
-    local AT_Digitigrade = TraitFactory.addTrait("AT_Digitigrade", getText("UI_trait_AT_Digitigrade"), 1, getText("UI_trait_AT_Digitigrade_desc"), false);
+    --DIGITIGRADE
+    local AT_Digitigrade = TraitFactory.addTrait("AT_Digitigrade", getText("UI_trait_AT_Digitigrade"), 1, workString, false);
     AT_Digitigrade:addXPBoost(Perks.Sprinting, 1)
     this.TTF.Add("AT_Digitigrade", "AnthroTraits,CostVariable,Anthro");
 
-    TraitFactory.addTrait("AT_Exclaimer", getText("UI_trait_AT_Exclaimer"), -1, getText("UI_trait_AT_Exclaimer_desc"), false);
+    --EXCLAIMER
+    TraitFactory.addTrait("AT_Exclaimer", getText("UI_trait_AT_Exclaimer"), -1, workString, false);
     this.TTF.Add("AT_Exclaimer", "AnthroTraits,CostVariable");
 
+    --FERAL BODY
     local AT_FeralBody = TraitFactory.addTrait("AT_FeralBody", getText("UI_trait_AT_FeralBody"), 1, getText("UI_trait_AT_FeralBody_desc"), false);
     AT_FeralBody:addXPBoost(Perks.Strength, 1);
     AT_FeralBody:addXPBoost(Perks.Fitness, -1);
     this.TTF.Add("AT_FeralBody", "AnthroTraits,CostVariable,Anthro");
 
-    TraitFactory.addTrait("AT_FeralDigestion", getText("UI_trait_AT_FeralDigestion"), -1, getText("UI_trait_AT_FeralDigestion_desc"), false);
+    --FERAL DIGESTION
+    TraitFactory.addTrait("AT_FeralDigestion", getText("UI_trait_AT_FeralDigestion"), -1, workString, false);
     this.TTF.Add("AT_FeralDigestion", "AnthroTraits,CostVariable,Anthro");
 
-    TraitFactory.addTrait("AT_FoodMotivated", getText("UI_trait_AT_FoodMotivated"), 1, getText("UI_trait_AT_FoodMotivated_desc"), false);
+    --FOOD MOTIVATED
+    TraitFactory.addTrait("AT_FoodMotivated", getText("UI_trait_AT_FoodMotivated"), 1, workString, false);
     this.TTF.Add("AT_FoodMotivated", "AnthroTraits,CostVariable,Anthro");
 
-    TraitFactory.addTrait("AT_Herbivore", getText("UI_trait_AT_Herbivore"), 1, getText("UI_trait_AT_Herbivore_desc"), false);
+    --HERBIVORE
+    TraitFactory.addTrait("AT_Herbivore", getText("UI_trait_AT_Herbivore"), 1, workString, false);
     this.TTF.Add("AT_Herbivore", "AnthroTraits,CostVariable,Anthro,Herbivore");
 
+    --HOOVES
     local AT_Hooves = TraitFactory.addTrait("AT_Hooves", getText("UI_trait_AT_Hooves"), 1, getText("UI_trait_AT_Hooves_desc"), false);
     AT_Hooves:addXPBoost(Perks.Nimble, 1);
     this.TTF.Add("AT_Hooves", "AnthroTraits,CostVariable,Anthro,Hooves");
 
-    TraitFactory.addTrait("AT_Immunity", getText("UI_trait_AT_Immunity"), 1, getText("UI_trait_AT_Immunity_desc"), false);
+    --ANTHRO IMMUNITY
+    TraitFactory.addTrait("AT_Immunity", getText("UI_trait_AT_Immunity"), 1, workString, false);
     this.TTF.Add("AT_Immunity", "AnthroTraits,CostVariable,Anthro");
     --add ability to ignore this trait if infected by a former (furry) player?
 
-    TraitFactory.addTrait("AT_Lonely", getText("UI_trait_AT_Lonely"), -1, getText("UI_trait_AT_Lonely_desc"), false);
+    --LONELY
+    TraitFactory.addTrait("AT_Lonely", getText("UI_trait_AT_Lonely"), -1, workString, false);
     this.TTF.Add("AT_Lonely", "AnthroTraits,CostVariable,Anthro,Social"); --(Xochi suggestion)
 
-    TraitFactory.addTrait("AT_NaturalTumbler", getText("UI_trait_AT_NaturalTumbler"), 1, getText("UI_trait_AT_NaturalTumbler_desc"), false);
+    --NATURAL TUMBLER
+    TraitFactory.addTrait("AT_NaturalTumbler", getText("UI_trait_AT_NaturalTumbler"), 1, workString, false);
     this.TTF.Add("AT_NaturalTumbler", "AnthroTraits,CostVariable,Anthro,Agile");
 
+    --PAWS
     local AT_Paws = TraitFactory.addTrait("AT_Paws", getText("UI_trait_AT_Paws"), 1, getText("UI_trait_AT_Paws_desc"), false);
     AT_Paws:addXPBoost(Perks.Lightfoot, 1);
     AT_Paws:addXPBoost(Perks.Sneak, 1);
     this.TTF.Add("AT_Paws", "AnthroTraits,CostVariable,Anthro,Paws");
 
+    --STINKY
     TraitFactory.addTrait("AT_Stinky", getText("UI_trait_AT_Stinky"), -1, getText("UI_trait_AT_Stinky_desc"), false);
     this.TTF.Add("AT_Stinky", "AnthroTraits,CostVariable,");
 
-    TraitFactory.addTrait("AT_Tail", getText("UI_trait_AT_Tail"), 1, getText("UI_trait_AT_Tail_desc"), false);
+    --TAIL
+    TraitFactory.addTrait("AT_Tail", getText("UI_trait_AT_Tail"), 1, workString, false);
     this.TTF.Add("AT_Tail", "AnthroTraits,CostVariable,Anthro,Tail");
 
-    TraitFactory.addTrait("AT_Torpor", getText("UI_trait_AT_Torpor"), -1, getText("UI_trait_AT_Torpor_desc"), false);
+    --TORPOR
+    TraitFactory.addTrait("AT_Torpor", getText("UI_trait_AT_Torpor"), -1, workString, false);
     this.TTF.Add("AT_Torpor", "AnthroTraits,CostVariable,Anthro,Hibernator");
 
-    TraitFactory.addTrait("AT_UnwieldyHands", getText("UI_trait_AT_UnwieldyHands"), -1, getText("UI_trait_AT_UnwieldyHands_desc"), false);
+    --UNWIELDY HANDS
+    TraitFactory.addTrait("AT_UnwieldyHands", getText("UI_trait_AT_UnwieldyHands"), -1, workString, false);
     this.TTF.Add("AT_UnwieldyHands", "AnthroTraits,CostVariable,Anthro,ThreeFingers");
 
+    --VESTIGIAL WINGS
     TraitFactory.addTrait("AT_VestigialWings", getText("UI_trait_AT_VestigialWings"), 1, getText("UI_trait_AT_VestigialWings_desc"), false);
     this.TTF.Add("AT_VestigialWings", "AnthroTraits,CostVariable,Anthro,Winged");
 
@@ -244,6 +265,80 @@ AnthroTraitsMainCreationMethods.initAnthroTraits = function()
     TraitFactory.setMutualExclusive("AT_NaturalTumbler", "AT_VestigialWings");
 
 
+    this.setTraitDescriptions();
+end
+
+AnthroTraitsMainCreationMethods.setTraitDescriptions = function ()
+    local this = AnthroTraitsMainCreationMethods;
+    local affectedTraits = this.TTF.GetAllTraitsWithTag("AnthroTraits");
+    local workString = "";
+
+    for i = 1, #affectedTraits
+        do
+            local trait = affectedTraits[i];
+            
+            if trait == TraitFactory.getTrait("AT_BeastOfBurden")
+            then
+                workString = string.format(getText("UI_trait_AT_BeastOfBurden_desc"), SandboxVars.AnthroTraits.AT_BeastOfBurdenPctIncrease * 100);
+                trait:setDescription(workString);
+            --[[ elseif trait == TraitFactory.getTrait("AT_BullRush")
+            then
+                workString = string.format(getText("UI_trait_AT_BullRush_desc"), SandboxVars.AnthroTraits.AT_BullRushKnockdownEndCost);
+                trait:setDescription(workString); ]]
+            elseif trait == TraitFactory.getTrait("AT_Carnivore")
+            then
+                workString = string.format(getText("UI_trait_AT_Carnivore_desc"), SandboxVars.AnthroTraits.AT_CarnivoreBonus  * 100, SandboxVars.AnthroTraits.AT_CarnivoreMalus  * 100);
+                trait:setDescription(workString);
+            elseif trait == TraitFactory.getTrait("AT_CarrionEater")
+            then
+                workString = string.format(getText("UI_trait_AT_CarrionEater_desc"), SandboxVars.AnthroTraits.AT_CarrionEaterBonus  * 100);
+                trait:setDescription(workString);
+            elseif trait == TraitFactory.getTrait("AT_Digitigrade")
+            then
+                workString = string.format(getText("UI_trait_AT_Digitigrade_desc"), SandboxVars.AnthroTraits.AT_DigitigradeStompPowerPctIncrease * 100);
+                trait:setDescription(workString);
+            elseif trait == TraitFactory.getTrait("AT_Exclaimer")
+            then
+                workString = string.format(getText("UI_trait_AT_Exclaimer_desc"), SandboxVars.AnthroTraits.AT_ExclaimerExclaimThresholdMultiplier);
+                trait:setDescription(workString);
+            elseif trait == TraitFactory.getTrait("AT_FeralDigestion")
+            then
+                workString = string.format(getText("UI_trait_AT_FeralDigestion_desc"), SandboxVars.AnthroTraits.AT_FeralDigestionPoisonAmt);
+                trait:setDescription(workString);
+            elseif trait == TraitFactory.getTrait("AT_FoodMotivated")
+            then
+                workString = string.format(getText("UI_trait_AT_FoodMotivated_desc"), SandboxVars.AnthroTraits.AT_FoodMotivatedBonus);
+                trait:setDescription(workString);
+            elseif trait == TraitFactory.getTrait("AT_Herbivore")
+            then
+                workString = string.format(getText("UI_trait_AT_Herbivore_desc"), SandboxVars.AnthroTraits.AT_HerbivoreBonus * 100, SandboxVars.AnthroTraits.AT_HerbivoreMalus * 100);
+                trait:setDescription(workString);
+            elseif trait == TraitFactory.getTrait("AT_Immunity")
+            then
+                workString = string.format(getText("UI_trait_AT_Immunity_desc"), SandboxVars.AnthroTraits.AT_ImmunityBiteInfectionChance, SandboxVars.AnthroTraits.AT_ImmunityLacerationInfectionChance *.25, SandboxVars.AnthroTraits.AT_ImmunityScratchInfectionChance *.07);
+                trait:setDescription(workString);
+            elseif trait == TraitFactory.getTrait("AT_Lonely")
+            then
+                workString = string.format(getText("UI_trait_AT_Lonely_desc"), SandboxVars.AnthroTraits.AT_LonelyHoursToAffect, SandboxVars.AnthroTraits.AT_LonelyHourlyUnhappyIncrease * 100);
+                trait:setDescription(workString);
+            elseif trait == TraitFactory.getTrait("AT_NaturalTumbler")
+            then
+                workString = string.format(getText("UI_trait_AT_NaturalTumbler_desc"), SandboxVars.AnthroTraits.AT_NaturalTumblerFallTimeMult * 100);
+                trait:setDescription(workString);
+            elseif trait == TraitFactory.getTrait("AT_Tail")
+            then
+                workString = string.format(getText("UI_trait_AT_Tail_desc"), SandboxVars.AnthroTraits.AT_TailTripReduction);
+                trait:setDescription(workString);
+            elseif trait == TraitFactory.getTrait("AT_Torpor")
+            then
+                workString = string.format(getText("UI_trait_AT_Torpor_desc"), SandboxVars.AnthroTraits.AT_TorporEnduranceDecrease * 100);
+                trait:setDescription(workString);
+            elseif trait == TraitFactory.getTrait("AT_UnwieldyHands")
+            then
+                workString = string.format(getText("UI_trait_AT_UnwieldyHands_desc"), SandboxVars.AnthroTraits.AT_UnwieldyHandsTimeIncrease * 100);
+                trait:setDescription(workString);
+            end
+        end
 end
 
 AnthroTraitsMainCreationMethods.refundSelectedAffectedTraits = function()
@@ -296,8 +391,10 @@ AnthroTraitsMainCreationMethods.sortTraits = function()
         if tonumber(trait:getRightLabel()) < 0
         then
             newItem = ccp.listboxTrait:addItem(label, trait)
+            newItem.tooltip = trait:getDescription();
         else
-            ccp.listboxBadTrait:addItem(label, trait)
+            newItem = ccp.listboxBadTrait:addItem(label, trait)
+            newItem.tooltip = trait:getDescription();
         end
     end
     CharacterCreationMain.sort(ccp.listboxTrait.items)
@@ -305,7 +402,9 @@ AnthroTraitsMainCreationMethods.sortTraits = function()
     CharacterCreationMain.sort(ccp.listboxTraitSelected.items)
 end
 
+
+
 Events.OnGameBoot.Add(AnthroTraitsMainCreationMethods.initAnthroTraits);
-Events.OnConnected.Add(AnthroTraitsMainCreationMethods.refreshTraitCosts);
+
 
 return AnthroTraitsMainCreationMethods;
