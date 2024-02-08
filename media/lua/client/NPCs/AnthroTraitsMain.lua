@@ -433,6 +433,10 @@ AnthroTraitsMain.CarryWeightUpdate = function(player)
     end
     if baseWeightChanged
     then
+        if newMaxWeightBase > 50
+        then
+            newMaxWeightBase = 50
+        end
         player:setMaxWeightBase(newMaxWeightBase)
     else
         player:setMaxWeightBase(defaultMaxWeightBase);
