@@ -51,7 +51,7 @@
 local ATM = require("NPCs/AnthroTraitsMain");
 local ATC = require("NPCs/AnthroTraitsCreationMethods");
 local ATU = require("AnthroTraitsUtilities");
-local ATG = require('AnthroTraitsGlobals');
+require('AnthroTraitsGlobals');
 
 
 --Cost modifier
@@ -109,9 +109,9 @@ ISAddItemInRecipe.perform = function(self)
     local tags = {}
 
     --get all tags relating to food, and init table with string keys so their count can be added to
-    for i = 1, #ATG.EvolvedRecipeFoodTags
+    for i = 1, #AnthroTraitsGlobals.EvolvedRecipeFoodTags
     do
-        tags[ATG.EvolvedRecipeFoodTags[i]] = 0;
+        tags[AnthroTraitsGlobals.EvolvedRecipeFoodTags[i]] = 0;
     end
 
     local tagWithLargestCount = "";
@@ -185,9 +185,9 @@ ISBaseTimedAction.create = function(self)
     OriginalTimedActionCreate(self);
     if self.character:HasTrait("AT_UnwieldyHands")
     then
-        for i = 1, #ATG.UnwieldyHandsAffectedTimedActions
+        for i = 1, #AnthroTraitsGlobals.UnwieldyHandsAffectedTimedActions
         do
-            if self.Type == ATG.UnwieldyHandsAffectedTimedActions[i]
+            if self.Type == AnthroTraitsGlobals.UnwieldyHandsAffectedTimedActions[i]
             then
                 local newTime = self.maxTime * (1 + SandboxVars.AnthroTraits.AT_UnwieldyHandsTimeIncrease)
                 if getDebug()
