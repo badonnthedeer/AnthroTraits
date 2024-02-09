@@ -868,11 +868,6 @@ AnthroTraitsMain.ATEveryDays = function()
     end
 end
 
-AnthroTraitsMain.ATOnLoad = function()
-
-    local player = getPlayer();
-    AnthroTraitsMain.ATInitPlayerData(player);
-end
 
 AnthroTraitsMain.ATPlayerUpdate = function(player)
     local this = AnthroTraitsMain;
@@ -935,10 +930,9 @@ end
 end]]
 
 
-
-Events.OnNewGame.Add(AnthroTraitsMain.ATOnLoad);
-Events.OnLoad.Add(AnthroTraitsMain.ATOnLoad);
+Events.OnLoad.Add(AnthroTraitsMain.ATInitPlayerData);
 Events.OnInitWorld.Add(AnthroTraitsMain.ATOnInitWorld);
+Events.OnCreateLivingCharacter.Add(AnthroTraitsMain.ATInitPlayerData)
 --[[Events.OnClientCommand.Add(AnthroTraitsMain.ATOnClientCommand)
 Events.OnServerCommand.Add(AnthroTraitsMain.ATOnServerCommand)]]
 Events.OnClothingUpdated.Add(AnthroTraitsMain.ATOnClothingUpdated);
