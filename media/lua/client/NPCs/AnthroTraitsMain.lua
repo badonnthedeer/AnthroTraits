@@ -433,9 +433,10 @@ AnthroTraitsMain.CarryWeightUpdate = function(player)
     end
     if baseWeightChanged
     then
-        if newMaxWeightBase > 50
+        --max weight is 50 due to java cap. BASE must be calculated to be slightly less than 50 to allow for hunger bonuses.
+        if newMaxWeightBase > 18
         then
-            newMaxWeightBase = 50
+            newMaxWeightBase = 18
         end
         player:setMaxWeightBase(newMaxWeightBase)
     else
