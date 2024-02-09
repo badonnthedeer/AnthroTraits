@@ -433,9 +433,10 @@ AnthroTraitsMain.CarryWeightUpdate = function(player)
     end
     if baseWeightChanged
     then
-        if newMaxWeightBase > 50
+        --max weight is 50 due to java cap. BASE must be calculated to be slightly less than 50 to allow for hunger bonuses.
+        if newMaxWeightBase > 18
         then
-            newMaxWeightBase = 50
+            newMaxWeightBase = 18
         end
         player:setMaxWeightBase(newMaxWeightBase)
     else
@@ -867,11 +868,6 @@ AnthroTraitsMain.ATEveryDays = function()
     end
 end
 
-AnthroTraitsMain.ATOnLoad = function()
-
-    local player = getPlayer();
-    AnthroTraitsMain.ATInitPlayerData(player);
-end
 
 AnthroTraitsMain.ATPlayerUpdate = function(player)
     local this = AnthroTraitsMain;
@@ -934,10 +930,9 @@ end
 end]]
 
 
-
-Events.OnNewGame.Add(AnthroTraitsMain.ATOnLoad);
-Events.OnLoad.Add(AnthroTraitsMain.ATOnLoad);
+Events.OnLoad.Add(AnthroTraitsMain.ATInitPlayerData);
 Events.OnInitWorld.Add(AnthroTraitsMain.ATOnInitWorld);
+Events.OnCreateLivingCharacter.Add(AnthroTraitsMain.ATInitPlayerData)
 --[[Events.OnClientCommand.Add(AnthroTraitsMain.ATOnClientCommand)
 Events.OnServerCommand.Add(AnthroTraitsMain.ATOnServerCommand)]]
 Events.OnClothingUpdated.Add(AnthroTraitsMain.ATOnClothingUpdated);

@@ -14,7 +14,7 @@ option AnthroTraits.AT_BeastOfBurden_Cost
 
 option AnthroTraits.AT_BeastOfBurdenPctIncrease
 {
-	type = double, min = 0, max = 1, default = .2,
+	type = double, min = 0.20, max = 4, default = .25,
 	page = AnthroTraits, translation = AnthroTraits_BeastOfBurdenPctIncrease,
 }
 
