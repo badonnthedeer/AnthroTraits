@@ -365,8 +365,6 @@ AnthroTraitsMain.CarryWeightUpdate = function(player)
     local baseWeightChanged = false;
     local defaultMaxWeightBase = 8;
 
-    -- Unsure why there needs to be a +2 here, but without traits max weight
-    -- is otherwise off by 2.
     local newMaxWeightBase = defaultMaxWeightBase;
     print(string.format("Base: %f", newMaxWeightBase));
 
@@ -377,20 +375,20 @@ AnthroTraitsMain.CarryWeightUpdate = function(player)
         local MTPackMouseMalus = SandboxVars.MoreTraits.WeightPackMouse or -2;
         local MTDefaultWeight = SandboxVars.MoreTraits.WeightDefault or 8;
 
-        if MTPackMuleBonus
-        then
-            MTPackMuleBonus = MTPackMuleBonus + math.floor(strength / 5) + MTGlobalMod;
-        end
+        defaultMaxWeightBase = MTDefaultWeight;
+
+        MTPackMuleBonus = MTPackMuleBonus + math.floor(strength / 5) + MTGlobalMod;
+        MTPackMouseMalus = MTPackMouseMalus + MTGlobalMod;
         
         if player:HasTrait("packmule")
         then
             baseWeightChanged = true;
-            newMaxWeightBase =  newMaxWeightBase + MTPackMuleBonus;
+            newMaxWeightBase =  MTDefaultWeight + MTPackMuleBonus;
             print(string.format("packmule: %f", newMaxWeightBase));
         elseif player:HasTrait("packmouse")
         then
             baseWeightChanged = true;
-            newMaxWeightBase =  newMaxWeightBase + MTPackMouseMalus;
+            newMaxWeightBase =  MTDefaultWeight + MTPackMouseMalus;
             print(string.format("packmouse: %f", newMaxWeightBase));
         end
     end
@@ -434,13 +432,20 @@ AnthroTraitsMain.CarryWeightUpdate = function(player)
     if baseWeightChanged
     then
         --max weight is 50 due to java cap. BASE must be calculated to be slightly less than 50 to allow for hunger bonuses.
+        -- 18 here is more or less the equivalent of 50 in max weight i guess. Base weight is weird af.
         if newMaxWeightBase > 18
         then
             newMaxWeightBase = 18
         end
         player:setMaxWeightBase(newMaxWeightBase)
     else
-        player:setMaxWeightBase(defaultMaxWeightBase);
+        if getActivatedMods():contains("ToadTraits")
+        then
+            player:setMaxWeightBase(defaultMaxWeightBase + (SandboxVars.MoreTraits.WeightGlobalMod or 0));
+        else
+            player:setMaxWeightBase(defaultMaxWeightBase);
+        end
+        
     end
 end
 
