@@ -346,7 +346,7 @@ AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item,
         if item:isRotten() and not player:HasTrait("AT_CarrionEater")
         then
             table.insert(returnTable, "%Red%"..foodName);
-        elseif item:isRotten() and player:HasTrait("AT_CarrionEater")
+        elseif item:isRotten() and item:hasTag("AT_Carnivore") and player:HasTrait("AT_CarrionEater")
         then
             table.insert(returnTable, "%LightGreen%"..foodName);
         else
