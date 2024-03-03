@@ -52,7 +52,7 @@
 ET = require("DracoExpandedTraits");
 MST = require("MoreSimpleTraits");
 SOTO = require("SimpleOverhaulTraitsAndOccupations");
-MT = require("MoreTraits");
+MT = require("ToadTraits");
 
 local AnthroTraitsMain = {};
 local ATU = require("AnthroTraitsUtilities");
