@@ -1,13 +1,10 @@
 version=1
 id=3025679944
 title=Anthro Traits
-description=Have you ever wondered what a real-life furry might experience during the zombie apocalypse? This mod--Anthro Traits--attempts to answer this
-description=question by adding in relatively realistic and balanced traits that are specific to Furries. Choose between traits like Carnivore, Herbivore, Hoofed, Beast of Burden,
-description=or even... Stinky? Customize almost everything about these traits, including how strong they are, how many points they're worth, and other, more specific options! 
-description=Roleplay your fursona, a popular character, or any other Anthro in your quest to Die Just in the Way you Want!
+description=Have you ever wondered what a real-life furry might experience during the zombie apocalypse? This mod--Anthro Traits--attempts to answer this question by adding in relatively realistic and balanced traits that are specific to Anthros. Choose between traits like Carnivore, Herbivore, Hoofed, Beast of Burden, or even... Stinky? Customize almost everything about these traits, including how strong they are, how many points they're worth, and more! Roleplay your fursona, a popular character, or any other Anthro in your quest to Die Just the Way you Want!
 description=
 description=[h1]Compatibility[/h1]
-description=Generally, Anthro Traits is compatible with other mods. Anthro Traits has built in compatibility for, but may not work perfectly with:
+description=Generally, Anthro Traits is compatible with other mods. Anthro Traits has built-in compatibility for, but may not work perfectly with:
 description=[list]
 description=    [*]Expanded Traits
 description=    [*]More Simple Traits
