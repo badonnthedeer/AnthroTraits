@@ -366,8 +366,10 @@ AnthroTraitsMain.CarryWeightUpdate = function(player)
     local defaultMaxWeightBase = 8;
 
     local newMaxWeightBase = defaultMaxWeightBase;
-    print(string.format("Base: %f", newMaxWeightBase));
-
+    if getDebug()
+    then
+        print(string.format("Base: %f", newMaxWeightBase));
+    end
     if getActivatedMods():contains("ToadTraits")
     then
         local MTGlobalMod = SandboxVars.MoreTraits.WeightGlobalMod or 0;
@@ -384,12 +386,18 @@ AnthroTraitsMain.CarryWeightUpdate = function(player)
         then
             baseWeightChanged = true;
             newMaxWeightBase =  MTDefaultWeight + MTPackMuleBonus;
-            print(string.format("packmule: %f", newMaxWeightBase));
+            if getDebug()
+            then
+                print(string.format("packmule: %f", newMaxWeightBase));
+            end    
         elseif player:HasTrait("packmouse")
         then
             baseWeightChanged = true;
             newMaxWeightBase =  MTDefaultWeight + MTPackMouseMalus;
-            print(string.format("packmouse: %f", newMaxWeightBase));
+            if getDebug()
+            then
+                print(string.format("packmouse: %f", newMaxWeightBase));
+            end    
         end
     end
     if (getActivatedMods():contains("MoreSimpleTraits") 
@@ -402,12 +410,18 @@ AnthroTraitsMain.CarryWeightUpdate = function(player)
         then
             baseWeightChanged = true;
             newMaxWeightBase = newMaxWeightBase + SOTOStrongBackBonus;
-            print(string.format("StrongBack: %f", newMaxWeightBase));
+            if getDebug()
+            then
+                print(string.format("StrongBack: %f", newMaxWeightBase));
+            end    
         elseif player:HasTrait("WeakBack")
         then
             baseWeightChanged = true;
             newMaxWeightBase = newMaxWeightBase + SOTOWeakBackMalus;
-            print(string.format("WeakBack: %f", newMaxWeightBase));
+            if getDebug()
+            then
+                print(string.format("WeakBack: %f", newMaxWeightBase));
+            end    
         end
     end
     if getActivatedMods():contains("DracoExpandedTraits")
@@ -418,7 +432,10 @@ AnthroTraitsMain.CarryWeightUpdate = function(player)
             baseWeightChanged = true;
             local hBonus = (math.floor(newMaxWeightBase *  DracoHoarderPctIncrease));
             newMaxWeightBase = newMaxWeightBase + hBonus;
-            print(string.format("Hoarder: %f", newMaxWeightBase));
+            if getDebug()
+            then
+                print(string.format("Hoarder: %f", newMaxWeightBase));
+            end    
         end
     end
     local BobPctIncrease = SandboxVars.AnthroTraits.AT_BeastOfBurdenPctIncrease;
@@ -427,7 +444,10 @@ AnthroTraitsMain.CarryWeightUpdate = function(player)
         baseWeightChanged = true;
         local bobBonus = (math.floor(newMaxWeightBase * BobPctIncrease));
         newMaxWeightBase = newMaxWeightBase + bobBonus;
-        print(string.format("BOB: %f", newMaxWeightBase));
+        if getDebug()
+        then
+            print(string.format("BOB: %f", newMaxWeightBase));
+        end    
     end
     if baseWeightChanged
     then
