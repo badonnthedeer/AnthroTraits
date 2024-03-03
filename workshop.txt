@@ -1,139 +1,86 @@
 version=1
-id=2987213113
+id=3025679944
 title=Anthro Traits
-description=A mod for Project Zomboid that adds realistic, balanced traits for anthropomorphic player characters, and integrates with mods that provide furry player models.
-
+description=Have you ever wondered what a real-life furry might experience during the zombie apocalypse? This mod--Anthro Traits--attempts to answer this
+description=question by adding in relatively realistic and balanced traits that are specific to Furries. Choose between traits like Carnivore, Herbivore, Hoofed, Beast of Burden,
+description=or even... Stinky? Customize almost everything about these traits, including how strong they are, how many points they're worth, and other, more specific options! 
+description=Roleplay your fursona, a popular character, or any other Anthro in your quest to Die Just in the Way you Want!
 description=
-
+description=[h1]Compatibility[/h1]
+description=Generally, Anthro Traits is compatible with other mods. Anthro Traits has built in compatibility for, but may not work perfectly with:
+description=[list]
+description=    [*]Expanded Traits
+description=    [*]More Simple Traits
+description=    [*]Simple Overhaul Traits and Occupations
+description=    [*]More Traits
+description=[/list]
+description=Anthro Traits [i]may[/i] not play nice with mods that:
+description=[list]
+description=    [*]edit item tooltips.
+description=    [*]edit character creation GUIs.
+description=    [*]affect timed actions.
+description=    [*]are "overhauls".
+description=    [*]add the same sort of trait.
+description=[/list]
 description=[h1]Positive Trait List[/h1]
-
 description=[list]
-
 description=    [*][h2]Beast of Burden[/h2]
-
-description=    Your body's frame is well-built for carrying weight.
-
+description=    Carry additional weight.
 description=    [*][h2]Bug-o-ssieur[/h2]
-
 description=    You don't gain unhappiness or boredom when eating bugs.
-
 description=    [*][h2]Carnivore[/h2]
-
-description=    After eating food classified as meat, gain an extra percentage of the stats the food affected
-
-description=    Note: This also lowers unhappiness gain or other negative effects by the same amount.
-
+description=    Meat is more beneficial for your character, plants less.
 description=    [*][h2]Carrion Eater[/h2]
-
-description=    Rotten meat's stats are more powerful, and don't make you sick.
-
+description=    Can eat rotten meat without getting sick, is more beneficial than usual.
 description=    [*][h2]Digitigrade[/h2]
-
-description=    Your legs aren't straight, giving your stomps increased power.
-
+description=    Increased stomp power (and bare hooves > bare paws)
 description=    +1 Sprinting.
-
-description=    Those with bare feet may find hooves more useful.
-
 description=    [*][h2]Feral Body[/h2]
-
-description=    Like a feral, you are stronger but less fit.
-
+description=    +1 Strength.
+description=    -1 Fitness.
 description=    [*][h2]Food Motivated[/h2]
-
-description=    Food makes you slightly less unhappy and bored;
-
+description=    Food makes you slightly less unhappy and bored.
 description=    Dog food doesn't make you unhappy.
-
 description=    [*][h2]Herbivore[/h2]
-
-description=    After eating food classified as plant-based, gain an extra percentage of the stats the food affected
-
-description=    Note: This also lowers unhappiness gain or other negative effects by the same amount.
-
+description=    Plants are more beneficial for your character, meat less.
 description=    [*][h2]Hoofed[/h2]
-
-description=    You have foot-hooves. Your feet cannot be scratched, lacerated, or bitten.
-
+description=    Feet cannot be scratched, lacerated, or bitten. (glass is still a threat)
 description=    +1 Nimble
-
 description=    [*][h2]Anthro Immunity[/h2]
-
-description=    Knox Infection is very rare, even from bites.
-
+description=    Knox Infection is rare, even from bites.
 description=    [*][h2]Natural Tumbler[/h2]
-
 description=    The damage and severity of your falls are reduced.
-
 description=    [*][h2]Pawed[/h2]
-
-description=    You have foot-paws, which make you move stealthier.
-
 description=    +1 Stealth
-
 description=    +1 Lightfoot
-
 description=    [*][h2]Tailed[/h2]
-
-description=    Your tail allows you to run with more balance, reducing trip chance.
-
+description=    Reduces trip chance from zombies.
 description=    [*][h2]Vestigial Wings[/h2]
-
-description=    You have enough of your ancestor's wings to not take fall damage.
-
+description=    Don't take fall damage.
 description=[/list]
-
 description=
-
 description=[h1]Negative Trait List[/h1]
-
 description=[list]
-
 description=    [*][h2]Exclaimer[/h2]
-
-description=    When panicked, you have a good chance to vocalize your fear.
-
+description=    Scream frequently when above panic level 1.
 description=    [*][h2]Feral Digestion[/h2]
-
-description=    Foods poisonous to ferals poison you.
-
-description=    (be careful what you feed your pets!)
-
+description=    Chocolate and other foods poison you somewhat.
 description=    [*][h2]Lonely[/h2]
-
-description=    You need a pack. Time spent away from others makes you unhappy.
-
+description=    Gain unhappiness every hour when away from other players too long.
 description=    [*][h2]Stinky[/h2]
-
-description=    You have a tendency to stink. Worse, you're nose-blind to it.
-
-description=    If you're too dirty, Zombies will be more attracted to you and other players may comment on your smell.
-
+description=    Attract zombies nearby when too dirty. Other players may comment on your smell.
 description=    [*][h2]Torpor[/h2]
-
-description=    Still affected by the winter, you have less endurance during the cold months.
-
+description=    Lose a percentage of max endurance during winter.
 description=    [*][h2]Unwieldy Hands[/h2]
-
 description=    Actions requiring fine motor control are slower.
-
 description=[/list]
-
 description=[hr][/hr]
-
 description=[h1]A message from the creator[/h1]
-
-description=Do you really enjoy this mod--or even better--want to build on it? Please consider [url=https://ko-fi.com/badonnthedeer]donating to me[/url] so I can pay my bills. I'm recently unemployed and every little bit helps!
-
+description=Do you really enjoy this mod--or even better--want to build on it? Please consider [url=https://ko-fi.com/badonnthedeer]donating to me[/url] so I can pay my bills. I'm just a deer who needs money for strawbs.
 description=
-
 description=[h1]Special Thanks[/h1]
-
 description=to my friend who did the icon art for me, RadicallyRiley. I'd also like to thank the PZ Discord modding community, who were very patient with me in answering my many questions. In particular, I'd like to thank Albion from that group; she has a seemingly encyclopedic knowledge of PZ modding and a heaping portion of patience! Thank you to the other trait mods who I was able to reference when I was incredibly stumped, and thanks to the furry community for inspiring me to create something and give back.
-
 description=
-
 description=[quote=Badonn]Please don't copy this mod and upload it as your own! Please also ask if you can use this in a mod pack. If you would like to translate the mod, send me a message or leave a comment and I'll work with you to add it in! This mod is under the MIT License.[/quote]
-
 tags=Build 41;Multiplayer;Pop Culture;Traits
-visibility=unlisted
+visibility=public
