@@ -26,7 +26,7 @@ option AnthroTraits.AT_Bug_o_ssieur_Cost
 
 option AnthroTraits.AT_Bug_o_ssieur_Items
 {
-	type = string, default = Base.AmericanLadyCaterpillar;Base.BandedWoolyBearCaterpillar;Base.Centipede;Base.Centipede2;Base.Cockroach;Base.Cricket;Base.Grasshopper;Base.Maggots;Base.Millipede;Base.Millipede2;Base.MonarchCaterpillar;Base.Pillbug;Base.SawflyLarva;Base.SilkMothCaterpillar;Base.Slug;Base.Slug2;Base.Snail;Base.SwallowtailCaterpillar;Base.Termites;Base.Worm;,
+	type = string, default = Base.AmericanLadyCaterpillar;Base.BandedWoolyBearCaterpillar;Base.Centipede;Base.Centipede2;Base.Cockroach;Base.Cricket;Base.Grasshopper;Base.Maggots;Base.Maggots2;;Base.Millipede;Base.Millipede2;Base.MonarchCaterpillar;Base.Pillbug;Base.SawflyLarva;Base.SilkMothCaterpillar;Base.Slug;Base.Slug2;Base.Snail;Base.SwallowtailCaterpillar;Base.Termites;Base.Worm;,
 	page = AnthroTraits, translation = AnthroTraits_Bug_o_ssieur_Items,
 }
 
