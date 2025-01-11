@@ -86,7 +86,7 @@ option AnthroTraits.AT_Digitigrade_Cost
 
 option AnthroTraits.AT_DigitigradeStompPowerPctIncrease
 {
-	type = double, min = 0, max = 1, default = .50,
+	type = double, min = 0, max = 1, default = .25,
 	page = AnthroTraits, translation = AnthroTraits_DigitigradeStompPowerPctIncrease,
 }
 

@@ -750,7 +750,11 @@ AnthroTraitsMain.ATEveryWeaponHitChar = function(attacker, target, weapon, damag
             dmgBonus = damage * (SandboxVars.AnthroTraits.AT_DigitigradeStompPowerPctIncrease);
         end
         --this doesn't supply a bodypart, and that's sad. We'll have to settle for doing damage to the character's overall health instead.
-        CombatManager:getInstance():applyDamage(target, dmgBonus);
+        target:applyDamage(dmgBonus);
+        if getDebug()
+        then
+            print(string.format("Applying %s damage to %s", dmgBonus, type(target)));
+        end
     end
 end
 
