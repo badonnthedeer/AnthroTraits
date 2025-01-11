@@ -1,0 +1,313 @@
+VERSION = 1,
+
+option AnthroTraits.TraitsRestrictSpeciesChoices
+{
+	type = boolean, default = true,
+	page = AnthroTraits, translation = AnthroTraits_TraitsRestrictSpeciesChoices,
+}
+
+option AnthroTraits.AT_BeastOfBurden_Cost
+{
+	type = integer, min = -15, max = 15, default = 4,
+	page = AnthroTraits, translation = AnthroTraits_BeastOfBurden_Cost,
+}
+
+option AnthroTraits.AT_BeastOfBurdenPctIncrease
+{
+	type = double, min = 0.20, max = 4, default = .25,
+	page = AnthroTraits, translation = AnthroTraits_BeastOfBurdenPctIncrease,
+}
+
+option AnthroTraits.AT_Bug_o_ssieur_Cost
+{
+	type = integer, min = -15, max = 15, default = 1,
+	page = AnthroTraits, translation = AnthroTraits_Bug_o_ssieur_Cost,
+}
+
+option AnthroTraits.AT_Bug_o_ssieur_Items
+{
+	type = string, default = Base.AmericanLadyCaterpillar;Base.BandedWoolyBearCaterpillar;Base.Centipede;Base.Centipede2;Base.Cockroach;Base.Cricket;Base.Grasshopper;Base.Maggots;Base.Millipede;Base.Millipede2;Base.MonarchCaterpillar;Base.Pillbug;Base.SawflyLarva;Base.SilkMothCaterpillar;Base.Slug;Base.Slug2;Base.Snail;Base.SwallowtailCaterpillar;Base.Termites;Base.Worm;,
+	page = AnthroTraits, translation = AnthroTraits_Bug_o_ssieur_Items,
+}
+
+option AnthroTraits.AT_BullRush_Cost
+{
+	type = integer, min = -15, max = 15, default = 6,
+	page = AnthroTraits, translation = AnthroTraits_BullRush_Cost,
+}
+
+option AnthroTraits.AT_BullRushKnockdownEndCost
+{
+	type = double, min = 0, max = 1, default = 0.10,
+	page = AnthroTraits, translation = AnthroTraits_BullRushKnockdownEndCost,
+}
+
+option AnthroTraits.AT_Carnivore_Cost
+{
+	type = integer, min = -15, max = 15, default = 2,
+	page = AnthroTraits, translation = AnthroTraits_Carnivore_Cost,
+}
+
+option AnthroTraits.AT_Carnivore_Items
+{
+	type = string, default = Base.BaitFish;Base.Baloney;Base.BaloneySlice;Base.Bass;Base.BeefJerky;Base.CannedCornedBeefOpen;Base.CannedSardinesOpen;Base.Chicken;Base.ChickenFoot;Base.ChickenFried;Base.Crappie;Base.Crayfish;Base.DeadBird;Base.DeadMouse;Base.DeadRabbit;Base.DeadRat;Base.DeadSquirrel;Base.DehydratedMeatStick;Base.Egg;Base.EggBoiled;Base.EggScrambled;Base.FishFillet;Base.FishFried;Base.FrogMeat;Base.Ham;Base.HamSlice;Base.Lobster;Base.MeatPatty;Base.MincedMeat;Base.MuttonChop;Base.Oysters;Base.OystersFried;Base.Panfish;Base.Pepperoni;Base.Perch;Base.Pike;Base.PorkChop;Base.Rabbitmeat;Base.Salami;Base.SalamiSlice;Base.Salmon;Base.Sausage;Base.Shrimp;Base.ShrimpFried;Base.ShrimpFriedCraft;Base.Smallanimalmeat;Base.Smallbirdmeat;Base.Squid;Base.SquidCalamari;Base.Steak;Base.SushiEgg;Base.SushiFish;Base.Trout;Base.TunaTinOpen;Base.WildEggs;farming.Bacon;farming.BaconBits;farming.BaconRashers;,
+	page = AnthroTraits, translation = AnthroTraits_Carnivore_Items,
+}
+
+option AnthroTraits.AT_CarnivoreBonus
+{
+	type = double, min = 0, max = 1, default = 0.5,
+    page = AnthroTraits, translation = AnthroTraits_CarnivoreBonus,
+}
+
+option AnthroTraits.AT_CarnivoreMalus
+{
+	type = double, min = -1, max = 0, default = -0.5,
+    page = AnthroTraits, translation = AnthroTraits_CarnivoreMalus,
+}
+
+option AnthroTraits.AT_CarrionEater_Cost
+{
+	type = integer, min = -15, max = 15, default = 3,
+	page = AnthroTraits, translation = AnthroTraits_CarrionEater_Cost,
+}
+
+option AnthroTraits.AT_CarrionEaterBonus
+{
+	type = double, min = 0, max = 1, default = 0.5,
+	page = AnthroTraits, translation = AnthroTraits_CarrionEaterBonus,
+}
+
+option AnthroTraits.AT_Digitigrade_Cost
+{
+	type = integer, min = -15, max = 15, default = 3,
+	page = AnthroTraits, translation = AnthroTraits_Digitigrade_Cost,
+}
+
+option AnthroTraits.AT_DigitigradeStompPowerPctIncrease
+{
+	type = double, min = 0, max = 1, default = .50,
+	page = AnthroTraits, translation = AnthroTraits_DigitigradeStompPowerPctIncrease,
+}
+
+option AnthroTraits.AT_DigitigradeHoofDmgPctIncrease
+{
+	type = double, min = 0, max = 1, default = .50,
+	page = AnthroTraits, translation = AnthroTraits_DigitigradeHoofDmgPctIncrease,
+}
+
+option AnthroTraits.AT_Exclaimer_Cost
+{
+	type = integer, min = -15, max = 15, default = -6,
+	page = AnthroTraits, translation = AnthroTraits_Exclaimer_Cost,
+}
+
+option AnthroTraits.AT_ExclaimerExclaimThresholdMultiplier
+{
+	type = integer, min = 1, max = 33, default = 10,
+	page = AnthroTraits, translation = AnthroTraits_ExclaimerExclaimThresholdMultiplier,
+}
+
+option AnthroTraits.AT_FeralBody_Cost
+{
+	type = integer, min = -15, max = 15, default = 1,
+	page = AnthroTraits, translation = AnthroTraits_FeralBody_Cost,
+}
+
+option AnthroTraits.AT_FeralDigestion_Cost
+{
+	type = integer, min = -15, max = 15, default = -4,
+	page = AnthroTraits, translation = AnthroTraits_FeralDigestion_Cost,
+}
+
+option AnthroTraits.AT_FeralDigestion_Items
+{
+	type = string, default = Base.Beer;Base.Beer2;Base.BeerBottle;Base.BeerCan;Base.CakeBlackForest;Base.CakeChocolate;Base.CakeRedVelvet;Base.CannedFruitBeverageOpen;Base.Chives;Base.ChocoCakes;Base.Chocolate;Base.ChocolateChips;Base.ChocolateCoveredCoffeeBeans;Base.CocoaPowder;Base.Coffee2;Base.ColdCuppa;Base.ColdDrinkRed;Base.ColdDrinkSpiffo;Base.ColdDrinkWhite;Base.CookieChocolateChip;Base.CookieChocolateChipDough;Base.CookiesChocolate;Base.CookiesChocolateDough;Base.DoughnutChocolate;Base.DoughnutJelly;Base.GrapeLeaves;Base.Grapes;Base.Gum;Base.HollyBerry;Base.HotDrink;Base.HotDrinkRed;Base.HotDrinkSpiffo;Base.HotDrinkTea;Base.HotDrinkWhite;Base.JuiceBox;Base.Leek;Base.LemonGrass;Base.MintCandy;Base.Mugfull;Base.Onion;Base.OnionRings;Base.Oregano;Base.Painauchocolat;Base.Parsley;Base.Peppermint;Base.Smore;Base.Teabag2;Base.WhiskeyFull;Base.WildGarlic2;Base.Wine;Base.Wine2;Base.WineInGlass;Base.WinterBerry;,
+	page = AnthroTraits, translation = AnthroTraits_FeralDigestion_Items,
+}
+
+option AnthroTraits.AT_FeralDigestionPoisonAmt
+{
+	type = integer, min = 10, max = 120, default = 20,
+	page = AnthroTraits, translation = AnthroTraits_FeralDigestionPoisonAmt,
+}
+
+option AnthroTraits.AT_FoodMotivated_Cost
+{
+	type = integer, min = -15, max = 15, default = 1,
+	page = AnthroTraits, translation = AnthroTraits_FoodMotivated_Cost,
+}
+
+option AnthroTraits.AT_FoodMotivatedBonus
+{
+	type = integer, min = 0, max = 100, default = 5,
+	page = AnthroTraits, translation = AnthroTraits_FoodMotivatedBonus,
+}
+
+option AnthroTraits.AT_Herbivore_Cost
+{
+	type = integer, min = -15, max = 15, default = 2,
+	page = AnthroTraits, translation = AnthroTraits_Herbivore_Cost,
+}
+
+option AnthroTraits.AT_Herbivore_Items
+{
+	type = string, default = Base.Acorn;Base.Apple;Base.Avocado;Base.Banana;Base.Basil;Base.BeanBowl;Base.BeautyBerry;Base.BellPepper;Base.BerryBlue;Base.BerryGeneric1;Base.BerryGeneric2;Base.BerryGeneric3;Base.BerryGeneric4;Base.BerryGeneric5;Base.BerryPoisonIvy;Base.BlackSage;Base.Blackbeans;Base.Broccoli;Base.CannedCarrotsOpen;Base.CannedCornOpen;Base.CannedFruitCocktailOpen;Base.CannedPeachesOpen;Base.CannedPeasOpen;Base.CannedPineappleOpen;Base.CannedPotatoOpen;Base.CannedTomatoOpen;Base.Carrots;Base.Cherry;Base.Chives;Base.Cilantro;Base.CommonMallow;Base.Corn;Base.CornFrozen;Base.Daikon;Base.Dandelions;Base.Edamame;Base.Eggplant;Base.FriedOnionRings;Base.FriedOnionRingsCraft;Base.Fries;Base.GingerRoot;Base.Ginseng;Base.GrapeLeaves;Base.Grapefruit;Base.Grapes;Base.Guacamole;Base.HalloweenPumpkin;Base.HollyBerry;Base.Leek;Base.Lemon;Base.LemonGrass;Base.Lettuce;Base.Lime;Base.Mango;Base.MixedVegetables;Base.MushroomGeneric1;Base.MushroomGeneric2;Base.MushroomGeneric3;Base.MushroomGeneric4;Base.MushroomGeneric5;Base.MushroomGeneric6;Base.MushroomGeneric7;Base.Nettles;Base.Onion;Base.OnionRings;Base.OpenBeans;Base.Orange;Base.Oregano;Base.Parsley;Base.Peach;Base.Peanuts;Base.Pear;Base.Peas;Base.PepperHabanero;Base.PepperJalapeno;Base.Pineapple;Base.Pumpkin;Base.Rosehips;Base.Rosemary;Base.Sage;Base.Seaweed;Base.SunflowerSeeds;Base.Thistle;Base.Thyme;Base.TinnedSoupOpen;Base.Tofu;Base.TofuFried;Base.Violets;Base.Watermelon;Base.WatermelonSliced;Base.WatermelonSmashed;Base.WildGarlic2;Base.WinterBerry;Base.Zucchini;farming.BloomingBroccoli;farming.BroccoliSeed;farming.Cabbage;farming.CabbageSeed;farming.CarrotSeed;farming.Potato;farming.PotatoSeed;farming.RedRadish;farming.RedRadishSeed;farming.Strewberrie;farming.StrewberrieSeed;farming.Tomato;farming.TomatoSeed;,
+	page = AnthroTraits, translation = AnthroTraits_Herbivore_Items,
+}
+
+option AnthroTraits.AT_HerbivoreBonus
+{
+	type = double, min = 0, max = 1, default = 0.5,
+    page = AnthroTraits, translation = AnthroTraits_HerbivoreBonus,
+}
+
+option AnthroTraits.AT_HerbivoreMalus
+{
+	type = double, min = -1, max = 0, default = -0.5,
+    page = AnthroTraits, translation = AnthroTraits_HerbivoreMalus,
+}
+
+option AnthroTraits.AT_Hooves_Cost
+{
+	type = integer, min = -15, max = 15, default = 2,
+	page = AnthroTraits, translation = AnthroTraits_Hooves_Cost,
+}
+
+option AnthroTraits.AT_Immunity_Cost
+{
+	type = integer, min = -15, max = 15, default = 4,
+	page = AnthroTraits, translation = AnthroTraits_Immunity_Cost,
+}
+
+option AnthroTraits.AT_ImmunityBiteInfectionChance
+{
+	type = integer, min = 0, max = 100, default = 20,
+	page = AnthroTraits, translation = AnthroTraits_ImmunityBiteInfectionChance,
+}
+
+option AnthroTraits.AT_ImmunityBiteGetsRegularInfectionOnDefense
+{
+	type = boolean, default = true,
+	page = AnthroTraits, translation = AnthroTraits_ImmunityBiteGetsRegularInfectionOnDefense,
+}
+
+option AnthroTraits.AT_ImmunityLacerationInfectionChance
+{
+	type = integer, min = 0, max = 100, default = 15,
+	page = AnthroTraits, translation = AnthroTraits_ImmunityLacerationInfectionChance,
+}
+
+option AnthroTraits.AT_ImmunityScratchInfectionChance
+{
+	type = integer, min = 0, max = 100, default = 10,
+	page = AnthroTraits, translation = AnthroTraits_ImmunityScratchInfectionChance,
+}
+
+option AnthroTraits.AT_Lonely_Cost
+{
+	type = integer, min = -15, max = 15, default = -4,
+	page = AnthroTraits, translation = AnthroTraits_Lonely_Cost,
+}
+
+option AnthroTraits.AT_LonelyHoursToAffect
+{
+	type = integer, min = 2, max = 100, default = 6,
+	page = AnthroTraits, translation = AnthroTraits_LonelyHoursToAffect,
+}
+
+option AnthroTraits.AT_LonelyHourlyUnhappyIncrease
+{
+	type = double, min = 0, max = 1, default = .05,
+	page = AnthroTraits, translation = AnthroTraits_LonelyHourlyUnhappyIncrease,
+}
+
+option AnthroTraits.AT_NaturalTumbler_Cost
+{
+	type = integer, min = -15, max = 15, default = 3,
+	page = AnthroTraits, translation = AnthroTraits_NaturalTumbler_Cost,
+}
+
+option AnthroTraits.AT_NaturalTumblerFallTimeMult
+{
+	type = double, min = 0, max = 1, default = 0.5,
+	page = AnthroTraits, translation = AnthroTraits_NaturalTumblerFallTimeMult,
+}
+
+option AnthroTraits.AT_Paws_Cost
+{
+	type = integer, min = -15, max = 15, default = 2,
+	page = AnthroTraits, translation = AnthroTraits_Paws_Cost,
+}
+
+option AnthroTraits.AT_Stinky_Cost
+{
+	type = integer, min = -15, max = 15, default = -4,
+	page = AnthroTraits, translation = AnthroTraits_Stinky_Cost,
+}
+
+option AnthroTraits.AT_StinkyCommentChance
+{
+	type = double, min = 0, max = 1, default = .001,
+	page = AnthroTraits, translation = AnthroTraits_StinkyCommentChance,
+}
+
+option AnthroTraits.AT_StinkyDistance
+{
+	type = integer, min = 1, max = 100, default = 3,
+	page = AnthroTraits, translation = AnthroTraits_StinkyDistance,
+}
+
+option AnthroTraits.AT_StinkyLoudness
+{
+	type = integer, min = 1, max = 100, default = 5,
+	page = AnthroTraits, translation = AnthroTraits_StinkyLoudness,
+}
+
+option AnthroTraits.AT_StinkyThreshold
+{
+	type = double, min = 0.01, max = 17, default = 4.5,
+	page = AnthroTraits, translation = AnthroTraits_StinkyThreshold,
+}
+
+option AnthroTraits.AT_Tail_Cost
+{
+	type = integer, min = -15, max = 15, default = 2,
+	page = AnthroTraits, translation = AnthroTraits_Tail_Cost,
+}
+
+option AnthroTraits.AT_TailTripReduction
+{
+	type = double, min = 0, max = 100, default = 33,
+	page = AnthroTraits, translation = AnthroTraits_TailTripReduction,
+}
+
+option AnthroTraits.AT_Torpor_Cost
+{
+	type = integer, min = -15, max = 15, default = -4,
+	page = AnthroTraits, translation = AnthroTraits_Torpor_Cost,
+}
+
+option AnthroTraits.AT_TorporEnduranceDecrease
+{
+	type = double, min = 0, max = 1, default = .1,
+	page = AnthroTraits, translation = AnthroTraits_TorporEnduranceDecrease,
+}
+
+option AnthroTraits.AT_UnwieldyHands_Cost
+{
+	type = integer, min = -15, max = 15, default = -4,
+	page = AnthroTraits, translation = AnthroTraits_UnwieldyHands_Cost,
+}
+
+option AnthroTraits.AT_UnwieldyHandsTimeIncrease
+{
+	type = double, min = 0, max = 1, default = .2,
+	page = AnthroTraits, translation = AnthroTraits_UnwieldyHandsTimeIncrease,
+}
+
+option AnthroTraits.AT_VestigialWings_Cost
+{
+	type = integer, min = -15, max = 15, default = 5,
+	page = AnthroTraits, translation = AnthroTraits_VestigialWings_Cost,
+}

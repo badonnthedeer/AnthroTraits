@@ -73,11 +73,15 @@ description=    Actions requiring fine motor control are slower.
 description=[/list]
 description=[hr][/hr]
 description=[h1]A message from the creator[/h1]
-description=Do you really enjoy this mod--or even better--want to build on it? Please consider [url=https://ko-fi.com/badonnthedeer]donating to me[/url] so I can pay my bills. I'm just a deer who needs money for strawbs.
+description=Do you really enjoy this mod--or even better--want to build on it? Please consider [url=https://ko-fi.com/badonnthedeer]donating to me[/url]! I'm in definite financial need, so every little bit helps! Thank you.
 description=
 description=[h1]Special Thanks[/h1]
-description=to my friend who did the icon art for me, RadicallyRiley. I'd also like to thank the PZ Discord modding community, who were very patient with me in answering my many questions. In particular, I'd like to thank Albion from that group; she has a seemingly encyclopedic knowledge of PZ modding and a heaping portion of patience! Thank you to the other trait mods who I was able to reference when I was incredibly stumped, and thanks to the furry community for inspiring me to create something and give back.
+description=to my friend who did the icon art for me, RadicallyRiley.
+description=the PZ Discord modding community, who were very patient with me in answering my many questions.
+description=to Albion from that group; she has a seemingly encyclopedic knowledge of PZ modding and a heaping portion of patience! 
+description=to the other trait mods who I was able to reference when I was incredibly stumped.
+description=to the furry community for inspiring me to create something and give back.
 description=
 description=[quote=Badonn]Please don't copy this mod and upload it as your own! Please also ask if you can use this in a mod pack. If you would like to translate the mod, send me a message or leave a comment and I'll work with you to add it in! This mod is under the MIT License.[/quote]
-tags=Build 41;Multiplayer;Pop Culture;Traits
+tags=Build 41;Build 42;Multiplayer;Pop Culture;Traits
 visibility=public
