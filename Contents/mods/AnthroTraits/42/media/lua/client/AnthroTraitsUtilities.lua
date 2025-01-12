@@ -470,4 +470,23 @@ AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item,
 end
 
 
+AnthroTraitsUtilities.IsAnthro = function(gameCharacter)
+    if FM == nil
+    then
+        return false;
+    else
+        local hasFur = false;
+        for i=0, gameCharacter:getInventory():getItems():size() - 1
+        do
+            local item = player:getInventory():getItems():get(i);
+            if item:hasTag("Fur")
+            then
+                hasFur = true;
+                break;
+            end
+        end;
+        return hasFur;
+    end
+end
+
 return AnthroTraitsUtilities;
