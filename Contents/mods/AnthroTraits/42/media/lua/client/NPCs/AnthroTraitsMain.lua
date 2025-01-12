@@ -90,13 +90,13 @@ AnthroTraitsMain.HandleInfection = function(player)
             then
                 print( tostring(bodypart:getType()) .. " is injured and infected.");
             end
-            if player:HasTrait("AT_Hooves")
+            if player:HasTrait("AT_Unguligrade")
             then
                 if tostring(bodypart:getType()) == "Foot_L" or tostring(bodypart:getType()) == "Foot_R"
                 then
                     if getDebug()
                     then
-                        print("AT_Hooves foot immunity triggered.");
+                        print("AT_Unguligrade foot immunity triggered.");
                     end
                     bodypart:SetInfected(false);
                     player:getBodyDamage():setInfected(false);
@@ -283,7 +283,7 @@ AnthroTraitsMain.ExclaimerCheck = function(player)
         local phrases = AnthroTraitsMain.ExclaimPhrases.generic
         local phraseChance = ZombRand(1, #phrases);
         local playerSquare = player:getCurrentSquare();
-        --if player:HasTrait("AT_Hooves");
+        --if player:HasTrait("AT_Unguligrade");
         --then
         --    player:SayShout("BLEAT!");
         --else
@@ -527,7 +527,7 @@ AnthroTraitsMain.ATPlayerDamageTick = function(player)
         playerData.trulyInfected = this.HandleInfection(player);
     end
 
-    if player:HasTrait("AT_Hooves")
+    if player:HasTrait("AT_Unguligrade")
     then
         --immune to scratches, lacerations, bites
         local footL = player:getBodyDamage():getBodyPart(BodyPartType.Foot_L);
