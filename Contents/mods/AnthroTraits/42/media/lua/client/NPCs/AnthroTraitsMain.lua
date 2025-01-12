@@ -824,10 +824,14 @@ AnthroTraitsMain.ATEveryOneMinute = function()
                 --add random test functions here:
 
                 --
-                if player:HasTrait("AT_AnthroImmunity") and not player:getBodyDamage():isInfected() and modData.trulyInfected == true
+                if player:HasTrait("AT_AnthroImmunity") and not player:getBodyDamage():isInfected() and (modData.trulyInfected == true or modData.trulyInfected == nil)
                 then
                     --if a player is a cheater/debugging or takes a game-made cure
                     modData.trulyInfected = false;
+                    if getDebug
+                    then
+                        print("trulyInfected set to false. Anthro Immunity applies again.");
+                    end
                 end
 
                 if player:HasTrait("AT_Exclaimer")
