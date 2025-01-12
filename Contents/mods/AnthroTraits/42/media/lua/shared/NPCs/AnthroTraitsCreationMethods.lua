@@ -191,8 +191,8 @@ AnthroTraitsMainCreationMethods.initAnthroTraits = function()
     this.TTF.Add("AT_Herbivore", "AnthroTraits,CostVariable,Anthro,Herbivore");
 
     --ANTHRO IMMUNITY
-    TraitFactory.addTrait("AT_Immunity", getText("UI_trait_AT_Immunity"), 1, workString, false);
-    this.TTF.Add("AT_Immunity", "AnthroTraits,CostVariable,Anthro");
+    TraitFactory.addTrait("AT_AnthroImmunity", getText("UI_trait_AT_AnthroImmunity"), 1, workString, false);
+    this.TTF.Add("AT_AnthroImmunity", "AnthroTraits,CostVariable,Anthro");
     --add ability to ignore this trait if infected by a former (furry) player?
 
     --LONELY
@@ -309,9 +309,9 @@ AnthroTraitsMainCreationMethods.setTraitDescriptions = function ()
             then
                 workString = string.format(getText("UI_trait_AT_Herbivore_desc"), SandboxVars.AnthroTraits.AT_HerbivoreBonus * 100, SandboxVars.AnthroTraits.AT_HerbivoreMalus * 100);
                 trait:setDescription(workString);
-            elseif trait == TraitFactory.getTrait("AT_Immunity")
+            elseif trait == TraitFactory.getTrait("AT_AnthroImmunity")
             then
-                workString = string.format(getText("UI_trait_AT_Immunity_desc"), SandboxVars.AnthroTraits.AT_ImmunityBiteInfectionChance, SandboxVars.AnthroTraits.AT_ImmunityLacerationInfectionChance *.25, SandboxVars.AnthroTraits.AT_ImmunityScratchInfectionChance *.07);
+                workString = string.format(getText("UI_trait_AT_AnthroImmunity_desc"), SandboxVars.AnthroTraits.AT_AnthroImmunityBiteInfectionChance, SandboxVars.AnthroTraits.AT_AnthroImmunityLacerationInfectionChance *.25, SandboxVars.AnthroTraits.AT_AnthroImmunityScratchInfectionChance *.07);
                 trait:setDescription(workString);
             elseif trait == TraitFactory.getTrait("AT_Lonely")
             then

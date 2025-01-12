@@ -74,9 +74,9 @@ AnthroTraitsMain.ExclaimPhrases = {
 
 
 AnthroTraitsMain.HandleInfection = function(player)
-    local biteInfectionChance = SandboxVars.AnthroTraits.AT_ImmunityBiteInfectionChance;
-    local lacerationInfectionChance = SandboxVars.AnthroTraits.AT_ImmunityLacerationInfectionChance;
-    local scratchInfectionChance = SandboxVars.AnthroTraits.AT_ImmunityScratchInfectionChance;
+    local biteInfectionChance = SandboxVars.AnthroTraits.AT_AnthroImmunityBiteInfectionChance;
+    local lacerationInfectionChance = SandboxVars.AnthroTraits.AT_AnthroImmunityLacerationInfectionChance;
+    local scratchInfectionChance = SandboxVars.AnthroTraits.AT_AnthroImmunityScratchInfectionChance;
     if getDebug()
     then
         print("Handle Infection Triggered");
@@ -107,89 +107,98 @@ AnthroTraitsMain.HandleInfection = function(player)
                     player:getBodyDamage():setInfectionGrowthRate(0);
                 end
             end
-            if player:HasTrait("AT_Immunity")
+            if player:HasTrait("AT_AnthroImmunity") 
             then
                 local rolledInfectionChance = ZombRand(1, 100);
-                if getDebug()
+                local lastAttackedBy = player:getAttackedBy();
+                if (not SandboxVars.AnthroTraits.AT_AnthroImmunityAppliesToAnthroZombies and ATU:IsAnthro(lastAttackedBy)) or (SandboxVars.AnthroTraits.AT_AnthroImmunityAppliesToAnthroZombies and not ATU:IsAnthro(lastAttackedBy))
                 then
-                    print("Rolled " .. rolledInfectionChance);
-                end
-                if bodypart:bitten() 
-                then
-                    if biteInfectionChance <= rolledInfectionChance 
+                    if getDebug()
                     then
-                        bodypart:SetInfected(false);
-                        player:getBodyDamage():setInfected(false);
-                        player:getBodyDamage():setInfectionMortalityDuration(-1);
-                        player:getBodyDamage():setInfectionTime(-1);
-                        player:getBodyDamage():setInfectionLevel(0);
-                        player:getBodyDamage():setInfectionGrowthRate(0);
-                        if getDebug()
+                        print("Rolled " .. rolledInfectionChance);
+                    end
+                    if bodypart:bitten() 
+                    then
+                        if biteInfectionChance <= rolledInfectionChance 
                         then
-                            print("Infection defense successful.");
-                        end
-                        if SandboxVars.AnthroTraits.AT_ImmunityBiteGetsRegularInfectionOnDefense
-                        then
-                            bodypart:setInfectedWound(true);
+                            bodypart:SetInfected(false);
+                            player:getBodyDamage():setInfected(false);
+                            player:getBodyDamage():setInfectionMortalityDuration(-1);
+                            player:getBodyDamage():setInfectionTime(-1);
+                            player:getBodyDamage():setInfectionLevel(0);
+                            player:getBodyDamage():setInfectionGrowthRate(0);
                             if getDebug()
                             then
-                                print("Knox infection substituted with regular infection. Human mouths are septic :S");
+                                print("Infection defense successful.");
                             end
+                            if SandboxVars.AnthroTraits.AT_AnthroImmunityBiteGetsRegularInfectionOnDefense
+                            then
+                                bodypart:setInfectedWound(true);
+                                if getDebug()
+                                then
+                                    print("Knox infection substituted with regular infection. Human mouths are septic :S");
+                                end
 
+                            end
+                            return false;
+                        else
+                            if getDebug()
+                            then
+                                print("Infection defense UNSUCCESSFUL. DIE WELL!");
+                            end
+                            return true;
                         end
-                        return false;
-                    else
-                        if getDebug()
-                        then
-                            print("Infection defense UNSUCCESSFUL. DIE WELL!");
-                        end
-                        return true;
-                    end
-                elseif bodypart:isCut() --irritatingly, using the function to get laceration doesn't follow the same naming convention
-                then
-                    if lacerationInfectionChance <= rolledInfectionChance 
+                    elseif bodypart:isCut() --irritatingly, using the function to get laceration doesn't follow the same naming convention
                     then
-                        bodypart:SetInfected(false);
-                        player:getBodyDamage():setInfected(false);
-                        player:getBodyDamage():setInfectionMortalityDuration(-1);
-                        player:getBodyDamage():setInfectionTime(-1);
-                        player:getBodyDamage():setInfectionLevel(0);
-                        player:getBodyDamage():setInfectionGrowthRate(0);
-                        if getDebug()
+                        if lacerationInfectionChance <= rolledInfectionChance 
                         then
-                            print("Infection defense successful.");
+                            bodypart:SetInfected(false);
+                            player:getBodyDamage():setInfected(false);
+                            player:getBodyDamage():setInfectionMortalityDuration(-1);
+                            player:getBodyDamage():setInfectionTime(-1);
+                            player:getBodyDamage():setInfectionLevel(0);
+                            player:getBodyDamage():setInfectionGrowthRate(0);
+                            if getDebug()
+                            then
+                                print("Infection defense successful.");
+                            end
+                            return false;
+                        else
+                            if getDebug()
+                            then
+                                print("Infection defense UNSUCCESSFUL. DIE WELL!");
+                            end
+                            return true;
                         end
-                        return false;
-                    else
-                        if getDebug()
-                        then
-                            print("Infection defense UNSUCCESSFUL. DIE WELL!");
-                        end
-                        return true;
-                    end
-                elseif bodypart:scratched() 
-                then
-                    if scratchInfectionChance <= rolledInfectionChance 
+                    elseif bodypart:scratched() 
                     then
-                        bodypart:SetInfected(false);
-                        player:getBodyDamage():setInfected(false);
-                        player:getBodyDamage():setInfectionMortalityDuration(-1);
-                        player:getBodyDamage():setInfectionTime(-1);
-                        player:getBodyDamage():setInfectionLevel(0);
-                        player:getBodyDamage():setInfectionGrowthRate(0);
-                        if getDebug()
+                        if scratchInfectionChance <= rolledInfectionChance 
                         then
-                            print("Infection defense successful.");
+                            bodypart:SetInfected(false);
+                            player:getBodyDamage():setInfected(false);
+                            player:getBodyDamage():setInfectionMortalityDuration(-1);
+                            player:getBodyDamage():setInfectionTime(-1);
+                            player:getBodyDamage():setInfectionLevel(0);
+                            player:getBodyDamage():setInfectionGrowthRate(0);
+                            if getDebug()
+                            then
+                                print("Infection defense successful.");
+                            end
+                            return false;
+                        else
+                            if getDebug()
+                            then
+                                print("Infection defense UNSUCCESSFUL. DIE WELL!");
+                            end
+                            return true;
                         end
-                        return false;
-                    else
-                        if getDebug()
-                        then
-                            print("Infection defense UNSUCCESSFUL. DIE WELL!");
-                        end
-                        return true;
                     end
-                end
+                else
+                    if getDebug()
+                    then
+                        print("Not applying Anthro Immunity to infection from anthro. DIE WELL!")
+                    end    
+                end    
             end 
         end
     end
@@ -813,7 +822,7 @@ AnthroTraitsMain.ATEveryOneMinute = function()
                 --add random test functions here:
 
                 --
-                if player:HasTrait("AT_Immunity") and not player:getBodyDamage():isInfected() and modData.trulyInfected == true
+                if player:HasTrait("AT_AnthroImmunity") and not player:getBodyDamage():isInfected() and modData.trulyInfected == true
                 then
                     --if a player is a cheater/debugging or takes a game-made cure
                     modData.trulyInfected = false;
