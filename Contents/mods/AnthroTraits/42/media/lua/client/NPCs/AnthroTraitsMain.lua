@@ -49,6 +49,7 @@
 ------------------------------------------------------------------------------------------------------
 
 --Ensure Load Order:
+FM = require("FurryMod");
 ET = require("DracoExpandedTraits");
 MST = require("MoreSimpleTraits");
 SOTO = require("SimpleOverhaulTraitsAndOccupations");
