@@ -222,12 +222,6 @@ option AnthroTraits.AT_NaturalTumblerFallTimeMult
 	page = AnthroTraits, translation = AnthroTraits_NaturalTumblerFallTimeMult,
 }
 
-option AnthroTraits.AT_Paw_Pads_Cost
-{
-	type = integer, min = -15, max = 15, default = 2,
-	page = AnthroTraits, translation = AnthroTraits_Paw_Pads_Cost,
-}
-
 option AnthroTraits.AT_Stinky_Cost
 {
 	type = integer, min = -15, max = 15, default = -4,

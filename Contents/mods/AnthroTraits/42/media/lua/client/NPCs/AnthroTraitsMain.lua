@@ -798,44 +798,6 @@ AnthroTraitsMain.ATOnObjectCollide = function(collider, collidee)
 end
 
 
-AnthroTraitsMain.ATOnClothingUpdated = function(character)
-    if instanceof(character, "IsoPlayer")
-    then
-        local wornShoes = character:getClothingItem_Feet();
-        local vanillaStomp;
-        if wornShoes ~= nil
-        then
-            vanillaStomp = InventoryItemFactory.CreateItem(wornShoes:getFullType()):getStompPower();
-        end
-        local digitigradeMultiplier = 1 + SandboxVars.AnthroTraits.AT_DigitigradeStompPowerPctIncrease;
-
-        if character:HasTrait("AT_Digitigrade")
-        then
-            if wornShoes ~= nil
-            then
-                wornShoes:setStompPower(vanillaStomp * digitigradeMultiplier);
-            else
-                if character:HasTrait("AT_Hooves")
-                then
-                    --character:setClothingItem_Feet(InventoryItemFactory.CreateItem("Base.DigitigradeHoofers"))
-                else
-                    --character:setClothingItem_Feet(InventoryItemFactory.CreateItem("Base.DigitigradePaws"))
-                end
-
-            end
-        else
-            if wornShoes ~= nil
-            then
-                wornShoes:setStompPower(vanillaStomp);
-            else
-                --do nothing
-            end
-
-        end
-    end
-end
-
-
 AnthroTraitsMain.ATEveryOneMinute = function()
     local this = AnthroTraitsMain;
     local activePlayers = getNumActivePlayers()
