@@ -12,10 +12,10 @@ option AnthroTraits.AT_AnthroImmunity_Cost
 	page = AnthroTraits, translation = AnthroTraits_AnthroImmunity_Cost,
 }
 
-option AnthroTraits.AT_AnthroImmunityAppliesToAnthroZombies
+option AnthroTraits.AT_AnthroImmunityIgnoredByAnthroZombies
 {
-	type = boolean, default = false,
-	page = AnthroTraits, translation = AnthroTraits_AnthroImmunityAppliesToAnthroZombies,
+	type = boolean, default = true,
+	page = AnthroTraits, translation = AnthroTraits_AnthroImmunityIgnoredByAnthroZombies,
 }
 
 option AnthroTraits.AT_AnthroImmunityBiteGetsRegularInfectionOnDefense

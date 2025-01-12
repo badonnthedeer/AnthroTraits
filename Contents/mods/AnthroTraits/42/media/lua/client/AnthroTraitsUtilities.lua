@@ -471,21 +471,29 @@ end
 
 
 AnthroTraitsUtilities.IsAnthro = function(gameCharacter)
-    if getActivatedMods():contains("FurryMod")
+    if getActivatedMods():contains("FurryMod") and gameCharacter ~= nil
     then
         return false;
     else
         local hasFur = false;
-        local uwu = gameCharacter:getWornItems();
-        for i=0, uwu:size() - 1
-        do
-            local item = gameCharacter:getWornItems():get(i);
-            if item:hasTag("Fur")
-            then
-                hasFur = true;
-                break;
-            end
-        end;
+        local itemVisuals = gameCharacter:getItemVisuals();
+        if itemVisuals ~= nil
+        then
+            for i=0, itemVisuals:size() - 1
+            do
+                local itemVisual = itemVisuals:get(i);
+                local item =  itemVisual:getScriptItem();
+                if item ~= null 
+                then
+                    local bodyLoc = item:getBodyLocation();
+                    if bodyLoc ~= nil and bodyLoc == "Fur"
+                    then
+                        hasFur = true;
+                        break;
+                    end
+                end    
+            end;
+        end 
         return hasFur;
     end
 end

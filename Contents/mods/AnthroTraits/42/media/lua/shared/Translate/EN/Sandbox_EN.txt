@@ -1,7 +1,7 @@
 Sandbox_EN = {
 	Sandbox_AnthroTraits = "Anthro Traits",
-    Sandbox_AnthroTraits_AnthroImmunityAppliesToAnthroZombies = "Anthro Immunity Applies to Anthro Zombies",
-    Sandbox_AnthroTraits_AnthroImmunityAppliesToAnthroZombies_tooltip = "If enabled, risk of Knox Infection from anthro zombies is also reduced with this trait.",
+    Sandbox_AnthroTraits_AnthroImmunityIgnoredByAnthroZombies = "Anthro Immunity Ignored By Anthro Zombies",
+    Sandbox_AnthroTraits_AnthroImmunityIgnoredByAnthroZombies_tooltip = "If enabled, risk of Knox Infection from anthro zombies is the same as vanilla.",
     Sandbox_AnthroTraits_AnthroImmunityBiteGetsRegularInfectionOnDefense = "Anthro Immunity Bite Infection",
     Sandbox_AnthroTraits_AnthroImmunityBiteGetsRegularInfectionOnDefense_tooltip = "If enabled, when bitten but not given the Knox Infection, use regular wound infection instead.",
     Sandbox_AnthroTraits_AnthroImmunityBiteInfectionChance = "Anthro Immunity Bite Chance",

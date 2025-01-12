@@ -111,9 +111,9 @@ AnthroTraitsMain.HandleInfection = function(player)
             then
                 local rolledInfectionChance = ZombRand(1, 100);
                 local lastAttackedBy = player:getAttackedBy();
-                if (not SandboxVars.AnthroTraits.AT_AnthroImmunityAppliesToAnthroZombies and not ATU.IsAnthro(lastAttackedBy)
-                or not SandboxVars.AnthroTraits.AT_AnthroImmunityAppliesToAnthroZombies and ATU.IsAnthro(lastAttackedBy)
-                or SandboxVars.AnthroTraits.AT_AnthroImmunityAppliesToAnthroZombies and not ATU.IsAnthro(lastAttackedBy))
+                if (not SandboxVars.AnthroTraits.AT_AnthroImmunityIgnoredByAnthroZombies and not ATU.IsAnthro(lastAttackedBy)
+                or not SandboxVars.AnthroTraits.AT_AnthroImmunityIgnoredByAnthroZombies and ATU.IsAnthro(lastAttackedBy)
+                or SandboxVars.AnthroTraits.AT_AnthroImmunityIgnoredByAnthroZombies and not ATU.IsAnthro(lastAttackedBy))
                 then
                     if getDebug()
                     then
