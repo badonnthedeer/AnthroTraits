@@ -218,7 +218,7 @@ option AnthroTraits.AT_LonelyHoursToAffect
 
 option AnthroTraits.AT_LonelyHourlyUnhappyIncrease
 {
-	type = double, min = 0, max = 1, default = .05,
+	type = double, min = 0, max = 100, default = 5,
 	page = AnthroTraits, translation = AnthroTraits_LonelyHourlyUnhappyIncrease,
 }
 
