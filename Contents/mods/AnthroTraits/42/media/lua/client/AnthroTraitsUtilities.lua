@@ -471,14 +471,15 @@ end
 
 
 AnthroTraitsUtilities.IsAnthro = function(gameCharacter)
-    if FM == nil
+    if getActivatedMods():contains("FurryMod")
     then
         return false;
     else
         local hasFur = false;
-        for i=0, gameCharacter:getInventory():getItems():size() - 1
+        local uwu = gameCharacter:getWornItems();
+        for i=0, uwu:size() - 1
         do
-            local item = player:getInventory():getItems():get(i);
+            local item = gameCharacter:getWornItems():get(i);
             if item:hasTag("Fur")
             then
                 hasFur = true;

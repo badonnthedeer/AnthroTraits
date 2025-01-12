@@ -1,9 +1,9 @@
 Sandbox_EN = {
 	Sandbox_AnthroTraits = "Anthro Traits",
     Sandbox_AnthroTraits_AnthroImmunityAppliesToAnthroZombies = "Anthro Immunity Applies to Anthro Zombies",
-    Sandbox_AnthroTraits_AnthroImmunityAppliesToAnthroZombies_tooltip = "If a zombie is wearing fur from the Anthro Survivors mod, infection follows vanilla rules.",
+    Sandbox_AnthroTraits_AnthroImmunityAppliesToAnthroZombies_tooltip = "If enabled, risk of Knox Infection from anthro zombies is also reduced with this trait.",
     Sandbox_AnthroTraits_AnthroImmunityBiteGetsRegularInfectionOnDefense = "Anthro Immunity Bite Infection",
-    Sandbox_AnthroTraits_AnthroImmunityBiteGetsRegularInfectionOnDefense_tooltip = "If you're bitten but not infected with the Knox Infection, replace with wound infection.",
+    Sandbox_AnthroTraits_AnthroImmunityBiteGetsRegularInfectionOnDefense_tooltip = "If enabled, when bitten but not given the Knox Infection, use regular wound infection instead.",
     Sandbox_AnthroTraits_AnthroImmunityBiteInfectionChance = "Anthro Immunity Bite Chance",
     Sandbox_AnthroTraits_AnthroImmunityBiteInfectionChance_tooltip = "Chance to actually be infected after a bite (normally 100%).",
     Sandbox_AnthroTraits_AnthroImmunityLacerationInfectionChance = "Anthro Immunity Laceration Chance",
