@@ -741,19 +741,19 @@ end
 AnthroTraitsMain.ATEveryWeaponHitChar = function(attacker, target, weapon, damage)
     local dmgBonus = 0;
 
-    if attacker:HasTrait("AT_Digitigrade") and attacker:isStomping()
+    if (attacker:HasTrait("AT_Digitigrade") or attacker:HasTrait("AT_Unguligrade")) and attacker:isStomping()
     then
-        if attacker:HasTrait("AT_Hooves")
+        if attacker:HasTrait("AT_Unguligrade")
         then
-            dmgBonus = damage * (SandboxVars.AnthroTraits.AT_DigitigradeStompPowerPctIncrease + SandboxVars.AnthroTraits.AT_DigitigradeHoofDmgPctIncrease);
+            dmgBonus = damage * (SandboxVars.AnthroTraits.AT_DigitigradeStompDmgPctIncrease + SandboxVars.AnthroTraits.AT_UnguligradeStompDmgPctIncrease);
         else
-            dmgBonus = damage * (SandboxVars.AnthroTraits.AT_DigitigradeStompPowerPctIncrease);
+            dmgBonus = damage * (SandboxVars.AnthroTraits.AT_DigitigradeStompDmgPctIncrease);
         end
-        --this doesn't supply a bodypart, and that's sad. We'll have to settle for doing damage to the character's overall health instead.
+        --this event doesn't supply a bodypart, and that's sad. We'll have to settle for doing damage to the character's overall health instead.
         target:applyDamage(dmgBonus);
         if getDebug()
         then
-            print(string.format("Applying %s damage to %s", dmgBonus, type(target)));
+            print(string.format("Applying %s extra damage.", dmgBonus));
         end
     end
 end
