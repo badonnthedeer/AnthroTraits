@@ -164,6 +164,8 @@ AnthroTraitsMainCreationMethods.initAnthroTraits = function()
     --DIGITIGRADE
     local AT_Digitigrade = TraitFactory.addTrait("AT_Digitigrade", getText("UI_trait_AT_Digitigrade"), 1, workString, false);
     AT_Digitigrade:addXPBoost(Perks.Sprinting, 1)
+    AT_Digitigrade:addXPBoost(Perks.Lightfoot, 1);
+    AT_Digitigrade:addXPBoost(Perks.Sneak, 1);
     this.TTF.Add("AT_Digitigrade", "AnthroTraits,CostVariable,Anthro");
 
     --EXCLAIMER
@@ -188,11 +190,6 @@ AnthroTraitsMainCreationMethods.initAnthroTraits = function()
     TraitFactory.addTrait("AT_Herbivore", getText("UI_trait_AT_Herbivore"), 1, workString, false);
     this.TTF.Add("AT_Herbivore", "AnthroTraits,CostVariable,Anthro,Herbivore");
 
-    --HOOVES
-    local AT_Hooves = TraitFactory.addTrait("AT_Hooves", getText("UI_trait_AT_Hooves"), 1, getText("UI_trait_AT_Hooves_desc"), false);
-    AT_Hooves:addXPBoost(Perks.Nimble, 1);
-    this.TTF.Add("AT_Hooves", "AnthroTraits,CostVariable,Anthro,Hooves");
-
     --ANTHRO IMMUNITY
     TraitFactory.addTrait("AT_Immunity", getText("UI_trait_AT_Immunity"), 1, workString, false);
     this.TTF.Add("AT_Immunity", "AnthroTraits,CostVariable,Anthro");
@@ -206,12 +203,6 @@ AnthroTraitsMainCreationMethods.initAnthroTraits = function()
     TraitFactory.addTrait("AT_NaturalTumbler", getText("UI_trait_AT_NaturalTumbler"), 1, workString, false);
     this.TTF.Add("AT_NaturalTumbler", "AnthroTraits,CostVariable,Anthro,Agile");
 
-    --PAWS
-    local AT_Paws = TraitFactory.addTrait("AT_Paws", getText("UI_trait_AT_Paws"), 1, getText("UI_trait_AT_Paws_desc"), false);
-    AT_Paws:addXPBoost(Perks.Lightfoot, 1);
-    AT_Paws:addXPBoost(Perks.Sneak, 1);
-    this.TTF.Add("AT_Paws", "AnthroTraits,CostVariable,Anthro,Paws");
-
     --STINKY
     TraitFactory.addTrait("AT_Stinky", getText("UI_trait_AT_Stinky"), -1, getText("UI_trait_AT_Stinky_desc"), false);
     this.TTF.Add("AT_Stinky", "AnthroTraits,CostVariable,");
@@ -223,6 +214,12 @@ AnthroTraitsMainCreationMethods.initAnthroTraits = function()
     --TORPOR
     TraitFactory.addTrait("AT_Torpor", getText("UI_trait_AT_Torpor"), -1, workString, false);
     this.TTF.Add("AT_Torpor", "AnthroTraits,CostVariable,Anthro,Hibernator");
+
+    --UNGULIGRADE
+    local AT_Unguligrade = TraitFactory.addTrait("AT_Unguligrade", getText("UI_trait_AT_Unguligrade"), 1, getText("UI_trait_AT_Unguligrade_desc"), false);
+    AT_Unguligrade:addXPBoost(Perks.Sprinting, 1)
+    AT_Unguligrade:addXPBoost(Perks.Nimble, 1);
+    this.TTF.Add("AT_Unguligrade", "AnthroTraits,CostVariable,Anthro,Unguligrade");
 
     --UNWIELDY HANDS
     TraitFactory.addTrait("AT_UnwieldyHands", getText("UI_trait_AT_UnwieldyHands"), -1, workString, false);
@@ -259,7 +256,6 @@ AnthroTraitsMainCreationMethods.initAnthroTraits = function()
     -- TraitFactory.addTrait("AT_SelfClean", getText("UI_trait_AT_SelfClean"), 1, getText("UI_trait_AT_SelfClean_desc"), false);
     -- TraitFactory.addTrait("AT_ThickCoat", getText("UI_trait_AT_ThickCoat"), 1, getText("UI_trait_AT_ThickCoat_desc"), false);
 
-    TraitFactory.setMutualExclusive("AT_Paws", "AT_Hooves");
     TraitFactory.setMutualExclusive("AT_Herbivore", "AT_Carnivore");
     TraitFactory.setMutualExclusive("AT_Herbivore", "AT_CarrionEater");
     TraitFactory.setMutualExclusive("AT_NaturalTumbler", "AT_VestigialWings");
@@ -295,7 +291,7 @@ AnthroTraitsMainCreationMethods.setTraitDescriptions = function ()
                 trait:setDescription(workString);
             elseif trait == TraitFactory.getTrait("AT_Digitigrade")
             then
-                workString = string.format(getText("UI_trait_AT_Digitigrade_desc"), SandboxVars.AnthroTraits.AT_DigitigradeStompPowerPctIncrease * 100);
+                workString = string.format(getText("UI_trait_AT_Digitigrade_desc"), SandboxVars.AnthroTraits.AT_DigitigradeStompDmgPctIncrease * 100);
                 trait:setDescription(workString);
             elseif trait == TraitFactory.getTrait("AT_Exclaimer")
             then
@@ -332,6 +328,10 @@ AnthroTraitsMainCreationMethods.setTraitDescriptions = function ()
             elseif trait == TraitFactory.getTrait("AT_Torpor")
             then
                 workString = string.format(getText("UI_trait_AT_Torpor_desc"), SandboxVars.AnthroTraits.AT_TorporEnduranceDecrease * 100);
+                trait:setDescription(workString);
+            elseif trait == TraitFactory.getTrait("AT_Unguligrade")
+            then
+                workString = string.format(getText("UI_trait_AT_Unguligrade_desc"), SandboxVars.AnthroTraits.AT_UnguligradeStompDmgPctIncrease * 100);
                 trait:setDescription(workString);
             elseif trait == TraitFactory.getTrait("AT_UnwieldyHands")
             then

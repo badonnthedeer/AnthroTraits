@@ -84,16 +84,10 @@ option AnthroTraits.AT_Digitigrade_Cost
 	page = AnthroTraits, translation = AnthroTraits_Digitigrade_Cost,
 }
 
-option AnthroTraits.AT_DigitigradeStompPowerPctIncrease
+option AnthroTraits.AT_DigitigradeStompDmgPctIncrease
 {
 	type = double, min = 0, max = 1, default = .25,
-	page = AnthroTraits, translation = AnthroTraits_DigitigradeStompPowerPctIncrease,
-}
-
-option AnthroTraits.AT_DigitigradeHoofDmgPctIncrease
-{
-	type = double, min = 0, max = 1, default = .50,
-	page = AnthroTraits, translation = AnthroTraits_DigitigradeHoofDmgPctIncrease,
+	page = AnthroTraits, translation = AnthroTraits_DigitigradeStompDmgPctIncrease,
 }
 
 option AnthroTraits.AT_Exclaimer_Cost
@@ -168,12 +162,6 @@ option AnthroTraits.AT_HerbivoreMalus
     page = AnthroTraits, translation = AnthroTraits_HerbivoreMalus,
 }
 
-option AnthroTraits.AT_Hooves_Cost
-{
-	type = integer, min = -15, max = 15, default = 2,
-	page = AnthroTraits, translation = AnthroTraits_Hooves_Cost,
-}
-
 option AnthroTraits.AT_Immunity_Cost
 {
 	type = integer, min = -15, max = 15, default = 4,
@@ -234,10 +222,10 @@ option AnthroTraits.AT_NaturalTumblerFallTimeMult
 	page = AnthroTraits, translation = AnthroTraits_NaturalTumblerFallTimeMult,
 }
 
-option AnthroTraits.AT_Paws_Cost
+option AnthroTraits.AT_Paw_Pads_Cost
 {
 	type = integer, min = -15, max = 15, default = 2,
-	page = AnthroTraits, translation = AnthroTraits_Paws_Cost,
+	page = AnthroTraits, translation = AnthroTraits_Paw_Pads_Cost,
 }
 
 option AnthroTraits.AT_Stinky_Cost
@@ -292,6 +280,18 @@ option AnthroTraits.AT_TorporEnduranceDecrease
 {
 	type = double, min = 0, max = 1, default = .1,
 	page = AnthroTraits, translation = AnthroTraits_TorporEnduranceDecrease,
+}
+
+option AnthroTraits.AT_Unguligrade_Cost
+{
+	type = integer, min = -15, max = 15, default = 4,
+	page = AnthroTraits, translation = AnthroTraits_Unguligrade_Cost,
+}
+
+option AnthroTraits.AT_UnguligradeStompDmgPctIncrease
+{
+	type = double, min = 0, max = 1, default = .75,
+	page = AnthroTraits, translation = AnthroTraits_UnguligradeStompDmgPctIncrease,
 }
 
 option AnthroTraits.AT_UnwieldyHands_Cost
