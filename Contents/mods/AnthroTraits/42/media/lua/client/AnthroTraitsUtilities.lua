@@ -483,15 +483,11 @@ AnthroTraitsUtilities.IsAnthro = function(gameCharacter)
             do
                 local itemVisual = itemVisuals:get(i);
                 local item =  itemVisual:getScriptItem();
-                if item ~= null 
+                if item ~= nil and (item:hasTag("Fur") or item:hasTag("DeceasedFur"))
                 then
-                    local bodyLoc = item:getBodyLocation();
-                    if bodyLoc ~= nil and bodyLoc == "Fur"
-                    then
-                        hasFur = true;
-                        break;
-                    end
-                end    
+                    hasFur = true;
+                    break;
+                end
             end;
         end 
         return hasFur;
