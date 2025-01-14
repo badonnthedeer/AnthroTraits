@@ -874,7 +874,7 @@ end
 
 AnthroTraitsMain.ATEveryDays = function()
     local activePlayers = getNumActivePlayers();
-    local season = getClimateManager():getSeason():getSeasonName();
+    local season = getClimateManager():getSeason();
 
     if activePlayers >= 1
     then
@@ -882,11 +882,12 @@ AnthroTraitsMain.ATEveryDays = function()
         do
             local player = getSpecificPlayer(playerIndex);
             local modData =  player:getModData().ATPlayerData;
-            if player:HasTrait("AT_Torpor") and season:lower():contains("winter")
+            local winterInt = zombie.erosion.season.ErosionSeason.SEASON_WINTER;
+            --https://demiurgequantified.github.io/ProjectZomboidJavaDocs/constant-values.html#zombie.erosion.season.ErosionSeason.NUM_SEASONS
+            if player:HasTrait("AT_Torpor") and season:isSeason(winterInt)
             then
                 modData.torporActive = true;
-            elseif player:HasTrait("AT_Torpor") and not season:contains("winter")
-            then
+            else
                 modData.torporActive = false;
             end
         end
