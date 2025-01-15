@@ -515,6 +515,11 @@ AnthroTraitsMain.ATOnInitWorld = function()
     ATU.AddItemTagToItemsFromSandbox(SandboxVars.AnthroTraits.AT_Bug_o_ssieurItems, "ATInsect");
     ATU.AddItemTagToItemsFromSandbox(SandboxVars.AnthroTraits.AT_FeralDigestionItems, "ATFeralPoison");
 
+    if getDebug()
+    then
+        ATU.ExportFoodGuideFiles();
+    end
+
     Colors["LavenderBlush"] = Color.new(1, 229/255, 229/255, 1);
 
 end
@@ -822,7 +827,7 @@ AnthroTraitsMain.ATEveryOneMinute = function()
             then
                 local modData =  player:getModData().ATPlayerData;
                 --add random test functions here:
-
+                
                 --
                 if player:HasTrait("AT_AnthroImmunity") and not player:getBodyDamage():isInfected() and (modData.trulyInfected == true or modData.trulyInfected == nil)
                 then

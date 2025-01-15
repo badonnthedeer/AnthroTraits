@@ -39,3 +39,8 @@ luac.out
 *.x86_64
 *.hex
 
+Contents/mods/AnthroTraits/common/AT_Carnivore_Items.txt
+Contents/mods/AnthroTraits/common/AT_FeralPoison_Items.txt
+Contents/mods/AnthroTraits/common/AT_Herbivore_Items.txt
+Contents/mods/AnthroTraits/common/AT_Insect_Items.txt
+Contents/mods/AnthroTraits/common/Unused_Food_Items.txt
