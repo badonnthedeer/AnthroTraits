@@ -141,6 +141,7 @@ end
 
 ---For basic food modifiers. This is built upon by CalculateFoodChanges later.
 AnthroTraitsUtilities.CalculateFoodModifiers = function(character, food)
+    local this = AnthroTraitsUtilities;
     local modifiers = {
         multHunger = 0,
         multThirst = 0,
@@ -151,7 +152,13 @@ AnthroTraitsUtilities.CalculateFoodModifiers = function(character, food)
         multCalories = 0,
     }
 
-    if food:hasTag("ATHerbivore") then
+    local foodVoreType = this.FoodVoreType(food);
+
+    if foodVoreType == nil
+    then
+        --do nothing
+    elseif foodVoreType == "ATHerbivore" 
+    then
         if character:HasTrait("AT_Carnivore")
         then
             modifiers.multHunger = SandboxVars.AnthroTraits.AT_CarnivoreMalus;
@@ -171,7 +178,8 @@ AnthroTraitsUtilities.CalculateFoodModifiers = function(character, food)
             modifiers.multUnhappiness = SandboxVars.AnthroTraits.AT_HerbivoreBonus;
             modifiers.multCalories = SandboxVars.AnthroTraits.AT_HerbivoreBonus;
         end
-    elseif food:hasTag("ATCarnivore") then
+    elseif foodVoreType == "ATCarnivore" 
+    then
         if character:HasTrait("AT_Herbivore")
         then
             modifiers.multHunger = SandboxVars.AnthroTraits.AT_HerbivoreMalus;
@@ -467,6 +475,69 @@ AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item,
         --table.insert(returnTable, 2, "%Violet%This food is poisonous to you! ("..string.format("%3.2f",feralDigestionPoisonAmount / bleachPoisonAmt).." full bleach bottle(s))")
     end
     return returnTable;
+end
+
+AnthroTraitsUtilities.FoodVoreType = function(food)
+    --get items in the recipe, if it's a recipe
+    local ingredients = food:getExtraItems();
+    local tags = {}
+
+    --get all tags relating to food, and init table with string keys so their count can be added to
+    for i = 1, #AnthroTraitsGlobals.EvolvedRecipeFoodTags
+    do
+        tags[AnthroTraitsGlobals.EvolvedRecipeFoodTags[i]] = 0;
+    end
+
+    if ingredients ~= nil
+    then
+        local tagWithLargestCount = "";
+        local tagWithLargestCountCount = 0;
+
+        --for each ingredient...
+        for i = 0, ingredients:size() - 1
+        do
+            -- for each tag...
+            for tag, _ in pairs(tags)
+            do
+                --if the ingredient has this tag, up the count for that key in tags
+                local ingredient = ingredients:get(i);
+                local ingredientTags = getScriptManager():getItem(ingredient):getTags()
+                if ingredientTags:contains(tag)
+                then
+                    tags[tag] = tags[tag] + 1;
+                end
+            end
+        end
+
+        --for each tag...
+        for tag, count in pairs(tags)
+        do
+            --record if the count is larger than the previous
+            if count > tagWithLargestCountCount
+            then
+                tagWithLargestCount = tag;
+                tagWithLargestCountCount = count;
+            end       
+        end
+
+        --if the largest count tag is present on greater than 50% of the recipe's items...
+        if tagWithLargestCountCount / ingredients:size() > .5
+        then
+            --return the tag, so it can be handled appropriately when eaten.
+            return tagWithLargestCount;
+        else
+            return nil;
+        end
+    else
+        --here, food must be single item
+        for tag, _ in pairs(tags)
+        do
+            if food:getTags():contains(tag)
+            then
+                return tag;
+            end
+        end
+    end
 end
 
 
