@@ -149,7 +149,7 @@ ISToolTipInv.render = function(self)
         oldRender(self);
     else
         --short-circuit to prevent components from triggering (transfer fluid gui)
-        if not instanceof(self.item, "Food")
+        if not instanceof(self.item, "Food") and (not instanceof(self.item, "ComboItem") and self.item:isFood())
         then
             oldRender(self);
         else

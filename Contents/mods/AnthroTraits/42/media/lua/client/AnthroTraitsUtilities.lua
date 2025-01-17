@@ -259,7 +259,7 @@ AnthroTraitsUtilities.CalculateFoodModifiers = function(character, food)
             modifiers.multBoredom = SandboxVars.AnthroTraits.AT_HerbivoreMalus;
             modifiers.multUnhappiness = SandboxVars.AnthroTraits.AT_HerbivoreMalus;
             modifiers.multCalories = SandboxVars.AnthroTraits.AT_HerbivoreMalus;
-        elseif character:HasTrait("AT_Carnivore") and character:HasTrait("AT_CarrionEater") and food:isRotten()
+        elseif character:HasTrait("AT_Carnivore") and character:HasTrait("AT_CarrionEater") and food:IsRotten()
         then
             modifiers.multHunger = SandboxVars.AnthroTraits.AT_CarnivoreBonus + SandboxVars.AnthroTraits.AT_CarrionEaterBonus;
             modifiers.multThirst = SandboxVars.AnthroTraits.AT_CarnivoreBonus + SandboxVars.AnthroTraits.AT_CarrionEaterBonus;
@@ -273,7 +273,7 @@ AnthroTraitsUtilities.CalculateFoodModifiers = function(character, food)
             modifiers.multBoredom = SandboxVars.AnthroTraits.AT_CarnivoreBonus;
             modifiers.multUnhappiness = SandboxVars.AnthroTraits.AT_CarnivoreBonus;
             modifiers.multCalories = SandboxVars.AnthroTraits.AT_CarnivoreBonus;
-        elseif character:HasTrait("AT_CarrionEater") and food:isRotten()
+        elseif character:HasTrait("AT_CarrionEater") and food:IsRotten()
         then
             modifiers.multHunger = SandboxVars.AnthroTraits.AT_CarrionEaterBonus;
             modifiers.multThirst = SandboxVars.AnthroTraits.AT_CarrionEaterBonus;
@@ -293,14 +293,36 @@ AnthroTraitsUtilities.CalculateFoodChanges = function(character, food)
     local foodID = food:getFullType();
     local encumbrance = food:getWeight();
     local stackEncum = food:getCount() * encumbrance
-    local foodBaseHunger = food:getBaseHunger() or 0;
-    local origHungerChange = food:getHungerChange() or 0;
-    local origThirstChange = food:getThirstChange() or 0;
-    local origEndChange = food:getEnduranceChange() or 0;
-    local origStressChange = food:getStressChange() or 0;
-    local origBoredomChange = food:getBoredomChange() or 0;
-    local origUnhappyChange = food:getUnhappyChange() or 0;
-    local origFoodCalories = food:getCalories() or 0;
+
+    local origHungerChange;
+    local origThirstChange;
+    local origEndChange;
+    local origStressChange;
+    local origBoredomChange;
+    local origUnhappyChange;
+    local origFoodCalories;
+
+    if food:getFluidContainer() ~= nil
+    then
+        local fluid = food:getFluidContainer():getProperties();
+        origHungerChange = fluid:getHungerChange() or 0;
+        origThirstChange = fluid:getThirstChange() or 0;
+        origEndChange = fluid:getEnduranceChange() or 0;
+        origStressChange = fluid:getStressChange() or 0;
+        -- no boredom in fluid properties
+        origBoredomChange = 0;
+        origUnhappyChange = fluid:getUnhappyChange() or 0;
+        origFoodCalories = fluid:getCalories() or 0;
+    else
+        origHungerChange = food:getHungerChange() or 0;
+        origThirstChange = food:getThirstChange() or 0;
+        origEndChange = food:getEnduranceChange() or 0;
+        origStressChange = food:getStressChange() or 0;
+        origBoredomChange = food:getBoredomChange() or 0;
+        origUnhappyChange = food:getUnhappyChange() or 0;
+        origFoodCalories = food:getCalories() or 0;
+    end    
+    
 
     local extraFoodHungerChange = (origHungerChange * modifiers.multHunger);
     local extraFoodThirstChange = (origThirstChange * modifiers.multThirst);
@@ -380,23 +402,62 @@ AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item,
     local foodIngredients = item:getExtraItems();
     local foodIngredientTags;
     local encumbrance = item:getActualWeight();
-    local stackEncum = item:getCount() * encumbrance
-    local foodBaseHunger = item:getBaseHunger();
-    local foodHungerChange = item:getHungerChange();
-    local foodThirstChange = item:getThirstChange();
-    local foodEndChange = item:getEnduranceChange();
-    local foodStressChange = item:getStressChange();
-    local foodBoredomChange = item:getBoredomChange();
-    local foodUnhappyChange = item:getUnhappyChange();
-    local foodCalories = item:getCalories();
-    local foodCarbs = item:getCarbohydrates();
-    local foodProtein = item:getProteins();
-    local foodFat = item:getLipids();
-    local foodCookedMicrowave = item:isCookedInMicrowave();
+    local stackEncum = item:getCount() * encumbrance;
+    local fluid;
+    local foodHungerChange;
+    local foodThirstChange;
+    local foodEndChange;
+    local foodStressChange;
+    local foodBoredomChange;
+    local foodUnhappyChange;
+    local foodCalories;
+    local foodCarbs;
+    local foodProtein;
+    local foodFat;
+    local foodCookedMicrowave;
 
-    local currCookTime = item:getCookingTime();
-    local minutesTillCooked = item:getMinutesToCook();
-    local minutesTillBurned = item:getMinutesToBurn();
+    local currCookTime;
+    local minutesTillCooked;
+    local minutesTillBurned;
+    if item:getFluidContainer() ~= nil
+    then
+        fluid = item:getFluidContainer():getProperties();
+        --reduce by 100 so processing is the same as regular foods
+        foodHungerChange = fluid:getHungerChange() * .100;
+        foodThirstChange = fluid:getThirstChange() * .100;
+        foodEndChange = fluid:getEnduranceChange();
+        foodStressChange = fluid:getStressChange();
+        --no boredom change yet
+        foodBoredomChange = 0;
+        foodUnhappyChange = fluid:getUnhappyChange();
+        foodCalories = fluid:getCalories();
+        foodCarbs = fluid:getCarbohydrates();
+        foodProtein = fluid:getProteins();
+        foodFat = fluid:getLipids();
+        --food type items only
+        --foodCookedMicrowave = fluid:isCookedInMicrowave();
+
+        currCookTime = item:getCookingTime();
+        minutesTillCooked = item:getMinutesToCook();
+        minutesTillBurned = item:getMinutesToBurn();
+    else
+        foodHungerChange = item:getHungerChange();
+        foodThirstChange = item:getThirstChange();
+        foodEndChange = item:getEnduranceChange();
+        foodStressChange = item:getStressChange();
+        foodBoredomChange = item:getBoredomChange();
+        foodUnhappyChange = item:getUnhappyChange();
+        foodCalories = item:getCalories();
+        foodCarbs = item:getCarbohydrates();
+        foodProtein = item:getProteins();
+        foodFat = item:getLipids();
+        foodCookedMicrowave = item:isCookedInMicrowave();
+
+        currCookTime = item:getCookingTime();
+        minutesTillCooked = item:getMinutesToCook();
+        minutesTillBurned = item:getMinutesToBurn(); 
+    end
+    
 
     --local remainingFoodUses = (item:getUses() - item:getCurrentUses());
     --print ("uses: "..item:getUses().." Curr Uses: "..item:getCurrentUses())
@@ -421,10 +482,10 @@ AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item,
 
     if foodName ~= nil
     then
-        if item:isRotten() and not player:HasTrait("AT_CarrionEater")
+        if item:IsRotten() and not player:HasTrait("AT_CarrionEater")
         then
             table.insert(returnTable, "%Red%"..foodName);
-        elseif item:isRotten() and item:hasTag("AT_Carnivore") and player:HasTrait("AT_CarrionEater")
+        elseif item:IsRotten() and item:hasTag("AT_Carnivore") and player:HasTrait("AT_CarrionEater")
         then
             table.insert(returnTable, "%LightGreen%"..foodName);
         else
@@ -486,7 +547,7 @@ AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item,
         then
             table.insert(returnTable, "%Red%"..getText("IGUI_invpanel_Burnt"));
         end
-    elseif item:getFreezingTime() > 0 and item:getFreezingTime() < 100
+    elseif not instanceof(item, "ComboItem") and item:getFreezingTime() > 0 and item:getFreezingTime() < 100
     then
         if item:isThawing()
         then
@@ -495,7 +556,7 @@ AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item,
             table.insert(returnTable, getText("IGUI_invpanel_FreezingTime").."|".."%Green%"..string.format("%3.2f", item:getFreezingTime() / 100));
         end
     end
-    if item:isPackaged() or player:HasTrait("Nutritionist") or player:HasTrait("Nutritionist2")
+    if not instanceof(item, "ComboItem") and item:isPackaged() or player:HasTrait("Nutritionist") or player:HasTrait("Nutritionist2")
     then
         if foodCalories ~= nil and (foodCalories + newFoodCalories) ~= 0
         then
@@ -514,14 +575,14 @@ AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item,
             table.insert(returnTable, getText("Tooltip_food_Fat")..":"..string.format("%5.1f",foodFat));
         end
     end
-    if item:isbDangerousUncooked() and not item:isCooked() and not item:isBurnt()
+    if not instanceof(item, "ComboItem") and item:isbDangerousUncooked() and not item:isCooked() and not item:isBurnt()
     then
         if item:hasTag("Egg")
         then
             table.insert(returnTable, "%LavenderBlush%"..getText("Tooltip_food_SlightDanger_uncooked"));
         else
-            if ((player:HasTrait("AT_Carnivore") and item:hasTag("ATCarnivore") and not item:isRotten())
-                    or (player:HasTrait("AT_Herbivore") and item:hasTag("ATHerbivore") and not item:isRotten())
+            if ((player:HasTrait("AT_Carnivore") and item:hasTag("ATCarnivore") and not item:IsRotten())
+                    or (player:HasTrait("AT_Herbivore") and item:hasTag("ATHerbivore") and not item:IsRotten())
                     or (player:HasTrait("AT_CarrionEater")))
             then
                 --do nothing
@@ -530,7 +591,7 @@ AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item,
             end
         end
     end
-    if (item:isGoodHot() or item:isBadCold()) and item:getHeat() < 1.3
+    if not instanceof(item, "ComboItem") and (item:isGoodHot() or item:isBadCold()) and item:getHeat() < 1.3
     then
         table.insert(returnTable, "%LavenderBlush%"..getText("Tooltip_food_BetterHot"));
     end
