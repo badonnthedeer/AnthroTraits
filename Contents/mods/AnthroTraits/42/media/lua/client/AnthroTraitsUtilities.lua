@@ -362,7 +362,13 @@ AnthroTraitsUtilities.CalculateFoodChanges = function(character, food)
     if character:HasTrait("AT_FeralDigestion")
     then
         local maxPoisonAmt = SandboxVars.AnthroTraits.AT_FeralDigestionPoisonAmt
-        if food:getExtraItems() ~= nil
+        if food:getFluidContainer() ~= nil and not food:getFluidContainer():isEmpty()
+        then
+            if food:getFluidContainer():getPrimaryFluid():isCategory(FluidCategory.Alcoholic)
+            then
+                extraPoison = maxPoisonAmt;
+            end
+        elseif food:getExtraItems() ~= nil
         then
             local foodIngredients = food:getExtraItems()
             for i = 0, foodIngredients:size() - 1
@@ -370,12 +376,12 @@ AnthroTraitsUtilities.CalculateFoodChanges = function(character, food)
                 local foodIngredientTags = getScriptManager():getItem(foodIngredients:get(i)):getTags()
                 if foodIngredientTags:contains("ATFeralPoison")
                 then
-                    extraPoison = extraPoison + maxPoisonAmt
+                    extraPoison = extraPoison + maxPoisonAmt;
                 end
             end
         elseif food:hasTag("ATFeralPoison")
         then
-            extraPoison = maxPoisonAmt
+            extraPoison = maxPoisonAmt;
         end
     end
 
