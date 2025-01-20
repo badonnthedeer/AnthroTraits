@@ -66,7 +66,7 @@ end
 
 
 AnthroTraitsUtilities.AddItemTagToItemsFromSandbox = function(itemList, tag)
-    local this = AnthroTraitsUtilities;
+    local ATU = AnthroTraitsUtilities;
 
     local itemTable = {};
     local foundItem;
@@ -118,7 +118,7 @@ AnthroTraitsUtilities.getTooltipValueColor = function(oldValChangeAmt, newValCha
         color = "%Red%";
     elseif (positiveBad and newValChangeAmt < 0 and oldValChangeAmt == newValChangeAmt) or (not positiveBad and newValChangeAmt > 0 and oldValChangeAmt == newValChangeAmt)
     then
-        color = "%Lime%";
+        color = "%White%";
     end
 
     return color;
@@ -141,6 +141,7 @@ end
 
 ---For basic food modifiers. This is built upon by CalculateFoodChanges later.
 AnthroTraitsUtilities.CalculateFoodModifiers = function(character, food)
+    local ATU = AnthroTraitsUtilities;
     local modifiers = {
         multHunger = 0,
         multThirst = 0,
@@ -151,7 +152,13 @@ AnthroTraitsUtilities.CalculateFoodModifiers = function(character, food)
         multCalories = 0,
     }
 
-    if food:hasTag("ATHerbivore") then
+    local foodVoreType = ATU.FoodVoreType(food);
+
+    if foodVoreType == nil
+    then
+        --do nothing
+    elseif foodVoreType == "ATHerbivore" 
+    then
         if character:HasTrait("AT_Carnivore")
         then
             modifiers.multHunger = SandboxVars.AnthroTraits.AT_CarnivoreMalus;
@@ -171,7 +178,8 @@ AnthroTraitsUtilities.CalculateFoodModifiers = function(character, food)
             modifiers.multUnhappiness = SandboxVars.AnthroTraits.AT_HerbivoreBonus;
             modifiers.multCalories = SandboxVars.AnthroTraits.AT_HerbivoreBonus;
         end
-    elseif food:hasTag("ATCarnivore") then
+    elseif foodVoreType == "ATCarnivore" 
+    then
         if character:HasTrait("AT_Herbivore")
         then
             modifiers.multHunger = SandboxVars.AnthroTraits.AT_HerbivoreMalus;
@@ -181,7 +189,7 @@ AnthroTraitsUtilities.CalculateFoodModifiers = function(character, food)
             modifiers.multBoredom = SandboxVars.AnthroTraits.AT_HerbivoreMalus;
             modifiers.multUnhappiness = SandboxVars.AnthroTraits.AT_HerbivoreMalus;
             modifiers.multCalories = SandboxVars.AnthroTraits.AT_HerbivoreMalus;
-        elseif character:HasTrait("AT_Carnivore") and character:HasTrait("AT_CarrionEater") and food:isRotten()
+        elseif character:HasTrait("AT_Carnivore") and character:HasTrait("AT_CarrionEater") and food:IsRotten()
         then
             modifiers.multHunger = SandboxVars.AnthroTraits.AT_CarnivoreBonus + SandboxVars.AnthroTraits.AT_CarrionEaterBonus;
             modifiers.multThirst = SandboxVars.AnthroTraits.AT_CarnivoreBonus + SandboxVars.AnthroTraits.AT_CarrionEaterBonus;
@@ -195,7 +203,7 @@ AnthroTraitsUtilities.CalculateFoodModifiers = function(character, food)
             modifiers.multBoredom = SandboxVars.AnthroTraits.AT_CarnivoreBonus;
             modifiers.multUnhappiness = SandboxVars.AnthroTraits.AT_CarnivoreBonus;
             modifiers.multCalories = SandboxVars.AnthroTraits.AT_CarnivoreBonus;
-        elseif character:HasTrait("AT_CarrionEater") and food:isRotten()
+        elseif character:HasTrait("AT_CarrionEater") and food:IsRotten()
         then
             modifiers.multHunger = SandboxVars.AnthroTraits.AT_CarrionEaterBonus;
             modifiers.multThirst = SandboxVars.AnthroTraits.AT_CarrionEaterBonus;
@@ -270,12 +278,12 @@ AnthroTraitsUtilities.CalculateFoodChanges = function(character, food)
                 local foodIngredientTags = getScriptManager():getItem(foodIngredients:get(i)):getTags()
                 if foodIngredientTags:contains("ATFeralPoison")
                 then
-                    extraPoison = extraPoison + maxPoisonAmt
+                    extraPoison = extraPoison + maxPoisonAmt;
                 end
             end
         elseif food:hasTag("ATFeralPoison")
         then
-            extraPoison = maxPoisonAmt
+            extraPoison = maxPoisonAmt;
         end
     end
 
@@ -294,7 +302,7 @@ end
 
 
 AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item, statModifier)
-    local this = AnthroTraitsUtilities;
+    local ATU = AnthroTraitsUtilities;
     local returnTable = {}
 
     local foodName = item:getName();
@@ -302,8 +310,7 @@ AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item,
     local foodIngredients = item:getExtraItems();
     local foodIngredientTags;
     local encumbrance = item:getActualWeight();
-    local stackEncum = item:getCount() * encumbrance
-    local foodBaseHunger = item:getBaseHunger();
+    local stackEncum = item:getCount() * encumbrance;
     local foodHungerChange = item:getHungerChange();
     local foodThirstChange = item:getThirstChange();
     local foodEndChange = item:getEnduranceChange();
@@ -320,17 +327,7 @@ AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item,
     local minutesTillCooked = item:getMinutesToCook();
     local minutesTillBurned = item:getMinutesToBurn();
 
-    --local remainingFoodUses = (item:getUses() - item:getCurrentUses());
-    --print ("uses: "..item:getUses().." Curr Uses: "..item:getCurrentUses())
-    local baseFeralDigestionPoisonAmount = SandboxVars.AnthroTraits.AT_FeralDigestionPoisonAmt;
-    --local feralDigestionPoisonAmount = remainingFoodUses * baseFeralDigestionPoisonAmount;
-    local totalPoisonPower = 0;
-    --local bleach = getScriptManager():getItem("Base.Bleach");
-    --local bleachPoisonAmt = bleach:getPoisonPower();
-    --local bleachPoisonAmt = 120;
-
-    local foodChanges = this.CalculateFoodChanges(player, item)
-
+    local foodChanges = ATU.CalculateFoodChanges(player, item)
 
     local newFoodHungerChange = foodHungerChange + foodChanges.addHungerChange;
     local newFoodThirstChange = foodThirstChange + foodChanges.addThirstChange;
@@ -343,10 +340,13 @@ AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item,
 
     if foodName ~= nil
     then
-        if item:isRotten() and not player:HasTrait("AT_CarrionEater")
+        if foodChanges.addPoison ~= nil and foodChanges.addPoison > 0
+        then
+            table.insert(returnTable, "%Violet%"..foodName);
+        elseif item:IsRotten() and not player:HasTrait("AT_CarrionEater")
         then
             table.insert(returnTable, "%Red%"..foodName);
-        elseif item:isRotten() and item:hasTag("AT_Carnivore") and player:HasTrait("AT_CarrionEater")
+        elseif item:IsRotten() and item:hasTag("AT_Carnivore") and player:HasTrait("AT_CarrionEater")
         then
             table.insert(returnTable, "%LightGreen%"..foodName);
         else
@@ -359,35 +359,35 @@ AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item,
 
     if encumbrance ~= nil
     then
-        table.insert(returnTable, getText("Tooltip_item_Weight")..":"..string.format("%5.1f", encumbrance))
+        table.insert(returnTable, getText("Tooltip_item_Weight")..":%White%"..string.format("%5.1f", encumbrance))
     end
     if encumbrance ~= nil and item:getCount() > 1
     then
-        table.insert(returnTable, getText("Tooltip_item_StackWeight")..":"..string.format("%5.1f", stackEncum))
+        table.insert(returnTable, getText("Tooltip_item_StackWeight")..":%White%"..string.format("%5.1f", stackEncum))
     end
     if newFoodHungerChange ~= 0
     then
-        table.insert(returnTable, getText("Tooltip_food_Hunger")..":"..this.getTooltipValueColor(foodHungerChange, newFoodHungerChange, true)..this.getTooltipValueSymbol(newFoodHungerChange)..string.format("%3.1f",(newFoodHungerChange * 100)));
+        table.insert(returnTable, getText("Tooltip_food_Hunger")..":"..ATU.getTooltipValueColor(foodHungerChange, newFoodHungerChange, true)..ATU.getTooltipValueSymbol(newFoodHungerChange)..string.format("%3.1f",(newFoodHungerChange * 100)));
     end
     if newFoodThirstChange ~= 0
     then
-        table.insert(returnTable, getText("Tooltip_food_Thirst")..":"..this.getTooltipValueColor(foodThirstChange, newFoodThirstChange, true)..this.getTooltipValueSymbol(newFoodThirstChange)..string.format("%3.1f",(newFoodThirstChange * 100)));
+        table.insert(returnTable, getText("Tooltip_food_Thirst")..":"..ATU.getTooltipValueColor(foodThirstChange, newFoodThirstChange, true)..ATU.getTooltipValueSymbol(newFoodThirstChange)..string.format("%3.1f",(newFoodThirstChange * 100)));
     end
     if newFoodEndChange ~= 0
     then
-        table.insert(returnTable, getText("Tooltip_food_Endurance")..":"..this.getTooltipValueColor(foodEndChange, newFoodEndChange, false)..this.getTooltipValueSymbol(newFoodEndChange)..string.format("%3.1f",(newFoodEndChange * 100)));
+        table.insert(returnTable, getText("Tooltip_food_Endurance")..":"..ATU.getTooltipValueColor(foodEndChange, newFoodEndChange, false)..ATU.getTooltipValueSymbol(newFoodEndChange)..string.format("%3.1f",(newFoodEndChange * 100)));
     end
     if newFoodStressChange ~= 0
     then
-        table.insert(returnTable, getText("Tooltip_food_Stress")..":"..this.getTooltipValueColor(foodStressChange, newFoodStressChange, true)..this.getTooltipValueSymbol(newFoodStressChange)..string.format("%3.1f",newFoodStressChange));
+        table.insert(returnTable, getText("Tooltip_food_Stress")..":"..ATU.getTooltipValueColor(foodStressChange, newFoodStressChange, true)..ATU.getTooltipValueSymbol(newFoodStressChange)..string.format("%3.1f",newFoodStressChange));
     end
     if newFoodBoredomChange ~= 0
     then
-        table.insert(returnTable, getText("Tooltip_food_Boredom")..":"..this.getTooltipValueColor(foodBoredomChange, newFoodBoredomChange, true)..this.getTooltipValueSymbol(newFoodBoredomChange)..string.format("%3.1f",newFoodBoredomChange));
+        table.insert(returnTable, getText("Tooltip_food_Boredom")..":"..ATU.getTooltipValueColor(foodBoredomChange, newFoodBoredomChange, true)..ATU.getTooltipValueSymbol(newFoodBoredomChange)..string.format("%3.1f",newFoodBoredomChange));
     end
     if newFoodUnhappyChange ~= 0
     then
-        table.insert(returnTable, getText("Tooltip_food_Unhappiness")..":"..this.getTooltipValueColor(foodUnhappyChange, newFoodUnhappyChange, true)..this.getTooltipValueSymbol(newFoodUnhappyChange)..string.format("%3.1f",newFoodUnhappyChange));
+        table.insert(returnTable, getText("Tooltip_food_Unhappiness")..":"..ATU.getTooltipValueColor(foodUnhappyChange, newFoodUnhappyChange, true)..ATU.getTooltipValueSymbol(newFoodUnhappyChange)..string.format("%3.1f",newFoodUnhappyChange));
     end
     if item:isCookable() and not item:isFrozen() and item:getHeat() > 1.6 then
         currCookTime = item:getCookingTime();
@@ -421,19 +421,19 @@ AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item,
     then
         if foodCalories ~= nil and (foodCalories + newFoodCalories) ~= 0
         then
-            table.insert(returnTable, getText("Tooltip_food_Calories")..":"..this.getTooltipValueColor(foodCalories, newFoodCalories, false)..string.format("%5.1f", newFoodCalories));
+            table.insert(returnTable, getText("Tooltip_food_Calories")..":"..ATU.getTooltipValueColor(foodCalories, newFoodCalories, false)..string.format("%5.1f", newFoodCalories));
         end
         if foodCarbs ~= nil and foodCarbs ~= 0
         then
-            table.insert(returnTable, getText("Tooltip_food_Carbs")..":"..string.format("%5.1f",foodCarbs));
+            table.insert(returnTable, getText("Tooltip_food_Carbs")..":%White%"..string.format("%5.1f",foodCarbs));
         end
         if foodProtein ~= nil and foodProtein ~= 0
         then
-            table.insert(returnTable, getText("Tooltip_food_Prots")..":"..string.format("%5.1f",foodProtein));
+            table.insert(returnTable, getText("Tooltip_food_Prots")..":%White%"..string.format("%5.1f",foodProtein));
         end
         if foodFat ~= nil and foodFat ~= 0
         then
-            table.insert(returnTable, getText("Tooltip_food_Fat")..":"..string.format("%5.1f",foodFat));
+            table.insert(returnTable, getText("Tooltip_food_Fat")..":%White%"..string.format("%5.1f",foodFat));
         end
     end
     if item:isbDangerousUncooked() and not item:isCooked() and not item:isBurnt()
@@ -442,8 +442,8 @@ AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item,
         then
             table.insert(returnTable, "%LavenderBlush%"..getText("Tooltip_food_SlightDanger_uncooked"));
         else
-            if ((player:HasTrait("AT_Carnivore") and item:hasTag("ATCarnivore") and not item:isRotten())
-                    or (player:HasTrait("AT_Herbivore") and item:hasTag("ATHerbivore") and not item:isRotten())
+            if ((player:HasTrait("AT_Carnivore") and item:hasTag("ATCarnivore") and not item:IsRotten())
+                    or (player:HasTrait("AT_Herbivore") and item:hasTag("ATHerbivore") and not item:IsRotten())
                     or (player:HasTrait("AT_CarrionEater")))
             then
                 --do nothing
@@ -469,5 +469,96 @@ AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item,
     return returnTable;
 end
 
+AnthroTraitsUtilities.FoodVoreType = function(food)
+    --get items in the recipe, if it's a recipe
+    local ingredients = food:getExtraItems();
+    local tags = {}
+
+    --get all tags relating to food, and init table with string keys so their count can be added to
+    for i = 1, #AnthroTraitsGlobals.EvolvedRecipeFoodTags
+    do
+        tags[AnthroTraitsGlobals.EvolvedRecipeFoodTags[i]] = 0;
+    end
+
+    if ingredients ~= nil
+    then
+        local tagWithLargestCount = "";
+        local tagWithLargestCountCount = 0;
+
+        --for each ingredient...
+        for i = 0, ingredients:size() - 1
+        do
+            -- for each tag...
+            for tag, _ in pairs(tags)
+            do
+                --if the ingredient has this tag, up the count for that key in tags
+                local ingredient = ingredients:get(i);
+                local ingredientTags = getScriptManager():getItem(ingredient):getTags()
+                if ingredientTags:contains(tag)
+                then
+                    tags[tag] = tags[tag] + 1;
+                end
+            end
+        end
+
+        --for each tag...
+        for tag, count in pairs(tags)
+        do
+            --record if the count is larger than the previous
+            if count > tagWithLargestCountCount
+            then
+                tagWithLargestCount = tag;
+                tagWithLargestCountCount = count;
+            end       
+        end
+
+        --if the largest count tag is present on greater than 50% of the recipe's items...
+        if tagWithLargestCountCount / ingredients:size() > .5
+        then
+            --return the tag, so it can be handled appropriately when eaten.
+            return tagWithLargestCount;
+        else
+            return nil;
+        end
+    else
+        --here, food must be single item
+        for tag, _ in pairs(tags)
+        do
+            if food:getTags():contains(tag)
+            then
+                return tag;
+            end
+        end
+    end
+end
+
+
+AnthroTraitsUtilities.IsAnthro = function(gameCharacter)
+    if (getActivatedMods():contains("FurryMod") or getActivatedMods():contains("FurryApocalypse")) and gameCharacter ~= nil
+    then
+        local hasFur = false;
+        local itemVisuals = gameCharacter:getItemVisuals();
+        if itemVisuals ~= nil
+        then
+            for i=0, itemVisuals:size() - 1
+            do
+                local itemVisual = itemVisuals:get(i);
+                local item =  itemVisual:getScriptItem();
+                if item ~= nil 
+                then
+                    local tags = item:getTags();
+                    if tags:contains("Fur") or tags:contains("DeceasedFur")
+                    then
+                        hasFur = true;
+                        break;
+                    end    
+                end
+            end;
+        end 
+        return hasFur;
+    else
+        return false;
+    end
+end
 
 return AnthroTraitsUtilities;

@@ -49,6 +49,7 @@
 ------------------------------------------------------------------------------------------------------
 
 --Ensure Load Order:
+FM = require("FurryMod");
 ET = require("DracoExpandedTraits");
 MST = require("MoreSimpleTraits");
 SOTO = require("SimpleOverhaulTraitsAndOccupations");
@@ -73,9 +74,9 @@ AnthroTraitsMain.ExclaimPhrases = {
 
 
 AnthroTraitsMain.HandleInfection = function(player)
-    local biteInfectionChance = SandboxVars.AnthroTraits.AT_ImmunityBiteInfectionChance;
-    local lacerationInfectionChance = SandboxVars.AnthroTraits.AT_ImmunityLacerationInfectionChance;
-    local scratchInfectionChance = SandboxVars.AnthroTraits.AT_ImmunityScratchInfectionChance;
+    local biteInfectionChance = SandboxVars.AnthroTraits.AT_AnthroImmunityBiteInfectionChance;
+    local lacerationInfectionChance = SandboxVars.AnthroTraits.AT_AnthroImmunityLacerationInfectionChance;
+    local scratchInfectionChance = SandboxVars.AnthroTraits.AT_AnthroImmunityScratchInfectionChance;
     if getDebug()
     then
         print("Handle Infection Triggered");
@@ -90,13 +91,13 @@ AnthroTraitsMain.HandleInfection = function(player)
             then
                 print( tostring(bodypart:getType()) .. " is injured and infected.");
             end
-            if player:HasTrait("AT_Hooves")
+            if player:HasTrait("AT_Unguligrade")
             then
                 if tostring(bodypart:getType()) == "Foot_L" or tostring(bodypart:getType()) == "Foot_R"
                 then
                     if getDebug()
                     then
-                        print("AT_Hooves foot immunity triggered.");
+                        print("AT_Unguligrade foot immunity triggered.");
                     end
                     bodypart:SetInfected(false);
                     player:getBodyDamage():setInfected(false);
@@ -106,87 +107,98 @@ AnthroTraitsMain.HandleInfection = function(player)
                     player:getBodyDamage():setInfectionGrowthRate(0);
                 end
             end
-            if player:HasTrait("AT_Immunity")
+            if player:HasTrait("AT_AnthroImmunity") 
             then
                 local rolledInfectionChance = ZombRand(1, 100);
-                if getDebug()
+                local lastAttackedBy = player:getAttackedBy();
+                if (not SandboxVars.AnthroTraits.AT_AnthroImmunityIgnoredByAnthroZombies and not ATU.IsAnthro(lastAttackedBy)
+                or not SandboxVars.AnthroTraits.AT_AnthroImmunityIgnoredByAnthroZombies and ATU.IsAnthro(lastAttackedBy)
+                or SandboxVars.AnthroTraits.AT_AnthroImmunityIgnoredByAnthroZombies and not ATU.IsAnthro(lastAttackedBy))
                 then
-                    print("Rolled " .. rolledInfectionChance);
-                end
-                if bodypart:bitten() 
-                then
-                    if biteInfectionChance <= rolledInfectionChance 
+                    if getDebug()
                     then
-                        bodypart:SetInfected(false);
-                        player:getBodyDamage():setInfected(false);
-                        player:getBodyDamage():setInfectionMortalityDuration(-1);
-                        player:getBodyDamage():setInfectionTime(-1);
-                        player:getBodyDamage():setInfectionLevel(0);
-                        player:getBodyDamage():setInfectionGrowthRate(0);
-                        if getDebug()
+                        print("Rolled " .. rolledInfectionChance);
+                    end
+                    if bodypart:bitten() 
+                    then
+                        if biteInfectionChance <= rolledInfectionChance 
                         then
-                            print("Infection defense successful.");
-                        end
-                        if SandboxVars.AnthroTraits.AT_ImmunityBiteGetsRegularInfectionOnDefense
-                        then
-                            bodypart:setInfectedWound(true);
+                            bodypart:SetInfected(false);
+                            player:getBodyDamage():setInfected(false);
+                            player:getBodyDamage():setInfectionMortalityDuration(-1);
+                            player:getBodyDamage():setInfectionTime(-1);
+                            player:getBodyDamage():setInfectionLevel(0);
+                            player:getBodyDamage():setInfectionGrowthRate(0);
                             if getDebug()
                             then
-                                print("Knox infection substituted with regular infection. Human mouths are septic :S");
+                                print("Infection defense successful.");
                             end
+                                if SandboxVars.AnthroTraits.AT_AnthroImmunityBiteGetsRegularInfectionOnDefense
+                            then
+                                bodypart:setInfectedWound(true);
+                                if getDebug()
+                                then
+                                    print("Knox infection substituted with regular infection. Human mouths are septic :S");
+                                end
 
+                            end
+                            return false;
+                        else
+                            if getDebug()
+                            then
+                                print("Infection defense UNSUCCESSFUL. DIE WELL!");
+                            end
+                            return true;
                         end
-                        return false;
-                    else
-                        if getDebug()
-                        then
-                            print("Infection defense UNSUCCESSFUL. DIE WELL!");
-                        end
-                        return true;
-                    end
-                elseif bodypart:isCut() --irritatingly, using the function to get laceration doesn't follow the same naming convention
-                then
-                    if lacerationInfectionChance <= rolledInfectionChance 
+                    elseif bodypart:isCut() --irritatingly, using the function to get laceration doesn't follow the same naming convention
                     then
-                        bodypart:SetInfected(false);
-                        player:getBodyDamage():setInfected(false);
-                        player:getBodyDamage():setInfectionMortalityDuration(-1);
-                        player:getBodyDamage():setInfectionTime(-1);
-                        player:getBodyDamage():setInfectionLevel(0);
-                        player:getBodyDamage():setInfectionGrowthRate(0);
-                        if getDebug()
+                        if lacerationInfectionChance <= rolledInfectionChance 
                         then
-                            print("Infection defense successful.");
+                            bodypart:SetInfected(false);
+                            player:getBodyDamage():setInfected(false);
+                            player:getBodyDamage():setInfectionMortalityDuration(-1);
+                            player:getBodyDamage():setInfectionTime(-1);
+                            player:getBodyDamage():setInfectionLevel(0);
+                            player:getBodyDamage():setInfectionGrowthRate(0);
+                            if getDebug()
+                            then
+                                print("Infection defense successful.");
+                            end
+                            return false;
+                        else
+                            if getDebug()
+                            then
+                                print("Infection defense UNSUCCESSFUL. DIE WELL!");
+                            end
+                            return true;
                         end
-                        return false;
-                    else
-                        if getDebug()
-                        then
-                            print("Infection defense UNSUCCESSFUL. DIE WELL!");
-                        end
-                        return true;
-                    end
-                elseif bodypart:scratched() 
-                then
-                    if scratchInfectionChance <= rolledInfectionChance 
+                    elseif bodypart:scratched() 
                     then
-                        bodypart:SetInfected(false);
-                        player:getBodyDamage():setInfected(false);
-                        player:getBodyDamage():setInfectionMortalityDuration(-1);
-                        player:getBodyDamage():setInfectionTime(-1);
-                        player:getBodyDamage():setInfectionLevel(0);
-                        player:getBodyDamage():setInfectionGrowthRate(0);
-                        if getDebug()
+                        if scratchInfectionChance <= rolledInfectionChance 
                         then
-                            print("Infection defense successful.");
+                            bodypart:SetInfected(false);
+                            player:getBodyDamage():setInfected(false);
+                            player:getBodyDamage():setInfectionMortalityDuration(-1);
+                            player:getBodyDamage():setInfectionTime(-1);
+                            player:getBodyDamage():setInfectionLevel(0);
+                            player:getBodyDamage():setInfectionGrowthRate(0);
+                            if getDebug()
+                            then
+                                print("Infection defense successful.");
+                            end
+                            return false;
+                        else
+                            if getDebug()
+                            then
+                                print("Infection defense UNSUCCESSFUL. DIE WELL!");
+                            end
+                            return true;
                         end
-                        return false;
-                    else
-                        if getDebug()
-                        then
-                            print("Infection defense UNSUCCESSFUL. DIE WELL!");
-                        end
-                        return true;
+                    end
+                else
+                    if getDebug()
+                    then
+                        print("Not applying Anthro Immunity to infection from anthro. DIE WELL!")
                     end
                 end
             end 
@@ -281,7 +293,7 @@ AnthroTraitsMain.ExclaimerCheck = function(player)
         local phrases = AnthroTraitsMain.ExclaimPhrases.generic
         local phraseChance = ZombRand(1, #phrases);
         local playerSquare = player:getCurrentSquare();
-        --if player:HasTrait("AT_Hooves");
+        --if player:HasTrait("AT_Unguligrade");
         --then
         --    player:SayShout("BLEAT!");
         --else
@@ -368,7 +380,7 @@ AnthroTraitsMain.CarryWeightUpdate = function(player)
     local newMaxWeightBase = defaultMaxWeightBase;
     if getDebug()
     then
-        print(string.format("Base: %f", newMaxWeightBase));
+        --print(string.format("Base: %f", newMaxWeightBase));
     end
     if getActivatedMods():contains("ToadTraits")
     then
@@ -496,10 +508,10 @@ end
 
 
 AnthroTraitsMain.ATOnInitWorld = function()
-    ATU.AddItemTagToItemsFromSandbox(SandboxVars.AnthroTraits.AT_Carnivore_Items, "ATCarnivore");
-    ATU.AddItemTagToItemsFromSandbox(SandboxVars.AnthroTraits.AT_Herbivore_Items, "ATHerbivore");
-    ATU.AddItemTagToItemsFromSandbox(SandboxVars.AnthroTraits.AT_Bug_o_ssieur_Items, "ATInsect");
-    ATU.AddItemTagToItemsFromSandbox(SandboxVars.AnthroTraits.AT_FeralDigestion_Items, "ATFeralPoison");
+    ATU.AddItemTagToItemsFromSandbox(SandboxVars.AnthroTraits.AT_CarnivoreItems, "ATCarnivore");
+    ATU.AddItemTagToItemsFromSandbox(SandboxVars.AnthroTraits.AT_HerbivoreItems, "ATHerbivore");
+    ATU.AddItemTagToItemsFromSandbox(SandboxVars.AnthroTraits.AT_Bug_o_ssieurItems, "ATInsect");
+    ATU.AddItemTagToItemsFromSandbox(SandboxVars.AnthroTraits.AT_FeralDigestionItems, "ATFeralPoison");
 
     Colors["LavenderBlush"] = Color.new(1, 229/255, 229/255, 1);
 
@@ -507,7 +519,7 @@ end
 
 
 AnthroTraitsMain.ATPlayerDamageTick = function(player)
-    local this = AnthroTraitsMain;
+    local ATM = AnthroTraitsMain;
 
     if player:isZombie()
     then
@@ -522,10 +534,10 @@ AnthroTraitsMain.ATPlayerDamageTick = function(player)
         then
             print("Handle Infection about to be triggered");
         end
-        playerData.trulyInfected = this.HandleInfection(player);
+        playerData.trulyInfected = ATM.HandleInfection(player);
     end
 
-    if player:HasTrait("AT_Hooves")
+    if player:HasTrait("AT_Unguligrade")
     then
         --immune to scratches, lacerations, bites
         local footL = player:getBodyDamage():getBodyPart(BodyPartType.Foot_L);
@@ -785,17 +797,22 @@ AnthroTraitsMain.ATOnClothingUpdated = function(character)
         then
             vanillaStomp = InventoryItemFactory.CreateItem(wornShoes:getFullType()):getStompPower();
         end
-        local digitigradeMultiplier = 1 + SandboxVars.AnthroTraits.AT_DigitigradeStompPowerPctIncrease;
-
-        if character:HasTrait("AT_Digitigrade")
+        local digitigradeMultiplier = 1 + SandboxVars.AnthroTraits.AT_DigitigradeStompDmgPctIncrease;
+        local unguligradeMultiplier = 1 + SandboxVars.AnthroTraits.AT_UnguligradeStompDmgPctIncrease
+        if character:HasTrait("AT_Digitigrade") or character:HasTrait("AT_Unguligrade")
         then
             if wornShoes ~= nil
             then
-                wornShoes:setStompPower(vanillaStomp * digitigradeMultiplier);
-            else
-                if character:HasTrait("AT_Hooves")
+                if character:HasTrait("AT_Unguligrade")
                 then
-                    character:setClothingItem_Feet(InventoryItemFactory.CreateItem("Base.DigitigradeHoofers"))
+                    wornShoes:setStompPower(vanillaStomp * unguligradeMultiplier);
+                else
+                    wornShoes:setStompPower(vanillaStomp * digitigradeMultiplier);
+                end
+            else
+                if character:HasTrait("AT_Unguligrade")
+                then
+                    character:setClothingItem_Feet(InventoryItemFactory.CreateItem("Base.UnguligradeHoofers"))
                 else
                     character:setClothingItem_Feet(InventoryItemFactory.CreateItem("Base.DigitigradePaws"))
                 end
@@ -815,7 +832,7 @@ end
 
 
 AnthroTraitsMain.ATEveryOneMinute = function()
-    local this = AnthroTraitsMain;
+    local ATM = AnthroTraitsMain;
     local activePlayers = getNumActivePlayers()
     if activePlayers >= 1
     then
@@ -828,23 +845,27 @@ AnthroTraitsMain.ATEveryOneMinute = function()
                 --add random test functions here:
 
                 --
-                if player:HasTrait("AT_Immunity") and not player:getBodyDamage():isInfected() and modData.trulyInfected == true
+                if player:HasTrait("AT_AnthroImmunity") and not player:getBodyDamage():isInfected() and (modData.trulyInfected == true or modData.trulyInfected == nil)
                 then
                     --if a player is a cheater/debugging or takes a game-made cure
                     modData.trulyInfected = false;
+                    if getDebug
+                    then
+                        print("trulyInfected set to false. Anthro Immunity applies again.");
+                    end
                 end
 
                 if player:HasTrait("AT_Exclaimer")
                 then
-                    this.ExclaimerCheck(player);
+                    ATM.ExclaimerCheck(player);
                 end
                 if player:HasTrait("AT_Stinky")
                 then
-                    this.BeStinky(player);
+                    ATM.BeStinky(player);
                 end
                 modData.canTripChecked = false;
                 modData.tripSafe = false;
-                this.CarryWeightUpdate(player);
+                ATM.CarryWeightUpdate(player);
             end
         end
     end
@@ -874,7 +895,7 @@ end
 
 AnthroTraitsMain.ATEveryDays = function()
     local activePlayers = getNumActivePlayers();
-    local season = getClimateManager():getSeason():getSeasonName();
+    local season = getClimateManager():getSeason();
 
     if activePlayers >= 1
     then
@@ -882,11 +903,12 @@ AnthroTraitsMain.ATEveryDays = function()
         do
             local player = getSpecificPlayer(playerIndex);
             local modData =  player:getModData().ATPlayerData;
-            if player:HasTrait("AT_Torpor") and season:lower():contains("winter")
+            local winterInt = zombie.erosion.season.ErosionSeason.SEASON_WINTER;
+            --https://demiurgequantified.github.io/ProjectZomboidJavaDocs/constant-values.html#zombie.erosion.season.ErosionSeason.NUM_SEASONS
+            if player:HasTrait("AT_Torpor") and season:isSeason(winterInt)
             then
                 modData.torporActive = true;
-            elseif player:HasTrait("AT_Torpor") and not season:contains("winter")
-            then
+            else
                 modData.torporActive = false;
             end
         end
@@ -895,7 +917,7 @@ end
 
 
 AnthroTraitsMain.ATPlayerUpdate = function(player)
-    local this = AnthroTraitsMain;
+    local ATM = AnthroTraitsMain;
     local fallTimeMult = SandboxVars.AnthroTraits.AT_NaturalTumblerFallTimeMult;
     local modData =  player:getModData().ATPlayerData;
     local beforeFallTime = modData.oldFallTime;
@@ -938,7 +960,7 @@ AnthroTraitsMain.ATPlayerUpdate = function(player)
             print("FallTime: "..player:getFallTime())
         end
     end
-    this.LonelyUpdate(player);
+    ATM.LonelyUpdate(player);
 end
 
 --[[AnthroTraitsMain.ATOnClientCommand = function(module, command, args)

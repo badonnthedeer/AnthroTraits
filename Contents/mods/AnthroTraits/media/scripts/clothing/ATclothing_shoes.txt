@@ -16,7 +16,7 @@ module Base
 		RemoveOnBroken = false,
 		WorldStaticModel = Shoes_FlipFlops_Ground,
 	}
-	item DigitigradeHoofers
+	item UnguligradeHoofers
 	{
 		DisplayCategory = Clothing,
 		Type = Clothing,

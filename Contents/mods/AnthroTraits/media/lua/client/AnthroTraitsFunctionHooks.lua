@@ -99,67 +99,6 @@ end
 
 --VANILLA LUA FUNCTION HOOKS
 
-
-local OriginalEvolvedRecipeAdd = ISAddItemInRecipe.perform
-ISAddItemInRecipe.perform = function(self)
-
-    OriginalEvolvedRecipeAdd(self);
-    --get items in the recipe
-    local ingredients = self.baseItem:getExtraItems();
-    local tags = {}
-
-    --get all tags relating to food, and init table with string keys so their count can be added to
-    for i = 1, #AnthroTraitsGlobals.EvolvedRecipeFoodTags
-    do
-        tags[AnthroTraitsGlobals.EvolvedRecipeFoodTags[i]] = 0;
-    end
-
-    local tagWithLargestCount = "";
-    local tagWithLargestCountCount = 0;
-
-    --for each ingredient...
-    for i = 0, ingredients:size() -1
-    do
-        -- for each tag...
-        for tag, _ in pairs(tags)
-        do
-            --if the ingredient has this tag, up the count for that key in tags
-            local ingredient = ingredients:get(i) ;
-            local ingredientTags = getScriptManager():getItem(ingredient):getTags()
-            if ingredientTags:contains(tag)
-            then
-                tags[tag] = tags[tag] + 1;
-            end
-        end
-    end
-
-    --for each tag...
-    for tag, count in pairs(tags)
-    do
-        --record if the count is larger than the previous
-        if count > tagWithLargestCountCount
-        then
-            tagWithLargestCount = tag;
-            tagWithLargestCountCount = count;
-        end
-        --and remove the tag from the recipe to reset what food-tags it may already have
-        if self.baseItem:hasTag(tag)
-        then
-            self.baseItem:getTags():remove(tag);
-            --local tagB, tagE = allItemTags:find(tag);
-            --allItemTags = allItemTags:sub(0, tagB)..allItemTags:sub(tagE + 1, allItemTags:size()-1)
-        end
-    end
-
-    --if the largest count tag is present on greater than 50% of the recipe's items...
-    if tagWithLargestCountCount / ingredients:size() > .5
-    then
-        --add the tag to the item, so it can be handled appropriately when eaten.
-        self.baseItem:getTags():add(tagWithLargestCount);
-    end
-end
-
-
 local OriginalEatPerform = ISEatFoodAction.perform;
 ISEatFoodAction.perform = function(self)
     -- code to run before the original
@@ -205,7 +144,7 @@ end
 local oldRender = ISToolTipInv.render
 ISToolTipInv.render = function(self)
      --redirect back to oldrender if tooltip isn't for food.
-    if (ISContextMenu.instance and ISContextMenu.instance.visibleCheck) or not self.item
+    if (ISContextMenu.instance and ISContextMenu.instance.visibleCheck) or (self.item == nil)
     then
         oldRender(self);
     else
@@ -219,9 +158,9 @@ ISToolTipInv.render = function(self)
             local my = getMouseY() + 10;
             local tooltipOffsetX = -8;
             local tooltipOffsetY = 15;
-            local tooltipPaddingLeft = 15;
-            local tooltipPaddingRight = 5;
-            local tooltipPaddingTop = 7;
+            local tooltipPaddingLeft = 7;
+            local tooltipPaddingRight = 6;
+            local tooltipPaddingTop = 3;
             local tooltipPaddingBottom = 0;
             local tooltipTextTable = {};
             local longestTextWidth = 0;
@@ -236,12 +175,12 @@ ISToolTipInv.render = function(self)
             local text = "";
             local leftText = "";
 
-            if (((self.item:hasTag("ATHerbivore") or self.item:hasTag("ATCarnivore")) and (player:HasTrait("AT_Herbivore") or player:HasTrait("AT_Carnivore") or player:HasTrait("AT_CarrionEater")))
+            if (((ATU.FoodVoreType(self.item) == "ATHerbivore" or ATU.FoodVoreType(self.item) == "ATCarnivore") and (player:HasTrait("AT_Herbivore") or player:HasTrait("AT_Carnivore") or player:HasTrait("AT_CarrionEater")))
                     or (self.item:hasTag("ATFeralPoison") and player:HasTrait("AT_FeralDigestion"))
                     or (self.item:hasTag("ATInsect") and player:HasTrait("AT_Bug_o_ssieur"))
                     or (player:HasTrait("AT_FoodMotivated")))
             then
-                if self.item:hasTag("ATHerbivore")
+                if ATU.FoodVoreType(self.item) == "ATHerbivore"
                 then
                     if player:HasTrait("AT_Herbivore")
                     then
@@ -253,7 +192,7 @@ ISToolTipInv.render = function(self)
                     then
                         tooltipTextTable = ATU.BuildFoodDescription(player, nil, self.item, 0)
                     end
-                elseif self.item:hasTag("ATCarnivore")
+                elseif ATU.FoodVoreType(self.item) == "ATCarnivore"
                 then
                     if player:HasTrait("AT_Carnivore") and player:HasTrait("AT_CarrionEater") and self.item:IsRotten()
                     then
@@ -281,7 +220,7 @@ ISToolTipInv.render = function(self)
             end
 
             for i = 1, #tooltipTextTable do
-                text = string.gsub(tooltipTextTable[i], "%%.*%%", "")
+                text = string.gsub(tooltipTextTable[i], "%%[^%%]+%%", "")
                 longestTextWidth = math.max(longestTextWidth, getTextManager():MeasureStringX(UIFont[getCore():getOptionTooltipFont()], text));
                 if tooltipTextTable[i]:find(":")
                 then
@@ -346,7 +285,7 @@ ISToolTipInv.render = function(self)
 
             for i = 1, #tooltipTextTable do
                 local lineX = tooltipPaddingLeft;
-                local lineRightX = tooltipPaddingLeft + longestLeftTextWidth + rightTextLeftPadding;
+                local lineRightX = longestTextWidth + tooltipPaddingLeft;
                 local lineYBar;
                 local currColor = defaultColor;
                 local leftTextWidth;
@@ -389,7 +328,7 @@ ISToolTipInv.render = function(self)
                     currColor = Colors[rightTextColor] or defaultColor;
                     if rightText ~= nil
                     then
-                        self.tooltip:DrawText(rightText, lineRightX, lineY,
+                        self.tooltip:DrawTextRight(rightText, lineRightX, lineY,
                                 currColor:getRedFloat(),
                                 currColor:getGreenFloat(),
                                 currColor:getBlueFloat(),
