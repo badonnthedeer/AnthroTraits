@@ -149,7 +149,7 @@ ISToolTipInv.render = function(self)
         oldRender(self);
     else
         --short-circuit to prevent components from triggering (transfer fluid gui)
-        if not instanceof(self.item, "Food") and (not instanceof(self.item, "ComboItem") and self.item:isFood())
+        if not instanceof(self.item, "Food") and (not instanceof(self.item, "ComboItem"))
         then
             oldRender(self);
         else
@@ -159,9 +159,9 @@ ISToolTipInv.render = function(self)
             local my = getMouseY() + 10;
             local tooltipOffsetX = -8;
             local tooltipOffsetY = 15;
-            local tooltipPaddingLeft = 15;
-            local tooltipPaddingRight = 5;
-            local tooltipPaddingTop = 7;
+            local tooltipPaddingLeft = 7;
+            local tooltipPaddingRight = 6;
+            local tooltipPaddingTop = 3;
             local tooltipPaddingBottom = 0;
             local tooltipTextTable = {};
             local longestTextWidth = 0;
@@ -221,7 +221,7 @@ ISToolTipInv.render = function(self)
             end
 
             for i = 1, #tooltipTextTable do
-                text = string.gsub(tooltipTextTable[i], "%%.*%%", "")
+                text = string.gsub(tooltipTextTable[i], "%%[^%%]+%%", "")
                 longestTextWidth = math.max(longestTextWidth, getTextManager():MeasureStringX(UIFont[getCore():getOptionTooltipFont()], text));
                 if tooltipTextTable[i]:find(":")
                 then
@@ -286,7 +286,7 @@ ISToolTipInv.render = function(self)
 
             for i = 1, #tooltipTextTable do
                 local lineX = tooltipPaddingLeft;
-                local lineRightX = tooltipPaddingLeft + longestLeftTextWidth + rightTextLeftPadding;
+                local lineRightX = longestTextWidth + tooltipPaddingLeft;
                 local lineYBar;
                 local currColor = defaultColor;
                 local leftTextWidth;
@@ -329,7 +329,7 @@ ISToolTipInv.render = function(self)
                     currColor = Colors[rightTextColor] or defaultColor;
                     if rightText ~= nil
                     then
-                        self.tooltip:DrawText(rightText, lineRightX, lineY,
+                        self.tooltip:DrawTextRight(rightText, lineRightX, lineY,
                                 currColor:getRedFloat(),
                                 currColor:getGreenFloat(),
                                 currColor:getBlueFloat(),
