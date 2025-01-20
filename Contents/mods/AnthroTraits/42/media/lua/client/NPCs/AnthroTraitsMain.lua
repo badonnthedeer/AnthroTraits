@@ -526,7 +526,7 @@ end
 
 
 AnthroTraitsMain.ATPlayerDamageTick = function(player)
-    local this = AnthroTraitsMain;
+    local ATM = AnthroTraitsMain;
 
     if player:isZombie()
     then
@@ -541,7 +541,7 @@ AnthroTraitsMain.ATPlayerDamageTick = function(player)
         then
             print("Handle Infection about to be triggered");
         end
-        playerData.trulyInfected = this.HandleInfection(player);
+        playerData.trulyInfected = ATM.HandleInfection(player);
     end
 
     if player:HasTrait("AT_Unguligrade")
@@ -816,7 +816,7 @@ end
 
 
 AnthroTraitsMain.ATEveryOneMinute = function()
-    local this = AnthroTraitsMain;
+    local ATM = AnthroTraitsMain;
     local activePlayers = getNumActivePlayers()
     if activePlayers >= 1
     then
@@ -841,15 +841,15 @@ AnthroTraitsMain.ATEveryOneMinute = function()
 
                 if player:HasTrait("AT_Exclaimer")
                 then
-                    this.ExclaimerCheck(player);
+                    ATM.ExclaimerCheck(player);
                 end
                 if player:HasTrait("AT_Stinky")
                 then
-                    this.BeStinky(player);
+                    ATM.BeStinky(player);
                 end
                 modData.canTripChecked = false;
                 modData.tripSafe = false;
-                this.CarryWeightUpdate(player);
+                ATM.CarryWeightUpdate(player);
             end
         end
     end
@@ -901,7 +901,7 @@ end
 
 
 AnthroTraitsMain.ATPlayerUpdate = function(player)
-    local this = AnthroTraitsMain;
+    local ATM = AnthroTraitsMain;
     local fallTimeMult = SandboxVars.AnthroTraits.AT_NaturalTumblerFallTimeMult;
     local modData =  player:getModData().ATPlayerData;
     local beforeFallTime = modData.oldFallTime;
@@ -944,7 +944,7 @@ AnthroTraitsMain.ATPlayerUpdate = function(player)
             print("FallTime: "..player:getFallTime())
         end
     end
-    this.LonelyUpdate(player);
+    ATM.LonelyUpdate(player);
 end
 
 --[[AnthroTraitsMain.ATOnClientCommand = function(module, command, args)

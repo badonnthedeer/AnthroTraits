@@ -136,7 +136,7 @@ AnthroTraitsUtilities.ExportFoodGuideFiles = function()
 end
 
 AnthroTraitsUtilities.AddItemTagToItemsFromSandbox = function(itemList, tag)
-    local this = AnthroTraitsUtilities;
+    local ATU = AnthroTraitsUtilities;
 
     local itemTable = {};
     local foundItem;
@@ -211,7 +211,7 @@ end
 
 ---For basic food modifiers. This is built upon by CalculateFoodChanges later.
 AnthroTraitsUtilities.CalculateFoodModifiers = function(character, food)
-    local this = AnthroTraitsUtilities;
+    local ATU = AnthroTraitsUtilities;
     local modifiers = {
         multHunger = 0,
         multThirst = 0,
@@ -222,7 +222,7 @@ AnthroTraitsUtilities.CalculateFoodModifiers = function(character, food)
         multCalories = 0,
     }
 
-    local foodVoreType = this.FoodVoreType(food);
+    local foodVoreType = ATU.FoodVoreType(food);
 
     if foodVoreType == nil
     then
@@ -400,7 +400,7 @@ end
 
 
 AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item, statModifier)
-    local this = AnthroTraitsUtilities;
+    local ATU = AnthroTraitsUtilities;
     local returnTable = {}
 
     local foodName = item:getName();
@@ -425,21 +425,7 @@ AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item,
     local minutesTillCooked = item:getMinutesToCook();
     local minutesTillBurned = item:getMinutesToBurn();
 
-    local note = item.Tooltip;
-        
-    
-
-    --local remainingFoodUses = (item:getUses() - item:getCurrentUses());
-    --print ("uses: "..item:getUses().." Curr Uses: "..item:getCurrentUses())
-    local baseFeralDigestionPoisonAmount = SandboxVars.AnthroTraits.AT_FeralDigestionPoisonAmt;
-    --local feralDigestionPoisonAmount = remainingFoodUses * baseFeralDigestionPoisonAmount;
-    local totalPoisonPower = 0;
-    --local bleach = getScriptManager():getItem("Base.Bleach");
-    --local bleachPoisonAmt = bleach:getPoisonPower();
-    --local bleachPoisonAmt = 120;
-
-    local foodChanges = this.CalculateFoodChanges(player, item)
-
+    local foodChanges = ATU.CalculateFoodChanges(player, item)
 
     local newFoodHungerChange = foodHungerChange + foodChanges.addHungerChange;
     local newFoodThirstChange = foodThirstChange + foodChanges.addThirstChange;
@@ -479,27 +465,27 @@ AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item,
     end
     if newFoodHungerChange ~= 0
     then
-        table.insert(returnTable, getText("Tooltip_food_Hunger")..":"..this.getTooltipValueColor(foodHungerChange, newFoodHungerChange, true)..this.getTooltipValueSymbol(newFoodHungerChange)..string.format("%3.1f",(newFoodHungerChange * 100)));
+        table.insert(returnTable, getText("Tooltip_food_Hunger")..":"..ATU.getTooltipValueColor(foodHungerChange, newFoodHungerChange, true)..ATU.getTooltipValueSymbol(newFoodHungerChange)..string.format("%3.1f",(newFoodHungerChange * 100)));
     end
     if newFoodThirstChange ~= 0
     then
-        table.insert(returnTable, getText("Tooltip_food_Thirst")..":"..this.getTooltipValueColor(foodThirstChange, newFoodThirstChange, true)..this.getTooltipValueSymbol(newFoodThirstChange)..string.format("%3.1f",(newFoodThirstChange * 100)));
+        table.insert(returnTable, getText("Tooltip_food_Thirst")..":"..ATU.getTooltipValueColor(foodThirstChange, newFoodThirstChange, true)..ATU.getTooltipValueSymbol(newFoodThirstChange)..string.format("%3.1f",(newFoodThirstChange * 100)));
     end
     if newFoodEndChange ~= 0
     then
-        table.insert(returnTable, getText("Tooltip_food_Endurance")..":"..this.getTooltipValueColor(foodEndChange, newFoodEndChange, false)..this.getTooltipValueSymbol(newFoodEndChange)..string.format("%3.1f",(newFoodEndChange * 100)));
+        table.insert(returnTable, getText("Tooltip_food_Endurance")..":"..ATU.getTooltipValueColor(foodEndChange, newFoodEndChange, false)..ATU.getTooltipValueSymbol(newFoodEndChange)..string.format("%3.1f",(newFoodEndChange * 100)));
     end
     if newFoodStressChange ~= 0
     then
-        table.insert(returnTable, getText("Tooltip_food_Stress")..":"..this.getTooltipValueColor(foodStressChange, newFoodStressChange, true)..this.getTooltipValueSymbol(newFoodStressChange)..string.format("%3.1f",newFoodStressChange));
+        table.insert(returnTable, getText("Tooltip_food_Stress")..":"..ATU.getTooltipValueColor(foodStressChange, newFoodStressChange, true)..ATU.getTooltipValueSymbol(newFoodStressChange)..string.format("%3.1f",newFoodStressChange));
     end
     if newFoodBoredomChange ~= 0
     then
-        table.insert(returnTable, getText("Tooltip_food_Boredom")..":"..this.getTooltipValueColor(foodBoredomChange, newFoodBoredomChange, true)..this.getTooltipValueSymbol(newFoodBoredomChange)..string.format("%3.1f",newFoodBoredomChange));
+        table.insert(returnTable, getText("Tooltip_food_Boredom")..":"..ATU.getTooltipValueColor(foodBoredomChange, newFoodBoredomChange, true)..ATU.getTooltipValueSymbol(newFoodBoredomChange)..string.format("%3.1f",newFoodBoredomChange));
     end
     if newFoodUnhappyChange ~= 0
     then
-        table.insert(returnTable, getText("Tooltip_food_Unhappiness")..":"..this.getTooltipValueColor(foodUnhappyChange, newFoodUnhappyChange, true)..this.getTooltipValueSymbol(newFoodUnhappyChange)..string.format("%3.1f",newFoodUnhappyChange));
+        table.insert(returnTable, getText("Tooltip_food_Unhappiness")..":"..ATU.getTooltipValueColor(foodUnhappyChange, newFoodUnhappyChange, true)..ATU.getTooltipValueSymbol(newFoodUnhappyChange)..string.format("%3.1f",newFoodUnhappyChange));
     end
     if item:isCookable() and not item:isFrozen() and item:getHeat() > 1.6 then
         currCookTime = item:getCookingTime();
@@ -533,7 +519,7 @@ AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item,
     then
         if foodCalories ~= nil and (foodCalories + newFoodCalories) ~= 0
         then
-            table.insert(returnTable, getText("Tooltip_food_Calories")..":"..this.getTooltipValueColor(foodCalories, newFoodCalories, false)..string.format("%5.1f", newFoodCalories));
+            table.insert(returnTable, getText("Tooltip_food_Calories")..":"..ATU.getTooltipValueColor(foodCalories, newFoodCalories, false)..string.format("%5.1f", newFoodCalories));
         end
         if foodCarbs ~= nil and foodCarbs ~= 0
         then
@@ -582,7 +568,7 @@ AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item,
 end
 
 AnthroTraitsUtilities.BuildFluidContainerDescription = function(player, description, item, statModifier)
-    local this = AnthroTraitsUtilities;
+    local ATU = AnthroTraitsUtilities;
     local returnTable = {}
 
     local foodName = item:getName();
@@ -616,7 +602,7 @@ AnthroTraitsUtilities.BuildFluidContainerDescription = function(player, descript
     local minutesTillCooked = item:getMinutesToCook();
     local minutesTillBurned = item:getMinutesToBurn();
 
-    local foodChanges = this.CalculateFoodChanges(player, item)
+    local foodChanges = ATU.CalculateFoodChanges(player, item)
 
     local newFoodHungerChange = foodHungerChange + foodChanges.addHungerChange;
     local newFoodThirstChange = foodThirstChange + foodChanges.addThirstChange;
@@ -661,27 +647,27 @@ AnthroTraitsUtilities.BuildFluidContainerDescription = function(player, descript
     end
     if newFoodThirstChange ~= 0
     then
-        table.insert(returnTable, "%DarkKhaki%"..getText("Tooltip_food_Thirst")..":"..this.getTooltipValueColor(foodThirstChange, newFoodThirstChange, true)..this.getTooltipValueSymbol(newFoodThirstChange)..string.format("%3.1f",newFoodThirstChange));
+        table.insert(returnTable, "%DarkKhaki%"..getText("Tooltip_food_Thirst")..":"..ATU.getTooltipValueColor(foodThirstChange, newFoodThirstChange, true)..ATU.getTooltipValueSymbol(newFoodThirstChange)..string.format("%3.1f",newFoodThirstChange));
     end
     if newFoodHungerChange ~= 0
     then
-        table.insert(returnTable, "%DarkKhaki%"..getText("Tooltip_food_Hunger")..":"..this.getTooltipValueColor(foodHungerChange, newFoodHungerChange, true)..this.getTooltipValueSymbol(newFoodHungerChange)..string.format("%3.1f",newFoodHungerChange));
+        table.insert(returnTable, "%DarkKhaki%"..getText("Tooltip_food_Hunger")..":"..ATU.getTooltipValueColor(foodHungerChange, newFoodHungerChange, true)..ATU.getTooltipValueSymbol(newFoodHungerChange)..string.format("%3.1f",newFoodHungerChange));
     end
     if newFoodEndChange ~= 0
     then
-        table.insert(returnTable, "%DarkKhaki%"..getText("Tooltip_food_Endurance")..":"..this.getTooltipValueColor(foodEndChange, newFoodEndChange, false)..this.getTooltipValueSymbol(newFoodEndChange)..string.format("%3.1f",newFoodEndChange));
+        table.insert(returnTable, "%DarkKhaki%"..getText("Tooltip_food_Endurance")..":"..ATU.getTooltipValueColor(foodEndChange, newFoodEndChange, false)..ATU.getTooltipValueSymbol(newFoodEndChange)..string.format("%3.1f",newFoodEndChange));
     end
     if newFoodStressChange ~= 0
     then
-        table.insert(returnTable, "%DarkKhaki%"..getText("Tooltip_food_Stress")..":"..this.getTooltipValueColor(foodStressChange, newFoodStressChange, true)..this.getTooltipValueSymbol(newFoodStressChange)..string.format("%3.1f",newFoodStressChange));
+        table.insert(returnTable, "%DarkKhaki%"..getText("Tooltip_food_Stress")..":"..ATU.getTooltipValueColor(foodStressChange, newFoodStressChange, true)..ATU.getTooltipValueSymbol(newFoodStressChange)..string.format("%3.1f",newFoodStressChange));
     end
     if newFoodBoredomChange ~= 0
     then
-        table.insert(returnTable, "%DarkKhaki%"..getText("Tooltip_food_Boredom")..":"..this.getTooltipValueColor(foodBoredomChange, newFoodBoredomChange, true)..this.getTooltipValueSymbol(newFoodBoredomChange)..string.format("%3.1f",newFoodBoredomChange));
+        table.insert(returnTable, "%DarkKhaki%"..getText("Tooltip_food_Boredom")..":"..ATU.getTooltipValueColor(foodBoredomChange, newFoodBoredomChange, true)..ATU.getTooltipValueSymbol(newFoodBoredomChange)..string.format("%3.1f",newFoodBoredomChange));
     end
     if newFoodUnhappyChange ~= 0
     then
-        table.insert(returnTable, "%DarkKhaki%"..getText("Tooltip_food_Unhappiness")..":"..this.getTooltipValueColor(foodUnhappyChange, newFoodUnhappyChange, true)..this.getTooltipValueSymbol(newFoodUnhappyChange)..string.format("%3.1f",newFoodUnhappyChange));
+        table.insert(returnTable, "%DarkKhaki%"..getText("Tooltip_food_Unhappiness")..":"..ATU.getTooltipValueColor(foodUnhappyChange, newFoodUnhappyChange, true)..ATU.getTooltipValueSymbol(newFoodUnhappyChange)..string.format("%3.1f",newFoodUnhappyChange));
     end
     if item:isCookable() and not item:isFrozen() and item:getHeat() > 1.6 then
         currCookTime = item:getCookingTime();
@@ -715,7 +701,7 @@ AnthroTraitsUtilities.BuildFluidContainerDescription = function(player, descript
     then
         if foodCalories ~= nil and (foodCalories + newFoodCalories) ~= 0
         then
-            table.insert(returnTable, "%DarkKhaki%"..getText("Tooltip_food_Calories")..":"..this.getTooltipValueColor(foodCalories, newFoodCalories, false)..string.format("%5.1f", newFoodCalories));
+            table.insert(returnTable, "%DarkKhaki%"..getText("Tooltip_food_Calories")..":"..ATU.getTooltipValueColor(foodCalories, newFoodCalories, false)..string.format("%5.1f", newFoodCalories));
         end
         if foodCarbs ~= nil and foodCarbs ~= 0
         then
