@@ -188,7 +188,7 @@ AnthroTraitsUtilities.getTooltipValueColor = function(oldValChangeAmt, newValCha
         color = "%Red%";
     elseif (positiveBad and newValChangeAmt < 0 and oldValChangeAmt == newValChangeAmt) or (not positiveBad and newValChangeAmt > 0 and oldValChangeAmt == newValChangeAmt)
     then
-        color = "%Lime%";
+        color = "%White%";
     end
 
     return color;
@@ -488,7 +488,10 @@ AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item,
 
     if foodName ~= nil
     then
-        if item:IsRotten() and not player:HasTrait("AT_CarrionEater")
+        if foodChanges.addPoison ~= nil and foodChanges.addPoison > 0
+        then
+            table.insert(returnTable, "%Violet%"..foodName);
+        elseif item:IsRotten() and not player:HasTrait("AT_CarrionEater")
         then
             table.insert(returnTable, "%Red%"..foodName);
         elseif item:IsRotten() and item:hasTag("AT_Carnivore") and player:HasTrait("AT_CarrionEater")
@@ -504,11 +507,11 @@ AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item,
 
     if encumbrance ~= nil
     then
-        table.insert(returnTable, getText("Tooltip_item_Weight")..":"..string.format("%5.1f", encumbrance))
+        table.insert(returnTable, getText("Tooltip_item_Weight")..":%White%"..string.format("%5.1f", encumbrance))
     end
     if encumbrance ~= nil and item:getCount() > 1
     then
-        table.insert(returnTable, getText("Tooltip_item_StackWeight")..":"..string.format("%5.1f", stackEncum))
+        table.insert(returnTable, getText("Tooltip_item_StackWeight")..":%White%"..string.format("%5.1f", stackEncum))
     end
     if newFoodHungerChange ~= 0
     then
@@ -570,15 +573,15 @@ AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item,
         end
         if foodCarbs ~= nil and foodCarbs ~= 0
         then
-            table.insert(returnTable, getText("Tooltip_food_Carbs")..":"..string.format("%5.1f",foodCarbs));
+            table.insert(returnTable, getText("Tooltip_food_Carbs")..":%White%"..string.format("%5.1f",foodCarbs));
         end
         if foodProtein ~= nil and foodProtein ~= 0
         then
-            table.insert(returnTable, getText("Tooltip_food_Prots")..":"..string.format("%5.1f",foodProtein));
+            table.insert(returnTable, getText("Tooltip_food_Prots")..":%White%"..string.format("%5.1f",foodProtein));
         end
         if foodFat ~= nil and foodFat ~= 0
         then
-            table.insert(returnTable, getText("Tooltip_food_Fat")..":"..string.format("%5.1f",foodFat));
+            table.insert(returnTable, getText("Tooltip_food_Fat")..":%White%"..string.format("%5.1f",foodFat));
         end
     end
     if not instanceof(item, "ComboItem") and item:isbDangerousUncooked() and not item:isCooked() and not item:isBurnt()
