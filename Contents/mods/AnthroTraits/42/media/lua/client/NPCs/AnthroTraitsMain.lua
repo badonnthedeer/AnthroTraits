@@ -384,7 +384,7 @@ AnthroTraitsMain.CarryWeightUpdate = function(player)
     then
         --print(string.format("Base: %f", newMaxWeightBase));
     end
-    if getActivatedMods():contains("ToadTraits")
+    if getActivatedMods():contains("\\ToadTraits")
     then
         local MTGlobalMod = SandboxVars.MoreTraits.WeightGlobalMod or 0;
         local MTPackMuleBonus = SandboxVars.MoreTraits.WeightPackMule or 2;
@@ -414,9 +414,9 @@ AnthroTraitsMain.CarryWeightUpdate = function(player)
             end    
         end
     end
-    if (getActivatedMods():contains("MoreSimpleTraits") 
-    or getActivatedMods():contains("MoreSimpleTraitsVanilla")
-    or getActivatedMods():contains("SimpleOverhaulTraitsAndOccupations"))
+    if (getActivatedMods():contains("\\MoreSimpleTraits") 
+    or getActivatedMods():contains("\\MoreSimpleTraitsVanilla")
+    or getActivatedMods():contains("\\SimpleOverhaulTraitsAndOccupations"))
     then
         local SOTOStrongBackBonus =  2;
         local SOTOWeakBackMalus = -1;
@@ -438,7 +438,7 @@ AnthroTraitsMain.CarryWeightUpdate = function(player)
             end    
         end
     end
-    if getActivatedMods():contains("DracoExpandedTraits")
+    if getActivatedMods():contains("\\DracoExpandedTraits")
     then
         local DracoHoarderPctIncrease = .25;
     if player:HasTrait("Hoarder")
@@ -473,7 +473,7 @@ AnthroTraitsMain.CarryWeightUpdate = function(player)
         end
         player:setMaxWeightBase(newMaxWeightBase)
     else
-        if getActivatedMods():contains("ToadTraits")
+        if getActivatedMods():contains("\\ToadTraits")
         then
             player:setMaxWeightBase(defaultMaxWeightBase + (SandboxVars.MoreTraits.WeightGlobalMod or 0));
         else

@@ -789,7 +789,7 @@ end
 
 
 AnthroTraitsUtilities.IsAnthro = function(gameCharacter)
-    if (getActivatedMods():contains("FurryMod") or getActivatedMods():contains("FurryApocalypse")) and gameCharacter ~= nil
+    if (getActivatedMods():contains("\\FurryMod") or getActivatedMods():contains("\\FurryApocalypse")) and gameCharacter ~= nil
     then
         local hasFur = false;
         local itemVisuals = gameCharacter:getItemVisuals();
