@@ -141,6 +141,10 @@ AnthroTraitsCreationMethods.initAnthroTraits = function()
     ATCM.TTF.Add("Mechanics2", "Vanilla");
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+    --ANTHRO IMMUNITY
+    TraitFactory.addTrait("AT_AnthroImmunity", getText("UI_trait_AT_AnthroImmunity"), 1, workString, false);
+    ATCM.TTF.Add("AT_AnthroImmunity", "AnthroTraits,CostVariable,Anthro");
+
     --BEAST OF BURDEN
     TraitFactory.addTrait("AT_BeastOfBurden", getText("UI_trait_AT_BeastOfBurden"), 1, workString, false);
     ATCM.TTF.Add("AT_BeastOfBurden", "AnthroTraits,CostVariable,Anthro,Strong");
@@ -269,7 +273,16 @@ AnthroTraitsCreationMethods.setTraitDescriptions = function ()
         do
             local trait = affectedTraits[i];
             
-            if trait == TraitFactory.getTrait("AT_BeastOfBurden")
+            if trait == TraitFactory.getTrait("AT_AnthroImmunity")
+            then
+                if SandboxVars.AnthroTraits.AT_AnthroImmunityIgnoredByAnthroZombies == true
+                then
+                    workString = string.format(getText("UI_trait_AT_AnthroImmunity_desc")..getText("UI_trait_AT_AnthroImmunity_anthro_addendum"), SandboxVars.AnthroTraits.AT_AnthroImmunityBiteInfectionChance, SandboxVars.AnthroTraits.AT_AnthroImmunityLacerationInfectionChance *.25, SandboxVars.AnthroTraits.AT_AnthroImmunityScratchInfectionChance *.07);
+                else
+                    workString = string.format(getText("UI_trait_AT_AnthroImmunity_desc"), SandboxVars.AnthroTraits.AT_AnthroImmunityBiteInfectionChance, SandboxVars.AnthroTraits.AT_AnthroImmunityLacerationInfectionChance *.25, SandboxVars.AnthroTraits.AT_AnthroImmunityScratchInfectionChance *.07);
+                end
+            trait:setDescription(workString);
+            elseif trait == TraitFactory.getTrait("AT_BeastOfBurden")
             then
                 workString = string.format(getText("UI_trait_AT_BeastOfBurden_desc"), SandboxVars.AnthroTraits.AT_BeastOfBurdenPctIncrease * 100);
                 trait:setDescription(workString);
@@ -304,10 +317,6 @@ AnthroTraitsCreationMethods.setTraitDescriptions = function ()
             elseif trait == TraitFactory.getTrait("AT_Herbivore")
             then
                 workString = string.format(getText("UI_trait_AT_Herbivore_desc"), SandboxVars.AnthroTraits.AT_HerbivoreBonus * 100, SandboxVars.AnthroTraits.AT_HerbivoreMalus * 100);
-                trait:setDescription(workString);
-            elseif trait == TraitFactory.getTrait("AT_AnthroImmunity")
-            then
-                workString = string.format(getText("UI_trait_AT_AnthroImmunity_desc"), SandboxVars.AnthroTraits.AT_AnthroImmunityBiteInfectionChance, SandboxVars.AnthroTraits.AT_AnthroImmunityLacerationInfectionChance *.25, SandboxVars.AnthroTraits.AT_AnthroImmunityScratchInfectionChance *.07);
                 trait:setDescription(workString);
             elseif trait == TraitFactory.getTrait("AT_Lonely")
             then
