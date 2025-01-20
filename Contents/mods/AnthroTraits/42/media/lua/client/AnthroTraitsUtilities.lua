@@ -409,60 +409,24 @@ AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item,
     local foodIngredientTags;
     local encumbrance = item:getActualWeight();
     local stackEncum = item:getCount() * encumbrance;
-    local fluid;
-    local foodHungerChange;
-    local foodThirstChange;
-    local foodEndChange;
-    local foodStressChange;
-    local foodBoredomChange;
-    local foodUnhappyChange;
-    local foodCalories;
-    local foodCarbs;
-    local foodProtein;
-    local foodFat;
-    local foodCookedMicrowave;
+    local foodHungerChange = item:getHungerChange();
+    local foodThirstChange = item:getThirstChange();
+    local foodEndChange = item:getEnduranceChange();
+    local foodStressChange = item:getStressChange();
+    local foodBoredomChange = item:getBoredomChange();
+    local foodUnhappyChange = item:getUnhappyChange();
+    local foodCalories = item:getCalories();
+    local foodCarbs = item:getCarbohydrates();
+    local foodProtein = item:getProteins();
+    local foodFat = item:getLipids();
+    local foodCookedMicrowave = item:isCookedInMicrowave();
 
-    local currCookTime;
-    local minutesTillCooked;
-    local minutesTillBurned;
-    if item:getFluidContainer() ~= nil
-    then
-        fluid = item:getFluidContainer():getProperties();
-        --reduce by 100 so processing is the same as regular foods
-        foodHungerChange = fluid:getHungerChange() * .100;
-        foodThirstChange = fluid:getThirstChange() * .100;
-        foodEndChange = fluid:getEnduranceChange();
-        foodStressChange = fluid:getStressChange();
-        --no boredom change yet
-        foodBoredomChange = 0;
-        foodUnhappyChange = fluid:getUnhappyChange();
-        foodCalories = fluid:getCalories();
-        foodCarbs = fluid:getCarbohydrates();
-        foodProtein = fluid:getProteins();
-        foodFat = fluid:getLipids();
-        --food type items only
-        --foodCookedMicrowave = fluid:isCookedInMicrowave();
+    local currCookTime = item:getCookingTime();
+    local minutesTillCooked = item:getMinutesToCook();
+    local minutesTillBurned = item:getMinutesToBurn();
 
-        currCookTime = item:getCookingTime();
-        minutesTillCooked = item:getMinutesToCook();
-        minutesTillBurned = item:getMinutesToBurn();
-    else
-        foodHungerChange = item:getHungerChange();
-        foodThirstChange = item:getThirstChange();
-        foodEndChange = item:getEnduranceChange();
-        foodStressChange = item:getStressChange();
-        foodBoredomChange = item:getBoredomChange();
-        foodUnhappyChange = item:getUnhappyChange();
-        foodCalories = item:getCalories();
-        foodCarbs = item:getCarbohydrates();
-        foodProtein = item:getProteins();
-        foodFat = item:getLipids();
-        foodCookedMicrowave = item:isCookedInMicrowave();
-
-        currCookTime = item:getCookingTime();
-        minutesTillCooked = item:getMinutesToCook();
-        minutesTillBurned = item:getMinutesToBurn(); 
-    end
+    local note = item.Tooltip;
+        
     
 
     --local remainingFoodUses = (item:getUses() - item:getCurrentUses());
@@ -502,7 +466,7 @@ AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item,
         end
         table.insert(returnTable, description);
         table.insert(returnTable, ""); --spacer line
-        end
+    end
 
 
     if encumbrance ~= nil
@@ -609,6 +573,163 @@ AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item,
         table.insert(returnTable, getText("Tooltip_food_CookedInMicrowave"));
     end
 
+    if foodChanges.addPoison ~= nil and foodChanges.addPoison > 0
+    then
+        table.insert(returnTable, 2, "%Violet%This food is poisonous to you!")
+        --table.insert(returnTable, 2, "%Violet%This food is poisonous to you! ("..string.format("%3.2f",feralDigestionPoisonAmount / bleachPoisonAmt).." full bleach bottle(s))")
+    end
+    return returnTable;
+end
+
+AnthroTraitsUtilities.BuildFluidContainerDescription = function(player, description, item, statModifier)
+    local this = AnthroTraitsUtilities;
+    local returnTable = {}
+
+    local foodName = item:getName();
+    local encumbrance = item:getActualWeight();
+    local stackEncum = item:getCount() * encumbrance;
+    local fluidContainer = item:getFluidContainer();
+    local numFluids = 0;
+    local amount = fluidContainer:getAmount() * 1000;
+    local capacity = fluidContainer:getCapacity() * 1000;
+    local color = fluidContainer:getColor();
+    local filledPct = fluidContainer:getFilledRatio();
+    local fluid = item:getFluidContainer():getProperties();
+    
+    local foodThirstChange = fluid:getThirstChange();
+    local foodHungerChange = fluid:getHungerChange();
+    local foodEndChange = fluid:getEnduranceChange();
+    local foodStressChange = fluid:getStressChange();
+    --no boredom change yet
+    local foodBoredomChange = 0;
+    local foodUnhappyChange = fluid:getUnhappyChange();
+
+    local foodCalories = fluid:getCalories();
+    local foodCarbs = fluid:getCarbohydrates();
+    local foodProtein = fluid:getProteins();
+    local foodFat = fluid:getLipids();
+    -- will this even be a thing?
+    local foodCookedMicrowave = false;
+        --foodCookedMicrowave = fluid:isCookedInMicrowave();
+
+    local currCookTime = item:getCookingTime();
+    local minutesTillCooked = item:getMinutesToCook();
+    local minutesTillBurned = item:getMinutesToBurn();
+
+    local foodChanges = this.CalculateFoodChanges(player, item)
+
+    local newFoodHungerChange = foodHungerChange + foodChanges.addHungerChange;
+    local newFoodThirstChange = foodThirstChange + foodChanges.addThirstChange;
+    local newFoodEndChange = foodEndChange + foodChanges.addEndChange;
+    local newFoodStressChange = foodStressChange + foodChanges.addStressChange;
+    local newFoodBoredomChange = foodBoredomChange + foodChanges.addBoredomChange;
+    local newFoodUnhappyChange = foodUnhappyChange + foodChanges.addUnhappyChange;
+    local newFoodCalories = foodCalories + foodChanges.addCalories;
+
+
+    if foodName ~= nil
+    then
+        if foodChanges.addPoison ~= nil and foodChanges.addPoison > 0
+        then
+            table.insert(returnTable, "%Violet%"..foodName);
+        elseif item:IsRotten()
+        then
+            table.insert(returnTable, "%Red%"..foodName);
+        else
+            table.insert(returnTable, foodName);
+        end
+        table.insert(returnTable, description);
+        table.insert(returnTable, ""); --spacer line
+    end
+
+
+    if encumbrance ~= nil
+    then
+        table.insert(returnTable, getText("Tooltip_item_Weight")..":%White%"..string.format("%5.1f", encumbrance));
+    end
+    if encumbrance ~= nil and item:getCount() > 1
+    then
+        table.insert(returnTable, getText("Tooltip_item_StackWeight")..":%White%"..string.format("%5.1f", stackEncum));
+    end
+    if amount ~= nil
+    then
+        table.insert(returnTable, getText("Fluid_Amount")..":%White%"..string.format("%6.0f/%6.0f mL", amount, capacity));
+    end
+    if amount ~= nil
+    then
+        table.insert(returnTable, getText("Fluid_Properties_Per"));
+    end
+    if newFoodThirstChange ~= 0
+    then
+        table.insert(returnTable, "%DarkKhaki%"..getText("Tooltip_food_Thirst")..":"..this.getTooltipValueColor(foodThirstChange, newFoodThirstChange, true)..this.getTooltipValueSymbol(newFoodThirstChange)..string.format("%3.1f",newFoodThirstChange));
+    end
+    if newFoodHungerChange ~= 0
+    then
+        table.insert(returnTable, "%DarkKhaki%"..getText("Tooltip_food_Hunger")..":"..this.getTooltipValueColor(foodHungerChange, newFoodHungerChange, true)..this.getTooltipValueSymbol(newFoodHungerChange)..string.format("%3.1f",newFoodHungerChange));
+    end
+    if newFoodEndChange ~= 0
+    then
+        table.insert(returnTable, "%DarkKhaki%"..getText("Tooltip_food_Endurance")..":"..this.getTooltipValueColor(foodEndChange, newFoodEndChange, false)..this.getTooltipValueSymbol(newFoodEndChange)..string.format("%3.1f",newFoodEndChange));
+    end
+    if newFoodStressChange ~= 0
+    then
+        table.insert(returnTable, "%DarkKhaki%"..getText("Tooltip_food_Stress")..":"..this.getTooltipValueColor(foodStressChange, newFoodStressChange, true)..this.getTooltipValueSymbol(newFoodStressChange)..string.format("%3.1f",newFoodStressChange));
+    end
+    if newFoodBoredomChange ~= 0
+    then
+        table.insert(returnTable, "%DarkKhaki%"..getText("Tooltip_food_Boredom")..":"..this.getTooltipValueColor(foodBoredomChange, newFoodBoredomChange, true)..this.getTooltipValueSymbol(newFoodBoredomChange)..string.format("%3.1f",newFoodBoredomChange));
+    end
+    if newFoodUnhappyChange ~= 0
+    then
+        table.insert(returnTable, "%DarkKhaki%"..getText("Tooltip_food_Unhappiness")..":"..this.getTooltipValueColor(foodUnhappyChange, newFoodUnhappyChange, true)..this.getTooltipValueSymbol(newFoodUnhappyChange)..string.format("%3.1f",newFoodUnhappyChange));
+    end
+    if item:isCookable() and not item:isFrozen() and item:getHeat() > 1.6 then
+        currCookTime = item:getCookingTime();
+        minutesTillCooked = item:getMinutesToCook();
+        minutesTillBurned = item:getMinutesToBurn();
+        --for found "cooked" items in the beginning of the game
+        if (currCookTime == nil or currCookTime == 0) and item:isCooked()
+        then
+            currCookTime = minutesTillCooked;
+        end
+        if currCookTime < minutesTillCooked
+        then
+            table.insert(returnTable, "%Lime%"..getText("IGUI_invpanel_Cooking").."|".."%Lime%"..string.format("%3.2f",currCookTime / minutesTillCooked));
+        elseif currCookTime < minutesTillBurned
+        then
+            table.insert(returnTable, "%Red%"..getText("IGUI_invpanel_Burning").."|".."%Red%"..string.format("%3.2f",(currCookTime - minutesTillCooked ) / (minutesTillBurned - minutesTillCooked)));
+        elseif currCookTime > minutesTillBurned
+        then
+            table.insert(returnTable, "%Red%"..getText("IGUI_invpanel_Burnt"));
+        end
+    elseif not instanceof(item, "ComboItem") and item:getFreezingTime() > 0 and item:getFreezingTime() < 100
+    then
+        if item:isThawing()
+        then
+            table.insert(returnTable, getText("IGUI_invpanel_Melting").."|".."%Green%"..string.format("%3.2f", item:getFreezingTime() / 100));
+        else
+            table.insert(returnTable, getText("IGUI_invpanel_FreezingTime").."|".."%Green%"..string.format("%3.2f", item:getFreezingTime() / 100));
+        end
+    end
+    if (not instanceof(item, "ComboItem") and item:isPackaged()) or player:HasTrait("Nutritionist") or player:HasTrait("Nutritionist2")
+    then
+        if foodCalories ~= nil and (foodCalories + newFoodCalories) ~= 0
+        then
+            table.insert(returnTable, "%DarkKhaki%"..getText("Tooltip_food_Calories")..":"..this.getTooltipValueColor(foodCalories, newFoodCalories, false)..string.format("%5.1f", newFoodCalories));
+        end
+        if foodCarbs ~= nil and foodCarbs ~= 0
+        then
+            table.insert(returnTable, "%DarkKhaki%"..getText("Tooltip_food_Carbs")..":%Gainsboro%"..string.format("%5.1f",foodCarbs));
+        end
+        if foodProtein ~= nil and foodProtein ~= 0
+        then
+            table.insert(returnTable, "%DarkKhaki%"..getText("Tooltip_food_Prots")..":%Gainsboro%"..string.format("%5.1f",foodProtein));
+        end
+        if foodFat ~= nil and foodFat ~= 0
+        then
+            table.insert(returnTable, "%DarkKhaki%"..getText("Tooltip_food_Fat")..":%Gainsboro%"..string.format("%5.1f",foodFat));
+        end
+    end
     if foodChanges.addPoison ~= nil and foodChanges.addPoison > 0
     then
         table.insert(returnTable, 2, "%Violet%This food is poisonous to you!")

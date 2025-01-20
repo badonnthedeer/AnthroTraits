@@ -215,6 +215,15 @@ ISToolTipInv.render = function(self)
                 then
                     tooltipTextTable = ATU.BuildFoodDescription(player, nil, self.item, 0)
                 end
+            elseif player:HasTrait("AT_FeralDigestion") and instanceof(self.item, "ComboItem") and self.item:getFluidContainer() ~= nil
+            then
+                if not self.item:getFluidContainer():isEmpty() and self.item:getFluidContainer():getPrimaryFluid():isCategory(FluidCategory.Alcoholic)
+                then
+                    tooltipTextTable = ATU.BuildFluidContainerDescription(player, nil, self.item, 0)
+                else
+                    return oldRender(self);
+                end
+
             else
                 --If it doesn't have any relevant tags, go instead to oldRender
                 return oldRender(self);
