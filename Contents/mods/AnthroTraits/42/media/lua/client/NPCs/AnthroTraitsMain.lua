@@ -598,16 +598,28 @@ AnthroTraitsMain.ATPlayerDamageTick = function(player)
         end
 
     end
-    -- Tough Feet Trait?
-    -- if player:HasTrait("anthroPaws")
-    -- then
-    --     --immune to scratches?
-    --     for i = 0, player:getBodyDamage():getBodyParts():size() - 1
-    --     do
-    --         local bodypart = player:getBodyDamage():getBodyParts():get(i);
-    --         print(bodypart);
-    --     end
-    -- end
+    if player:HasTrait("AT_Digitigrade")
+    then
+        --immune to scratches, lacerations, bites
+        local footL = player:getBodyDamage():getBodyPart(BodyPartType.Foot_L);
+        local footR = player:getBodyDamage():getBodyPart(BodyPartType.Foot_R);
+
+        if footL:scratched()
+        then
+            --casing is inconsistent in the game >:C
+            footL:setScratchTime(0);
+            footL:SetScratchedWeapon(false);
+            footL:setBleedingTime(0);
+            footL:setBleeding(false);
+        end
+        if footR:scratched()
+        then
+            footR:setScratchTime(0);
+            footR:SetScratchedWeapon(false);
+            footR:setBleedingTime(0);
+            footR:setBleeding(false);
+        end
+    end
 end
 
 

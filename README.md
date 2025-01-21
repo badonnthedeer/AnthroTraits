@@ -20,6 +20,7 @@ Do you really enjoy this mod--or even better--want to build on it? Please consid
     Can eat rotten meat without getting sick, is more beneficial than usual.
     </li>
     <li><h2>Digitigrade</h2>
+    Feet cannot be scratched.<br>
     Stomps do more damage.<br>
     +1 Sprinting.<br>
     +1 Lightfoot.<br>
