@@ -207,14 +207,6 @@ AnthroTraitsMain.HandleInfection = function(player)
 end
 
 
-AnthroTraitsMain.NeutralizeFoodPoisoning = function(charBodyDmg, prevPoisonLvl)
-    if getDebug()
-    then
-        print("Food Poisoning neutralized.");
-    end
-    charBodyDmg:setPoisonLevel(prevPoisonLvl);
-end
-
 
 AnthroTraitsMain.ApplyFoodChanges = function(character, foodEaten, percentEaten)
     local foodChanges = ATU.CalculateFoodChanges(character, foodEaten)
@@ -266,10 +258,18 @@ AnthroTraitsMain.ApplyAfterEatFoodChanges = function(character, foodEaten, perce
     then
         if (character:HasTrait("AT_Carnivore") or character:HasTrait("AT_CarrionEater")) and not foodEaten:isRotten()
         then
-            AnthroTraitsMain.NeutralizeFoodPoisoning(charBodyDmg, prevPoisonLvl);
+            if instanceof(self.character, "IsoPlayer") and not foodEaten:isPoison()
+            then
+                self.character:getModData().ATPlayerData.undoAddedPoison = true;
+                self.character:getModData().ATPlayerData.beforeEatPoisonLvl = prevPoisonLvl;
+            end
         elseif foodEaten:isRotten() and character:HasTrait("AT_CarrionEater")
         then
-            AnthroTraitsMain.NeutralizeFoodPoisoning(charBodyDmg, prevPoisonLvl);
+            if instanceof(self.character, "IsoPlayer") and not foodEaten:isPoison()
+            then
+                self.character:getModData().ATPlayerData.undoAddedPoison = true;
+                self.character:getModData().ATPlayerData.beforeEatPoisonLvl = prevPoisonLvl;
+            end
         end
     elseif foodEaten:hasTag("ATHerbivore")
     then
@@ -277,7 +277,11 @@ AnthroTraitsMain.ApplyAfterEatFoodChanges = function(character, foodEaten, perce
         then
             if not foodEaten:isRotten()
             then
-                AnthroTraitsMain.NeutralizeFoodPoisoning(charBodyDmg, prevPoisonLvl);
+                if instanceof(self.character, "IsoPlayer") and not foodEaten:isPoison()
+                then
+                    self.character:getModData().ATPlayerData.undoAddedPoison = true;
+                    self.character:getModData().ATPlayerData.beforeEatPoisonLvl = currPoisonLvl;
+                end
             end
         end
     end
@@ -499,6 +503,8 @@ AnthroTraitsMain.ATInitPlayerData = function(player)
 
         atData.trulyInfected = false;
         atData.canTripChecked = false;
+        atData.undoAddedPoison = false;
+        atData.beforeEatPoisonLvl = 0;
         atData.tripSafe = false;
         atData.torporActive = false;
         atData.HoursSinceSeenOthers = 0;
@@ -839,8 +845,13 @@ AnthroTraitsMain.ATEveryOneMinute = function()
             then
                 local modData =  player:getModData().ATPlayerData;
                 --add random test functions here:
-                
+  
                 --
+                if modData.undoAddedPoison == true
+                then
+                    player:getBodyDamage():setPoisonLevel(modData.beforeEatPoisonLvl);
+                    modData.undoAddedPoison = false;
+                end
                 if player:HasTrait("AT_AnthroImmunity") and not player:getBodyDamage():isInfected() and (modData.trulyInfected == true or modData.trulyInfected == nil)
                 then
                     --if a player is a cheater/debugging or takes a game-made cure
@@ -981,9 +992,7 @@ Events.OnServerCommand.Add(AnthroTraitsMain.ATOnServerCommand)]]
 --Events.OnClothingUpdated.Add(AnthroTraitsMain.ATOnClothingUpdated);
 Events.OnObjectCollide.Add(AnthroTraitsMain.ATOnObjectCollide);
 Events.OnCharacterCollide.Add(AnthroTraitsMain.ATOnCharacterCollide);
-Events.OnHitZombie.Add(AnthroTraitsMain.ATEveryWeaponHitZomb);
 Events.OnWeaponHitCharacter.Add(AnthroTraitsMain.ATEveryWeaponHitChar);
-Events.LevelPerk.Add(AnthroTraitsMain.ATLevelPerk);
 Events.EveryDays.Add(AnthroTraitsMain.ATEveryDays);
 Events.EveryHours.Add(AnthroTraitsMain.ATEveryHours);
 Events.EveryOneMinute.Add(AnthroTraitsMain.ATEveryOneMinute);

@@ -109,13 +109,15 @@ ISEatFoodAction.perform = function(self)
     ATM.ApplyAfterEatFoodChanges(self.character, self.item, self.percentage, currPoisonLvl)
 end
 
+
 local OriginalEatStop = ISEatFoodAction.stop;
 ISEatFoodAction.stop = function(self)
     -- code to run before the original
+    local currPoisonLvl = self.character:getBodyDamage():getPoisonLevel();
     ATM.ApplyFoodChanges(self.character, self.item, self.percentage * self:getJobDelta())
     OriginalEatStop(self);
     -- code to run after the original
-    ATM.ApplyAfterEatFoodChanges(self.character, self.item, self.percentage * self:getJobDelta());
+    ATM.ApplyAfterEatFoodChanges(self.character, self.item, self.percentage * self:getJobDelta(), currPoisonLvl)
 end
 
 
@@ -204,6 +206,9 @@ ISToolTipInv.render = function(self)
                     elseif player:HasTrait("AT_CarrionEater") and self.item:IsRotten()
                     then
                         tooltipTextTable = ATU.BuildFoodDescription(player, "%LightGreen%This food is better for you.", self.item, SandboxVars.AnthroTraits.AT_CarrionEaterBonus)
+                    elseif player:HasTrait("AT_CarrionEater") and not self.item:IsRotten()
+                    then
+                        tooltipTextTable = ATU.BuildFoodDescription(player, nil, self.item, 0)
                     elseif player:HasTrait("AT_Herbivore")
                     then
                         tooltipTextTable = ATU.BuildFoodDescription(player, "%LavenderBlush%This food is worse for you.", self.item, SandboxVars.AnthroTraits.AT_HerbivoreMalus)
