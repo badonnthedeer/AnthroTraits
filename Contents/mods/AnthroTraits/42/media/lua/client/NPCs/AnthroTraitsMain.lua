@@ -348,7 +348,7 @@ AnthroTraitsMain.BeStinky = function(player)
                 playerInQuestion = getSpecificPlayer(playerIndex)
                 if player == not playerInQuestion
                 then
-                    if ZombRand(0,1) >= stinkyCommentChance and playerInQuestion:DistTo() < stinkyLoudness and playerInQuestion:getMoodles():getMoodleLevel("Pain") < 2 and playerInQuestion:getMoodles():getMoodleLevel("Panic") < 1
+                    if ZombRand(0,1) >= stinkyCommentChance and playerInQuestion:DistTo(player) < stinkyLoudness and playerInQuestion:getMoodles():getMoodleLevel(MoodleType.Pain) < 2 and playerInQuestion:getMoodles():getMoodleLevel(MoodleType.Panic) < 1
                     then
                         playerInQuestion:Say("Stinky!");
                     end
