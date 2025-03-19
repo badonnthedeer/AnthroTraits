@@ -74,6 +74,11 @@ description=    Lose a percentage of max endurance during winter.
 description=    [*][h2]Unwieldy Hands[/h2]
 description=    Actions requiring fine motor control are slower.
 description=[/list]
+description=
+description=[h1]Translation Credits[/h1]
+description=Thank you for your help!
+description=RU: Cat_pod_travoi
+description=
 description=[hr][/hr]
 description=[h1]A message from the creator[/h1]
 description=Do you really enjoy this mod--or even better--want to build on it? Please consider [url=https://ko-fi.com/badonnthedeer]donating to me[/url]! I'm in definite financial need, so every little bit helps! Thank you.
