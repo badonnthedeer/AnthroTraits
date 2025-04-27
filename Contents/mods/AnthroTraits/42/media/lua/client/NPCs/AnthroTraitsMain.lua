@@ -258,17 +258,17 @@ AnthroTraitsMain.ApplyAfterEatFoodChanges = function(character, foodEaten, perce
     then
         if (character:HasTrait("AT_Carnivore") or character:HasTrait("AT_CarrionEater")) and not foodEaten:isRotten()
         then
-            if instanceof(self.character, "IsoPlayer") and not foodEaten:isPoison()
+            if instanceof(character, "IsoPlayer") and not foodEaten:isPoison()
             then
-                self.character:getModData().ATPlayerData.undoAddedPoison = true;
-                self.character:getModData().ATPlayerData.beforeEatPoisonLvl = prevPoisonLvl;
+                character:getModData().ATPlayerData.undoAddedPoison = true;
+                character:getModData().ATPlayerData.beforeEatPoisonLvl = prevPoisonLvl;
             end
         elseif foodEaten:isRotten() and character:HasTrait("AT_CarrionEater")
         then
-            if instanceof(self.character, "IsoPlayer") and not foodEaten:isPoison()
+            if instanceof(character, "IsoPlayer") and not foodEaten:isPoison()
             then
-                self.character:getModData().ATPlayerData.undoAddedPoison = true;
-                self.character:getModData().ATPlayerData.beforeEatPoisonLvl = prevPoisonLvl;
+                character:getModData().ATPlayerData.undoAddedPoison = true;
+                character:getModData().ATPlayerData.beforeEatPoisonLvl = prevPoisonLvl;
             end
         end
     elseif foodEaten:hasTag("ATHerbivore")
@@ -277,10 +277,10 @@ AnthroTraitsMain.ApplyAfterEatFoodChanges = function(character, foodEaten, perce
         then
             if not foodEaten:isRotten()
             then
-                if instanceof(self.character, "IsoPlayer") and not foodEaten:isPoison()
+                if instanceof(character, "IsoPlayer") and not foodEaten:isPoison()
                 then
-                    self.character:getModData().ATPlayerData.undoAddedPoison = true;
-                    self.character:getModData().ATPlayerData.beforeEatPoisonLvl = currPoisonLvl;
+                    character:getModData().ATPlayerData.undoAddedPoison = true;
+                    character:getModData().ATPlayerData.beforeEatPoisonLvl = prevPoisonLvl;
                 end
             end
         end
