@@ -776,7 +776,7 @@ end
 AnthroTraitsMain.ATEveryWeaponHitChar = function(attacker, target, weapon, damage)
     local dmgBonus = 0;
 
-    if (attacker:HasTrait("AT_Digitigrade") or attacker:HasTrait("AT_Unguligrade")) and attacker:isStomping()
+    if (attacker:HasTrait("AT_Digitigrade") or attacker:HasTrait("AT_Unguligrade")) and attacker:isDoStomp()
     then
         if attacker:HasTrait("AT_Unguligrade")
         then
