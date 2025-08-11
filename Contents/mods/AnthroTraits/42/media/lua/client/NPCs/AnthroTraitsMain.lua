@@ -445,7 +445,7 @@ AnthroTraitsMain.CarryWeightUpdate = function(player)
     if getActivatedMods():contains("\\DracoExpandedTraits")
     then
         local DracoHoarderPctIncrease = .25;
-    if player:HasTrait("Hoarder")
+        if player:HasTrait("Hoarder")
         then
             baseWeightChanged = true;
             local hBonus = (math.floor(newMaxWeightBase *  DracoHoarderPctIncrease));
