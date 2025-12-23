@@ -48,21 +48,36 @@
 -- Have a problem or question? Reach me on Discord: badonn
 ------------------------------------------------------------------------------------------------------
 
+-- gets sandbox var via case insensitive search from trait definition
+local function GetSandboxVarsTrait(traitDef, addString)
+	local locID = Registries.CHARACTER_TRAIT:getLocation(traitDef:getType())
+	local optionName = string.lower(locID:getPath() .. addString)
+	for k,v in pairs(SandboxVars.AnthroTraits) do
+		if string.lower(k) == optionName
+		then
+			return v
+		end
+	end
+	return nil
+end
+
 local ATM = require("NPCs/AnthroTraitsMain");
 local ATC = require("NPCs/AnthroTraitsCreationMethods");
 local ATU = require("AnthroTraitsUtilities");
-require('AnthroTraitsGlobals');
 
 
 --Cost modifier
 
-local traitMetatable = __classmetatables[Trait.class].__index
+local traitMetatable = __classmetatables[CharacterTraitDefinition.class].__index
 local old_getCost = traitMetatable.getCost
 ---@param self Trait
 traitMetatable.getCost = function(self)
-    if SandboxVars.AnthroTraits[self:getType().."_Cost"] ~= nil
+	local cost = GetSandboxVarsTrait(self, "_Cost")
+    if cost
+	--if SandboxVars.AnthroTraits[self:getType():toString().."_Cost"] ~= nil
     then
-        return SandboxVars.AnthroTraits[self:getType().."_Cost"]
+		return cost
+        --return SandboxVars.AnthroTraits[self:getType():toString().."_Cost"]
     else
         return old_getCost(self)
     end
@@ -71,10 +86,11 @@ end
 local old_getRightLabel = traitMetatable.getRightLabel
 ---@param self Trait
 traitMetatable.getRightLabel = function(self)
-
-    if SandboxVars.AnthroTraits[self:getType().."_Cost"] ~= nil
+	local cost = GetSandboxVarsTrait(self, "_Cost")
+	if cost
+    --if SandboxVars.AnthroTraits[self:getType():toString().."_Cost"] ~= nil
     then
-        local cost = SandboxVars.AnthroTraits[self:getType().."_Cost"];
+        --local cost = SandboxVars.AnthroTraits[self:getType():toString().."_Cost"];
         local label = "+"
 
         if cost > 0
@@ -102,27 +118,29 @@ end
 local OriginalEatPerform = ISEatFoodAction.perform;
 ISEatFoodAction.perform = function(self)
     -- code to run before the original
-    local currPoisonLvl = self.character:getBodyDamage():getPoisonLevel();
+    local currPoisonLvl = self.character:getStats():get(CharacterStat.POISON);
     ATM.ApplyFoodChanges(self.character, self.item, self.percentage)
     OriginalEatPerform(self);
     -- code to run after the original
     ATM.ApplyAfterEatFoodChanges(self.character, self.item, self.percentage, currPoisonLvl)
 end
 
+
 local OriginalEatStop = ISEatFoodAction.stop;
 ISEatFoodAction.stop = function(self)
     -- code to run before the original
+    local currPoisonLvl = self.character:getStats():get(CharacterStat.POISON);
     ATM.ApplyFoodChanges(self.character, self.item, self.percentage * self:getJobDelta())
     OriginalEatStop(self);
     -- code to run after the original
-    ATM.ApplyAfterEatFoodChanges(self.character, self.item, self.percentage * self:getJobDelta());
+    ATM.ApplyAfterEatFoodChanges(self.character, self.item, self.percentage * self:getJobDelta(), currPoisonLvl)
 end
 
 
 local OriginalTimedActionCreate = ISBaseTimedAction.create;
 ISBaseTimedAction.create = function(self)
     OriginalTimedActionCreate(self);
-    if self.character:HasTrait("AT_UnwieldyHands")
+    if self.character:hasTrait(AnthroTraitsGlobals.CharacterTrait.UNWIELDYHANDS)
     then
         for i = 1, #AnthroTraitsGlobals.UnwieldyHandsAffectedTimedActions
         do
@@ -143,13 +161,15 @@ end
 
 local oldRender = ISToolTipInv.render
 ISToolTipInv.render = function(self)
+	local ATGt = AnthroTraitsGlobals.CharacterTrait
+	local ATGf = AnthroTraitsGlobals.FoodTags
      --redirect back to oldrender if tooltip isn't for food.
     if (ISContextMenu.instance and ISContextMenu.instance.visibleCheck) or (self.item == nil)
     then
         oldRender(self);
     else
         --short-circuit to prevent components from triggering (transfer fluid gui)
-        if not instanceof(self.item, "Food") and (not instanceof(self.item, "ComboItem"))
+        if not instanceof(self.item, "Food")
         then
             oldRender(self);
         else
@@ -176,46 +196,49 @@ ISToolTipInv.render = function(self)
             local text = "";
             local leftText = "";
 
-            if (((ATU.FoodVoreType(self.item) == "ATHerbivore" or ATU.FoodVoreType(self.item) == "ATCarnivore") and (player:HasTrait("AT_Herbivore") or player:HasTrait("AT_Carnivore") or player:HasTrait("AT_CarrionEater")))
-                    or (self.item:hasTag("ATFeralPoison") and player:HasTrait("AT_FeralDigestion"))
-                    or (self.item:hasTag("ATInsect") and player:HasTrait("AT_Bug_o_ssieur"))
-                    or (player:HasTrait("AT_FoodMotivated")))
+            if (((ATU.FoodVoreType(self.item) == "ATHerbivore" or ATU.FoodVoreType(self.item) == "ATCarnivore") and (player:hasTrait(ATGt.HERBIVORE) or player:hasTrait(ATGt.CARNIVORE) or player:hasTrait(ATGt.CARRIONEATER)))
+                    or (self.item:hasTag(ATGf.FERALPOISON) and player:hasTrait(ATGt.FERALDIGESTION))
+                    or (self.item:hasTag(ATGf.INSECT) and player:hasTrait(ATGt.BUG_O_SSIEUR))
+                    or (player:hasTrait(ATGt.FOODMOTIVATED)))
             then
                 if ATU.FoodVoreType(self.item) == "ATHerbivore"
                 then
-                    if player:HasTrait("AT_Herbivore")
+                    if player:hasTrait(ATGt.HERBIVORE)
                     then
                         tooltipTextTable = ATU.BuildFoodDescription(player, "%LightGreen%This food is more nutritious for you.", self.item, SandboxVars.AnthroTraits.AT_HerbivoreBonus)
-                    elseif player:HasTrait("AT_Carnivore")
+                    elseif player:hasTrait(ATGt.CARNIVORE)
                     then
                         tooltipTextTable = ATU.BuildFoodDescription(player, "%LavenderBlush%This food is less nutritious for you.", self.item, SandboxVars.AnthroTraits.AT_CarnivoreMalus)
-                    elseif player:HasTrait("AT_FoodMotivated") or player:HasTrait("AT_FeralDigestion")
+                    elseif player:hasTrait(ATGt.FOODMOTIVATED) or player:hasTrait(ATGt.FERALDIGESTION)
                     then
                         tooltipTextTable = ATU.BuildFoodDescription(player, nil, self.item, 0)
                     end
                 elseif ATU.FoodVoreType(self.item) == "ATCarnivore"
                 then
-                    if player:HasTrait("AT_Carnivore") and player:HasTrait("AT_CarrionEater") and self.item:IsRotten()
+                    if player:hasTrait(ATGt.CARNIVORE) and player:hasTrait(ATGt.CARRIONEATER) and self.item:IsRotten()
                     then
                         tooltipTextTable = ATU.BuildFoodDescription(player, "%LightGreen%This food is better for you.", self.item, (SandboxVars.AnthroTraits.AT_CarnivoreBonus + SandboxVars.AnthroTraits.AT_CarrionEaterBonus))
-                    elseif player:HasTrait("AT_Carnivore")
+                    elseif player:hasTrait(ATGt.CARNIVORE)
                     then
                         tooltipTextTable = ATU.BuildFoodDescription(player, "%LightGreen%This food is better for you.", self.item, SandboxVars.AnthroTraits.AT_CarnivoreBonus)
-                    elseif player:HasTrait("AT_CarrionEater") and self.item:IsRotten()
+                    elseif player:hasTrait(ATGt.CARRIONEATER) and self.item:IsRotten()
                     then
                         tooltipTextTable = ATU.BuildFoodDescription(player, "%LightGreen%This food is better for you.", self.item, SandboxVars.AnthroTraits.AT_CarrionEaterBonus)
-                    elseif player:HasTrait("AT_Herbivore")
+                    elseif player:hasTrait(ATGt.CARRIONEATER) and not self.item:IsRotten()
+                    then
+                        tooltipTextTable = ATU.BuildFoodDescription(player, nil, self.item, 0)
+                    elseif player:hasTrait(ATGt.HERBIVORE)
                     then
                         tooltipTextTable = ATU.BuildFoodDescription(player, "%LavenderBlush%This food is worse for you.", self.item, SandboxVars.AnthroTraits.AT_HerbivoreMalus)
-                    elseif player:HasTrait("AT_FoodMotivated") or player:HasTrait("AT_FeralDigestion")
+                    elseif player:hasTrait(ATGt.FOODMOTIVATED) or player:hasTrait(ATGt.FERALDIGESTION)
                     then
                         tooltipTextTable = ATU.BuildFoodDescription(player, nil, self.item, 0)
                     end
-                elseif player:HasTrait("AT_FoodMotivated") or player:HasTrait("AT_Bug_o_ssieur") or player:HasTrait("AT_FeralDigestion")
+                elseif player:hasTrait(ATGt.FOODMOTIVATED) or player:hasTrait(ATGt.BUG_O_SSIEUR) or player:hasTrait(ATGt.FERALDIGESTION)
                 then
                     tooltipTextTable = ATU.BuildFoodDescription(player, nil, self.item, 0)
                 end
-            elseif player:HasTrait("AT_FeralDigestion") and instanceof(self.item, "ComboItem") and self.item:getFluidContainer() ~= nil
+            elseif player:hasTrait(ATGt.FERALDIGESTION) and instanceof(self.item, "ComboItem") and self.item:getFluidContainer() ~= nil
             then
                 if not self.item:getFluidContainer():isEmpty() and self.item:getFluidContainer():getPrimaryFluid():isCategory(FluidCategory.Alcoholic)
                 then
