@@ -6,7 +6,8 @@
     "Lua.runtime.path": [
         "?.lua",
         "?/init.lua",
-        "server/?.lua"
+        "server/?.lua",
+        "client/?.lua"
     ],
     "Lua.completion.requireSeparator": "/",
     "Lua.workspace.preloadFileSize": 800,

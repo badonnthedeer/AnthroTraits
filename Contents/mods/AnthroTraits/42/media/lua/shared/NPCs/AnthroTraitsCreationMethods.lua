@@ -65,8 +65,8 @@ AnthroTraitsCreationMethods.initAnthroTraits = function()
     ATCM.TTF.Add("ShortSighted", "Vanilla");
     ATCM.TTF.Add("HardOfHearing", "Vanilla");
     ATCM.TTF.Add("Deaf", "Vanilla");
-    ATCM.TTF.Add("KeenHearing", "Vanilla, Anthro,KeenHearing");
-    ATCM.TTF.Add("EagleEyed", "Vanilla, Anthro,KeenVision");
+    ATCM.TTF.Add("KeenHearing", "Vanilla,Anthro,KeenHearing");
+    ATCM.TTF.Add("EagleEyed", "Vanilla,Anthro,KeenVision");
     ATCM.TTF.Add("HeartyAppitite", "Vanilla");
     ATCM.TTF.Add("LightEater", "Vanilla");
     ATCM.TTF.Add("ThickSkinned", "Vanilla,Anthro,Tough");
