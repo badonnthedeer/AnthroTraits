@@ -257,8 +257,6 @@ AnthroTraitsUtilities.CalculateFoodModifiers = function(character, food)
 
     local foodVoreType = ATU.FoodVoreType(food);
 
-	print("AT eating " .. foodVoreType:toString())
-
     if foodVoreType == nil
     then
         --do nothing
