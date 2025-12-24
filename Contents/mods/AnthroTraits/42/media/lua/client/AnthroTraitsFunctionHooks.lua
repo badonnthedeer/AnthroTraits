@@ -115,15 +115,16 @@ end
 
 --VANILLA LUA FUNCTION HOOKS
 
-local OriginalEatPerform = ISEatFoodAction.perform;
-ISEatFoodAction.perform = function(self)
-    -- code to run before the original
-    local currPoisonLvl = self.character:getStats():get(CharacterStat.POISON);
-    ATM.ApplyFoodChanges(self.character, self.item, self.percentage)
-    OriginalEatPerform(self);
-    -- code to run after the original
-    ATM.ApplyAfterEatFoodChanges(self.character, self.item, self.percentage, currPoisonLvl)
-end
+-- happens before vanilla stats are applied, breaks food motivated if 0 unhapiness (0 - 55 from trait => 0 + 50 from dog food = 50)
+-- local OriginalEatPerform = ISEatFoodAction.perform;
+-- ISEatFoodAction.perform = function(self)
+    -- -- code to run before the original
+    -- local currPoisonLvl = self.character:getStats():get(CharacterStat.POISON);
+    -- ATM.ApplyFoodChanges(self.character, self.item, self.percentage)
+    -- OriginalEatPerform(self);
+    -- -- code to run after the original
+    -- ATM.ApplyAfterEatFoodChanges(self.character, self.item, self.percentage, currPoisonLvl)
+-- end
 
 
 local OriginalEatStop = ISEatFoodAction.stop;
@@ -136,6 +137,16 @@ ISEatFoodAction.stop = function(self)
     ATM.ApplyAfterEatFoodChanges(self.character, self.item, self.percentage * self:getJobDelta(), currPoisonLvl)
 end
 
+-- applied after vanilla stat changes
+local OriginalEatComplete = ISEatFoodAction.complete;
+ISEatFoodAction.complete = function(self)
+    -- code to run before the original
+    local currPoisonLvl = self.character:getStats():get(CharacterStat.POISON);
+    ATM.ApplyFoodChanges(self.character, self.item, self.percentage)
+    OriginalEatComplete(self);
+    -- code to run after the original
+    ATM.ApplyAfterEatFoodChanges(self.character, self.item, self.percentage, currPoisonLvl)
+end
 
 local OriginalTimedActionCreate = ISBaseTimedAction.create;
 ISBaseTimedAction.create = function(self)

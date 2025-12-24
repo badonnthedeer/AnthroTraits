@@ -385,7 +385,7 @@ AnthroTraitsUtilities.CalculateFoodChanges = function(character, food)
 
     if (character:hasTrait(AnthroTraitsGlobals.CharacterTrait.FOODMOTIVATED) and foodID == "Base.DogfoodOpen")
     then
-        extraFoodBoredomChange =  extraFoodUnhappyChange - SandboxVars.AnthroTraits.AT_FoodMotivatedBonus;
+        extraFoodBoredomChange =  extraFoodBoredomChange - SandboxVars.AnthroTraits.AT_FoodMotivatedBonus;
         extraFoodUnhappyChange =  extraFoodUnhappyChange - (50 + SandboxVars.AnthroTraits.AT_FoodMotivatedBonus);
     elseif character:hasTrait(AnthroTraitsGlobals.CharacterTrait.FOODMOTIVATED)
     then
