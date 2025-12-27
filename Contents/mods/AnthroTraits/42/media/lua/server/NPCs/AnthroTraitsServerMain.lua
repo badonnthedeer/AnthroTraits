@@ -1,6 +1,32 @@
 local AnthroTraitsServerMain = {};
 
-local ATU = require("AnthroTraitsServerUtilities");
+--local ATUs = require("AnthroTraitsServerUtilities");
+
+local function IsAnthro(gameCharacter)
+    -- if (getActivatedMods():contains("\\FurryMod") or getActivatedMods():contains("\\FurryApocalypse")) and gameCharacter ~= nil
+    -- then
+        -- local hasFur = false;
+        -- local itemVisuals = gameCharacter:getItemVisuals();
+        -- if itemVisuals ~= nil
+        -- then
+            -- for i=0, itemVisuals:size() - 1
+            -- do
+                -- local itemVisual = itemVisuals:get(i);
+                -- local item =  itemVisual:getScriptItem();
+                -- if item ~= nil and (item:hasTag("Fur") or item:hasTag("DeceasedFur"))
+                -- then
+                    -- hasFur = true;
+                    -- break;
+                -- end
+            -- end;
+        -- end 
+        -- return hasFur;
+    -- else
+        -- return false;
+    -- end
+	
+	return false
+end
 
 AnthroTraitsServerMain.HandleInfection = function(player)
 	local ATGt = AnthroTraitsGlobals.CharacterTrait
@@ -40,9 +66,9 @@ AnthroTraitsServerMain.HandleInfection = function(player)
             then
                 local rolledInfectionChance = ZombRand(1, 100);
                 local lastAttackedBy = player:getAttackedBy();
-                if (not SandboxVars.AnthroTraits.AT_AnthroImmunityIgnoredByAnthroZombies and not ATU.IsAnthro(lastAttackedBy)
-                or not SandboxVars.AnthroTraits.AT_AnthroImmunityIgnoredByAnthroZombies and ATU.IsAnthro(lastAttackedBy)
-                or SandboxVars.AnthroTraits.AT_AnthroImmunityIgnoredByAnthroZombies and not ATU.IsAnthro(lastAttackedBy))
+				local attackerIsAnthro = IsAnthro(lastAttackedBy)
+				local anthroIgnoreImmunity = SandboxVars.AnthroTraits.AT_AnthroImmunityIgnoredByAnthroZombies
+                if not anthroIgnoreImmunity or not attackerIsAnthro
                 then
                     if getDebug()
                     then
@@ -56,7 +82,6 @@ AnthroTraitsServerMain.HandleInfection = function(player)
                             player:getBodyDamage():setInfected(false);
                             player:getBodyDamage():setInfectionMortalityDuration(-1);
                             player:getBodyDamage():setInfectionTime(-1);
-                            player:getBodyDamage():setInfectionLevel(0);
                             player:getBodyDamage():setInfectionGrowthRate(0);
                             if getDebug()
                             then
@@ -87,7 +112,6 @@ AnthroTraitsServerMain.HandleInfection = function(player)
                             player:getBodyDamage():setInfected(false);
                             player:getBodyDamage():setInfectionMortalityDuration(-1);
                             player:getBodyDamage():setInfectionTime(-1);
-                            player:getBodyDamage():setInfectionLevel(0);
                             player:getBodyDamage():setInfectionGrowthRate(0);
                             if getDebug()
                             then
@@ -109,7 +133,6 @@ AnthroTraitsServerMain.HandleInfection = function(player)
                             player:getBodyDamage():setInfected(false);
                             player:getBodyDamage():setInfectionMortalityDuration(-1);
                             player:getBodyDamage():setInfectionTime(-1);
-                            player:getBodyDamage():setInfectionLevel(0);
                             player:getBodyDamage():setInfectionGrowthRate(0);
                             if getDebug()
                             then

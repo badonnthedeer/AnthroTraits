@@ -315,17 +315,20 @@ AnthroTraitsMain.ExclaimerCheck = function(player)
     local moodles = player:getMoodles();
     local panicLevel = moodles:getMoodleLevel(MoodleType.PANIC)
     local thresholdMultiplier = SandboxVars.AnthroTraits.AT_ExclaimerExclaimThresholdMultiplier;
-
+	local mitigationThreshold = SandboxVars.AnthroTraits.AT_ExclaimerAnthroVoiceMitigation
     local exclaimChance = ZombRand(1,100);
 
     if (exclaimChance <= (panicLevel * thresholdMultiplier)) and panicLevel > 1
     then
         local phrases = nil
+		local mitigationChance = 100
 		-- check if any trait-related phrases available
 		for trait, phr in pairs(ATU.ExclaimPhrases) do
 			if player:hasTrait(trait)
 			then
 				phrases = phr
+				-- assume additional trait has chance to be mistaken for real animal call => will be ignored by zombies
+				mitigationChance = ZombRand(1, 100)
 				break
 			end
 		end
@@ -335,14 +338,17 @@ AnthroTraitsMain.ExclaimerCheck = function(player)
 			phrases = ATU.GenericExclaimPhrases
 		end
 		local phraseChance = ZombRand(1, #phrases);
-        local playerSquare = player:getCurrentSquare();
         player:SayShout(phrases[phraseChance]);
-        getWorldSoundManager():addSound(player,
-                playerSquare:getX(),
-                playerSquare:getY(),
-                playerSquare:getZ(),
-                20,
-                100);
+		if mitigationChance > mitigationThreshold
+		then
+			local playerSquare = player:getCurrentSquare();
+			getWorldSoundManager():addSound(player,
+					playerSquare:getX(),
+					playerSquare:getY(),
+					playerSquare:getZ(),
+					20,
+					100);
+		end
     end
 end
 
@@ -936,7 +942,7 @@ AnthroTraitsMain.ATEveryHours = function()
                 modData.HoursSinceSeenOthers = modData.HoursSinceSeenOthers + 1;
                 if modData.HoursSinceSeenOthers > SandboxVars.AnthroTraits.AT_LonelyHoursToAffect
                 then
-                    player:getBodyDamage():setUnhappynessLevel(player:getBodyDamage():getUnhappynessLevel() + SandboxVars.AnthroTraits.AT_LonelyHourlyUnhappyIncrease);
+                    player:getStats():add(CharacterStat.UNHAPPINESS, SandboxVars.AnthroTraits.AT_LonelyHourlyUnhappyIncrease);
                 end
             end
         --end

@@ -138,6 +138,12 @@ option AnthroTraits.AT_ExclaimerExclaimThresholdMultiplier
 	page = AnthroTraits, translation = AnthroTraits_ExclaimerExclaimThresholdMultiplier,
 }
 
+option AnthroTraits.AT_ExclaimerAnthroVoiceMitigation
+{
+	type = integer, min = 0, max = 100, default = 20,
+	page = AnthroTraits, translation = AnthroTraits_ExclaimerAnthroVoiceMitigation,
+}
+
 option AnthroTraits.AT_FeralBody_Cost
 {
 	type = integer, min = -15, max = 15, default = 1,

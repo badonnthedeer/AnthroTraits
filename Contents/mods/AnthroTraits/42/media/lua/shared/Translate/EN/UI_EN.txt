@@ -41,7 +41,7 @@ UI_EN = {
 	UI_trait_AT_VestigialWings = "Vestigial Wings",
 	UI_trait_AT_VestigialWings_desc = "You gained semi-working wings from somewhere in your bloodline.<br>You are immune to all fall damage.",
 	UI_trait_AT_VoiceAvian = "Bird-like Voice",
-	UI_trait_AT_VoiceAvian_desc = "TBD.<br>Your warning calls (Exclaimer) are also more bird-like.",
+	UI_trait_AT_VoiceAvian_desc = "Adds a chance for exclamations (Exclaimer) to be mistaken for animal sounds and ignored by zombies.<br>Your warning calls are also more bird-like.",
 	UI_trait_AT_VoiceSheep = "Sheep-like Voice",
-	UI_trait_AT_VoiceSheep_desc = "TBD.<br>Your warning calls (Exclaimer) are also more sheep-like.",
+	UI_trait_AT_VoiceSheep_desc = "Adds a chance for exclamations (Exclaimer) to be mistaken for animal sounds and ignored by zombies.<br>Your warning calls are also more sheep-like.",
 }
