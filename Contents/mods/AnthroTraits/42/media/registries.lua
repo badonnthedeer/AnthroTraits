@@ -2,7 +2,7 @@
 AnthroTraitsGlobals = AnthroTraitsGlobals or {}
 
 AnthroTraitsGlobals.ModID = "AnthroTraits"
-AnthroTraitsGlobals.WorkshopID =  2987213113
+AnthroTraitsGlobals.WorkshopID = 3025679944
 AnthroTraitsGlobals.ModVersion = 2.0
 AnthroTraitsGlobals.UnwieldyHandsAffectedTimedActions = {"ISBuildAction", "ISCureFliesAction", "ISCureMildewAction", "ISHarvestPlantAction", "ISSeedAction",
                                          "ISAddItemInRecipe", "ISAddWaterFromItemAction", "ISBarricadeAction", "ISCraftAction", "ISCutHair",
@@ -13,8 +13,7 @@ AnthroTraitsGlobals.UnwieldyHandsAffectedTimedActions = {"ISBuildAction", "ISCur
                                          "ISUnloadBulletsFromMagazine", "ISUpgradeWeapon"}
 AnthroTraitsGlobals.CharacterTrait = {}
 AnthroTraitsGlobals.FoodTags = {}
-AnthroTraitsGlobals.EvolvedRecipeFoodTags = {}
-
+AnthroTraitsGlobals.FoodCharacterStatSigns = {}
 
 AnthroTraitsGlobals.CharacterTrait.ANTHROIMMUNITY = CharacterTrait.register("AnthroTraits:AT_AnthroImmunity")
 AnthroTraitsGlobals.CharacterTrait.BEASTOFBURDEN = CharacterTrait.register("AnthroTraits:AT_BeastOfBurden")
@@ -43,4 +42,19 @@ AnthroTraitsGlobals.FoodTags.CARNIVORE = ItemTag.register("AnthroTraits:ATCarniv
 AnthroTraitsGlobals.FoodTags.HERBIVORE = ItemTag.register("AnthroTraits:ATHerbivore")
 AnthroTraitsGlobals.FoodTags.INSECT = ItemTag.register("AnthroTraits:ATInsect")
 AnthroTraitsGlobals.FoodTags.FERALPOISON = ItemTag.register("AnthroTraits:ATFeralPoison")
+AnthroTraitsGlobals.FoodTags.FOODMOTIVATED = ItemTag.register("AnthroTraits:ATFoodMotivated")
 AnthroTraitsGlobals.EvolvedRecipeFoodTags = { AnthroTraitsGlobals.FoodTags.CARNIVORE, AnthroTraitsGlobals.FoodTags.HERBIVORE }
+
+-- modifiers (boni/mali) only apply to good changes
+-- good changes are identified by the sign
+-- food related traits will deal with these stats (plus calories)
+
+AnthroTraitsGlobals.FoodCharacterStatSigns[CharacterStat.HUNGER] = -1
+AnthroTraitsGlobals.FoodCharacterStatSigns[CharacterStat.THIRST] = -1
+AnthroTraitsGlobals.FoodCharacterStatSigns[CharacterStat.ENDURANCE] = 1
+AnthroTraitsGlobals.FoodCharacterStatSigns[CharacterStat.STRESS] = -1
+AnthroTraitsGlobals.FoodCharacterStatSigns[CharacterStat.BOREDOM] = -1
+AnthroTraitsGlobals.FoodCharacterStatSigns[CharacterStat.UNHAPPINESS] = -1
+AnthroTraitsGlobals.FoodCharacterStatSigns[CharacterStat.FATIGUE] = -1
+-- food stats processed by CARRIONEATER (plus calories)
+AnthroTraitsGlobals.CarrionFoodCharacterStats = { CharacterStat.HUNGER, CharacterStat.THIRST }
