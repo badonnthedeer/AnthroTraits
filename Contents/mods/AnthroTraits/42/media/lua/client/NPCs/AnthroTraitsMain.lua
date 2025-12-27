@@ -200,69 +200,98 @@ ATU.ImportExclaimerPhrases()
     -- end
 -- end
 
+local function GetConsumableProperties(consumable)
+	local result = {
+		Current = {},
+		Base = {}
+	}
+	if consumable:getFluidContainer() ~= nil
+    then
+        local drink = consumable:getFluidContainer():getProperties()
+        -- no boredom in fluid properties
+        result.Current[CharacterStat.BOREDOM] = 0
+		result.Current[CharacterStat.HUNGER] = drink:getHungerChange() or 0
+		result.Current[CharacterStat.THIRST] = drink:getThirstChange() or 0
+		result.Current[CharacterStat.ENDURANCE] = drink:getEnduranceChange() or 0
+		result.Current[CharacterStat.STRESS] = drink:getStressChange() or 0
+		result.Current[CharacterStat.UNHAPPINESS] = drink:getUnhappyChange() or 0
+		result.Current[CharacterStat.FATIGUE] = drink:getFatigueChange() or 0
+		result.Current[CharacterStat.POISON] = drink:getPoisonPower() or 0
+		result.Current.Calories = drink:getCalories() or 0
 
+		for stat, _ in pairs(result.Current) do
+			result.Base[stat] = result.Current[stat]
+		end
+		result.Base.Calories = result.Current.Calories
+    else
+		
+		result.Current[CharacterStat.BOREDOM] = consumable:getBoredomChange() or 0
+		result.Current[CharacterStat.HUNGER] = consumable:getHungerChange() or 0
+		result.Current[CharacterStat.THIRST] = consumable:getThirstChange() or 0
+		result.Current[CharacterStat.ENDURANCE] = consumable:getEnduranceChange() or 0
+		result.Current[CharacterStat.STRESS] = consumable:getStressChange() or 0
+		result.Current[CharacterStat.UNHAPPINESS] = consumable:getUnhappyChange() or 0
+		result.Current[CharacterStat.FATIGUE] = consumable:getFatigueChange() or 0
+		result.Current[CharacterStat.POISON] = consumable:getPoisonPower() or 0
+		result.Current.Calories = consumable:getCalories() or 0
 
-AnthroTraitsMain.ApplyFoodChanges = function(character, foodEaten, percentEaten)
-    local foodChanges = ATU.CalculateFoodChanges(character, foodEaten)
-    local charStats = character:getStats()
-    local charNutrition = character:getNutrition()
-
-    if foodChanges.addHungerChange ~= 0
-    then
-        charStats:set(CharacterStat.HUNGER, charStats:get(CharacterStat.HUNGER) + (foodChanges.addHungerChange * percentEaten));
-    end
-    if foodChanges.addThirstChange ~= 0
-    then
-        charStats:set(CharacterStat.THIRST, charStats:get(CharacterStat.THIRST) + (foodChanges.addThirstChange * percentEaten));
-    end
-    if foodChanges.addEndChange ~= 0
-    then
-        charStats:set(CharacterStat.ENDURANCE, charStats:get(CharacterStat.ENDURANCE) + (foodChanges.addEndChange * percentEaten));
-    end
-    if foodChanges.addStressChange ~= 0
-    then
-        charStats:set(CharacterStat.STRESS, charStats:get(CharacterStat.STRESS) + (foodChanges.addStressChange * percentEaten));
-    end
-    if foodChanges.addBoredomChange ~= 0
-    then
-        charStats:set(CharacterStat.BOREDOM, charStats:get(CharacterStat.BOREDOM) + (foodChanges.addBoredomChange * percentEaten));
-    end
-    if foodChanges.addUnhappyChange ~= 0
-    then
-        charStats:set(CharacterStat.UNHAPPINESS, charStats:get(CharacterStat.UNHAPPINESS) + (foodChanges.addUnhappyChange * percentEaten));
-    end
-    if foodChanges.addCalories ~= 0
-    then
-        charNutrition:setCalories(charNutrition:getCalories() + (foodChanges.addCalories * percentEaten));
-    end
-    if foodChanges.addPoison ~= 0
-    then
-        charStats:set(CharacterStat.POISON, charStats:get(CharacterStat.POISON) + (foodChanges.addPoison * percentEaten));
-        --b42 specific. Won't trigger dmg unless sick moodle = lvl 1 or up.
-		charStats:set(CharacterStat.FOOD_SICKNESS, 55)
-    end
+		result.Base[CharacterStat.BOREDOM] = consumable:getScriptItem():getBoredomChange() or result.Current[CharacterStat.BOREDOM]
+		result.Base[CharacterStat.HUNGER] = consumable:getScriptItem():getHungerChange() or result.Current[CharacterStat.HUNGER]
+		result.Base[CharacterStat.THIRST] = consumable:getScriptItem():getThirstChange() or result.Current[CharacterStat.THIRST]
+		result.Base[CharacterStat.ENDURANCE] = consumable:getScriptItem():getEnduranceChange() or result.Current[CharacterStat.ENDURANCE]
+		result.Base[CharacterStat.STRESS] = consumable:getScriptItem():getStressChange() or result.Current[CharacterStat.STRESS]
+		result.Base[CharacterStat.UNHAPPINESS] = consumable:getScriptItem():getUnhappyChange() or result.Current[CharacterStat.UNHAPPINESS]
+		result.Base[CharacterStat.FATIGUE] = consumable:getScriptItem().fatigueChange or result.Current[CharacterStat.FATIGUE]
+		result.Base[CharacterStat.POISON] = consumable:getScriptItem():getPoisonPower() or result.Current[CharacterStat.POISON]
+		result.Base.Calories = result.Current.Calories
+    end   
+	return result
 end
 
-
-AnthroTraitsMain.ApplyAfterEatFoodChanges = function(character, foodEaten, percentEaten, prevPoisonLvl)
+-- overwrites vanilla processing of stats but also avoids clamping issues at 0 and 100
+AnthroTraitsMain.ApplyFoodChanges = function(character, foodEaten, percentEaten, preCharStats)
 	local ATGt = AnthroTraitsGlobals.CharacterTrait
-    --local charBodyDmg = character:getBodyDamage()
-
-    if foodEaten:hasTag(AnthroTraitsGlobals.FoodTags.CARNIVORE)
+	local foodProps = GetConsumableProperties(foodEaten)
+    local foodChanges = ATU.CalculateFoodChanges(character, foodEaten, foodProps.Current)
+    local charStats = character:getStats()
+    local charNutrition = character:getNutrition()
+	
+	for stat, _ in pairs(AnthroTraitsGlobals.FoodCharacterStatSigns) do
+		if foodChanges[stat] ~= 0
+		then
+			charStats:set(stat, preCharStats[stat] + (foodProps.Current[stat] + foodChanges[stat]) * percentEaten)
+		end
+	end
+    if foodChanges[CharacterStat.POISON] ~= 0
+    then
+		local newPoisonValue = preCharStats[CharacterStat.POISON] + (foodProps.Current[CharacterStat.POISON] + foodChanges[CharacterStat.POISON]) * percentEaten
+        charStats:set(CharacterStat.POISON, newPoisonValue);
+		if newPoisonValue > 0
+		then
+			--b42 specific. Won't trigger dmg unless sick moodle = lvl 1 or up.
+			charStats:set(CharacterStat.FOOD_SICKNESS, 55)
+		end
+    end
+	if foodChanges.Calories ~= 0
+	then
+		charNutrition:setCalories(preCharStats.Calories + (foodProps.Current.Calories + foodChanges.Calories) * percentEaten)
+	end
+	-- RabenRabo: I'm not 100% sure what this does...best guess? deal with dangerous uncooked food?
+	if foodEaten:hasTag(AnthroTraitsGlobals.FoodTags.CARNIVORE)
     then
         if (character:hasTrait(ATGt.CARNIVORE) or character:hasTrait(ATGt.CARRIONEATER)) and not foodEaten:isRotten()
         then
             if instanceof(character, "IsoPlayer") and not foodEaten:isPoison()
             then
                 character:getModData().ATPlayerData.undoAddedPoison = true;
-                character:getModData().ATPlayerData.beforeEatPoisonLvl = prevPoisonLvl;
+                character:getModData().ATPlayerData.beforeEatPoisonLvl = preCharStats[CharacterStat.POISON];
             end
         elseif foodEaten:isRotten() and character:hasTrait(ATGt.CARRIONEATER)
         then
             if instanceof(character, "IsoPlayer") and not foodEaten:isPoison()
             then
                 character:getModData().ATPlayerData.undoAddedPoison = true;
-                character:getModData().ATPlayerData.beforeEatPoisonLvl = prevPoisonLvl;
+                character:getModData().ATPlayerData.beforeEatPoisonLvl = preCharStats[CharacterStat.POISON];
             end
         end
     elseif foodEaten:hasTag(AnthroTraitsGlobals.FoodTags.HERBIVORE)
@@ -274,7 +303,7 @@ AnthroTraitsMain.ApplyAfterEatFoodChanges = function(character, foodEaten, perce
                 if instanceof(character, "IsoPlayer") and not foodEaten:isPoison()
                 then
                     character:getModData().ATPlayerData.undoAddedPoison = true;
-                    character:getModData().ATPlayerData.beforeEatPoisonLvl = prevPoisonLvl;
+                    character:getModData().ATPlayerData.beforeEatPoisonLvl = preCharStats[CharacterStat.POISON];
                 end
             end
         end
@@ -523,6 +552,7 @@ AnthroTraitsMain.ATOnInitWorld = function()
     ATU.AddItemTagToItemsFromSandbox(SandboxVars.AnthroTraits.AT_HerbivoreItems, AnthroTraitsGlobals.FoodTags.HERBIVORE);
     ATU.AddItemTagToItemsFromSandbox(SandboxVars.AnthroTraits.AT_Bug_o_ssieurItems, AnthroTraitsGlobals.FoodTags.INSECT);
     ATU.AddItemTagToItemsFromSandbox(SandboxVars.AnthroTraits.AT_FeralDigestionItems, AnthroTraitsGlobals.FoodTags.FERALPOISON);
+    ATU.AddItemTagToItemsFromSandbox(SandboxVars.AnthroTraits.AT_FoodMotivatedItems, AnthroTraitsGlobals.FoodTags.FOODMOTIVATED);
 
     if getDebug()
     then
@@ -876,7 +906,7 @@ AnthroTraitsMain.ATEveryOneMinute = function()
                     end
                 end
 
-                if player:hasTrait(ATGt.EXCLAIMER)
+                if player:hasTrait(ATGt.EXCLAIMER) and not player:isAsleep()
                 then
                     ATM.ExclaimerCheck(player);
                 end
@@ -946,11 +976,11 @@ AnthroTraitsMain.ATPlayerUpdate = function(player)
     local beforeFallSpeed = modData.oldFallSpeed;
     local endurance = player:getStats():getLastEndurance();
     local rolledChance = ZombRand(0,100);
-    if player:hasTrait(ATGt.TORPOR) and modData.torporActive == true
+    if modData.torporActive
     then
         if endurance > (1.0 - SandboxVars.AnthroTraits.AT_TorporEnduranceDecrease)
         then
-            player:getStats():setEndurance(1.0 - SandboxVars.AnthroTraits.AT_TorporEnduranceDecrease);
+            player:getStats():set(CharacterStat.ENDURANCE, 1.0 - SandboxVars.AnthroTraits.AT_TorporEnduranceDecrease);
         end
     end
     if player:hasTrait(ATGt.NATURALTUMBLER)

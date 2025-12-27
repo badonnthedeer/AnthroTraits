@@ -48,6 +48,10 @@
 -- Have a problem or question? Reach me on Discord: badonn
 ------------------------------------------------------------------------------------------------------
 
+local function Sign(number)
+	return (number > 0 and 1) or (number == 0 and 0) or -1
+end
+
 local AnthroTraitsUtilities = {}
 -- fallback exclaimer phrases
 AnthroTraitsUtilities.GenericExclaimPhrases = {"AAAH!", "AAAH!", "AAAH!!", "AEIEEEE!", "EAAH!", "AAAGH!"}
@@ -244,192 +248,126 @@ end
 
 ---For basic food modifiers. This is built upon by CalculateFoodChanges later.
 AnthroTraitsUtilities.CalculateFoodModifiers = function(character, food)
-    local ATU = AnthroTraitsUtilities;
-    local modifiers = {
-        multHunger = 0,
-        multThirst = 0,
-        multEndurance = 0,
-        multStress = 0,
-        multBoredom = 0,
-        multUnhappiness = 0,
-        multCalories = 0,
-    }
+    local modifiers = { }
 
-    local foodVoreType = ATU.FoodVoreType(food);
+    local ATU = AnthroTraitsUtilities
+    local foodVoreType = ATU.FoodVoreType(food)
 
-    if foodVoreType == nil
+	local mod = 0
+	local modCarrion = 0
+	if foodVoreType == AnthroTraitsGlobals.FoodTags.HERBIVORE 
     then
-        --do nothing
-    elseif foodVoreType == AnthroTraitsGlobals.FoodTags.HERBIVORE 
-    then
-        if character:hasTrait(AnthroTraitsGlobals.CharacterTrait.CARNIVORE)
-        then
-
-            modifiers.multHunger = SandboxVars.AnthroTraits.AT_CarnivoreMalus;
-            modifiers.multThirst = SandboxVars.AnthroTraits.AT_CarnivoreMalus;
-            modifiers.multEndurance = SandboxVars.AnthroTraits.AT_CarnivoreMalus;
-            modifiers.multStress = SandboxVars.AnthroTraits.AT_CarnivoreMalus;
-            modifiers.multBoredom = SandboxVars.AnthroTraits.AT_CarnivoreMalus;
-            modifiers.multUnhappiness = SandboxVars.AnthroTraits.AT_CarnivoreMalus;
-            modifiers.multCalories = SandboxVars.AnthroTraits.AT_CarnivoreMalus;
-        elseif character:hasTrait(AnthroTraitsGlobals.CharacterTrait.HERBIVORE)
-        then
-            modifiers.multHunger = SandboxVars.AnthroTraits.AT_HerbivoreBonus;
-            modifiers.multThirst = SandboxVars.AnthroTraits.AT_HerbivoreBonus;
-            modifiers.multEndurance = SandboxVars.AnthroTraits.AT_HerbivoreBonus;
-            modifiers.multStress = SandboxVars.AnthroTraits.AT_HerbivoreBonus;
-            modifiers.multBoredom = SandboxVars.AnthroTraits.AT_HerbivoreBonus;
-            modifiers.multUnhappiness = SandboxVars.AnthroTraits.AT_HerbivoreBonus;
-            modifiers.multCalories = SandboxVars.AnthroTraits.AT_HerbivoreBonus;
-        end
-    elseif foodVoreType == AnthroTraitsGlobals.FoodTags.CARNIVORE 
+		if character:hasTrait(AnthroTraitsGlobals.CharacterTrait.HERBIVORE)
+		then
+			mod = SandboxVars.AnthroTraits.AT_HerbivoreBonus
+		elseif character:hasTrait(AnthroTraitsGlobals.CharacterTrait.CARNIVORE)
+		then
+			mod = SandboxVars.AnthroTraits.AT_CarnivoreMalus
+		end
+    elseif foodVoreType == AnthroTraitsGlobals.FoodTags.CARNIVORE
     then
         if character:hasTrait(AnthroTraitsGlobals.CharacterTrait.HERBIVORE)
         then
-            modifiers.multHunger = SandboxVars.AnthroTraits.AT_HerbivoreMalus;
-            modifiers.multThirst = SandboxVars.AnthroTraits.AT_HerbivoreMalus;
-            modifiers.multEndurance = SandboxVars.AnthroTraits.AT_HerbivoreMalus;
-            modifiers.multStress = SandboxVars.AnthroTraits.AT_HerbivoreMalus;
-            modifiers.multBoredom = SandboxVars.AnthroTraits.AT_HerbivoreMalus;
-            modifiers.multUnhappiness = SandboxVars.AnthroTraits.AT_HerbivoreMalus;
-            modifiers.multCalories = SandboxVars.AnthroTraits.AT_HerbivoreMalus;
-        elseif character:hasTrait(AnthroTraitsGlobals.CharacterTrait.CARNIVORE) and character:hasTrait(AnthroTraitsGlobals.CharacterTrait.CARRIONEATER) and food:IsRotten()
-        then
-            modifiers.multHunger = SandboxVars.AnthroTraits.AT_CarnivoreBonus + SandboxVars.AnthroTraits.AT_CarrionEaterBonus;
-            modifiers.multThirst = SandboxVars.AnthroTraits.AT_CarnivoreBonus + SandboxVars.AnthroTraits.AT_CarrionEaterBonus;
-            modifiers.multCalories = SandboxVars.AnthroTraits.AT_CarnivoreBonus + SandboxVars.AnthroTraits.AT_CarrionEaterBonus;
+			mod = SandboxVars.AnthroTraits.AT_HerbivoreMalus
         elseif character:hasTrait(AnthroTraitsGlobals.CharacterTrait.CARNIVORE)
         then
-            modifiers.multHunger = SandboxVars.AnthroTraits.AT_CarnivoreBonus;
-            modifiers.multThirst = SandboxVars.AnthroTraits.AT_CarnivoreBonus;
-            modifiers.multEndurance = SandboxVars.AnthroTraits.AT_CarnivoreBonus;
-            modifiers.multStress = SandboxVars.AnthroTraits.AT_CarnivoreBonus;
-            modifiers.multBoredom = SandboxVars.AnthroTraits.AT_CarnivoreBonus;
-            modifiers.multUnhappiness = SandboxVars.AnthroTraits.AT_CarnivoreBonus;
-            modifiers.multCalories = SandboxVars.AnthroTraits.AT_CarnivoreBonus;
-        elseif character:hasTrait(AnthroTraitsGlobals.CharacterTrait.CARRIONEATER) and food:IsRotten()
-        then
-            modifiers.multHunger = SandboxVars.AnthroTraits.AT_CarrionEaterBonus;
-            modifiers.multThirst = SandboxVars.AnthroTraits.AT_CarrionEaterBonus;
-            modifiers.multCalories = SandboxVars.AnthroTraits.AT_CarrionEaterBonus;
-        end
+			mod = SandboxVars.AnthroTraits.AT_CarnivoreBonus
+		end
+		if food:IsRotten() and character:hasTrait(AnthroTraitsGlobals.CharacterTrait.CARRIONEATER)
+		then
+			modCarrion = SandboxVars.AnthroTraits.AT_CarrionEaterBonus
+		end
     end
-
+	for stat, _ in pairs(AnthroTraitsGlobals.FoodCharacterStatSigns) do
+		modifiers[stat] = mod
+	end
+	for _, stat in ipairs(AnthroTraitsGlobals.CarrionFoodCharacterStats) do
+		modifiers[stat] = modifiers[stat] + modCarrion
+	end
+	modifiers.Calories = mod + modCarrion
     return modifiers
 end
 
 
----For extra effects of food. Dog food change from FoodMotivated is in here for example.
-AnthroTraitsUtilities.CalculateFoodChanges = function(character, food)
+---For extra effects of food.
+AnthroTraitsUtilities.CalculateFoodChanges = function(character, food, foodStats)
+	local ATGt = AnthroTraitsGlobals.CharacterTrait
     local modifiers = AnthroTraitsUtilities.CalculateFoodModifiers(character, food)
+	local result = {}
 
-    local foodName = food:getName();
-    local foodID = food:getFullType();
-    local encumbrance = food:getWeight();
-    local stackEncum = food:getCount() * encumbrance
-
-    local origHungerChange;
-    local origThirstChange;
-    local origEndChange;
-    local origStressChange;
-    local origBoredomChange;
-    local origUnhappyChange;
-    local origFoodCalories;
-
-    if food:getFluidContainer() ~= nil
-    then
-        local fluid = food:getFluidContainer():getProperties();
-        origHungerChange = fluid:getHungerChange() or 0;
-        origThirstChange = fluid:getThirstChange() or 0;
-        origEndChange = fluid:getEnduranceChange() or 0;
-        origStressChange = fluid:getStressChange() or 0;
-        -- no boredom in fluid properties
-        origBoredomChange = 0;
-        origUnhappyChange = fluid:getUnhappyChange() or 0;
-        origFoodCalories = fluid:getCalories() or 0;
-    else
-        origHungerChange = food:getHungerChange() or 0;
-        origThirstChange = food:getThirstChange() or 0;
-        origEndChange = food:getEnduranceChange() or 0;
-        origStressChange = food:getStressChange() or 0;
-        origBoredomChange = food:getBoredomChange() or 0;
-        origUnhappyChange = food:getUnhappyChange() or 0;
-        origFoodCalories = food:getCalories() or 0;
-    end    
-    
-
-    local extraFoodHungerChange = (origHungerChange * modifiers.multHunger);
-    local extraFoodThirstChange = (origThirstChange * modifiers.multThirst);
-    local extraFoodEndChange = (origEndChange * modifiers.multEndurance);
-    local extraFoodStressChange = (origStressChange * modifiers.multStress);
-    local extraFoodBoredomChange = (origBoredomChange * modifiers.multBoredom);
-    local extraFoodUnhappyChange = (origUnhappyChange * modifiers.multUnhappiness);
-    local extraFoodCalories = (origFoodCalories * modifiers.multCalories);
-    local extraPoison = 0;
-
-
-    if origBoredomChange > 0 and extraFoodBoredomChange ~= 0
-    then
-        extraFoodBoredomChange = (extraFoodBoredomChange * (modifiers.multBoredom * -1));
-    end
-    if origUnhappyChange > 0 and extraFoodUnhappyChange ~= 0
-    then
-        extraFoodUnhappyChange = (extraFoodUnhappyChange * (modifiers.multUnhappiness * -1));
-    end
-
-    if (character:hasTrait(AnthroTraitsGlobals.CharacterTrait.BUG_O_SSIEUR) and food:hasTag(AnthroTraitsGlobals.FoodTags.INSECT)) or (character:hasTrait(AnthroTraitsGlobals.CharacterTrait.CARRIONEATER) and food:hasTag(AnthroTraitsGlobals.FoodTags.CARNIVORE) and (food:HowRotten() > 0))
-    then
-        extraFoodUnhappyChange = extraFoodUnhappyChange - origUnhappyChange;
-        extraFoodBoredomChange =  extraFoodBoredomChange - origBoredomChange;
-    end
-
-    if (character:hasTrait(AnthroTraitsGlobals.CharacterTrait.FOODMOTIVATED) and foodID == "Base.DogfoodOpen")
-    then
-        extraFoodBoredomChange =  extraFoodBoredomChange - SandboxVars.AnthroTraits.AT_FoodMotivatedBonus;
-        extraFoodUnhappyChange =  extraFoodUnhappyChange - (50 + SandboxVars.AnthroTraits.AT_FoodMotivatedBonus);
-    elseif character:hasTrait(AnthroTraitsGlobals.CharacterTrait.FOODMOTIVATED)
-    then
-        extraFoodBoredomChange = extraFoodBoredomChange - SandboxVars.AnthroTraits.AT_FoodMotivatedBonus;
-        extraFoodUnhappyChange = extraFoodUnhappyChange - SandboxVars.AnthroTraits.AT_FoodMotivatedBonus;
-    end
-
-    if character:hasTrait(AnthroTraitsGlobals.CharacterTrait.FERALDIGESTION)
+	-- calculate trait related boni/mali
+	for stat, goodSign in pairs(AnthroTraitsGlobals.FoodCharacterStatSigns) do
+		-- only apply modifier if change is good
+		if foodStats[stat] ~= nil and Sign(foodStats[stat]) == goodSign
+		then
+			result[stat] = foodStats[stat] * modifiers[stat]
+		else
+			result[stat] = 0
+		end
+	end
+	result[CharacterStat.POISON] = 0
+	if foodStats.Calories ~= nil and Sign(foodStats.Calories) == 1
+	then
+		result.Calories = foodStats.Calories * modifiers.Calories
+	else
+		result.Calories = 0
+	end
+	
+	-- process UNHAPPINESS and BOREDOM for certain traits (as long as either character is CARRIONEATER or food is fresh or both)
+	if character:hasTrait(ATGt.CARRIONEATER) or not food:IsRotten()
+	then
+		-- counteract UNHAPPINESS and BOREDOM for certain trait/food combos
+		if (character:hasTrait(ATGt.BUG_O_SSIEUR) and food:hasTag(AnthroTraitsGlobals.FoodTags.INSECT)) or	--BUG_O_SSIEUR doesn't mind eating insects
+			(food:IsRotten() and food:hasTag(AnthroTraitsGlobals.FoodTags.CARNIVORE)) or					--CARRIONEATER doesn't mind rotten meat
+			(character:hasTrait(ATGt.FOODMOTIVATED) and food:hasTag(AnthroTraitsGlobals.FoodTags.FOODMOTIVATED))	--FOODMOTIVATED doesn't mind eating certain foods
+		then
+			if Sign(foodStats[CharacterStat.UNHAPPINESS]) ~= AnthroTraitsGlobals.FoodCharacterStatSigns[CharacterStat.UNHAPPINESS]
+			then
+				result[CharacterStat.UNHAPPINESS] = result[CharacterStat.UNHAPPINESS] - foodStats[CharacterStat.UNHAPPINESS]
+			end
+			if Sign(foodStats[CharacterStat.BOREDOM]) ~= AnthroTraitsGlobals.FoodCharacterStatSigns[CharacterStat.BOREDOM]
+			then
+				result[CharacterStat.BOREDOM] = result[CharacterStat.BOREDOM] - foodStats[CharacterStat.BOREDOM]
+			end
+		end
+		-- FOODMOTIVATED really likes eating stuff
+		if character:hasTrait(ATGt.FOODMOTIVATED)
+		then
+			result[CharacterStat.UNHAPPINESS] = result[CharacterStat.UNHAPPINESS] - SandboxVars.AnthroTraits.AT_FoodMotivatedBonus
+			result[CharacterStat.BOREDOM] = result[CharacterStat.BOREDOM] - SandboxVars.AnthroTraits.AT_FoodMotivatedBonus
+		end
+	end
+	
+	if character:hasTrait(ATGt.FERALDIGESTION)
     then
         local maxPoisonAmt = SandboxVars.AnthroTraits.AT_FeralDigestionPoisonAmt
         if food:getFluidContainer() ~= nil and not food:getFluidContainer():isEmpty()
         then
+			-- ferals can't process alcohol
             if food:getFluidContainer():getPrimaryFluid():isCategory(FluidCategory.Alcoholic)
             then
-                extraPoison = maxPoisonAmt;
+                result[CharacterStat.POISON] = maxPoisonAmt;
             end
         elseif food:getExtraItems() ~= nil
         then
+			-- ferals can't process certain ingredients
             local foodIngredients = food:getExtraItems()
             for i = 0, foodIngredients:size() - 1
             do
                 local foodIngredientTags = getScriptManager():getItem(foodIngredients:get(i)):getTags()
-                if foodIngredientTags:contains("ATFeralPoison")
+                if foodIngredientTags:contains(AnthroTraitsGlobals.FoodTags.FERALPOISON)
                 then
-                    extraPoison = extraPoison + maxPoisonAmt;
+                    result[CharacterStat.POISON] = result[CharacterStat.POISON] + maxPoisonAmt;
                 end
             end
         elseif food:hasTag(AnthroTraitsGlobals.FoodTags.FERALPOISON)
         then
-            extraPoison = maxPoisonAmt;
+			-- ferals can't process certain foods
+            result[CharacterStat.POISON] = maxPoisonAmt;
         end
     end
-
-    local foodChanges = {
-        addHungerChange = extraFoodHungerChange,
-        addThirstChange = extraFoodThirstChange,
-        addEndChange = extraFoodEndChange,
-        addStressChange = extraFoodStressChange,
-        addBoredomChange = extraFoodBoredomChange,
-        addUnhappyChange = extraFoodUnhappyChange,
-        addCalories = extraFoodCalories,
-        addPoison = extraPoison,
-    }
-    return foodChanges
+	
+    return result
 end
 
 
