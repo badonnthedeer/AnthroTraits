@@ -130,11 +130,15 @@ end
 local function GetCharFoodStats(character)
     local charStats = character:getStats()
 	local result = {}
-	for stat, _ in pairs(AnthroTraitsGlobals.FoodCharacterStatSigns) do
+	for stat, _ in pairs(AnthroTraitsGlobals.FoodCharacterStatInfo) do
 		result[stat] = charStats:get(stat)
 	end
 	result[CharacterStat.POISON] = charStats:get(CharacterStat.POISON)
-	result.Calories = character:getNutrition():getCalories()
+	local nutrition = character:getNutrition()
+	result.Calories = nutrition:getCalories()
+	result.Carbs = nutrition:getCarbohydrates()
+	result.Proteins = nutrition:getProteins()
+	result.Lipids = nutrition:getLipids()
 	return result
 end
 
@@ -181,274 +185,269 @@ ISBaseTimedAction.create = function(self)
 end
 
 
--- local oldRender = ISToolTipInv.render
--- ISToolTipInv.render = function(self)
-	-- local ATGt = AnthroTraitsGlobals.CharacterTrait
-	-- local ATGf = AnthroTraitsGlobals.FoodTags
-     -- --redirect back to oldrender if tooltip isn't for food.
-    -- if (ISContextMenu.instance and ISContextMenu.instance.visibleCheck) or (self.item == nil)
-    -- then
-        -- oldRender(self);
-    -- else
-        -- --short-circuit to prevent components from triggering (transfer fluid gui)
-        -- if not instanceof(self.item, "Food")
-        -- then
-            -- oldRender(self);
-        -- else
-            -- --declare and get vars
-            -- local player = self.tooltip:getCharacter();
-            -- local mx = getMouseX() + 32;
-            -- local my = getMouseY() + 10;
-            -- local tooltipOffsetX = -8;
-            -- local tooltipOffsetY = 15;
-            -- local tooltipPaddingLeft = 7;
-            -- local tooltipPaddingRight = 6;
-            -- local tooltipPaddingTop = 3;
-            -- local tooltipPaddingBottom = 0;
-            -- local tooltipTextTable = {};
-            -- local longestTextWidth = 0;
-            -- local longestLeftTextWidth = 0;
-            -- local textHeight = 0;
-            -- local barPaddingLeft = 5;
-            -- local barPaddingRight = 5;
-            -- local rightTextLeftPadding = 5;
-            -- local barHeight = 3;
-            -- local lineSpacing = self.tooltip:getLineSpacing();
-            -- local defaultColor = Colors.LemonChiffon;
-            -- local text = "";
-            -- local leftText = "";
+local oldRender = ISToolTipInv.render
+ISToolTipInv.render = function(self)
+	local ATGt = AnthroTraitsGlobals.CharacterTrait
+	local ATGf = AnthroTraitsGlobals.FoodTags
+    --redirect back to oldrender if tooltip isn't for food.
+	--short-circuit to prevent components from triggering (transfer fluid gui)
+    if (ISContextMenu.instance and ISContextMenu.instance.visibleCheck) or (self.item == nil) or not instanceof(self.item, "Food")
+    then
+        oldRender(self);
+		return
+	end
+	--declare and get vars
+	local player = self.tooltip:getCharacter();
+	local mx = getMouseX() + 32;
+	local my = getMouseY() + 10;
+	local tooltipOffsetX = -8;
+	local tooltipOffsetY = 15;
+	local tooltipPaddingLeft = 7;
+	local tooltipPaddingRight = 6;
+	local tooltipPaddingTop = 3;
+	local tooltipPaddingBottom = 0;
+	local tooltipTextTable = {};
+	local longestTextWidth = 0;
+	local longestLeftTextWidth = 0;
+	local textHeight = 0;
+	local barPaddingLeft = 5;
+	local barPaddingRight = 5;
+	local rightTextLeftPadding = 5;
+	local barHeight = 3;
+	local lineSpacing = self.tooltip:getLineSpacing();
+	local defaultColor = Colors.LemonChiffon;
+	local text = "";
+	local leftText = "";
 
-            -- if (((ATU.FoodVoreType(self.item) == ATGf.HERBIVORE  or ATU.FoodVoreType(self.item) == ATGf.CARNIVORE) and (player:hasTrait(ATGt.HERBIVORE) or player:hasTrait(ATGt.CARNIVORE) or player:hasTrait(ATGt.CARRIONEATER)))
-                    -- or (self.item:hasTag(ATGf.FERALPOISON) and player:hasTrait(ATGt.FERALDIGESTION))
-                    -- or (self.item:hasTag(ATGf.INSECT) and player:hasTrait(ATGt.BUG_O_SSIEUR))
-                    -- or (player:hasTrait(ATGt.FOODMOTIVATED)))
-            -- then
-                -- if ATU.FoodVoreType(self.item) == "ATHerbivore"
-                -- then
-                    -- if player:hasTrait(ATGt.HERBIVORE)
-                    -- then
-                        -- tooltipTextTable = ATU.BuildFoodDescription(player, "%LightGreen%This food is more nutritious for you.", self.item, SandboxVars.AnthroTraits.AT_HerbivoreBonus)
-                    -- elseif player:hasTrait(ATGt.CARNIVORE)
-                    -- then
-                        -- tooltipTextTable = ATU.BuildFoodDescription(player, "%LavenderBlush%This food is less nutritious for you.", self.item, SandboxVars.AnthroTraits.AT_CarnivoreMalus)
-                    -- elseif player:hasTrait(ATGt.FOODMOTIVATED) or player:hasTrait(ATGt.FERALDIGESTION)
-                    -- then
-                        -- tooltipTextTable = ATU.BuildFoodDescription(player, nil, self.item, 0)
-                    -- end
-                -- elseif ATU.FoodVoreType(self.item) == "ATCarnivore"
-                -- then
-                    -- if player:hasTrait(ATGt.CARNIVORE) and player:hasTrait(ATGt.CARRIONEATER) and self.item:IsRotten()
-                    -- then
-                        -- tooltipTextTable = ATU.BuildFoodDescription(player, "%LightGreen%This food is better for you.", self.item, (SandboxVars.AnthroTraits.AT_CarnivoreBonus + SandboxVars.AnthroTraits.AT_CarrionEaterBonus))
-                    -- elseif player:hasTrait(ATGt.CARNIVORE)
-                    -- then
-                        -- tooltipTextTable = ATU.BuildFoodDescription(player, "%LightGreen%This food is better for you.", self.item, SandboxVars.AnthroTraits.AT_CarnivoreBonus)
-                    -- elseif player:hasTrait(ATGt.CARRIONEATER) and self.item:IsRotten()
-                    -- then
-                        -- tooltipTextTable = ATU.BuildFoodDescription(player, "%LightGreen%This food is better for you.", self.item, SandboxVars.AnthroTraits.AT_CarrionEaterBonus)
-                    -- elseif player:hasTrait(ATGt.CARRIONEATER) and not self.item:IsRotten()
-                    -- then
-                        -- tooltipTextTable = ATU.BuildFoodDescription(player, nil, self.item, 0)
-                    -- elseif player:hasTrait(ATGt.HERBIVORE)
-                    -- then
-                        -- tooltipTextTable = ATU.BuildFoodDescription(player, "%LavenderBlush%This food is worse for you.", self.item, SandboxVars.AnthroTraits.AT_HerbivoreMalus)
-                    -- elseif player:hasTrait(ATGt.FOODMOTIVATED) or player:hasTrait(ATGt.FERALDIGESTION)
-                    -- then
-                        -- tooltipTextTable = ATU.BuildFoodDescription(player, nil, self.item, 0)
-                    -- end
-                -- elseif player:hasTrait(ATGt.FOODMOTIVATED) or player:hasTrait(ATGt.BUG_O_SSIEUR) or player:hasTrait(ATGt.FERALDIGESTION)
-                -- then
-                    -- tooltipTextTable = ATU.BuildFoodDescription(player, nil, self.item, 0)
-                -- end
-            -- elseif player:hasTrait(ATGt.FERALDIGESTION) and instanceof(self.item, "ComboItem") and self.item:getFluidContainer() ~= nil
-            -- then
-                -- if not self.item:getFluidContainer():isEmpty() and self.item:getFluidContainer():getPrimaryFluid():isCategory(FluidCategory.Alcoholic)
-                -- then
-                    -- tooltipTextTable = ATU.BuildFluidContainerDescription(player, nil, self.item, 0)
-                -- else
-                    -- return oldRender(self);
-                -- end
+	if (((ATU.FoodVoreType(self.item) == ATGf.HERBIVORE  or ATU.FoodVoreType(self.item) == ATGf.CARNIVORE) and (player:hasTrait(ATGt.HERBIVORE) or player:hasTrait(ATGt.CARNIVORE) or player:hasTrait(ATGt.CARRIONEATER)))
+			or (self.item:hasTag(ATGf.FERALPOISON) and player:hasTrait(ATGt.FERALDIGESTION))
+			or (self.item:hasTag(ATGf.INSECT) and player:hasTrait(ATGt.BUG_O_SSIEUR))
+			or (player:hasTrait(ATGt.FOODMOTIVATED)))
+	then
+		if ATU.FoodVoreType(self.item) == ATGf.HERBIVORE
+		then
+			if player:hasTrait(ATGt.HERBIVORE)
+			then
+				tooltipTextTable = ATU.BuildFoodDescription(player, "%LightGreen%This food is more nutritious for you.", self.item)
+			elseif player:hasTrait(ATGt.CARNIVORE)
+			then
+				tooltipTextTable = ATU.BuildFoodDescription(player, "%LavenderBlush%This food is less nutritious for you.", self.item)
+			elseif player:hasTrait(ATGt.FOODMOTIVATED) or player:hasTrait(ATGt.FERALDIGESTION)
+			then
+				tooltipTextTable = ATU.BuildFoodDescription(player, nil, self.item)
+			end
+		elseif ATU.FoodVoreType(self.item) == ATGf.CARNIVORE
+		then
+			if player:hasTrait(ATGt.CARNIVORE) and player:hasTrait(ATGt.CARRIONEATER) and self.item:IsRotten()
+			then
+				tooltipTextTable = ATU.BuildFoodDescription(player, "%LightGreen%This food is better for you.", self.item)
+			elseif player:hasTrait(ATGt.CARNIVORE)
+			then
+				tooltipTextTable = ATU.BuildFoodDescription(player, "%LightGreen%This food is better for you.", self.item)
+			elseif player:hasTrait(ATGt.CARRIONEATER) and self.item:IsRotten()
+			then
+				tooltipTextTable = ATU.BuildFoodDescription(player, "%LightGreen%This food is better for you.", self.item)
+			elseif player:hasTrait(ATGt.CARRIONEATER) and not self.item:IsRotten()
+			then
+				tooltipTextTable = ATU.BuildFoodDescription(player, nil, self.item)
+			elseif player:hasTrait(ATGt.HERBIVORE)
+			then
+				tooltipTextTable = ATU.BuildFoodDescription(player, "%LavenderBlush%This food is worse for you.", self.item)
+			elseif player:hasTrait(ATGt.FOODMOTIVATED) or player:hasTrait(ATGt.FERALDIGESTION)
+			then
+				tooltipTextTable = ATU.BuildFoodDescription(player, nil, self.item)
+			end
+		elseif player:hasTrait(ATGt.FOODMOTIVATED) or player:hasTrait(ATGt.BUG_O_SSIEUR) or player:hasTrait(ATGt.FERALDIGESTION)
+		then
+			tooltipTextTable = ATU.BuildFoodDescription(player, nil, self.item)
+		end
+	elseif player:hasTrait(ATGt.FERALDIGESTION) and instanceof(self.item, "ComboItem") and self.item:getFluidContainer() ~= nil
+	then
+		if not self.item:getFluidContainer():isEmpty() and self.item:getFluidContainer():getPrimaryFluid():isCategory(FluidCategory.Alcoholic)
+		then
+			tooltipTextTable = ATU.BuildFluidContainerDescription(player, nil, self.item)
+		else
+			return oldRender(self);
+		end
 
-            -- else
-                -- --If it doesn't have any relevant tags, go instead to oldRender
-                -- return oldRender(self);
-            -- end
+	else
+		--If it doesn't have any relevant tags, go instead to oldRender
+		return oldRender(self);
+	end
 
-            -- for i = 1, #tooltipTextTable do
-                -- text = string.gsub(tooltipTextTable[i], "%%[^%%]+%%", "")
-                -- longestTextWidth = math.max(longestTextWidth, getTextManager():MeasureStringX(UIFont[getCore():getOptionTooltipFont()], text));
-                -- if tooltipTextTable[i]:find(":")
-                -- then
-                    -- leftText = text:sub(0, text:find(":"))
-                    -- longestLeftTextWidth = math.max(longestLeftTextWidth, getTextManager():MeasureStringX(UIFont[getCore():getOptionTooltipFont()], leftText));
-                -- end
+	for i = 1, #tooltipTextTable do
+		text = string.gsub(tooltipTextTable[i], "%%[^%%]+%%", "")
+		longestTextWidth = math.max(longestTextWidth, getTextManager():MeasureStringX(UIFont[getCore():getOptionTooltipFont()], text));
+		if tooltipTextTable[i]:find(":")
+		then
+			leftText = text:sub(0, text:find(":"))
+			longestLeftTextWidth = math.max(longestLeftTextWidth, getTextManager():MeasureStringX(UIFont[getCore():getOptionTooltipFont()], leftText));
+		end
 
-            -- end
-            -- for i = 1, #tooltipTextTable do
-                -- if tooltipTextTable[i] ~= nil
-                -- then
-                    -- textHeight = textHeight + self.tooltip:getLineSpacing();
-                -- else
-                    -- textHeight = self.tooltip:getLineSpacing() / 2;
-                -- end
+	end
+	for i = 1, #tooltipTextTable do
+		if tooltipTextTable[i] ~= nil
+		then
+			textHeight = textHeight + self.tooltip:getLineSpacing();
+		else
+			textHeight = self.tooltip:getLineSpacing() / 2;
+		end
 
 
-            -- end
-            -- textHeight = self.tooltip:getLineSpacing() * #tooltipTextTable;
+	end
+	textHeight = self.tooltip:getLineSpacing() * #tooltipTextTable;
 
-            -- if not self.followMouse then
-                -- mx = self:getX();
-                -- my = self:getY();
-            -- end
-            -- if self.desiredX and self.desiredY then
-                -- mx = self.desiredX;
-                -- my = self.desiredY;
-            -- end
+	if not self.followMouse then
+		mx = self:getX();
+		my = self:getY();
+	end
+	if self.desiredX and self.desiredY then
+		mx = self.desiredX;
+		my = self.desiredY;
+	end
 
-            -- --update tooltip objects with calculated vars
-            -- self:setX(mx + tooltipOffsetX);
-            -- self:setY(my + tooltipOffsetY);
+	--update tooltip objects with calculated vars
+	self:setX(mx + tooltipOffsetX);
+	self:setY(my + tooltipOffsetY);
 
-            -- self.tooltip:setX(mx + tooltipOffsetX);
-            -- self.tooltip:setY(my + tooltipOffsetY);
+	self.tooltip:setX(mx + tooltipOffsetX);
+	self.tooltip:setY(my + tooltipOffsetY);
 
-            -- --[[if self.contextMenu and self.contextMenu.joyfocus then
-                -- local playerNum = self.contextMenu.player
-                -- self:setX(getPlayerScreenLeft(playerNum) + 60);
-                -- self:setY(getPlayerScreenTop(playerNum) + 60);
-            -- elseif self.contextMenu and self.contextMenu.currentOptionRect then
-                -- if self.contextMenu.currentOptionRect.height > 32 then
-                    -- self:setY(my + self.contextMenu.currentOptionRect.height)
-                -- end
-                -- self:adjustPositionToAvoidOverlap(self.contextMenu.currentOptionRect)
-            -- elseif self.owner and self.owner.isButton then
-                -- local ownerRect = { x = self.owner:getAbsoluteX(), y = self.owner:getAbsoluteY(), width = self.owner.width, height = self.owner.height }
-                -- self:adjustPositionToAvoidOverlap(ownerRect)
-            -- end]]
+	--[[if self.contextMenu and self.contextMenu.joyfocus then
+		local playerNum = self.contextMenu.player
+		self:setX(getPlayerScreenLeft(playerNum) + 60);
+		self:setY(getPlayerScreenTop(playerNum) + 60);
+	elseif self.contextMenu and self.contextMenu.currentOptionRect then
+		if self.contextMenu.currentOptionRect.height > 32 then
+			self:setY(my + self.contextMenu.currentOptionRect.height)
+		end
+		self:adjustPositionToAvoidOverlap(self.contextMenu.currentOptionRect)
+	elseif self.owner and self.owner.isButton then
+		local ownerRect = { x = self.owner:getAbsoluteX(), y = self.owner:getAbsoluteY(), width = self.owner.width, height = self.owner.height }
+		self:adjustPositionToAvoidOverlap(ownerRect)
+	end]]
 
-            -- -- screen bounding
-            -- if self.followMouse then
-                -- --needs adjustment but fine for now.
-                -- self:adjustPositionToAvoidOverlap({ x = mx - 24 * 2, y = my - 24 * 2, width = 24 * 2, height = 24 * 2 })
-            -- end
-            -- --Draw tooltip
+	-- screen bounding
+	if self.followMouse then
+		--needs adjustment but fine for now.
+		self:adjustPositionToAvoidOverlap({ x = mx - 24 * 2, y = my - 24 * 2, width = 24 * 2, height = 24 * 2 })
+	end
+	--Draw tooltip
 
-            -- self:drawRect(0, 0, (longestTextWidth + tooltipPaddingLeft + tooltipPaddingRight), (textHeight + tooltipPaddingTop + tooltipPaddingBottom), self.backgroundColor.a, self.backgroundColor.r, self.backgroundColor.g, self.backgroundColor.b)
-            -- self:drawRectBorder(0, 0, (longestTextWidth + tooltipPaddingLeft + tooltipPaddingRight), (textHeight + tooltipPaddingTop + tooltipPaddingBottom), self.borderColor.a, self.borderColor.r, self.borderColor.g, self.borderColor.b)
+	self:drawRect(0, 0, (longestTextWidth + tooltipPaddingLeft + tooltipPaddingRight), (textHeight + tooltipPaddingTop + tooltipPaddingBottom), self.backgroundColor.a, self.backgroundColor.r, self.backgroundColor.g, self.backgroundColor.b)
+	self:drawRectBorder(0, 0, (longestTextWidth + tooltipPaddingLeft + tooltipPaddingRight), (textHeight + tooltipPaddingTop + tooltipPaddingBottom), self.borderColor.a, self.borderColor.r, self.borderColor.g, self.borderColor.b)
 
-            -- local lineY = tooltipPaddingTop;
+	local lineY = tooltipPaddingTop;
 
-            -- for i = 1, #tooltipTextTable do
-                -- local lineX = tooltipPaddingLeft;
-                -- local lineRightX = longestTextWidth + tooltipPaddingLeft;
-                -- local lineYBar;
-                -- local currColor = defaultColor;
-                -- local leftTextWidth;
-                -- local leftTextColor;
-                -- local rightText;
-                -- local rightTextColor;
-                -- local barLength;
-                -- local textFindBeg;
-                -- local textFindEnd;
+	for i = 1, #tooltipTextTable do
+		local lineX = tooltipPaddingLeft;
+		local lineRightX = longestTextWidth + tooltipPaddingLeft;
+		local lineYBar;
+		local currColor = defaultColor;
+		local leftTextWidth;
+		local leftTextColor;
+		local rightText;
+		local rightTextColor;
+		local barLength;
+		local textFindBeg;
+		local textFindEnd;
 
-                -- text = tooltipTextTable[i]
-                -- leftText = nil;
+		text = tooltipTextTable[i]
+		leftText = nil;
 
-                -- if text:contains(":")
-                -- then
-                    -- leftText = text:sub(0, text:find(":"))
-                    -- leftTextColor = leftText:match("%%.+%%")
-                    -- if leftTextColor ~= nil
-                    -- then
-                        -- textFindBeg,textFindEnd  = leftText:find("%%.+%%");
-                        -- leftText = leftText:sub(textFindEnd +1, #leftText)
-                        -- leftTextColor = leftTextColor:sub(2, #leftTextColor - 1)
-                    -- end
-                    -- rightText = text:sub((text:find(":")  +1), #text)
-                    -- rightTextColor = rightText:match("%%.+%%")
-                    -- if rightTextColor ~= nil
-                    -- then
-                        -- textFindBeg,textFindEnd  = rightText:find("%%.+%%");
-                        -- rightText = rightText:sub(textFindEnd +1, #rightText)
-                        -- rightTextColor = rightTextColor:sub(2, #rightTextColor - 1)
-                    -- end
-                    -- currColor = Colors[leftTextColor] or defaultColor;
+		if text:contains(":")
+		then
+			leftText = text:sub(0, text:find(":"))
+			leftTextColor = leftText:match("%%.+%%")
+			if leftTextColor ~= nil
+			then
+				textFindBeg,textFindEnd  = leftText:find("%%.+%%");
+				leftText = leftText:sub(textFindEnd +1, #leftText)
+				leftTextColor = leftTextColor:sub(2, #leftTextColor - 1)
+			end
+			rightText = text:sub((text:find(":")  +1), #text)
+			rightTextColor = rightText:match("%%.+%%")
+			if rightTextColor ~= nil
+			then
+				textFindBeg,textFindEnd  = rightText:find("%%.+%%");
+				rightText = rightText:sub(textFindEnd +1, #rightText)
+				rightTextColor = rightTextColor:sub(2, #rightTextColor - 1)
+			end
+			currColor = Colors[leftTextColor] or defaultColor;
 
-                    -- self.tooltip:DrawText(leftText, lineX, lineY,
-                            -- currColor:getRedFloat(),
-                            -- currColor:getGreenFloat(),
-                            -- currColor:getBlueFloat(),
-                            -- currColor:getAlphaFloat())
+			self.tooltip:DrawText(leftText, lineX, lineY,
+					currColor:getRedFloat(),
+					currColor:getGreenFloat(),
+					currColor:getBlueFloat(),
+					currColor:getAlphaFloat())
 
-                    -- currColor = Colors[rightTextColor] or defaultColor;
-                    -- if rightText ~= nil
-                    -- then
-                        -- self.tooltip:DrawTextRight(rightText, lineRightX, lineY,
-                                -- currColor:getRedFloat(),
-                                -- currColor:getGreenFloat(),
-                                -- currColor:getBlueFloat(),
-                                -- currColor:getAlphaFloat())
-                    -- end
-                        -- lineY = lineY + lineSpacing
-                -- elseif text:contains("|")
-                -- then
-                    -- leftText = text:sub(0, text:find("|") - 1)
-                    -- leftTextWidth = getTextManager():MeasureStringX(UIFont[getCore():getOptionTooltipFont()], leftText)
-                    -- leftTextColor = leftText:match("%%.+%%")
-                    -- if leftTextColor ~= nil
-                    -- then
-                        -- textFindBeg,textFindEnd  = leftText:find("%%.+%%");
-                        -- leftText = leftText:sub(textFindEnd +1, #leftText)
-                        -- leftTextColor = leftTextColor:sub(2, #leftTextColor - 1)
-                    -- end
-                    -- rightText = text:sub(text:find("|") +1, #text)
-                    -- rightTextColor = rightText:match("%%.+%%")
-                    -- if rightTextColor ~= nil
-                    -- then
-                        -- textFindBeg,textFindEnd  = rightText:find("%%.+%%");
-                        -- rightText = rightText:sub(textFindEnd +1, #rightText)
-                        -- rightTextColor = rightTextColor:sub(2, #rightTextColor - 1)
-                    -- end
-                    -- currColor = Colors[leftTextColor] or defaultColor;
+			currColor = Colors[rightTextColor] or defaultColor;
+			if rightText ~= nil
+			then
+				self.tooltip:DrawTextRight(rightText, lineRightX, lineY,
+						currColor:getRedFloat(),
+						currColor:getGreenFloat(),
+						currColor:getBlueFloat(),
+						currColor:getAlphaFloat())
+			end
+				lineY = lineY + lineSpacing
+		elseif text:contains("|")
+		then
+			leftText = text:sub(0, text:find("|") - 1)
+			leftTextWidth = getTextManager():MeasureStringX(UIFont[getCore():getOptionTooltipFont()], leftText)
+			leftTextColor = leftText:match("%%.+%%")
+			if leftTextColor ~= nil
+			then
+				textFindBeg,textFindEnd  = leftText:find("%%.+%%");
+				leftText = leftText:sub(textFindEnd +1, #leftText)
+				leftTextColor = leftTextColor:sub(2, #leftTextColor - 1)
+			end
+			rightText = text:sub(text:find("|") +1, #text)
+			rightTextColor = rightText:match("%%.+%%")
+			if rightTextColor ~= nil
+			then
+				textFindBeg,textFindEnd  = rightText:find("%%.+%%");
+				rightText = rightText:sub(textFindEnd +1, #rightText)
+				rightTextColor = rightTextColor:sub(2, #rightTextColor - 1)
+			end
+			currColor = Colors[leftTextColor] or defaultColor;
 
-                    -- self.tooltip:DrawText(leftText, lineX, lineY,
-                            -- currColor:getRedFloat(),
-                            -- currColor:getGreenFloat(),
-                            -- currColor:getBlueFloat(),
-                            -- currColor:getAlphaFloat())
+			self.tooltip:DrawText(leftText, lineX, lineY,
+					currColor:getRedFloat(),
+					currColor:getGreenFloat(),
+					currColor:getBlueFloat(),
+					currColor:getAlphaFloat())
 
-                    -- currColor = Colors[rightTextColor] or defaultColor;
-                    -- if rightText ~= nil
-                    -- then
-                        -- barLength = (longestTextWidth - leftTextWidth - barPaddingRight);
-                        -- --center the bar in the available line space
-                        -- lineYBar = (lineY + (self.tooltip:getLineSpacing() / 2) - 1)
-                        -- self.tooltip:DrawProgressBar(lineX + leftTextWidth, lineYBar, barLength, 12, tonumber(rightText), currColor:getRedFloat(), currColor:getGreenFloat(), currColor:getBlueFloat(), currColor:getAlphaFloat())
-                    -- end
-                    -- lineY = lineY + lineSpacing
-                -- elseif text == nil or text == ""
-                -- then
-                    -- lineY = lineY + (lineSpacing / 2)
-                -- else
-                    -- leftTextColor = text:match("%%.+%%")
-                    -- if leftTextColor ~= nil
-                    -- then
-                        -- textFindBeg,textFindEnd  = text:find("%%.+%%");
-                        -- text = text:sub(textFindEnd +1, #text)
-                        -- leftTextColor = leftTextColor:sub(2, #leftTextColor - 1)
-                    -- end
-                    -- currColor = Colors[leftTextColor] or defaultColor;
-                    -- self.tooltip:DrawText(text,  lineX, lineY,
-                            -- currColor:getRedFloat(),
-                            -- currColor:getGreenFloat(),
-                            -- currColor:getBlueFloat(),
-                            -- currColor:getAlphaFloat())
-                    -- lineY = lineY + lineSpacing
-                -- end
-            -- end
-        -- end
-    -- end
--- end
+			currColor = Colors[rightTextColor] or defaultColor;
+			if rightText ~= nil
+			then
+				barLength = (longestTextWidth - leftTextWidth - barPaddingRight);
+				--center the bar in the available line space
+				lineYBar = (lineY + (self.tooltip:getLineSpacing() / 2) - 1)
+				self.tooltip:DrawProgressBar(lineX + leftTextWidth, lineYBar, barLength, 12, tonumber(rightText), currColor:getRedFloat(), currColor:getGreenFloat(), currColor:getBlueFloat(), currColor:getAlphaFloat())
+			end
+			lineY = lineY + lineSpacing
+		elseif text == nil or text == ""
+		then
+			lineY = lineY + (lineSpacing / 2)
+		else
+			leftTextColor = text:match("%%.+%%")
+			if leftTextColor ~= nil
+			then
+				textFindBeg,textFindEnd  = text:find("%%.+%%");
+				text = text:sub(textFindEnd +1, #text)
+				leftTextColor = leftTextColor:sub(2, #leftTextColor - 1)
+			end
+			currColor = Colors[leftTextColor] or defaultColor;
+			self.tooltip:DrawText(text,  lineX, lineY,
+					currColor:getRedFloat(),
+					currColor:getGreenFloat(),
+					currColor:getBlueFloat(),
+					currColor:getAlphaFloat())
+			lineY = lineY + lineSpacing
+		end
+	end
+end
 
 
 

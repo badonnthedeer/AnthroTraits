@@ -235,82 +235,81 @@ AnthroTraitsCreationMethods.setTraitDescriptions = function ()
     local affectedTraits = ATCM.TTF.GetAllTraitsWithTag("AnthroTraits");
     local workString = "";
 
-    for i = 1, #affectedTraits
-        do
-            local trait = affectedTraits[i];
-            local traitDef = CharacterTraitDefinition.getCharacterTraitDefinition(trait)
-			
-            if trait == ATGt.ANTHROIMMUNITY
-            then
-                if SandboxVars.AnthroTraits.AT_AnthroImmunityIgnoredByAnthroZombies == true
-                then
-                    workString = string.format(getText("UI_trait_AT_AnthroImmunity_desc")..getText("UI_trait_AT_AnthroImmunity_anthro_addendum"), SandboxVars.AnthroTraits.AT_AnthroImmunityBiteInfectionChance, SandboxVars.AnthroTraits.AT_AnthroImmunityLacerationInfectionChance *.25, SandboxVars.AnthroTraits.AT_AnthroImmunityScratchInfectionChance *.07);
-                else
-                    workString = string.format(getText("UI_trait_AT_AnthroImmunity_desc"), SandboxVars.AnthroTraits.AT_AnthroImmunityBiteInfectionChance, SandboxVars.AnthroTraits.AT_AnthroImmunityLacerationInfectionChance *.25, SandboxVars.AnthroTraits.AT_AnthroImmunityScratchInfectionChance *.07);
-                end
-				traitDef:setDescription(workString);
-            elseif trait == ATGt.BEASTOFBURDEN
-            then
-                workString = string.format(getText("UI_trait_AT_BeastOfBurden_desc"), SandboxVars.AnthroTraits.AT_BeastOfBurdenPctIncrease * 100);
-                traitDef:setDescription(workString);
-            --[[ elseif trait == TraitFactory.getTrait("AT_BullRush")
-            then
-                workString = string.format(getText("UI_trait_AT_BullRush_desc"), SandboxVars.AnthroTraits.AT_BullRushKnockdownEndCost);
-                trait:setDescription(workString); ]]
-            elseif trait == ATGt.CARNIVORE
-            then
-                workString = string.format(getText("UI_trait_AT_Carnivore_desc"), SandboxVars.AnthroTraits.AT_CarnivoreBonus  * 100, SandboxVars.AnthroTraits.AT_CarnivoreMalus  * 100);
-                traitDef:setDescription(workString);
-            elseif trait == ATGt.CARRIONEATER
-            then
-                workString = string.format(getText("UI_trait_AT_CarrionEater_desc"), SandboxVars.AnthroTraits.AT_CarrionEaterBonus  * 100);
-                traitDef:setDescription(workString);
-            elseif trait == ATGt.DIGITIGRADE
-            then
-                workString = string.format(getText("UI_trait_AT_Digitigrade_desc"), SandboxVars.AnthroTraits.AT_DigitigradeStompDmgPctIncrease * 100);
-                traitDef:setDescription(workString);
-            elseif trait == ATGt.EXCLAIMER
-            then
-                workString = string.format(getText("UI_trait_AT_Exclaimer_desc"), SandboxVars.AnthroTraits.AT_ExclaimerExclaimThresholdMultiplier);
-                traitDef:setDescription(workString);
-            elseif trait == ATGt.FERALDIGESTION
-            then
-                workString = string.format(getText("UI_trait_AT_FeralDigestion_desc"), SandboxVars.AnthroTraits.AT_FeralDigestionPoisonAmt);
-                traitDef:setDescription(workString);
-            elseif trait == ATGt.FOODMOTIVATED
-            then
-                workString = string.format(getText("UI_trait_AT_FoodMotivated_desc"), SandboxVars.AnthroTraits.AT_FoodMotivatedBonus);
-                traitDef:setDescription(workString);
-            elseif trait == ATGt.HERBIVORE
-            then
-                workString = string.format(getText("UI_trait_AT_Herbivore_desc"), SandboxVars.AnthroTraits.AT_HerbivoreBonus * 100, SandboxVars.AnthroTraits.AT_HerbivoreMalus * 100);
-                traitDef:setDescription(workString);
-            elseif trait == ATGt.LONELY
-            then
-                workString = string.format(getText("UI_trait_AT_Lonely_desc"), SandboxVars.AnthroTraits.AT_LonelyHoursToAffect, SandboxVars.AnthroTraits.AT_LonelyHourlyUnhappyIncrease * 100);
-                traitDef:setDescription(workString);
-            elseif trait == ATGt.NATURALTUMBLER
-            then
-                workString = string.format(getText("UI_trait_AT_NaturalTumbler_desc"), SandboxVars.AnthroTraits.AT_NaturalTumblerFallTimeMult * 100);
-                traitDef:setDescription(workString);
-            elseif trait == ATGt.TAIL
-            then
-                workString = string.format(getText("UI_trait_AT_Tail_desc"), SandboxVars.AnthroTraits.AT_TailTripReduction);
-                traitDef:setDescription(workString);
-            elseif trait == ATGt.TORPOR
-            then
-                workString = string.format(getText("UI_trait_AT_Torpor_desc"), SandboxVars.AnthroTraits.AT_TorporEnduranceDecrease * 100);
-                traitDef:setDescription(workString);
-            elseif trait == ATGt.UNGULIGRADE
-            then
-                workString = string.format(getText("UI_trait_AT_Unguligrade_desc"), SandboxVars.AnthroTraits.AT_UnguligradeStompDmgPctIncrease * 100);
-                traitDef:setDescription(workString);
-            elseif trait == ATGt.UNWIELDYHANDS
-            then
-                workString = string.format(getText("UI_trait_AT_UnwieldyHands_desc"), SandboxVars.AnthroTraits.AT_UnwieldyHandsTimeIncrease * 100);
-                traitDef:setDescription(workString);
-            end
-        end
+    for i = 1, #affectedTraits do
+		local trait = affectedTraits[i];
+		local traitDef = CharacterTraitDefinition.getCharacterTraitDefinition(trait)
+		
+		if trait == ATGt.ANTHROIMMUNITY
+		then
+			if SandboxVars.AnthroTraits.AT_AnthroImmunityIgnoredByAnthroZombies == true
+			then
+				workString = string.format(getText("UI_trait_AT_AnthroImmunity_desc")..getText("UI_trait_AT_AnthroImmunity_anthro_addendum"), SandboxVars.AnthroTraits.AT_AnthroImmunityBiteInfectionChance, SandboxVars.AnthroTraits.AT_AnthroImmunityLacerationInfectionChance *.25, SandboxVars.AnthroTraits.AT_AnthroImmunityScratchInfectionChance *.07);
+			else
+				workString = string.format(getText("UI_trait_AT_AnthroImmunity_desc"), SandboxVars.AnthroTraits.AT_AnthroImmunityBiteInfectionChance, SandboxVars.AnthroTraits.AT_AnthroImmunityLacerationInfectionChance *.25, SandboxVars.AnthroTraits.AT_AnthroImmunityScratchInfectionChance *.07);
+			end
+			traitDef:setDescription(workString);
+		elseif trait == ATGt.BEASTOFBURDEN
+		then
+			workString = string.format(getText("UI_trait_AT_BeastOfBurden_desc"), SandboxVars.AnthroTraits.AT_BeastOfBurdenPctIncrease * 100);
+			traitDef:setDescription(workString);
+		--[[ elseif trait == TraitFactory.getTrait("AT_BullRush")
+		then
+			workString = string.format(getText("UI_trait_AT_BullRush_desc"), SandboxVars.AnthroTraits.AT_BullRushKnockdownEndCost);
+			trait:setDescription(workString); ]]
+		elseif trait == ATGt.CARNIVORE
+		then
+			workString = string.format(getText("UI_trait_AT_Carnivore_desc"), SandboxVars.AnthroTraits.AT_CarnivoreBonus  * 100, SandboxVars.AnthroTraits.AT_CarnivoreMalus  * 100);
+			traitDef:setDescription(workString);
+		elseif trait == ATGt.CARRIONEATER
+		then
+			workString = string.format(getText("UI_trait_AT_CarrionEater_desc"), SandboxVars.AnthroTraits.AT_CarrionEaterBonus  * 100);
+			traitDef:setDescription(workString);
+		elseif trait == ATGt.DIGITIGRADE
+		then
+			workString = string.format(getText("UI_trait_AT_Digitigrade_desc"), SandboxVars.AnthroTraits.AT_DigitigradeStompDmgPctIncrease * 100);
+			traitDef:setDescription(workString);
+		elseif trait == ATGt.EXCLAIMER
+		then
+			workString = string.format(getText("UI_trait_AT_Exclaimer_desc"), SandboxVars.AnthroTraits.AT_ExclaimerExclaimThresholdMultiplier);
+			traitDef:setDescription(workString);
+		elseif trait == ATGt.FERALDIGESTION
+		then
+			workString = string.format(getText("UI_trait_AT_FeralDigestion_desc"), SandboxVars.AnthroTraits.AT_FeralDigestionPoisonAmt);
+			traitDef:setDescription(workString);
+		elseif trait == ATGt.FOODMOTIVATED
+		then
+			workString = string.format(getText("UI_trait_AT_FoodMotivated_desc"), SandboxVars.AnthroTraits.AT_FoodMotivatedBonus);
+			traitDef:setDescription(workString);
+		elseif trait == ATGt.HERBIVORE
+		then
+			workString = string.format(getText("UI_trait_AT_Herbivore_desc"), SandboxVars.AnthroTraits.AT_HerbivoreBonus * 100, SandboxVars.AnthroTraits.AT_HerbivoreMalus * 100);
+			traitDef:setDescription(workString);
+		elseif trait == ATGt.LONELY
+		then
+			workString = string.format(getText("UI_trait_AT_Lonely_desc"), SandboxVars.AnthroTraits.AT_LonelyHoursToAffect, SandboxVars.AnthroTraits.AT_LonelyHourlyUnhappyIncrease * 100);
+			traitDef:setDescription(workString);
+		elseif trait == ATGt.NATURALTUMBLER
+		then
+			workString = string.format(getText("UI_trait_AT_NaturalTumbler_desc"), SandboxVars.AnthroTraits.AT_NaturalTumblerFallTimeMult * 100);
+			traitDef:setDescription(workString);
+		elseif trait == ATGt.TAIL
+		then
+			workString = string.format(getText("UI_trait_AT_Tail_desc"), SandboxVars.AnthroTraits.AT_TailTripReduction);
+			traitDef:setDescription(workString);
+		elseif trait == ATGt.TORPOR
+		then
+			workString = string.format(getText("UI_trait_AT_Torpor_desc"), SandboxVars.AnthroTraits.AT_TorporEnduranceDecrease * 100);
+			traitDef:setDescription(workString);
+		elseif trait == ATGt.UNGULIGRADE
+		then
+			workString = string.format(getText("UI_trait_AT_Unguligrade_desc"), SandboxVars.AnthroTraits.AT_UnguligradeStompDmgPctIncrease * 100);
+			traitDef:setDescription(workString);
+		elseif trait == ATGt.UNWIELDYHANDS
+		then
+			workString = string.format(getText("UI_trait_AT_UnwieldyHands_desc"), SandboxVars.AnthroTraits.AT_UnwieldyHandsTimeIncrease * 100);
+			traitDef:setDescription(workString);
+		end
+	end
 end
 
 AnthroTraitsCreationMethods.refundSelectedAffectedTraits = function()

@@ -200,83 +200,23 @@ ATU.ImportExclaimerPhrases()
     -- end
 -- end
 
-local function GetConsumableProperties(consumable)
-	local result = {
-		Current = {},
-		Base = {}
-	}
-	if consumable:getFluidContainer() ~= nil
-    then
-        local drink = consumable:getFluidContainer():getProperties()
-        -- no boredom in fluid properties
-        result.Current[CharacterStat.BOREDOM] = 0
-		result.Current[CharacterStat.HUNGER] = drink:getHungerChange() or 0
-		result.Current[CharacterStat.THIRST] = drink:getThirstChange() or 0
-		result.Current[CharacterStat.ENDURANCE] = drink:getEnduranceChange() or 0
-		result.Current[CharacterStat.STRESS] = drink:getStressChange() or 0
-		result.Current[CharacterStat.UNHAPPINESS] = drink:getUnhappyChange() or 0
-		result.Current[CharacterStat.FATIGUE] = drink:getFatigueChange() or 0
-		result.Current[CharacterStat.POISON] = drink:getPoisonPower() or 0
-		result.Current.Calories = drink:getCalories() or 0
-		result.Current.Carbs = consumable:getCarbohydrates() or 0
-		result.Current.Proteins = consumable:getProteins() or 0
-		result.Current.Lipids = consumable:getLipids() or 0
-
-		for stat, _ in pairs(result.Current) do
-			result.Base[stat] = result.Current[stat]
-		end
-		result.Base.Calories = result.Current.Calories
-		result.Base.Carbs = result.Current.Carbs
-		result.Base.Proteins = result.Current.Proteins
-		result.Base.Lipids = result.Current.Lipids
-    else
-		
-		result.Current[CharacterStat.BOREDOM] = consumable:getBoredomChange() or 0
-		result.Current[CharacterStat.HUNGER] = consumable:getHungerChange() or 0
-		result.Current[CharacterStat.THIRST] = consumable:getThirstChange() or 0
-		result.Current[CharacterStat.ENDURANCE] = consumable:getEnduranceChange() or 0
-		result.Current[CharacterStat.STRESS] = consumable:getStressChange() or 0
-		result.Current[CharacterStat.UNHAPPINESS] = consumable:getUnhappyChange() or 0
-		result.Current[CharacterStat.FATIGUE] = consumable:getFatigueChange() or 0
-		result.Current[CharacterStat.POISON] = consumable:getPoisonPower() or 0
-		result.Current.Calories = consumable:getCalories() or 0
-		result.Current.Carbs = consumable:getCarbohydrates() or 0
-		result.Current.Proteins = consumable:getProteins() or 0
-		result.Current.Lipids = consumable:getLipids() or 0
-
-		result.Base[CharacterStat.BOREDOM] = consumable:getScriptItem():getBoredomChange() or result.Current[CharacterStat.BOREDOM]
-		result.Base[CharacterStat.HUNGER] = consumable:getScriptItem():getHungerChange() or result.Current[CharacterStat.HUNGER]
-		result.Base[CharacterStat.THIRST] = consumable:getScriptItem():getThirstChange() or result.Current[CharacterStat.THIRST]
-		result.Base[CharacterStat.ENDURANCE] = consumable:getScriptItem():getEnduranceChange() or result.Current[CharacterStat.ENDURANCE]
-		result.Base[CharacterStat.STRESS] = consumable:getScriptItem():getStressChange() or result.Current[CharacterStat.STRESS]
-		result.Base[CharacterStat.UNHAPPINESS] = consumable:getScriptItem():getUnhappyChange() or result.Current[CharacterStat.UNHAPPINESS]
-		result.Base[CharacterStat.FATIGUE] = consumable:getScriptItem().fatigueChange or result.Current[CharacterStat.FATIGUE]
-		result.Base[CharacterStat.POISON] = consumable:getScriptItem():getPoisonPower() or result.Current[CharacterStat.POISON]
-		result.Base.Calories = result.Current.Calories
-		result.Base.Carbs = result.Current.Carbs
-		result.Base.Proteins = result.Current.Proteins
-		result.Base.Lipids = result.Current.Lipids
-    end   
-	return result
-end
-
 -- overwrites vanilla processing of stats but also avoids clamping issues at 0 and 100
 AnthroTraitsMain.ApplyFoodChanges = function(character, foodEaten, percentEaten, preCharStats)
 	local ATGt = AnthroTraitsGlobals.CharacterTrait
-	local foodProps = GetConsumableProperties(foodEaten)
-    local foodChanges = ATU.CalculateFoodChanges(character, foodEaten, foodProps.Current)
+	local foodProps = ATU.GetConsumableProperties(foodEaten)
+    local foodChanges = ATU.CalculateFoodChanges(character, foodEaten, foodProps)
     local charStats = character:getStats()
     local charNutrition = character:getNutrition()
 	
-	for stat, _ in pairs(AnthroTraitsGlobals.FoodCharacterStatSigns) do
+	for stat, _ in pairs(AnthroTraitsGlobals.FoodCharacterStatInfo) do
 		if foodChanges[stat] ~= 0
 		then
-			charStats:set(stat, preCharStats[stat] + (foodProps.Current[stat] + foodChanges[stat]) * percentEaten)
+			charStats:set(stat, preCharStats[stat] + (foodProps[stat] + foodChanges[stat]) * percentEaten)
 		end
 	end
     if foodChanges[CharacterStat.POISON] ~= 0
     then
-		local newPoisonValue = preCharStats[CharacterStat.POISON] + (foodProps.Current[CharacterStat.POISON] + foodChanges[CharacterStat.POISON]) * percentEaten
+		local newPoisonValue = preCharStats[CharacterStat.POISON] + (foodProps[CharacterStat.POISON] + foodChanges[CharacterStat.POISON]) * percentEaten
         charStats:set(CharacterStat.POISON, newPoisonValue);
 		if newPoisonValue > 0
 		then
@@ -286,7 +226,19 @@ AnthroTraitsMain.ApplyFoodChanges = function(character, foodEaten, percentEaten,
     end
 	if foodChanges.Calories ~= 0
 	then
-		charNutrition:setCalories(preCharStats.Calories + (foodProps.Current.Calories + foodChanges.Calories) * percentEaten)
+		charNutrition:setCalories(preCharStats.Calories + (foodProps.Calories + foodChanges.Calories) * percentEaten)
+	end
+	if foodChanges.Carbs ~= 0
+	then
+		charNutrition:setCarbs(preCharStats.Carbs + (foodProps.Carbs + foodChanges.Carbs) * percentEaten)
+	end
+	if foodChanges.Proteins ~= 0
+	then
+		charNutrition:setProteins(preCharStats.Proteins + (foodProps.Proteins + foodChanges.Proteins) * percentEaten)
+	end
+	if foodChanges.Lipids ~= 0
+	then
+		charNutrition:setLipids(preCharStats.Lipids + (foodProps.Lipids + foodChanges.Lipids) * percentEaten)
 	end
 	-- RabenRabo: I'm not 100% sure what this does...best guess? deal with dangerous uncooked food?
 	if foodEaten:hasTag(AnthroTraitsGlobals.FoodTags.CARNIVORE)

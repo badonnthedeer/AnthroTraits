@@ -13,7 +13,7 @@ AnthroTraitsGlobals.UnwieldyHandsAffectedTimedActions = {"ISBuildAction", "ISCur
                                          "ISUnloadBulletsFromMagazine", "ISUpgradeWeapon"}
 AnthroTraitsGlobals.CharacterTrait = {}
 AnthroTraitsGlobals.FoodTags = {}
-AnthroTraitsGlobals.FoodCharacterStatSigns = {}
+AnthroTraitsGlobals.FoodCharacterStatInfo = {}
 
 AnthroTraitsGlobals.CharacterTrait.ANTHROIMMUNITY = CharacterTrait.register("AnthroTraits:AT_AnthroImmunity")
 AnthroTraitsGlobals.CharacterTrait.BEASTOFBURDEN = CharacterTrait.register("AnthroTraits:AT_BeastOfBurden")
@@ -49,12 +49,12 @@ AnthroTraitsGlobals.EvolvedRecipeFoodTags = { AnthroTraitsGlobals.FoodTags.CARNI
 -- good changes are identified by the sign
 -- food related traits will deal with these stats (plus calories)
 
-AnthroTraitsGlobals.FoodCharacterStatSigns[CharacterStat.HUNGER] = -1
-AnthroTraitsGlobals.FoodCharacterStatSigns[CharacterStat.THIRST] = -1
-AnthroTraitsGlobals.FoodCharacterStatSigns[CharacterStat.ENDURANCE] = 1
-AnthroTraitsGlobals.FoodCharacterStatSigns[CharacterStat.STRESS] = -1
-AnthroTraitsGlobals.FoodCharacterStatSigns[CharacterStat.BOREDOM] = -1
-AnthroTraitsGlobals.FoodCharacterStatSigns[CharacterStat.UNHAPPINESS] = -1
-AnthroTraitsGlobals.FoodCharacterStatSigns[CharacterStat.FATIGUE] = -1
+AnthroTraitsGlobals.FoodCharacterStatInfo[CharacterStat.HUNGER] = { Sign = -1, TooltipName = "Hunger", TooltipFactor = 100 }
+AnthroTraitsGlobals.FoodCharacterStatInfo[CharacterStat.THIRST] = { Sign = -1, TooltipName = "Thirst", TooltipFactor = 100 }
+AnthroTraitsGlobals.FoodCharacterStatInfo[CharacterStat.FATIGUE] = { Sign = -1, TooltipName = "Fatigue", TooltipFactor = 100 }
+AnthroTraitsGlobals.FoodCharacterStatInfo[CharacterStat.ENDURANCE] = { Sign = 1, TooltipName = "Endurance", TooltipFactor = 100 }
+AnthroTraitsGlobals.FoodCharacterStatInfo[CharacterStat.STRESS] = { Sign = -1, TooltipName = "Stress", TooltipFactor = 1 }
+AnthroTraitsGlobals.FoodCharacterStatInfo[CharacterStat.BOREDOM] = { Sign = -1, TooltipName = "Boredom", TooltipFactor = 1 }
+AnthroTraitsGlobals.FoodCharacterStatInfo[CharacterStat.UNHAPPINESS] = { Sign = -1, TooltipName = "Unhappiness", TooltipFactor = 1 }
 -- food stats processed by CARRIONEATER (plus calories)
 AnthroTraitsGlobals.CarrionFoodCharacterStats = { CharacterStat.HUNGER, CharacterStat.THIRST }

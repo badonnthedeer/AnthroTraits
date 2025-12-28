@@ -278,7 +278,7 @@ AnthroTraitsUtilities.CalculateFoodModifiers = function(character, food)
 			modCarrion = SandboxVars.AnthroTraits.AT_CarrionEaterBonus
 		end
     end
-	for stat, _ in pairs(AnthroTraitsGlobals.FoodCharacterStatSigns) do
+	for stat, _ in pairs(AnthroTraitsGlobals.FoodCharacterStatInfo) do
 		modifiers[stat] = mod
 	end
 	for _, stat in ipairs(AnthroTraitsGlobals.CarrionFoodCharacterStats) do
@@ -293,43 +293,43 @@ end
 
 
 ---For extra effects of food.
-AnthroTraitsUtilities.CalculateFoodChanges = function(character, food, foodStats)
+AnthroTraitsUtilities.CalculateFoodChanges = function(character, food, foodProps)
 	local ATGt = AnthroTraitsGlobals.CharacterTrait
     local modifiers = AnthroTraitsUtilities.CalculateFoodModifiers(character, food)
 	local result = {}
 
 	-- calculate trait related boni/mali
-	for stat, goodSign in pairs(AnthroTraitsGlobals.FoodCharacterStatSigns) do
+	for stat, info in pairs(AnthroTraitsGlobals.FoodCharacterStatInfo) do
 		-- only apply modifier if change is good
-		if foodStats[stat] ~= nil and Sign(foodStats[stat]) == goodSign
+		if foodProps[stat] ~= nil and Sign(foodProps[stat]) == info.Sign
 		then
-			result[stat] = foodStats[stat] * modifiers[stat]
+			result[stat] = foodProps[stat] * modifiers[stat]
 		else
 			result[stat] = 0
 		end
 	end
 	result[CharacterStat.POISON] = 0
-	if foodStats.Calories ~= nil and Sign(foodStats.Calories) == 1
+	if foodProps.Calories ~= nil and Sign(foodProps.Calories) == 1
 	then
-		result.Calories = foodStats.Calories * modifiers.Calories
+		result.Calories = foodProps.Calories * modifiers.Calories
 	else
 		result.Calories = 0
 	end
-	if foodStats.Carbs ~= nil and Sign(foodStats.Carbs) == 1
+	if foodProps.Carbs ~= nil and Sign(foodProps.Carbs) == 1
 	then
-		result.Carbs = foodStats.Carbs * modifiers.Carbs
+		result.Carbs = foodProps.Carbs * modifiers.Carbs
 	else
 		result.Carbs = 0
 	end
-	if foodStats.Proteins ~= nil and Sign(foodStats.Proteins) == 1
+	if foodProps.Proteins ~= nil and Sign(foodProps.Proteins) == 1
 	then
-		result.Proteins = foodStats.Proteins * modifiers.Proteins
+		result.Proteins = foodProps.Proteins * modifiers.Proteins
 	else
 		result.Proteins = 0
 	end
-	if foodStats.Lipids ~= nil and Sign(foodStats.Lipids) == 1
+	if foodProps.Lipids ~= nil and Sign(foodProps.Lipids) == 1
 	then
-		result.Lipids = foodStats.Lipids * modifiers.Lipids
+		result.Lipids = foodProps.Lipids * modifiers.Lipids
 	else
 		result.Lipids = 0
 	end
@@ -342,13 +342,13 @@ AnthroTraitsUtilities.CalculateFoodChanges = function(character, food, foodStats
 			(food:IsRotten() and food:hasTag(AnthroTraitsGlobals.FoodTags.CARNIVORE)) or					--CARRIONEATER doesn't mind rotten meat
 			(character:hasTrait(ATGt.FOODMOTIVATED) and food:hasTag(AnthroTraitsGlobals.FoodTags.FOODMOTIVATED))	--FOODMOTIVATED doesn't mind eating certain foods
 		then
-			if Sign(foodStats[CharacterStat.UNHAPPINESS]) ~= AnthroTraitsGlobals.FoodCharacterStatSigns[CharacterStat.UNHAPPINESS]
+			if Sign(foodProps[CharacterStat.UNHAPPINESS]) ~= AnthroTraitsGlobals.FoodCharacterStatInfo[CharacterStat.UNHAPPINESS].Sign
 			then
-				result[CharacterStat.UNHAPPINESS] = result[CharacterStat.UNHAPPINESS] - foodStats[CharacterStat.UNHAPPINESS]
+				result[CharacterStat.UNHAPPINESS] = result[CharacterStat.UNHAPPINESS] - foodProps[CharacterStat.UNHAPPINESS]
 			end
-			if Sign(foodStats[CharacterStat.BOREDOM]) ~= AnthroTraitsGlobals.FoodCharacterStatSigns[CharacterStat.BOREDOM]
+			if Sign(foodProps[CharacterStat.BOREDOM]) ~= AnthroTraitsGlobals.FoodCharacterStatInfo[CharacterStat.BOREDOM].Sign
 			then
-				result[CharacterStat.BOREDOM] = result[CharacterStat.BOREDOM] - foodStats[CharacterStat.BOREDOM]
+				result[CharacterStat.BOREDOM] = result[CharacterStat.BOREDOM] - foodProps[CharacterStat.BOREDOM]
 			end
 		end
 		-- FOODMOTIVATED really likes eating stuff
@@ -391,8 +391,46 @@ AnthroTraitsUtilities.CalculateFoodChanges = function(character, food, foodStats
     return result
 end
 
+AnthroTraitsUtilities.GetConsumableProperties = function(item)
+	local result = {}
+	local consumable
+	if item:getFluidContainer() ~= nil
+    then
+        consumable = item:getFluidContainer():getProperties()
+        -- no boredom in fluid properties
+        result[CharacterStat.BOREDOM] = 0
+    else
+		consumable = item
+		result[CharacterStat.BOREDOM] = consumable:getBoredomChange() or 0
+    end   
+	result[CharacterStat.THIRST] = consumable:getThirstChange() or 0
+	result[CharacterStat.HUNGER] = consumable:getHungerChange() or 0
+	result[CharacterStat.ENDURANCE] = consumable:getEnduranceChange() or 0
+	result[CharacterStat.STRESS] = consumable:getStressChange() or 0
+	result[CharacterStat.UNHAPPINESS] = consumable:getUnhappyChange() or 0
+	result[CharacterStat.FATIGUE] = consumable:getFatigueChange() or 0
+	result[CharacterStat.POISON] = consumable:getPoisonPower() or 0
+	result.Calories = consumable:getCalories() or 0
+	result.Carbs = consumable:getCarbohydrates() or 0
+	result.Proteins = consumable:getProteins() or 0
+	result.Lipids = consumable:getLipids() or 0
+	return result
+end
 
-AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item, statModifier)
+local function AddFoodPropsChanges(foodProps, foodChanges)
+	result = {}
+	for stat, _ in pairs(AnthroTraitsGlobals.FoodCharacterStatInfo) do
+		result[stat] = foodProps[stat] + foodChanges[stat]
+	end
+	result[CharacterStat.POISON] = foodProps[CharacterStat.POISON] + foodChanges[CharacterStat.POISON]
+	result.Calories = foodProps.Calories + foodChanges.Calories
+	result.Carbs = foodProps.Carbs + foodChanges.Carbs
+	result.Proteins = foodProps.Proteins + foodChanges.Proteins
+	result.Lipids = foodProps.Lipids + foodChanges.Lipids
+	return result
+end
+
+AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item)
     local ATU = AnthroTraitsUtilities;
     local returnTable = {}
 
@@ -402,36 +440,20 @@ AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item,
     local foodIngredientTags;
     local encumbrance = item:getActualWeight();
     local stackEncum = item:getCount() * encumbrance;
-    local foodHungerChange = item:getHungerChange();
-    local foodThirstChange = item:getThirstChange();
-    local foodEndChange = item:getEnduranceChange();
-    local foodStressChange = item:getStressChange();
-    local foodBoredomChange = item:getBoredomChange();
-    local foodUnhappyChange = item:getUnhappyChange();
-    local foodCalories = item:getCalories();
-    local foodCarbs = item:getCarbohydrates();
-    local foodProtein = item:getProteins();
-    local foodFat = item:getLipids();
+
     local foodCookedMicrowave = item:isCookedInMicrowave();
 
     local currCookTime = item:getCookingTime();
     local minutesTillCooked = item:getMinutesToCook();
     local minutesTillBurned = item:getMinutesToBurn();
 
-    local foodChanges = ATU.CalculateFoodChanges(player, item)
-
-    local newFoodHungerChange = foodHungerChange + foodChanges.addHungerChange;
-    local newFoodThirstChange = foodThirstChange + foodChanges.addThirstChange;
-    local newFoodEndChange = foodEndChange + foodChanges.addEndChange;
-    local newFoodStressChange = foodStressChange + foodChanges.addStressChange;
-    local newFoodBoredomChange = foodBoredomChange + foodChanges.addBoredomChange;
-    local newFoodUnhappyChange = foodUnhappyChange + foodChanges.addUnhappyChange;
-    local newFoodCalories = foodCalories + foodChanges.addCalories;
-
+	local foodProps = ATU.GetConsumableProperties(item)
+    local foodChanges = ATU.CalculateFoodChanges(player, item, foodProps)
+	local newFoodProps = AddFoodPropsChanges(foodProps, foodChanges)
 
     if foodName ~= nil
     then
-        if foodChanges.addPoison ~= nil and foodChanges.addPoison > 0
+        if foodProps[CharacterStat.POISON] > 0
         then
             table.insert(returnTable, "%Violet%"..foodName);
         elseif item:IsRotten() and not player:hasTrait(AnthroTraitsGlobals.CharacterTrait.CARRIONEATER)
@@ -456,30 +478,14 @@ AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item,
     then
         table.insert(returnTable, getText("Tooltip_item_StackWeight")..":%White%"..string.format("%5.1f", stackEncum))
     end
-    if newFoodHungerChange ~= 0
-    then
-        table.insert(returnTable, getText("Tooltip_food_Hunger")..":"..ATU.getTooltipValueColor(foodHungerChange, newFoodHungerChange, true)..ATU.getTooltipValueSymbol(newFoodHungerChange)..string.format("%3.1f",(newFoodHungerChange * 100)));
-    end
-    if newFoodThirstChange ~= 0
-    then
-        table.insert(returnTable, getText("Tooltip_food_Thirst")..":"..ATU.getTooltipValueColor(foodThirstChange, newFoodThirstChange, true)..ATU.getTooltipValueSymbol(newFoodThirstChange)..string.format("%3.1f",(newFoodThirstChange * 100)));
-    end
-    if newFoodEndChange ~= 0
-    then
-        table.insert(returnTable, getText("Tooltip_food_Endurance")..":"..ATU.getTooltipValueColor(foodEndChange, newFoodEndChange, false)..ATU.getTooltipValueSymbol(newFoodEndChange)..string.format("%3.1f",(newFoodEndChange * 100)));
-    end
-    if newFoodStressChange ~= 0
-    then
-        table.insert(returnTable, getText("Tooltip_food_Stress")..":"..ATU.getTooltipValueColor(foodStressChange, newFoodStressChange, true)..ATU.getTooltipValueSymbol(newFoodStressChange)..string.format("%3.1f",newFoodStressChange));
-    end
-    if newFoodBoredomChange ~= 0
-    then
-        table.insert(returnTable, getText("Tooltip_food_Boredom")..":"..ATU.getTooltipValueColor(foodBoredomChange, newFoodBoredomChange, true)..ATU.getTooltipValueSymbol(newFoodBoredomChange)..string.format("%3.1f",newFoodBoredomChange));
-    end
-    if newFoodUnhappyChange ~= 0
-    then
-        table.insert(returnTable, getText("Tooltip_food_Unhappiness")..":"..ATU.getTooltipValueColor(foodUnhappyChange, newFoodUnhappyChange, true)..ATU.getTooltipValueSymbol(newFoodUnhappyChange)..string.format("%3.1f",newFoodUnhappyChange));
-    end
+	
+	for stat, info in pairs(AnthroTraitsGlobals.FoodCharacterStatInfo) do
+		if newFoodProps[stat] ~= 0
+		then
+			table.insert(returnTable, getText("Tooltip_food_" .. info.TooltipName)..":"..ATU.getTooltipValueColor(foodProps[stat], newFoodProps[stat], info.Sign < 0)..ATU.getTooltipValueSymbol(newFoodProps[stat])..string.format("%3.1f", newFoodProps[stat] * info.TooltipFactor))
+		end
+	end
+	
     if item:isCookable() and not item:isFrozen() and item:getHeat() > 1.6 then
         currCookTime = item:getCookingTime();
         minutesTillCooked = item:getMinutesToCook();
@@ -510,21 +516,21 @@ AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item,
     end
     if not instanceof(item, "ComboItem") and item:isPackaged() or player:hasTrait(CharacterTrait.NUTRITIONIST) or player:hasTrait(CharacterTrait.NUTRITIONIST2)
     then
-        if foodCalories ~= nil and (foodCalories + newFoodCalories) ~= 0
+        if newFoodProps.Calories ~= 0
         then
-            table.insert(returnTable, getText("Tooltip_food_Calories")..":"..ATU.getTooltipValueColor(foodCalories, newFoodCalories, false)..string.format("%5.1f", newFoodCalories));
+            table.insert(returnTable, getText("Tooltip_food_Calories")..":"..ATU.getTooltipValueColor(foodProps.Calories, newFoodProps.Calories, false)..string.format("%5.1f", newFoodProps.Calories));
         end
-        if foodCarbs ~= nil and foodCarbs ~= 0
+        if newFoodProps.Carbs ~= 0
         then
-            table.insert(returnTable, getText("Tooltip_food_Carbs")..":%White%"..string.format("%5.1f",foodCarbs));
+            table.insert(returnTable, getText("Tooltip_food_Carbs")..":"..ATU.getTooltipValueColor(foodProps.Carbs, newFoodProps.Carbs, false)..string.format("%5.1f", newFoodProps.Carbs));
         end
-        if foodProtein ~= nil and foodProtein ~= 0
+        if newFoodProps.Proteins ~= 0
         then
-            table.insert(returnTable, getText("Tooltip_food_Prots")..":%White%"..string.format("%5.1f",foodProtein));
+            table.insert(returnTable, getText("Tooltip_food_Prots")..":"..ATU.getTooltipValueColor(foodProps.Proteins, newFoodProps.Proteins, false)..string.format("%5.1f", newFoodProps.Proteins));
         end
-        if foodFat ~= nil and foodFat ~= 0
+        if newFoodProps.Lipids ~= 0
         then
-            table.insert(returnTable, getText("Tooltip_food_Fat")..":%White%"..string.format("%5.1f",foodFat));
+            table.insert(returnTable, getText("Tooltip_food_Fat")..":"..ATU.getTooltipValueColor(foodProps.Lipids, newFoodProps.Lipids, false)..string.format("%5.1f", newFoodProps.Lipids));
         end
     end
     if not instanceof(item, "ComboItem") and item:isbDangerousUncooked() and not item:isCooked() and not item:isBurnt()
@@ -552,7 +558,7 @@ AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item,
         table.insert(returnTable, getText("Tooltip_food_CookedInMicrowave"));
     end
 
-    if foodChanges.addPoison ~= nil and foodChanges.addPoison > 0
+    if foodChanges[CharacterStat.POISON] > 0
     then
         table.insert(returnTable, 2, "%Violet%This food is poisonous to you!")
         --table.insert(returnTable, 2, "%Violet%This food is poisonous to you! ("..string.format("%3.2f",feralDigestionPoisonAmount / bleachPoisonAmt).." full bleach bottle(s))")
@@ -560,7 +566,7 @@ AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item,
     return returnTable;
 end
 
-AnthroTraitsUtilities.BuildFluidContainerDescription = function(player, description, item, statModifier)
+AnthroTraitsUtilities.BuildFluidContainerDescription = function(player, description, item)
     local ATU = AnthroTraitsUtilities;
     local returnTable = {}
 
@@ -574,19 +580,8 @@ AnthroTraitsUtilities.BuildFluidContainerDescription = function(player, descript
     local color = fluidContainer:getColor();
     local filledPct = fluidContainer:getFilledRatio();
     local fluid = item:getFluidContainer():getProperties();
-    
-    local foodThirstChange = fluid:getThirstChange();
-    local foodHungerChange = fluid:getHungerChange();
-    local foodEndChange = fluid:getEnduranceChange();
-    local foodStressChange = fluid:getStressChange();
-    --no boredom change yet
-    local foodBoredomChange = 0;
-    local foodUnhappyChange = fluid:getUnhappyChange();
 
-    local foodCalories = fluid:getCalories();
-    local foodCarbs = fluid:getCarbohydrates();
-    local foodProtein = fluid:getProteins();
-    local foodFat = fluid:getLipids();
+
     -- will this even be a thing?
     local foodCookedMicrowave = false;
         --foodCookedMicrowave = fluid:isCookedInMicrowave();
@@ -595,20 +590,13 @@ AnthroTraitsUtilities.BuildFluidContainerDescription = function(player, descript
     local minutesTillCooked = item:getMinutesToCook();
     local minutesTillBurned = item:getMinutesToBurn();
 
-    local foodChanges = ATU.CalculateFoodChanges(player, item)
-
-    local newFoodHungerChange = foodHungerChange + foodChanges.addHungerChange;
-    local newFoodThirstChange = foodThirstChange + foodChanges.addThirstChange;
-    local newFoodEndChange = foodEndChange + foodChanges.addEndChange;
-    local newFoodStressChange = foodStressChange + foodChanges.addStressChange;
-    local newFoodBoredomChange = foodBoredomChange + foodChanges.addBoredomChange;
-    local newFoodUnhappyChange = foodUnhappyChange + foodChanges.addUnhappyChange;
-    local newFoodCalories = foodCalories + foodChanges.addCalories;
-
+	local foodProps = ATU.GetConsumableProperties(item)
+    local foodChanges = ATU.CalculateFoodChanges(player, item, foodProps)
+	local newFoodProps = AddFoodPropsChanges(foodProps, foodChanges)
 
     if foodName ~= nil
     then
-        if foodChanges.addPoison ~= nil and foodChanges.addPoison > 0
+        if foodProps[CharacterStat.POISON] > 0
         then
             table.insert(returnTable, "%Violet%"..foodName);
         elseif item:IsRotten()
@@ -638,30 +626,13 @@ AnthroTraitsUtilities.BuildFluidContainerDescription = function(player, descript
     then
         table.insert(returnTable, getText("Fluid_Properties_Per"));
     end
-    if newFoodThirstChange ~= 0
-    then
-        table.insert(returnTable, "%DarkKhaki%"..getText("Tooltip_food_Thirst")..":"..ATU.getTooltipValueColor(foodThirstChange, newFoodThirstChange, true)..ATU.getTooltipValueSymbol(newFoodThirstChange)..string.format("%3.1f",newFoodThirstChange));
-    end
-    if newFoodHungerChange ~= 0
-    then
-        table.insert(returnTable, "%DarkKhaki%"..getText("Tooltip_food_Hunger")..":"..ATU.getTooltipValueColor(foodHungerChange, newFoodHungerChange, true)..ATU.getTooltipValueSymbol(newFoodHungerChange)..string.format("%3.1f",newFoodHungerChange));
-    end
-    if newFoodEndChange ~= 0
-    then
-        table.insert(returnTable, "%DarkKhaki%"..getText("Tooltip_food_Endurance")..":"..ATU.getTooltipValueColor(foodEndChange, newFoodEndChange, false)..ATU.getTooltipValueSymbol(newFoodEndChange)..string.format("%3.1f",newFoodEndChange));
-    end
-    if newFoodStressChange ~= 0
-    then
-        table.insert(returnTable, "%DarkKhaki%"..getText("Tooltip_food_Stress")..":"..ATU.getTooltipValueColor(foodStressChange, newFoodStressChange, true)..ATU.getTooltipValueSymbol(newFoodStressChange)..string.format("%3.1f",newFoodStressChange));
-    end
-    if newFoodBoredomChange ~= 0
-    then
-        table.insert(returnTable, "%DarkKhaki%"..getText("Tooltip_food_Boredom")..":"..ATU.getTooltipValueColor(foodBoredomChange, newFoodBoredomChange, true)..ATU.getTooltipValueSymbol(newFoodBoredomChange)..string.format("%3.1f",newFoodBoredomChange));
-    end
-    if newFoodUnhappyChange ~= 0
-    then
-        table.insert(returnTable, "%DarkKhaki%"..getText("Tooltip_food_Unhappiness")..":"..ATU.getTooltipValueColor(foodUnhappyChange, newFoodUnhappyChange, true)..ATU.getTooltipValueSymbol(newFoodUnhappyChange)..string.format("%3.1f",newFoodUnhappyChange));
-    end
+	for stat, info in pairs(AnthroTraitsGlobals.FoodCharacterStatInfo) do
+		if newFoodProps[stat] ~= 0
+		then
+			table.insert(returnTable, "%DarkKhaki%"..getText("Tooltip_food_" .. info.TooltipName)..":"..ATU.getTooltipValueColor(foodProps[stat], newFoodProps[stat], info.Sign < 0)..ATU.getTooltipValueSymbol(newFoodProps[stat])..string.format("%3.1f", newFoodProps[stat]))
+		end
+	end
+
     if item:isCookable() and not item:isFrozen() and item:getHeat() > 1.6 then
         currCookTime = item:getCookingTime();
         minutesTillCooked = item:getMinutesToCook();
@@ -692,24 +663,24 @@ AnthroTraitsUtilities.BuildFluidContainerDescription = function(player, descript
     end
     if (not instanceof(item, "ComboItem") and item:isPackaged()) or player:hasTrait(CharacterTrait.NUTRITIONIST) or player:hasTrait(CharacterTrait.NUTRITIONIST2)
     then
-        if foodCalories ~= nil and (foodCalories + newFoodCalories) ~= 0
+        if newFoodProps.Calories ~= 0
         then
-            table.insert(returnTable, "%DarkKhaki%"..getText("Tooltip_food_Calories")..":"..ATU.getTooltipValueColor(foodCalories, newFoodCalories, false)..string.format("%5.1f", newFoodCalories));
+            table.insert(returnTable, "%DarkKhaki%"..getText("Tooltip_food_Calories")..":"..ATU.getTooltipValueColor(foodProps.Calories, newFoodProps.Calories, false)..string.format("%5.1f", newFoodProps.Calories));
         end
-        if foodCarbs ~= nil and foodCarbs ~= 0
+        if newFoodProps.Carbs ~= 0
         then
-            table.insert(returnTable, "%DarkKhaki%"..getText("Tooltip_food_Carbs")..":%Gainsboro%"..string.format("%5.1f",foodCarbs));
+            table.insert(returnTable, "%DarkKhaki%"..getText("Tooltip_food_Carbs")..":"..ATU.getTooltipValueColor(foodProps.Carbs, newFoodProps.Carbs, false)..string.format("%5.1f", newFoodProps.Carbs));
         end
-        if foodProtein ~= nil and foodProtein ~= 0
+        if newFoodProps.Proteins ~= 0
         then
-            table.insert(returnTable, "%DarkKhaki%"..getText("Tooltip_food_Prots")..":%Gainsboro%"..string.format("%5.1f",foodProtein));
+            table.insert(returnTable, "%DarkKhaki%"..getText("Tooltip_food_Prots")..":"..ATU.getTooltipValueColor(foodProps.Proteins, newFoodProps.Proteins, false)..string.format("%5.1f", newFoodProps.Proteins));
         end
-        if foodFat ~= nil and foodFat ~= 0
+        if newFoodProps.Lipids ~= 0
         then
-            table.insert(returnTable, "%DarkKhaki%"..getText("Tooltip_food_Fat")..":%Gainsboro%"..string.format("%5.1f",foodFat));
+            table.insert(returnTable, "%DarkKhaki%"..getText("Tooltip_food_Fat")..":"..ATU.getTooltipValueColor(foodProps.Lipids, newFoodProps.Lipids, false)..string.format("%5.1f", newFoodProps.Lipids));
         end
     end
-    if foodChanges.addPoison ~= nil and foodChanges.addPoison > 0
+    if foodProps[CharacterStat.POISON] > 0
     then
         table.insert(returnTable, 2, "%Violet%This food is poisonous to you!")
         --table.insert(returnTable, 2, "%Violet%This food is poisonous to you! ("..string.format("%3.2f",feralDigestionPoisonAmount / bleachPoisonAmt).." full bleach bottle(s))")
