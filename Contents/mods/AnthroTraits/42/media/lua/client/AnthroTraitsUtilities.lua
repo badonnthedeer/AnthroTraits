@@ -285,6 +285,9 @@ AnthroTraitsUtilities.CalculateFoodModifiers = function(character, food)
 		modifiers[stat] = modifiers[stat] + modCarrion
 	end
 	modifiers.Calories = mod + modCarrion
+	modifiers.Carbs = mod + modCarrion
+	modifiers.Proteins = mod + modCarrion
+	modifiers.Lipids = mod + modCarrion
     return modifiers
 end
 
@@ -311,6 +314,24 @@ AnthroTraitsUtilities.CalculateFoodChanges = function(character, food, foodStats
 		result.Calories = foodStats.Calories * modifiers.Calories
 	else
 		result.Calories = 0
+	end
+	if foodStats.Carbs ~= nil and Sign(foodStats.Carbs) == 1
+	then
+		result.Carbs = foodStats.Carbs * modifiers.Carbs
+	else
+		result.Carbs = 0
+	end
+	if foodStats.Proteins ~= nil and Sign(foodStats.Proteins) == 1
+	then
+		result.Proteins = foodStats.Proteins * modifiers.Proteins
+	else
+		result.Proteins = 0
+	end
+	if foodStats.Lipids ~= nil and Sign(foodStats.Lipids) == 1
+	then
+		result.Lipids = foodStats.Lipids * modifiers.Lipids
+	else
+		result.Lipids = 0
 	end
 	
 	-- process UNHAPPINESS and BOREDOM for certain traits (as long as either character is CARRIONEATER or food is fresh or both)

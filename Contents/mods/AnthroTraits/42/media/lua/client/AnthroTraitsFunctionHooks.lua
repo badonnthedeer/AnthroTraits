@@ -218,7 +218,7 @@ end
             -- local text = "";
             -- local leftText = "";
 
-            -- if (((ATU.FoodVoreType(self.item) == "ATHerbivore" or ATU.FoodVoreType(self.item) == "ATCarnivore") and (player:hasTrait(ATGt.HERBIVORE) or player:hasTrait(ATGt.CARNIVORE) or player:hasTrait(ATGt.CARRIONEATER)))
+            -- if (((ATU.FoodVoreType(self.item) == ATGf.HERBIVORE  or ATU.FoodVoreType(self.item) == ATGf.CARNIVORE) and (player:hasTrait(ATGt.HERBIVORE) or player:hasTrait(ATGt.CARNIVORE) or player:hasTrait(ATGt.CARRIONEATER)))
                     -- or (self.item:hasTag(ATGf.FERALPOISON) and player:hasTrait(ATGt.FERALDIGESTION))
                     -- or (self.item:hasTag(ATGf.INSECT) and player:hasTrait(ATGt.BUG_O_SSIEUR))
                     -- or (player:hasTrait(ATGt.FOODMOTIVATED)))
@@ -449,8 +449,6 @@ end
         -- end
     -- end
 -- end
---ISInventoryPaneContextMenu.addEatTooltip = function(option, items, percent)
---ISInventoryPane.drawItemDetails =
 
 
 

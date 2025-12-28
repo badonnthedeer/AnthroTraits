@@ -133,7 +133,7 @@ AnthroTraitsCreationMethods.initAnthroTraits = function()
     --FOOD MOTIVATED
 	CharacterTraitDefinition.addCharacterTraitDefinition(ATGt.FOODMOTIVATED,
 		"UI_trait_AT_FoodMotivated", 1, "UI_trait_AT_FoodMotivated_desc", false)
-    ATCM.TTF.Add("AT_FoodMotivated", "AnthroTraits,CostVariable,Anthro");
+    ATCM.TTF.Add("AnthroTraits:AT_FoodMotivated", "AnthroTraits,CostVariable,Anthro");
 
     --HERBIVORE
 	local AT_Herbivore = CharacterTraitDefinition.addCharacterTraitDefinition(ATGt.HERBIVORE,
@@ -143,7 +143,7 @@ AnthroTraitsCreationMethods.initAnthroTraits = function()
     --LONELY
 	CharacterTraitDefinition.addCharacterTraitDefinition(ATGt.LONELY,
 		"UI_trait_AT_Lonely", -1, "UI_trait_AT_Lonely_desc", false)
-    ATCM.TTF.Add("AT_Lonely", "AnthroTraits,CostVariable,Anthro,Social"); --(Xochi suggestion)
+    ATCM.TTF.Add("AnthroTraits:AT_Lonely", "AnthroTraits,CostVariable,Anthro,Social"); --(Xochi suggestion)
 
     --NATURAL TUMBLER
 	local AT_NaturalTumbler = CharacterTraitDefinition.addCharacterTraitDefinition(ATGt.NATURALTUMBLER,

@@ -218,11 +218,17 @@ local function GetConsumableProperties(consumable)
 		result.Current[CharacterStat.FATIGUE] = drink:getFatigueChange() or 0
 		result.Current[CharacterStat.POISON] = drink:getPoisonPower() or 0
 		result.Current.Calories = drink:getCalories() or 0
+		result.Current.Carbs = consumable:getCarbohydrates() or 0
+		result.Current.Proteins = consumable:getProteins() or 0
+		result.Current.Lipids = consumable:getLipids() or 0
 
 		for stat, _ in pairs(result.Current) do
 			result.Base[stat] = result.Current[stat]
 		end
 		result.Base.Calories = result.Current.Calories
+		result.Base.Carbs = result.Current.Carbs
+		result.Base.Proteins = result.Current.Proteins
+		result.Base.Lipids = result.Current.Lipids
     else
 		
 		result.Current[CharacterStat.BOREDOM] = consumable:getBoredomChange() or 0
@@ -234,6 +240,9 @@ local function GetConsumableProperties(consumable)
 		result.Current[CharacterStat.FATIGUE] = consumable:getFatigueChange() or 0
 		result.Current[CharacterStat.POISON] = consumable:getPoisonPower() or 0
 		result.Current.Calories = consumable:getCalories() or 0
+		result.Current.Carbs = consumable:getCarbohydrates() or 0
+		result.Current.Proteins = consumable:getProteins() or 0
+		result.Current.Lipids = consumable:getLipids() or 0
 
 		result.Base[CharacterStat.BOREDOM] = consumable:getScriptItem():getBoredomChange() or result.Current[CharacterStat.BOREDOM]
 		result.Base[CharacterStat.HUNGER] = consumable:getScriptItem():getHungerChange() or result.Current[CharacterStat.HUNGER]
@@ -244,6 +253,9 @@ local function GetConsumableProperties(consumable)
 		result.Base[CharacterStat.FATIGUE] = consumable:getScriptItem().fatigueChange or result.Current[CharacterStat.FATIGUE]
 		result.Base[CharacterStat.POISON] = consumable:getScriptItem():getPoisonPower() or result.Current[CharacterStat.POISON]
 		result.Base.Calories = result.Current.Calories
+		result.Base.Carbs = result.Current.Carbs
+		result.Base.Proteins = result.Current.Proteins
+		result.Base.Lipids = result.Current.Lipids
     end   
 	return result
 end
@@ -338,9 +350,9 @@ AnthroTraitsMain.ExclaimerCheck = function(player)
 			phrases = ATU.GenericExclaimPhrases
 		end
 		local phraseChance = ZombRand(1, #phrases);
-        player:SayShout(phrases[phraseChance]);
 		if mitigationChance > mitigationThreshold
 		then
+			player:SayShout(string.upper(phrases[phraseChance]));
 			local playerSquare = player:getCurrentSquare();
 			getWorldSoundManager():addSound(player,
 					playerSquare:getX(),
@@ -348,6 +360,8 @@ AnthroTraitsMain.ExclaimerCheck = function(player)
 					playerSquare:getZ(),
 					20,
 					100);
+		else
+			player:SayShout("(" .. string.lower(phrases[phraseChance]) .. ")");
 		end
     end
 end
