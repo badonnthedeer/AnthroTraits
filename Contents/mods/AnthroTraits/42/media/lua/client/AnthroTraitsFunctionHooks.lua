@@ -49,6 +49,7 @@
 ------------------------------------------------------------------------------------------------------
 
 -- gets sandbox var via case insensitive search from trait definition
+
 local function GetSandboxVarsTrait(traitDef, addString)
 	local locID = Registries.CHARACTER_TRAIT:getLocation(traitDef:getType())
 	local optionName = string.lower(locID:getPath() .. addString)
