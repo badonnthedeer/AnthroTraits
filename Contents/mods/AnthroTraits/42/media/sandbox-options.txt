@@ -62,7 +62,7 @@ option AnthroTraits.AT_Bug_o_ssieur_Cost
 
 option AnthroTraits.AT_Bug_o_ssieurItems
 {
-	type = string, default = Base.AmericanLadyCaterpillar;Base.BandedWoolyBearCaterpillar;Base.Centipede2;Base.Centipede;Base.Cockroach;Base.Cricket;Base.Grasshopper;Base.Ladybug;Base.Maggots;Base.Millipede2;Base.Millipede;Base.MonarchCaterpillar;Base.Pillbug;Base.SawflyLarva;Base.SilkMothCaterpillar;Base.Slug2;Base.Slug;Base.Snail;Base.SwallowtailCaterpillar;Base.Termites;Base.Worm;
+	type = string, default = Base.AmericanLadyCaterpillar;Base.BandedWoolyBearCaterpillar;Base.Centipede2;Base.Centipede;Base.Cockroach;Base.Cricket;Base.Grasshopper;Base.Ladybug;Base.Maggots;Base.Millipede2;Base.Millipede;Base.MonarchCaterpillar;Base.Pillbug;Base.SawflyLarva;Base.SilkMothCaterpillar;Base.Slug2;Base.Slug;Base.Snail;Base.SwallowtailCaterpillar;Base.Termites;Base.Worm,
 	page = AnthroTraits, translation = AnthroTraits_Bug_o_ssieurItems,
 }
 
@@ -86,7 +86,7 @@ option AnthroTraits.AT_Carnivore_Cost
 
 option AnthroTraits.AT_CarnivoreItems
 {
-	type = string, default = Base.AligatorGar;Base.Bacon;Base.BaconBits;Base.BaconRashers;Base.BaitFish;Base.Baloney;Base.BaloneySlice;Base.Beef;Base.BeefJerky;Base.BlackCrappie;Base.BlueCatfish;Base.Bluegill;Base.CannedCornedBeefOpen;Base.CannedSardinesOpen;Base.Caviar;Base.ChannelCatfish;Base.Chicken;Base.ChickenFillet;Base.ChickenFoot;Base.ChickenFried;Base.ChickenNuggets;Base.ChickenWhole;Base.ChickenWings;Base.Corndog;Base.Crayfish;Base.DeadBird;Base.DeadMouse;Base.DeadMousePupsSkinned;Base.DeadMouseSkinned;Base.DeadRabbit;Base.DeadRat;Base.DeadRatBaby;Base.DeadRatBabySkinned;Base.DeadRatSkinned;Base.DeadSquirrel;Base.DehydratedMeatStick;Base.Egg;Base.EggBoiled;Base.EggOmelette;Base.EggPoached;Base.EggScrambled;Base.FishFillet;Base.FishFingers;Base.FishFried;Base.FishRoe;Base.FlatheadCatfish;Base.FreshwaterDrum;Base.FrogMeat;Base.GreenSunfish;Base.Ham;Base.HamSlice;Base.Hotdog;Base.Hotdog_single;Base.LargemouthBass;Base.Lobster;Base.MeatDumpling;Base.MeatPatty;Base.MeatSteamBun;Base.MincedMeat;Base.Muskellunge;Base.Mussels;Base.MuttonChop;Base.Oysters;Base.OystersFried;Base.Paddlefish;Base.Pepperoni;Base.Pork;Base.PorkChop;Base.PorkRinds;Base.Rabbitmeat;Base.RatKing;Base.RedearSunfish;Base.Salami;Base.SalamiSlice;Base.Salmon;Base.Sauger;Base.Sausage;Base.Shrimp;Base.ShrimpDumpling;Base.ShrimpFried;Base.ShrimpFriedCraft;Base.Smallanimalmeat;Base.Smallbirdmeat;Base.SmallmouthBass;Base.SpottedBass;Base.Squid;Base.SquidCalamari;Base.Steak;Base.StripedBass;Base.SushiEgg;Base.SushiFish;Base.Tadpole;Base.TunaTinOpen;Base.TurkeyEgg;Base.TurkeyFillet;Base.TurkeyLegs;Base.TurkeyWhole;Base.TurkeyWings;Base.Venison;Base.Walleye;Base.WhiteBass;Base.WhiteCrappie;Base.WildEggs;Base.YellowPerch;
+	type = string, default = Base.AligatorGar;Base.Bacon;Base.BaconBits;Base.BaconRashers;Base.BaitFish;Base.Baloney;Base.BaloneySlice;Base.Beef;Base.BeefJerky;Base.BlackCrappie;Base.BlueCatfish;Base.Bluegill;Base.CannedCornedBeefOpen;Base.CannedSardinesOpen;Base.Caviar;Base.ChannelCatfish;Base.Chicken;Base.ChickenFillet;Base.ChickenFoot;Base.ChickenFried;Base.ChickenNuggets;Base.ChickenWhole;Base.ChickenWings;Base.Corndog;Base.Crayfish;Base.DeadBird;Base.DeadMouse;Base.DeadMousePupsSkinned;Base.DeadMouseSkinned;Base.DeadRabbit;Base.DeadRat;Base.DeadRatBaby;Base.DeadRatBabySkinned;Base.DeadRatSkinned;Base.DeadSquirrel;Base.DehydratedMeatStick;Base.Egg;Base.EggBoiled;Base.EggOmelette;Base.EggPoached;Base.EggScrambled;Base.FishFillet;Base.FishFingers;Base.FishFried;Base.FishRoe;Base.FlatheadCatfish;Base.FreshwaterDrum;Base.FrogMeat;Base.GreenSunfish;Base.Ham;Base.HamSlice;Base.Hotdog;Base.Hotdog_single;Base.LargemouthBass;Base.Lobster;Base.MeatDumpling;Base.MeatPatty;Base.MeatSteamBun;Base.MincedMeat;Base.Muskellunge;Base.Mussels;Base.MuttonChop;Base.Oysters;Base.OystersFried;Base.Paddlefish;Base.Pepperoni;Base.Pork;Base.PorkChop;Base.PorkRinds;Base.Rabbitmeat;Base.RatKing;Base.RedearSunfish;Base.Salami;Base.SalamiSlice;Base.Salmon;Base.Sauger;Base.Sausage;Base.Shrimp;Base.ShrimpDumpling;Base.ShrimpFried;Base.ShrimpFriedCraft;Base.Smallanimalmeat;Base.Smallbirdmeat;Base.SmallmouthBass;Base.SpottedBass;Base.Squid;Base.SquidCalamari;Base.Steak;Base.StripedBass;Base.SushiEgg;Base.SushiFish;Base.Tadpole;Base.TunaTinOpen;Base.TurkeyEgg;Base.TurkeyFillet;Base.TurkeyLegs;Base.TurkeyWhole;Base.TurkeyWings;Base.Venison;Base.Walleye;Base.WhiteBass;Base.WhiteCrappie;Base.WildEggs;Base.YellowPerch,
 	page = AnthroTraits, translation = AnthroTraits_CarnivoreItems,
 }
 
@@ -138,6 +138,12 @@ option AnthroTraits.AT_ExclaimerExclaimThresholdMultiplier
 	page = AnthroTraits, translation = AnthroTraits_ExclaimerExclaimThresholdMultiplier,
 }
 
+option AnthroTraits.AT_ExclaimerAnthroVoiceMitigation
+{
+	type = integer, min = 0, max = 100, default = 20,
+	page = AnthroTraits, translation = AnthroTraits_ExclaimerAnthroVoiceMitigation,
+}
+
 option AnthroTraits.AT_FeralBody_Cost
 {
 	type = integer, min = -15, max = 15, default = 1,
@@ -152,7 +158,7 @@ option AnthroTraits.AT_FeralDigestion_Cost
 
 option AnthroTraits.AT_FeralDigestionItems
 {
-	type = string, default = Base.CakeBlackForest;Base.CakeChocolate;Base.CakeRedVelvet;Base.CannedFruitBeverageOpen;Base.Chives;Base.ChivesDried;Base.ChocoCakes;Base.Chocolate;Base.ChocolateChips;Base.ChocolateCoveredCoffeeBeans;Base.Chocolate_Butterchunkers;Base.Chocolate_Candy;Base.Chocolate_Crackle;Base.Chocolate_Deux;Base.Chocolate_GalacticDairy;Base.Chocolate_HeartBox;Base.Chocolate_RoysPBPucks;Base.Chocolate_Smirkers;Base.Chocolate_SnikSnak;Base.CocoaPowder;Base.Coffee2;Base.CookieChocolateChip;Base.CookieChocolateChipDough;Base.CookieJelly;Base.CookiesChocolate;Base.CookiesChocolateDough;Base.DoughnutChocolate;Base.DoughnutJelly;Base.FudgeePop;Base.FudgeePop_Melted;Base.Garlic;Base.GrapeLeaves;Base.Grapes;Base.GreenOnions;Base.Gum;Base.HollyBerry;Base.HotDrink;Base.HotDrinkRed;Base.HotDrinkSpiffo;Base.HotDrinkTea;Base.HotDrinkTeaCeramic;Base.HotDrinkWhite;Base.JellyRoll;Base.Leek;Base.LemonGrass;Base.MintCandy;Base.Onion;Base.Painauchocolat;Base.Peppermint;Base.Smore;Base.Teabag2;Base.WildGarlic2;Base.WildGarlicDried;Base.WinterBerry;
+	type = string, default = Base.CakeBlackForest;Base.CakeChocolate;Base.CakeRedVelvet;Base.CannedFruitBeverageOpen;Base.Chives;Base.ChivesDried;Base.ChocoCakes;Base.Chocolate;Base.ChocolateChips;Base.ChocolateCoveredCoffeeBeans;Base.Chocolate_Butterchunkers;Base.Chocolate_Candy;Base.Chocolate_Crackle;Base.Chocolate_Deux;Base.Chocolate_GalacticDairy;Base.Chocolate_HeartBox;Base.Chocolate_RoysPBPucks;Base.Chocolate_Smirkers;Base.Chocolate_SnikSnak;Base.CocoaPowder;Base.Coffee2;Base.CookieChocolateChip;Base.CookieChocolateChipDough;Base.CookieJelly;Base.CookiesChocolate;Base.CookiesChocolateDough;Base.DoughnutChocolate;Base.DoughnutJelly;Base.FudgeePop;Base.FudgeePop_Melted;Base.Garlic;Base.GrapeLeaves;Base.Grapes;Base.GreenOnions;Base.Gum;Base.HollyBerry;Base.HotDrink;Base.HotDrinkRed;Base.HotDrinkSpiffo;Base.HotDrinkTea;Base.HotDrinkTeaCeramic;Base.HotDrinkWhite;Base.JellyRoll;Base.Leek;Base.LemonGrass;Base.MintCandy;Base.Onion;Base.Painauchocolat;Base.Peppermint;Base.Smore;Base.Teabag2;Base.WildGarlic2;Base.WildGarlicDried;Base.WinterBerry,
 	page = AnthroTraits, translation = AnthroTraits_FeralDigestionItems,
 }
 
@@ -174,6 +180,12 @@ option AnthroTraits.AT_FoodMotivatedBonus
 	page = AnthroTraits, translation = AnthroTraits_FoodMotivatedBonus,
 }
 
+option AnthroTraits.AT_FoodMotivatedItems
+{
+	type = string, default = Base.DogfoodOpen;Base.CatTreats;Base.CatFoodBag,
+	page = AnthroTraits, translation = AnthroTraits_FoodMotivatedItems,
+}
+
 option AnthroTraits.AT_Herbivore_Cost
 {
 	type = integer, min = -15, max = 15, default = 2,
@@ -182,7 +194,7 @@ option AnthroTraits.AT_Herbivore_Cost
 
 option AnthroTraits.AT_HerbivoreItems
 {
-	type = string, default = Base.Acorn;Base.Apple;Base.Avocado;Base.Banana;Base.Basil;Base.BasilDried;Base.BeanBowl;Base.BeautyBerry;Base.BellPepper;Base.BerryBlack;Base.BerryBlue;Base.BerryGeneric1;Base.BerryGeneric2;Base.BerryGeneric3;Base.BerryGeneric4;Base.BerryGeneric5;Base.BerryPoisonIvy;Base.BlackSage;Base.BlackSageDried;Base.Blackbeans;Base.Broccoli;Base.BroccoliSeed;Base.BrusselSprouts;Base.Cabbage;Base.CabbageSeed;Base.CandyFruitSlices;Base.CannedBellPepper_Open;Base.CannedBroccoli_Open;Base.CannedCabbage_Open;Base.CannedCarrotsOpen;Base.CannedCarrots_Open;Base.CannedChiliOpen;Base.CannedCornOpen;Base.CannedFruitCocktailOpen;Base.CannedLeek_Open;Base.CannedPeachesOpen;Base.CannedPeasOpen;Base.CannedPineappleOpen;Base.CannedPotatoOpen;Base.CannedPotato_Open;Base.CannedRedRadish_Open;Base.CannedTomatoOpen;Base.CannedTomato_Open;Base.Capers;Base.CarrotSeed;Base.Carrots;Base.Cauliflower;Base.Cereal;Base.Chamomile;Base.ChamomileDried;Base.Cherry;Base.Chives;Base.ChivesDried;Base.Cilantro;Base.CilantroDried;Base.CilantroSeed;Base.ComfreyDried;Base.CommonMallow;Base.CommonMallowDried;Base.Corn;Base.CornFrozen;Base.CornSeed;Base.Crisps2;Base.Crisps3;Base.Crisps4;Base.Crisps;Base.CrispyRiceSquare;Base.Cucumber;Base.Daikon;Base.Dandelions;Base.DriedApricots;Base.DriedBlackBeans;Base.DriedChickpeas;Base.DriedKidneyBeans;Base.DriedLentils;Base.DriedSplitPeas;Base.DriedWhiteBeans;Base.Edamame;Base.Eggplant;Base.FourLeafClover;Base.FrenchFries;Base.FriedOnionRings;Base.FriedOnionRingsCraft;Base.Fries;Base.FruitSalad;Base.Garlic;Base.GingerPickled;Base.GingerRoot;Base.Ginseng;Base.GranolaBar;Base.GrapeLeaves;Base.Grapefruit;Base.Grapes;Base.GreenOnions;Base.Greenpeas;Base.Guacamole;Base.HalloweenPumpkin;Base.HayTuft;Base.HollyBerry;Base.Hops;Base.Kale;Base.Lavender;Base.LavenderPetalsDried;Base.Leek;Base.Lemon;Base.LemonGrass;Base.Lettuce;Base.Lime;Base.Mango;Base.Marigold;Base.MarigoldDried;Base.MintHerb;Base.MintHerbDried;Base.MixedVegetables;Base.MushroomGeneric1;Base.MushroomGeneric2;Base.MushroomGeneric3;Base.MushroomGeneric4;Base.MushroomGeneric5;Base.MushroomGeneric6;Base.MushroomGeneric7;Base.MushroomsButton;Base.Nettles;Base.Oatmeal;Base.OatsRaw;Base.Olives;Base.Onigiri;Base.Onion;Base.OpenBeans;Base.Orange;Base.Oregano;Base.OreganoDried;Base.Parsley;Base.ParsleyDried;Base.Peach;Base.Peanuts;Base.Pear;Base.Peas;Base.PepperHabanero;Base.PepperHabaneroDried;Base.PepperJalapeno;Base.PepperJalapenoDried;Base.Pickles;Base.PieApple;Base.PieBlueberry;Base.PiePumpkin;Base.Pineapple;Base.Plantain;Base.PlantainDried;Base.Popcorn;Base.Potato;Base.PotatoPancakes;Base.PotatoSeed;Base.Pumpkin;Base.PumpkinSeed;Base.RedRadish;Base.RedRadishSeed;Base.Rice;Base.RiceBowl;Base.RosePetalsDried;Base.Rosehips;Base.Rosemary;Base.RosemaryDried;Base.Sage;Base.SageDried;Base.Salad;Base.Seaweed;Base.Soybeans;Base.SoybeansSeed;Base.Spinach;Base.Squash;Base.Strewberrie;Base.StrewberrieSeed;Base.SugarBeet;Base.SunflowerSeeds;Base.SweetPotato;Base.TatoDots;Base.Thistle;Base.Thyme;Base.ThymeDried;Base.TinnedSoupOpen;Base.Tofu;Base.TofuFried;Base.Tomato;Base.TomatoSeed;Base.Turnip;Base.Violets;Base.Watermelon;Base.WatermelonSliced;Base.WatermelonSmashed;Base.WildGarlic2;Base.WildGarlicDried;Base.WinterBerry;Base.Zucchini;
+	type = string, default = Base.Acorn;Base.Apple;Base.Avocado;Base.Banana;Base.Basil;Base.BasilDried;Base.BeanBowl;Base.BeautyBerry;Base.BellPepper;Base.BerryBlack;Base.BerryBlue;Base.BerryGeneric1;Base.BerryGeneric2;Base.BerryGeneric3;Base.BerryGeneric4;Base.BerryGeneric5;Base.BerryPoisonIvy;Base.BlackSage;Base.BlackSageDried;Base.Blackbeans;Base.Broccoli;Base.BroccoliSeed;Base.BrusselSprouts;Base.Cabbage;Base.CabbageSeed;Base.CandyFruitSlices;Base.CannedBellPepper_Open;Base.CannedBroccoli_Open;Base.CannedCabbage_Open;Base.CannedCarrotsOpen;Base.CannedCarrots_Open;Base.CannedChiliOpen;Base.CannedCornOpen;Base.CannedFruitCocktailOpen;Base.CannedLeek_Open;Base.CannedPeachesOpen;Base.CannedPeasOpen;Base.CannedPineappleOpen;Base.CannedPotatoOpen;Base.CannedPotato_Open;Base.CannedRedRadish_Open;Base.CannedTomatoOpen;Base.CannedTomato_Open;Base.Capers;Base.CarrotSeed;Base.Carrots;Base.Cauliflower;Base.Cereal;Base.Chamomile;Base.ChamomileDried;Base.Cherry;Base.Chives;Base.ChivesDried;Base.Cilantro;Base.CilantroDried;Base.CilantroSeed;Base.ComfreyDried;Base.CommonMallow;Base.CommonMallowDried;Base.Corn;Base.CornFrozen;Base.CornSeed;Base.Crisps2;Base.Crisps3;Base.Crisps4;Base.Crisps;Base.CrispyRiceSquare;Base.Cucumber;Base.Daikon;Base.Dandelions;Base.DriedApricots;Base.DriedBlackBeans;Base.DriedChickpeas;Base.DriedKidneyBeans;Base.DriedLentils;Base.DriedSplitPeas;Base.DriedWhiteBeans;Base.Edamame;Base.Eggplant;Base.FourLeafClover;Base.FrenchFries;Base.FriedOnionRings;Base.FriedOnionRingsCraft;Base.Fries;Base.FruitSalad;Base.Garlic;Base.GingerPickled;Base.GingerRoot;Base.Ginseng;Base.GranolaBar;Base.GrapeLeaves;Base.Grapefruit;Base.Grapes;Base.GreenOnions;Base.Greenpeas;Base.Guacamole;Base.HalloweenPumpkin;Base.HayTuft;Base.HollyBerry;Base.Hops;Base.Kale;Base.Lavender;Base.LavenderPetalsDried;Base.Leek;Base.Lemon;Base.LemonGrass;Base.Lettuce;Base.Lime;Base.Mango;Base.Marigold;Base.MarigoldDried;Base.MintHerb;Base.MintHerbDried;Base.MixedVegetables;Base.MushroomGeneric1;Base.MushroomGeneric2;Base.MushroomGeneric3;Base.MushroomGeneric4;Base.MushroomGeneric5;Base.MushroomGeneric6;Base.MushroomGeneric7;Base.MushroomsButton;Base.Nettles;Base.Oatmeal;Base.OatsRaw;Base.Olives;Base.Onigiri;Base.Onion;Base.OpenBeans;Base.Orange;Base.Oregano;Base.OreganoDried;Base.Parsley;Base.ParsleyDried;Base.Peach;Base.Peanuts;Base.Pear;Base.Peas;Base.PepperHabanero;Base.PepperHabaneroDried;Base.PepperJalapeno;Base.PepperJalapenoDried;Base.Pickles;Base.PieApple;Base.PieBlueberry;Base.PiePumpkin;Base.Pineapple;Base.Plantain;Base.PlantainDried;Base.Popcorn;Base.Potato;Base.PotatoPancakes;Base.PotatoSeed;Base.Pumpkin;Base.PumpkinSeed;Base.RedRadish;Base.RedRadishSeed;Base.Rice;Base.RiceBowl;Base.RosePetalsDried;Base.Rosehips;Base.Rosemary;Base.RosemaryDried;Base.Sage;Base.SageDried;Base.Salad;Base.Seaweed;Base.Soybeans;Base.SoybeansSeed;Base.Spinach;Base.Squash;Base.Strewberrie;Base.StrewberrieSeed;Base.SugarBeet;Base.SunflowerSeeds;Base.SweetPotato;Base.TatoDots;Base.Thistle;Base.Thyme;Base.ThymeDried;Base.TinnedSoupOpen;Base.Tofu;Base.TofuFried;Base.Tomato;Base.TomatoSeed;Base.Turnip;Base.Violets;Base.Watermelon;Base.WatermelonSliced;Base.WatermelonSmashed;Base.WildGarlic2;Base.WildGarlicDried;Base.WinterBerry;Base.Zucchini,
 	page = AnthroTraits, translation = AnthroTraits_HerbivoreItems,
 }
 
@@ -310,4 +322,16 @@ option AnthroTraits.AT_VestigialWings_Cost
 {
 	type = integer, min = -15, max = 15, default = 5,
 	page = AnthroTraits, translation = AnthroTraits_VestigialWings_Cost,
+}
+
+option AnthroTraits.AT_VoiceAvian_Cost
+{
+	type = integer, min = -15, max = 15, default = 1,
+	page = AnthroTraits, translation = AnthroTraits_VoiceAvian_Cost,
+}
+
+option AnthroTraits.AT_VoiceSheep_Cost
+{
+	type = integer, min = -15, max = 15, default = 1,
+	page = AnthroTraits, translation = AnthroTraits_VoiceSheep_Cost,
 }
