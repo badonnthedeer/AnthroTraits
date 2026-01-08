@@ -3,27 +3,27 @@ local AnthroTraitsServerMain = {};
 --local ATUs = require("AnthroTraitsServerUtilities");
 
 local function IsAnthro(gameCharacter)
-    -- if (getActivatedMods():contains("\\FurryMod") or getActivatedMods():contains("\\FurryApocalypse")) and gameCharacter ~= nil
-    -- then
-        -- local hasFur = false;
-        -- local itemVisuals = gameCharacter:getItemVisuals();
-        -- if itemVisuals ~= nil
-        -- then
-            -- for i=0, itemVisuals:size() - 1
-            -- do
-                -- local itemVisual = itemVisuals:get(i);
-                -- local item =  itemVisual:getScriptItem();
-                -- if item ~= nil and (item:hasTag("Fur") or item:hasTag("DeceasedFur"))
-                -- then
-                    -- hasFur = true;
-                    -- break;
-                -- end
-            -- end;
-        -- end 
-        -- return hasFur;
-    -- else
-        -- return false;
-    -- end
+    if (getActivatedMods():contains("\\FurryMod") or getActivatedMods():contains("\\FurryApocalypse")) and gameCharacter ~= nil
+    then
+        local hasFur = false;
+        local itemVisuals = gameCharacter:getItemVisuals();
+        if itemVisuals ~= nil
+        then
+            for i=0, itemVisuals:size() - 1
+            do
+                local itemVisual = itemVisuals:get(i);
+                local item =  itemVisual:getScriptItem();
+                if item ~= nil and (item:hasTag(ItemTag.get(ResourceLocation.of("FurryMod:Fur"))) or item:hasTag(ItemTag.get(ResourceLocation.of("FurryMod:DeceasedFur"))))
+                then
+                    hasFur = true;
+                    break;
+                end
+            end;
+        end 
+        return hasFur;
+    else
+        return false;
+    end
 	
 	return false
 end
@@ -234,7 +234,7 @@ AnthroTraitsServerMain.ATPlayerDamageTick = function(player, damageType, damage)
         end
     elseif player:hasTrait(ATGt.DIGITIGRADE)
     then
-        --immune to scratches, lacerations, bites
+        --immune to scratches
         local footL = player:getBodyDamage():getBodyPart(BodyPartType.Foot_L);
         local footR = player:getBodyDamage():getBodyPart(BodyPartType.Foot_R);
 
