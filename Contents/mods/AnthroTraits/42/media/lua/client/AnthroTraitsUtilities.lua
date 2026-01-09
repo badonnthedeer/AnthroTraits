@@ -335,7 +335,7 @@ AnthroTraitsUtilities.CalculateFoodChanges = function(character, food, foodProps
 	end
 	
 	-- process UNHAPPINESS and BOREDOM for certain traits (as long as either character is CARRIONEATER or food is fresh or both)
-	if character:hasTrait(ATGt.CARRIONEATER) or not food:IsRotten()
+	if (character:hasTrait(ATGt.CARRIONEATER) and food:hasTag(AnthroTraitsGlobals.FoodTags.CARNIVORE)) or not food:IsRotten()
 	then
 		-- counteract UNHAPPINESS and BOREDOM for certain trait/food combos
 		if (character:hasTrait(ATGt.BUG_O_SSIEUR) and food:hasTag(AnthroTraitsGlobals.FoodTags.INSECT)) or	--BUG_O_SSIEUR doesn't mind eating insects
