@@ -288,6 +288,13 @@ AnthroTraitsUtilities.CalculateFoodModifiers = function(character, food)
 	modifiers.Carbs = mod + modCarrion
 	modifiers.Proteins = mod + modCarrion
 	modifiers.Lipids = mod + modCarrion
+	-- for now same modifier is applied to every stat
+	if mod + modCarrion == 0
+	then
+		modifiers.foodTooltip = nil	-- no modifiers => use default tooptip (for now)
+	else
+		modifiers.foodTooltip = Sign(mod + modCarrion)
+	end
     return modifiers
 end
 
@@ -333,6 +340,12 @@ AnthroTraitsUtilities.CalculateFoodChanges = function(character, food, foodProps
 	else
 		result.Lipids = 0
 	end
+	result.undoAddedPoison = false
+	-- 1 or -1 for more/less nutritious
+	-- 0 for no nutritional change but should still create custom Tooltip
+	-- -2 for plain bad
+	-- nil for vanilla tooltip
+	result.foodTooltip = modifiers.foodTooltip
 	
 	-- process UNHAPPINESS and BOREDOM for certain traits (as long as either character is CARRIONEATER or food is fresh or both)
 	if (character:hasTrait(ATGt.CARRIONEATER) and food:hasTag(AnthroTraitsGlobals.FoodTags.CARNIVORE)) or not food:IsRotten()
@@ -345,10 +358,12 @@ AnthroTraitsUtilities.CalculateFoodChanges = function(character, food, foodProps
 			if Sign(foodProps[CharacterStat.UNHAPPINESS]) ~= AnthroTraitsGlobals.FoodCharacterStatInfo[CharacterStat.UNHAPPINESS].Sign
 			then
 				result[CharacterStat.UNHAPPINESS] = result[CharacterStat.UNHAPPINESS] - foodProps[CharacterStat.UNHAPPINESS]
+				result.foodTooltip = result.foodTooltip or 0
 			end
 			if Sign(foodProps[CharacterStat.BOREDOM]) ~= AnthroTraitsGlobals.FoodCharacterStatInfo[CharacterStat.BOREDOM].Sign
 			then
 				result[CharacterStat.BOREDOM] = result[CharacterStat.BOREDOM] - foodProps[CharacterStat.BOREDOM]
+				result.foodTooltip = result.foodTooltip or 0
 			end
 		end
 		-- FOODMOTIVATED really likes eating stuff
@@ -356,6 +371,7 @@ AnthroTraitsUtilities.CalculateFoodChanges = function(character, food, foodProps
 		then
 			result[CharacterStat.UNHAPPINESS] = result[CharacterStat.UNHAPPINESS] - SandboxVars.AnthroTraits.AT_FoodMotivatedBonus
 			result[CharacterStat.BOREDOM] = result[CharacterStat.BOREDOM] - SandboxVars.AnthroTraits.AT_FoodMotivatedBonus
+			result.foodTooltip = result.foodTooltip or 0
 		end
 	end
 	
@@ -368,6 +384,7 @@ AnthroTraitsUtilities.CalculateFoodChanges = function(character, food, foodProps
             if food:getFluidContainer():getPrimaryFluid():isCategory(FluidCategory.Alcoholic)
             then
                 result[CharacterStat.POISON] = maxPoisonAmt;
+				result.foodTooltip = -2
             end
         elseif food:getExtraItems() ~= nil
         then
@@ -379,12 +396,43 @@ AnthroTraitsUtilities.CalculateFoodChanges = function(character, food, foodProps
                 if foodIngredientTags:contains(AnthroTraitsGlobals.FoodTags.FERALPOISON)
                 then
                     result[CharacterStat.POISON] = result[CharacterStat.POISON] + maxPoisonAmt;
+					result.foodTooltip = -2
                 end
             end
         elseif food:hasTag(AnthroTraitsGlobals.FoodTags.FERALPOISON)
         then
 			-- ferals can't process certain foods
             result[CharacterStat.POISON] = maxPoisonAmt;
+			result.foodTooltip = -2
+        end
+    end
+	-- counteract poison from uncooked food depending on certain traits
+	if food:hasTag(AnthroTraitsGlobals.FoodTags.CARNIVORE)
+    then
+        if (character:hasTrait(ATGt.CARNIVORE) or character:hasTrait(ATGt.CARRIONEATER)) and not food:isRotten()
+        then
+            if instanceof(character, "IsoPlayer") and not food:isPoison()
+            then
+                result.undoAddedPoison = true;
+            end
+        elseif food:isRotten() and character:hasTrait(ATGt.CARRIONEATER)
+        then
+            if instanceof(character, "IsoPlayer") and not food:isPoison()
+            then
+                result.undoAddedPoison = true;
+            end
+        end
+    elseif food:hasTag(AnthroTraitsGlobals.FoodTags.HERBIVORE)
+    then
+        if character:hasTrait(ATGt.HERBIVORE)
+        then
+            if not food:isRotten()
+            then
+                if instanceof(character, "IsoPlayer") and not food:isPoison()
+                then
+					result.undoAddedPoison = true;
+                end
+            end
         end
     end
 	
@@ -430,7 +478,7 @@ local function AddFoodPropsChanges(foodProps, foodChanges)
 	return result
 end
 
-AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item)
+AnthroTraitsUtilities.BuildFoodDescription = function(player, foodProps, foodChanges, item)
     local ATU = AnthroTraitsUtilities;
     local returnTable = {}
 
@@ -447,10 +495,17 @@ AnthroTraitsUtilities.BuildFoodDescription = function(player, description, item)
     local minutesTillCooked = item:getMinutesToCook();
     local minutesTillBurned = item:getMinutesToBurn();
 
-	local foodProps = ATU.GetConsumableProperties(item)
-    local foodChanges = ATU.CalculateFoodChanges(player, item, foodProps)
 	local newFoodProps = AddFoodPropsChanges(foodProps, foodChanges)
 
+	local description = nil
+	if foodChanges.foodTooltip == 1
+	then
+		description = "%LightGreen%This food is more nutritious for you."
+	elseif foodChanges.foodTooltip == -1
+	then
+		description = "%LavenderBlush%This food is less nutritious for you."
+	end
+	
     if foodName ~= nil
     then
         if foodProps[CharacterStat.POISON] > 0
