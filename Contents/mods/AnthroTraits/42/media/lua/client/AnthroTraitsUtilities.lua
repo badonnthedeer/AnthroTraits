@@ -386,7 +386,7 @@ AnthroTraitsUtilities.CalculateFoodChanges = function(character, food, foodProps
                 result[CharacterStat.POISON] = maxPoisonAmt;
 				result.foodTooltip = -2
             end
-        elseif food:getExtraItems() ~= nil
+        elseif food:haveExtraItems()
         then
 			-- ferals can't process certain ingredients
             local foodIngredients = food:getExtraItems()
