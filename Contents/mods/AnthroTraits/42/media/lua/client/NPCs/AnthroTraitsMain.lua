@@ -325,7 +325,9 @@ AnthroTraitsMain.BeStinky = function(player)
     local stinkyCommentChance = SandboxVars.AnthroTraits.AT_StinkyCommentChance
     local stinkyThreshold = SandboxVars.AnthroTraits.AT_StinkyThreshold
     local playerSquare = player:getCurrentSquare();
-    local activePlayers = getNumActivePlayers();
+    --this is for splitscreen :C
+    local localPlayers = getNumActivePlayers();
+    local onlinePlayers = getOnlinePlayers() or 0;
     local playerInQuestion = player;
     local bloodBodyPartType = BloodBodyPartType.FromIndex(0)
     local totalDirtiness = 0;
@@ -344,9 +346,9 @@ AnthroTraitsMain.BeStinky = function(player)
                 playerSquare:getZ(),
                 stinkyDistance,
                 stinkyLoudness);
-        if activePlayers > 1
+        if onlinePlayers ~= 0 
         then
-            for playerIndex = 0, activePlayers -1
+            for playerIndex = 0, onlinePlayers -1
             do
                 playerInQuestion = getSpecificPlayer(playerIndex)
                 if player == not playerInQuestion
