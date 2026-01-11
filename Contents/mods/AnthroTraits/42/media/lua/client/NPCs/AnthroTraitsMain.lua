@@ -230,7 +230,7 @@ AnthroTraitsMain.ApplyFoodChanges = function(character, foodEaten, percentEaten,
 	end
 	if foodChanges.Carbs ~= 0
 	then
-		charNutrition:setCarbs(preCharStats.Carbs + (foodProps.Carbs + foodChanges.Carbs) * percentEaten)
+		charNutrition:setCarbohydrates(preCharStats.Carbs + (foodProps.Carbs + foodChanges.Carbs) * percentEaten)
 	end
 	if foodChanges.Proteins ~= 0
 	then
@@ -241,37 +241,43 @@ AnthroTraitsMain.ApplyFoodChanges = function(character, foodEaten, percentEaten,
 		charNutrition:setLipids(preCharStats.Lipids + (foodProps.Lipids + foodChanges.Lipids) * percentEaten)
 	end
 	-- RabenRabo: I'm not 100% sure what this does...best guess? deal with dangerous uncooked food?
-	if foodEaten:hasTag(AnthroTraitsGlobals.FoodTags.CARNIVORE)
-    then
-        if (character:hasTrait(ATGt.CARNIVORE) or character:hasTrait(ATGt.CARRIONEATER)) and not foodEaten:isRotten()
-        then
-            if instanceof(character, "IsoPlayer") and not foodEaten:isPoison()
-            then
-                character:getModData().ATPlayerData.undoAddedPoison = true;
-                character:getModData().ATPlayerData.beforeEatPoisonLvl = preCharStats[CharacterStat.POISON];
-            end
-        elseif foodEaten:isRotten() and character:hasTrait(ATGt.CARRIONEATER)
-        then
-            if instanceof(character, "IsoPlayer") and not foodEaten:isPoison()
-            then
-                character:getModData().ATPlayerData.undoAddedPoison = true;
-                character:getModData().ATPlayerData.beforeEatPoisonLvl = preCharStats[CharacterStat.POISON];
-            end
-        end
-    elseif foodEaten:hasTag(AnthroTraitsGlobals.FoodTags.HERBIVORE)
-    then
-        if character:hasTrait(ATGt.HERBIVORE)
-        then
-            if not foodEaten:isRotten()
-            then
-                if instanceof(character, "IsoPlayer") and not foodEaten:isPoison()
-                then
-                    character:getModData().ATPlayerData.undoAddedPoison = true;
-                    character:getModData().ATPlayerData.beforeEatPoisonLvl = preCharStats[CharacterStat.POISON];
-                end
-            end
-        end
-    end
+	if foodChanges.undoAddedPoison
+	then
+		character:getModData().ATPlayerData.undoAddedPoison = true;
+		character:getModData().ATPlayerData.beforeEatPoisonLvl = preCharStats[CharacterStat.POISON];
+	end
+	-- -> moved to ATU for more centralized calculations
+	-- if foodEaten:hasTag(AnthroTraitsGlobals.FoodTags.CARNIVORE)
+    -- then
+        -- if (character:hasTrait(ATGt.CARNIVORE) or character:hasTrait(ATGt.CARRIONEATER)) and not foodEaten:isRotten()
+        -- then
+            -- if instanceof(character, "IsoPlayer") and not foodEaten:isPoison()
+            -- then
+                -- character:getModData().ATPlayerData.undoAddedPoison = true;
+                -- character:getModData().ATPlayerData.beforeEatPoisonLvl = preCharStats[CharacterStat.POISON];
+            -- end
+        -- elseif foodEaten:isRotten() and character:hasTrait(ATGt.CARRIONEATER)
+        -- then
+            -- if instanceof(character, "IsoPlayer") and not foodEaten:isPoison()
+            -- then
+                -- character:getModData().ATPlayerData.undoAddedPoison = true;
+                -- character:getModData().ATPlayerData.beforeEatPoisonLvl = preCharStats[CharacterStat.POISON];
+            -- end
+        -- end
+    -- elseif foodEaten:hasTag(AnthroTraitsGlobals.FoodTags.HERBIVORE)
+    -- then
+        -- if character:hasTrait(ATGt.HERBIVORE)
+        -- then
+            -- if not foodEaten:isRotten()
+            -- then
+                -- if instanceof(character, "IsoPlayer") and not foodEaten:isPoison()
+                -- then
+                    -- character:getModData().ATPlayerData.undoAddedPoison = true;
+                    -- character:getModData().ATPlayerData.beforeEatPoisonLvl = preCharStats[CharacterStat.POISON];
+                -- end
+            -- end
+        -- end
+    -- end
 end
 
 AnthroTraitsMain.ExclaimerCheck = function(player)

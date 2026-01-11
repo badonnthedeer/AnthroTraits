@@ -220,48 +220,12 @@ ISToolTipInv.render = function(self)
 	local text = "";
 	local leftText = "";
 
-	if (((ATU.FoodVoreType(self.item) == ATGf.HERBIVORE  or ATU.FoodVoreType(self.item) == ATGf.CARNIVORE) and (player:hasTrait(ATGt.HERBIVORE) or player:hasTrait(ATGt.CARNIVORE) or player:hasTrait(ATGt.CARRIONEATER)))
-			or (self.item:hasTag(ATGf.FERALPOISON) and player:hasTrait(ATGt.FERALDIGESTION))
-			or (self.item:hasTag(ATGf.INSECT) and player:hasTrait(ATGt.BUG_O_SSIEUR))
-			or (player:hasTrait(ATGt.FOODMOTIVATED)))
+	local foodProps = ATU.GetConsumableProperties(self.item)
+    local foodChanges = ATU.CalculateFoodChanges(player, self.item, foodProps)
+	
+	if foodChanges.foodTooltip ~= nil
 	then
-		if ATU.FoodVoreType(self.item) == ATGf.HERBIVORE
-		then
-			if player:hasTrait(ATGt.HERBIVORE)
-			then
-				tooltipTextTable = ATU.BuildFoodDescription(player, "%LightGreen%This food is more nutritious for you.", self.item)
-			elseif player:hasTrait(ATGt.CARNIVORE)
-			then
-				tooltipTextTable = ATU.BuildFoodDescription(player, "%LavenderBlush%This food is less nutritious for you.", self.item)
-			elseif player:hasTrait(ATGt.FOODMOTIVATED) or player:hasTrait(ATGt.FERALDIGESTION)
-			then
-				tooltipTextTable = ATU.BuildFoodDescription(player, nil, self.item)
-			end
-		elseif ATU.FoodVoreType(self.item) == ATGf.CARNIVORE
-		then
-			if player:hasTrait(ATGt.CARNIVORE) and player:hasTrait(ATGt.CARRIONEATER) and self.item:IsRotten()
-			then
-				tooltipTextTable = ATU.BuildFoodDescription(player, "%LightGreen%This food is better for you.", self.item)
-			elseif player:hasTrait(ATGt.CARNIVORE)
-			then
-				tooltipTextTable = ATU.BuildFoodDescription(player, "%LightGreen%This food is better for you.", self.item)
-			elseif player:hasTrait(ATGt.CARRIONEATER) and self.item:IsRotten()
-			then
-				tooltipTextTable = ATU.BuildFoodDescription(player, "%LightGreen%This food is better for you.", self.item)
-			elseif player:hasTrait(ATGt.CARRIONEATER) and not self.item:IsRotten()
-			then
-				tooltipTextTable = ATU.BuildFoodDescription(player, nil, self.item)
-			elseif player:hasTrait(ATGt.HERBIVORE)
-			then
-				tooltipTextTable = ATU.BuildFoodDescription(player, "%LavenderBlush%This food is worse for you.", self.item)
-			elseif player:hasTrait(ATGt.FOODMOTIVATED) or player:hasTrait(ATGt.FERALDIGESTION)
-			then
-				tooltipTextTable = ATU.BuildFoodDescription(player, nil, self.item)
-			end
-		elseif player:hasTrait(ATGt.FOODMOTIVATED) or player:hasTrait(ATGt.BUG_O_SSIEUR) or player:hasTrait(ATGt.FERALDIGESTION)
-		then
-			tooltipTextTable = ATU.BuildFoodDescription(player, nil, self.item)
-		end
+		tooltipTextTable = ATU.BuildFoodDescription(player, foodProps, foodChanges, self.item)
 	elseif player:hasTrait(ATGt.FERALDIGESTION) and instanceof(self.item, "ComboItem") and self.item:getFluidContainer() ~= nil
 	then
 		if not self.item:getFluidContainer():isEmpty() and self.item:getFluidContainer():getPrimaryFluid():isCategory(FluidCategory.Alcoholic)
@@ -270,11 +234,65 @@ ISToolTipInv.render = function(self)
 		else
 			return oldRender(self);
 		end
-
 	else
 		--If it doesn't have any relevant tags, go instead to oldRender
 		return oldRender(self);
-	end
+	end 
+	
+	-- if (((ATU.FoodVoreType(self.item) == ATGf.HERBIVORE  or ATU.FoodVoreType(self.item) == ATGf.CARNIVORE) and (player:hasTrait(ATGt.HERBIVORE) or player:hasTrait(ATGt.CARNIVORE) or player:hasTrait(ATGt.CARRIONEATER)))
+			-- or (self.item:hasTag(ATGf.FERALPOISON) and player:hasTrait(ATGt.FERALDIGESTION))
+			-- or (self.item:hasTag(ATGf.INSECT) and player:hasTrait(ATGt.BUG_O_SSIEUR))
+			-- or (player:hasTrait(ATGt.FOODMOTIVATED)))
+	-- then
+		-- if ATU.FoodVoreType(self.item) == ATGf.HERBIVORE
+		-- then
+			-- if player:hasTrait(ATGt.HERBIVORE)
+			-- then
+				-- tooltipTextTable = ATU.BuildFoodDescription(player, "%LightGreen%This food is more nutritious for you.", self.item)
+			-- elseif player:hasTrait(ATGt.CARNIVORE)
+			-- then
+				-- tooltipTextTable = ATU.BuildFoodDescription(player, "%LavenderBlush%This food is less nutritious for you.", self.item)
+			-- elseif player:hasTrait(ATGt.FOODMOTIVATED) or player:hasTrait(ATGt.FERALDIGESTION)
+			-- then
+				-- tooltipTextTable = ATU.BuildFoodDescription(player, nil, self.item)
+			-- end
+		-- elseif ATU.FoodVoreType(self.item) == ATGf.CARNIVORE
+		-- then
+			-- if player:hasTrait(ATGt.CARNIVORE) and player:hasTrait(ATGt.CARRIONEATER) and self.item:IsRotten()
+			-- then
+				-- tooltipTextTable = ATU.BuildFoodDescription(player, "%LightGreen%This food is better for you.", self.item)
+			-- elseif player:hasTrait(ATGt.CARNIVORE)
+			-- then
+				-- tooltipTextTable = ATU.BuildFoodDescription(player, "%LightGreen%This food is better for you.", self.item)
+			-- elseif player:hasTrait(ATGt.CARRIONEATER) and self.item:IsRotten()
+			-- then
+				-- tooltipTextTable = ATU.BuildFoodDescription(player, "%LightGreen%This food is better for you.", self.item)
+			-- elseif player:hasTrait(ATGt.CARRIONEATER) and not self.item:IsRotten()
+			-- then
+				-- tooltipTextTable = ATU.BuildFoodDescription(player, nil, self.item)
+			-- elseif player:hasTrait(ATGt.HERBIVORE)
+			-- then
+				-- tooltipTextTable = ATU.BuildFoodDescription(player, "%LavenderBlush%This food is worse for you.", self.item)
+			-- elseif player:hasTrait(ATGt.FOODMOTIVATED) or player:hasTrait(ATGt.FERALDIGESTION)
+			-- then
+				-- tooltipTextTable = ATU.BuildFoodDescription(player, nil, self.item)
+			-- end
+		-- elseif player:hasTrait(ATGt.FOODMOTIVATED) or player:hasTrait(ATGt.BUG_O_SSIEUR) or player:hasTrait(ATGt.FERALDIGESTION)
+		-- then
+			-- tooltipTextTable = ATU.BuildFoodDescription(player, nil, self.item)
+		-- end
+	-- elseif player:hasTrait(ATGt.FERALDIGESTION) and instanceof(self.item, "ComboItem") and self.item:getFluidContainer() ~= nil
+	-- then
+		-- if not self.item:getFluidContainer():isEmpty() and self.item:getFluidContainer():getPrimaryFluid():isCategory(FluidCategory.Alcoholic)
+		-- then
+			-- tooltipTextTable = ATU.BuildFluidContainerDescription(player, nil, self.item)
+		-- else
+			-- return oldRender(self);
+		-- end
+	-- else
+		-- --If it doesn't have any relevant tags, go instead to oldRender
+		-- return oldRender(self);
+	-- end
 
 	for i = 1, #tooltipTextTable do
 		text = string.gsub(tooltipTextTable[i], "%%[^%%]+%%", "")
