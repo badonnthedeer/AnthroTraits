@@ -334,7 +334,7 @@ AnthroTraitsMain.BeStinky = function(player)
     --this is for splitscreen :C
     local localPlayers = getNumActivePlayers();
     --getOnlinePlayers can return nil if not in mp
-    local onlinePlayers = getOnlinePlayers() or 0;
+    local onlinePlayers = getOnlinePlayers();
     local playerInQuestion = player;
     local bloodBodyPartType = BloodBodyPartType.FromIndex(0)
     local totalDirtiness = 0;
@@ -353,9 +353,9 @@ AnthroTraitsMain.BeStinky = function(player)
                 playerSquare:getZ(),
                 stinkyDistance,
                 stinkyLoudness);
-        if onlinePlayers ~= 0 
+        if onlinePlayers:size() > 0
         then
-            for playerIndex = 0, #onlinePlayers -1
+            for playerIndex = 0, onlinePlayers:size()
             do
                 playerInQuestion = getSpecificPlayer(playerIndex)
                 if player == not playerInQuestion
