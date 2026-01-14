@@ -29,6 +29,7 @@ local function IsAnthro(gameCharacter)
 end
 
 AnthroTraitsServerMain.HandleInfection = function(player)
+    local ATM = AnthroTraitsServerMain;
 	local ATGt = AnthroTraitsGlobals.CharacterTrait
     local biteInfectionChance = SandboxVars.AnthroTraits.AT_AnthroImmunityBiteInfectionChance;
     local lacerationInfectionChance = SandboxVars.AnthroTraits.AT_AnthroImmunityLacerationInfectionChance;
@@ -40,26 +41,22 @@ AnthroTraitsServerMain.HandleInfection = function(player)
 
     for i = 0, player:getBodyDamage():getBodyParts():size() - 1 
     do
-        local bodypart = player:getBodyDamage():getBodyParts():get(i);
-        if bodypart:HasInjury() == true and bodypart:IsInfected() 
+        local bodyPart = player:getBodyDamage():getBodyParts():get(i);
+        if bodyPart:HasInjury() == true and bodyPart:IsInfected() 
         then
             if getDebug()
             then
-                print( tostring(bodypart:getType()) .. " is injured and infected.");
+                print( tostring(bodyPart:getType()) .. " is injured and infected.");
             end
             if player:hasTrait(ATGt.UNGULIGRADE)
             then
-                if tostring(bodypart:getType()) == "Foot_L" or tostring(bodypart:getType()) == "Foot_R"
+                if tostring(bodyPart:getType()) == "Foot_L" or tostring(bodyPart:getType()) == "Foot_R"
                 then
                     if getDebug()
                     then
                         print("AT_Unguligrade foot immunity triggered.");
                     end
-                    bodypart:SetInfected(false);
-                    player:getBodyDamage():setInfected(false);
-                    player:getBodyDamage():setInfectionMortalityDuration(-1);
-                    player:getBodyDamage():setInfectionTime(-1);
-                    player:getBodyDamage():setInfectionGrowthRate(0);
+                    ATM.CureKnoxInfection(player, bodyPart:getType());
                 end
             end
             if player:hasTrait(ATGt.ANTHROIMMUNITY) 
@@ -74,22 +71,18 @@ AnthroTraitsServerMain.HandleInfection = function(player)
                     then
                         print("Rolled " .. rolledInfectionChance);
                     end
-                    if bodypart:bitten() 
+                    if bodyPart:bitten() 
                     then
                         if biteInfectionChance <= rolledInfectionChance 
                         then
-                            bodypart:SetInfected(false);
-                            player:getBodyDamage():setInfected(false);
-                            player:getBodyDamage():setInfectionMortalityDuration(-1);
-                            player:getBodyDamage():setInfectionTime(-1);
-                            player:getBodyDamage():setInfectionGrowthRate(0);
+                            ATM.CureKnoxInfection(player, bodyPart:getType());
                             if getDebug()
                             then
                                 print("Infection defense successful.");
                             end
                             if SandboxVars.AnthroTraits.AT_AnthroImmunityBiteGetsRegularInfectionOnDefense
                             then
-                                bodypart:setInfectedWound(true);
+                                ATM.InfectWound(bodyPart:getType())
                                 if getDebug()
                                 then
                                     print("Knox infection substituted with regular infection. Human mouths are septic :S");
@@ -104,15 +97,11 @@ AnthroTraitsServerMain.HandleInfection = function(player)
                             end
                             return true;
                         end
-                    elseif bodypart:isCut() --irritatingly, using the function to get laceration doesn't follow the same naming convention
+                    elseif bodyPart:isCut() --irritatingly, using the function to get laceration doesn't follow the same naming convention
                     then
                         if lacerationInfectionChance <= rolledInfectionChance 
                         then
-                            bodypart:SetInfected(false);
-                            player:getBodyDamage():setInfected(false);
-                            player:getBodyDamage():setInfectionMortalityDuration(-1);
-                            player:getBodyDamage():setInfectionTime(-1);
-                            player:getBodyDamage():setInfectionGrowthRate(0);
+                            ATM.CureKnoxInfection(player, bodyPart:getType());
                             if getDebug()
                             then
                                 print("Infection defense successful.");
@@ -125,15 +114,11 @@ AnthroTraitsServerMain.HandleInfection = function(player)
                             end
                             return true;
                         end
-                    elseif bodypart:scratched() 
+                    elseif bodyPart:scratched() 
                     then
                         if scratchInfectionChance <= rolledInfectionChance 
                         then
-                            bodypart:SetInfected(false);
-                            player:getBodyDamage():setInfected(false);
-                            player:getBodyDamage():setInfectionMortalityDuration(-1);
-                            player:getBodyDamage():setInfectionTime(-1);
-                            player:getBodyDamage():setInfectionGrowthRate(0);
+                            ATM.CureKnoxInfection(player, bodyPart:getType());
                             if getDebug()
                             then
                                 print("Infection defense successful.");
@@ -158,12 +143,31 @@ AnthroTraitsServerMain.HandleInfection = function(player)
     end
 end
 
-local function UndamageUnbleedBodyPart(bodyPart, damage)
+AnthroTraitsServerMain.UndamageUnbleedBodyPart = function(bodyPart, damage)
 	bodyPart:setBleedingTime(0);
 	bodyPart:setBleeding(false);
 	bodyPart:AddHealth(damage)
 end
 
+---@param player IsoPlayer
+---@param bodyPartType BodyPartType
+AnthroTraitsServerMain.CureKnoxInfection = function(player, bodyPartType)
+    if not isClient()
+    then
+        local bodyDmg = player:getBodyDamage();
+
+        bodyDmg:getBodyPart(bodyPartType):SetInfected(false);
+
+        bodyDmg:setInfected(false);
+        bodyDmg:setInfectionMortalityDuration(-1);
+        bodyDmg:setInfectionTime(-1);
+        bodyDmg:setInfectionGrowthRate(0);
+    else
+        sendClientCommand("AnthroTraits", "CureKnoxInfection", {playerOnlineID = player:getOnlineID(), bodyPartType = bodyPartType})
+    end
+
+    DebugLog.log("Knox Infection removed from "..player:getDisplayName())
+end
 AnthroTraitsServerMain.ATPlayerDamageTick = function(player, damageType, damage)
 	local ATGt = AnthroTraitsGlobals.CharacterTrait
     local ATM = AnthroTraitsServerMain;
@@ -196,26 +200,26 @@ AnthroTraitsServerMain.ATPlayerDamageTick = function(player, damageType, damage)
 			footL:setScratched(false, true);
             footL:setScratchTime(0);
             footL:SetScratchedWeapon(false);
-			UndamageUnbleedBodyPart(footL, damage)
+			ATM.UndamageUnbleedBodyPart(footL, damage);
         end
         if footR:scratched()
         then
 			footR:setScratched(false, true);
             footR:setScratchTime(0);
             footR:SetScratchedWeapon(false);
-			UndamageUnbleedBodyPart(footR, damage)
+			ATM.UndamageUnbleedBodyPart(footR, damage);
         end
         if footL:isCut()
         then
             footL:setCutTime(0);
             footL:setCut(false, false);
-			UndamageUnbleedBodyPart(footL, damage)
+			ATM.UndamageUnbleedBodyPart(footL, damage);
         end
         if footR:isCut()
         then
             footR:setCutTime(0);
             footR:setCut(false, false);
-			UndamageUnbleedBodyPart(footR, damage)
+			ATM.UndamageUnbleedBodyPart(footR, damage);
 
         end
         if footL:bitten()
@@ -223,13 +227,13 @@ AnthroTraitsServerMain.ATPlayerDamageTick = function(player, damageType, damage)
             --casing is inconsistent in the game >:C
             footL:setBiteTime(0);
             footL:SetBitten(false, false);
-			UndamageUnbleedBodyPart(footL, damage)
+			ATM.UndamageUnbleedBodyPart(footL, damage);
         end
         if footR:bitten()
         then
             footR:setBiteTime(0);
             footR:SetBitten(false, false);
-			UndamageUnbleedBodyPart(footR, damage)
+			ATM.UndamageUnbleedBodyPart(footR, damage);
 
         end
     elseif player:hasTrait(ATGt.DIGITIGRADE)
@@ -244,18 +248,55 @@ AnthroTraitsServerMain.ATPlayerDamageTick = function(player, damageType, damage)
 			footL:setScratched(false, true);
             footL:setScratchTime(0);
             footL:SetScratchedWeapon(false);
-			UndamageUnbleedBodyPart(footL, damage)
+			ATM.UndamageUnbleedBodyPart(footL, damage);
         end
         if footR:scratched()
         then
 			footL:setScratched(false, true);
             footR:setScratchTime(0);
             footR:SetScratchedWeapon(false);
-			UndamageUnbleedBodyPart(footR, damage)
+			ATM.UndamageUnbleedBodyPart(footR, damage);
         end
     end
 end
 
+---Sends commands to the server from the originating client.
+---@param module string
+---@param command string
+---@param args table
+AnthroTraitsServerMain.ATOnClientCommand = function(module, command, args)
+    if module == "AnthroTraits"
+    then
+        if command == "KnockdownZombie"
+        then
+            args.collidee:setBumpType("stagger");
+            args.collidee:setVariable("BumpDone", true);
+            args.collidee:setVariable("BumpFall", true);
+            args.collidee:setVariable("BumpFallType", "pushedbehind");
+        elseif command == "CureKnoxInfection"
+        then
+            local player = getPlayerByOnlineID(args.playerOnlineID);
+            local bodyDmg = player:getBodyDamage();
+
+            bodyDmg:getBodyPart(args.bodyPartType):SetInfected(false);
+
+            bodyDmg:setInfected(false);
+            bodyDmg:setInfectionMortalityDuration(-1);
+            bodyDmg:setInfectionTime(-1);
+            bodyDmg:setInfectionGrowthRate(0);
+        elseif command == "InfectWound"
+        then
+            local player = getPlayerByOnlineID(args.playerOnlineID);
+            local bodyPart = player:getBodyDamage():getBodyPart(args.bodyPartType);
+
+
+            bodyPart:setWoundInfectionLevel(1);
+        end
+    end
+end
+
+
+Events.OnClientCommand.Add(AnthroTraitsServerMain.ATOnClientCommand);
 Events.OnPlayerGetDamage.Add(AnthroTraitsServerMain.ATPlayerDamageTick);
 
 return AnthroTraitsServerMain;
