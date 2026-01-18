@@ -4,6 +4,9 @@ AnthroTraitsGlobals = AnthroTraitsGlobals or {}
 AnthroTraitsGlobals.ModID = "AnthroTraits"
 AnthroTraitsGlobals.WorkshopID = 3025679944
 AnthroTraitsGlobals.ModVersion = 2.0
+---@class DAMAGETYPE @As of B42.13, there is no Umbrella entry for DamageTypes taken in by the OnPlayerGetDamage event. This table acts as an enum for accuracy, precision and clarity's sake. 
+DAMAGETYPE = {Poison = "POISON", Hunger = "HUNGRY", Sickness = "SICK", Bleed = "BLEEDING", Thirst = "THIRST", HeavyLoad = "HEAVYLOAD", Knox = "INFECTION",
+                Malnutrition =  "LOWWEIGHT", Fall = "FALLDOWN", Weapon = "WEAPONHIT", HitByCar = "CARHITDAMAGE", CrashedInCar = "CARCRASHDAMAGE"}
 AnthroTraitsGlobals.UnwieldyHandsAffectedTimedActions = {"ISBuildAction", "ISCureFliesAction", "ISCureMildewAction", "ISHarvestPlantAction", "ISSeedAction",
                                          "ISAddItemInRecipe", "ISAddWaterFromItemAction", "ISBarricadeAction", "ISCraftAction", "ISCutHair",
                                          "ISDismantleAction", "ISDyeHair", "ISEjectMagazine", "ISFixAction", "ISFixGenerator", "ISInsertMagazine",
