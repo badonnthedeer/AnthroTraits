@@ -904,7 +904,7 @@ AnthroTraitsMain.ATPlayerUpdate = function(player)
     local ATM = AnthroTraitsMain;
     local fallTimeMult = SandboxVars.AnthroTraits.AT_NaturalTumblerFallTimeMult;
     local modData =  player:getModData().ATPlayerData;
-    local beforeFallTime = modData.oldFallTime;
+    local beforeFallSpeed = modData.oldFallSpeed;
     local endurance = player:getStats():getEndurance();
     local rolledChance = ZombRand(0,100);
     if player:HasTrait("AT_Torpor") and modData.torporActive == true
@@ -917,33 +917,20 @@ AnthroTraitsMain.ATPlayerUpdate = function(player)
     if player:HasTrait("AT_NaturalTumbler")
     then
         --Fall damage reduced
-        if(beforeFallTime < player:getFallTime())
+        if(beforeFallSpeed < player:getLastFallSpeed())
         then
-            player:setFallTime(beforeFallTime + ((player:getFallTime() - beforeFallTime) * fallTimeMult));
+			player:setLastFallSpeed(beforeFallSpeed + ((player:getLastFallSpeed() - beforeFallSpeed) * fallTimeMult));
         end
-        if getDebug() and player:getFallTime() > 0
-        then
-            print("FallTime (Natural Tumbler): "..player:getFallTime())
-        end
-        beforeFallTime = player:getFallTime();
+        beforeFallSpeed = player:getLastFallSpeed();
     elseif player:HasTrait("AT_VestigialWings")
     then
         --immune to fall damage
-        if(beforeFallTime < player:getFallTime())
-        then
-            player:setFallTime(10);
-        end
-        if getDebug() and player:getFallTime() > 0
-        then
-            print("FallTime (Vestigial Wings): "..player:getFallTime())
-        end
-        beforeFallTime = player:getFallTime();
-    else
-        if getDebug() and player:getFallTime() > 0
-        then
-            print("FallTime: "..player:getFallTime())
-        end
+		if(player:getLastFallSpeed() > 2)
+		then
+			player:setLastFallSpeed(2);
+		end
     end
+	modData.oldFallSpeed = beforeFallSpeed
     ATM.LonelyUpdate(player);
 end
 
