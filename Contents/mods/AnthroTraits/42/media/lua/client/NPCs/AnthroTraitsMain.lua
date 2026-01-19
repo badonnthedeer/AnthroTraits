@@ -430,7 +430,7 @@ AnthroTraitsMain.HandleInfection = function(player)
             then
                 local rolledInfectionChance = ZombRand(1, 100);
                 local lastAttackedBy = player:getAttackedBy();
-				local attackerIsAnthro = ATM.IsAnthro(lastAttackedBy)
+				local attackerIsAnthro = IsAnthro(lastAttackedBy)
 				local anthroIgnoreImmunity = SandboxVars.AnthroTraits.AT_AnthroImmunityIgnoredByAnthroZombies
                 if not anthroIgnoreImmunity or not attackerIsAnthro
                 then
@@ -615,7 +615,20 @@ AnthroTraitsMain.ATPlayerDamageTick = function(player, damageType, damage)
             end
             playerData.trulyInfected = ATM.HandleInfection(player);
         end
+        if player:getBodyDamage():isInfected() == true and playerData.trulyInfected == false
+        then
+            if getDebug()
+            then
+                DebugLog.log("Handle Infection about to be triggered");
+            end
+            playerData.trulyInfected = ATM.HandleInfection(player);
+        end
 
+        if player:hasTrait(ATGt.UNGULIGRADE)
+        then
+            --immune to scratches, lacerations, bites
+            local footL = player:getBodyDamage():getBodyPart(BodyPartType.Foot_L);
+            local footR = player:getBodyDamage():getBodyPart(BodyPartType.Foot_R);
         if player:hasTrait(ATGt.UNGULIGRADE)
         then
             --immune to scratches, lacerations, bites
@@ -1117,10 +1130,14 @@ AnthroTraitsMain.ATPlayerUpdate = function(player)
 end
 
 --needed to init player data in sp when launching a new game
+--needed to init player data in sp when launching a new game
 Events.OnLoad.Add(AnthroTraitsMain.ATInitPlayerData);
 --needed for mp/ creating a second+ character in a sp world
 Events.OnCreatePlayer.Add(AnthroTraitsMain.ATInitPlayerData);
+--needed for mp/ creating a second+ character in a sp world
+Events.OnCreatePlayer.Add(AnthroTraitsMain.ATInitPlayerData);
 Events.OnInitWorld.Add(AnthroTraitsMain.ATOnInitWorld);
+
 
 Events.OnObjectCollide.Add(AnthroTraitsMain.ATOnObjectCollide);
 Events.OnCharacterCollide.Add(AnthroTraitsMain.ATOnCharacterCollide);
@@ -1128,6 +1145,8 @@ Events.OnWeaponHitCharacter.Add(AnthroTraitsMain.ATEveryWeaponHitChar);
 Events.EveryDays.Add(AnthroTraitsMain.ATEveryDays);
 Events.EveryHours.Add(AnthroTraitsMain.ATEveryHours);
 Events.EveryOneMinute.Add(AnthroTraitsMain.ATEveryOneMinute);
+---@diagnostic disable-next-line: param-type-mismatch
+Events.OnPlayerGetDamage.Add(AnthroTraitsMain.ATPlayerDamageTick);
 ---@diagnostic disable-next-line: param-type-mismatch
 Events.OnPlayerGetDamage.Add(AnthroTraitsMain.ATPlayerDamageTick);
 Events.OnPlayerUpdate.Add(AnthroTraitsMain.ATPlayerUpdate);
