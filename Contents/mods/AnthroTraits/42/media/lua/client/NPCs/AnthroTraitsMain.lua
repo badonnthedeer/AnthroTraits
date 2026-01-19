@@ -598,13 +598,12 @@ AnthroTraitsMain.ATPlayerDamageTick = function(player, damageType, damage)
     if not isServer() and not isClient()
     then
         DebugLog.log("OnPlayerGetDamage: I'm a single player function!"); 
-        
+
         if player:isZombie()
         then
             return
         end
 
-        
         local playerData = player:getModData().ATPlayerData;
 
         if player:getBodyDamage():isInfected() == true and playerData.trulyInfected == false
@@ -615,20 +614,7 @@ AnthroTraitsMain.ATPlayerDamageTick = function(player, damageType, damage)
             end
             playerData.trulyInfected = ATM.HandleInfection(player);
         end
-        if player:getBodyDamage():isInfected() == true and playerData.trulyInfected == false
-        then
-            if getDebug()
-            then
-                DebugLog.log("Handle Infection about to be triggered");
-            end
-            playerData.trulyInfected = ATM.HandleInfection(player);
-        end
 
-        if player:hasTrait(ATGt.UNGULIGRADE)
-        then
-            --immune to scratches, lacerations, bites
-            local footL = player:getBodyDamage():getBodyPart(BodyPartType.Foot_L);
-            local footR = player:getBodyDamage():getBodyPart(BodyPartType.Foot_R);
         if player:hasTrait(ATGt.UNGULIGRADE)
         then
             --immune to scratches, lacerations, bites
