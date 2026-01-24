@@ -67,6 +67,46 @@ ATU.ImportExclaimerPhrases()
 -- C:\Users\[user]\Zomboid\Logs
 
 
+---comment
+---@param bodyDamage BodyDamage
+---@param bodyPartType BodyPartType
+AnthroTraitsMain.HealScratch = function(bodyDamage, bodyPartType)
+    local bodyPart = bodyDamage:getBodyPart(bodyPartType)
+
+    bodyPart:setScratched(false, true);
+    bodyPart:setScratchTime(0);
+    bodyPart:SetScratchedWeapon(false);
+    bodyPart:setBleedingTime(0);
+	bodyPart:setBleeding(false);
+end
+
+
+---comment
+---@param bodyDamage BodyDamage
+---@param bodyPartType BodyPartType
+AnthroTraitsMain.HealLaceration = function(bodyDamage, bodyPartType)
+    local bodyPart = bodyDamage:getBodyPart(bodyPartType)
+
+    bodyPart:setCut(false, true);
+    bodyPart:setCutTime(0);
+    bodyPart:setBleedingTime(0);
+	bodyPart:setBleeding(false);
+end
+
+
+---comment
+---@param bodyDamage BodyDamage
+---@param bodyPartType BodyPartType
+AnthroTraitsMain.HealBite = function(bodyDamage, bodyPartType)
+    local bodyPart = bodyDamage:getBodyPart(bodyPartType)
+
+    bodyPart:setBiteTime(0);
+    bodyPart:SetBitten(false, false);
+    bodyPart:setBleedingTime(0);
+	bodyPart:setBleeding(false);
+end
+
+
 -- overwrites vanilla processing of stats but also avoids clamping issues at 0 and 100
 AnthroTraitsMain.ApplyFoodChanges = function(character, foodEaten, percentEaten, preCharStats)
 	local ATGt = AnthroTraitsGlobals.CharacterTrait
@@ -108,6 +148,7 @@ AnthroTraitsMain.ApplyFoodChanges = function(character, foodEaten, percentEaten,
 		charNutrition:setLipids(preCharStats.Lipids + (foodProps.Lipids + foodChanges.Lipids) * percentEaten)
 	end
 	-- RabenRabo: I'm not 100% sure what this does...best guess? deal with dangerous uncooked food?
+    -- Badonn: that's correct. Eating raw foods, and dangerous uncooked foods can cause food sickness.
 	if foodChanges.undoAddedPoison
 	then
 		character:getModData().ATPlayerData.undoAddedPoison = true;
@@ -390,8 +431,6 @@ AnthroTraitsMain.IsAnthro = function(gameCharacter)
     else
         return false;
     end
-	
-	return false
 end
 
 
@@ -409,7 +448,7 @@ AnthroTraitsMain.HandleInfection = function(player)
     for i = 0, player:getBodyDamage():getBodyParts():size() - 1 
     do
         local bodyPart = player:getBodyDamage():getBodyParts():get(i);
-        if bodyPart:HasInjury() == true and bodyPart:IsInfected() 
+        if bodyPart:HasInjury() == true and bodyPart:IsInfected()
         then
             if getDebug()
             then
@@ -430,7 +469,7 @@ AnthroTraitsMain.HandleInfection = function(player)
             then
                 local rolledInfectionChance = ZombRand(1, 100);
                 local lastAttackedBy = player:getAttackedBy();
-				local attackerIsAnthro = IsAnthro(lastAttackedBy)
+				local attackerIsAnthro = ATM.IsAnthro(lastAttackedBy)
 				local anthroIgnoreImmunity = SandboxVars.AnthroTraits.AT_AnthroImmunityIgnoredByAnthroZombies
                 if not anthroIgnoreImmunity or not attackerIsAnthro
                 then
@@ -503,9 +542,9 @@ AnthroTraitsMain.HandleInfection = function(player)
                     if getDebug()
                     then
                         print("Not applying Anthro Immunity to infection from anthro. DIE WELL!")
-                    end    
-                end    
-            end 
+                    end
+                end
+            end
         end
     end
 end
@@ -595,16 +634,18 @@ AnthroTraitsMain.ATPlayerDamageTick = function(player, damageType, damage)
 	local ATGt = AnthroTraitsGlobals.CharacterTrait
     local ATM = AnthroTraitsMain;
 
+    if player:isZombie()
+    then
+        return
+    end
+
+    --single player code
     if not isServer() and not isClient()
     then
-        DebugLog.log("OnPlayerGetDamage: I'm a single player function!"); 
-
-        if player:isZombie()
-        then
-            return
-        end
 
         local playerData = player:getModData().ATPlayerData;
+        local footL = player:getBodyDamage():getBodyPart(BodyPartType.Foot_L);
+        local footR = player:getBodyDamage():getBodyPart(BodyPartType.Foot_R);
 
         if player:getBodyDamage():isInfected() == true and playerData.trulyInfected == false
         then
@@ -615,165 +656,36 @@ AnthroTraitsMain.ATPlayerDamageTick = function(player, damageType, damage)
             playerData.trulyInfected = ATM.HandleInfection(player);
         end
 
-        if player:hasTrait(ATGt.UNGULIGRADE)
+        if player:hasTrait(ATGt.UNGULIGRADE) or player:hasTrait(ATGt.DIGITIGRADE)
         then
-            --immune to scratches, lacerations, bites
-            local footL = player:getBodyDamage():getBodyPart(BodyPartType.Foot_L);
-            local footR = player:getBodyDamage():getBodyPart(BodyPartType.Foot_R);
-
+            --immune to scratches
             if footL:scratched()
             then
-                --casing is inconsistent in the game >:C
-                footL:setScratched(false, true);
-                footL:setScratchTime(0);
-                footL:SetScratchedWeapon(false);
-                ATM.UndamageUnbleedBodyPart(footL, damage);
+                ATM.HealScratch(player:getBodyDamage(), BodyPartType.Foot_L);
             end
             if footR:scratched()
             then
-                footR:setScratched(false, true);
-                footR:setScratchTime(0);
-                footR:SetScratchedWeapon(false);
-                ATM.UndamageUnbleedBodyPart(footR, damage);
+                ATM.HealScratch(player:getBodyDamage(), BodyPartType.Foot_R);
             end
+        end
+        if player:hasTrait(ATGt.UNGULIGRADE)
+        then
+            --immune to lacerations and bites
             if footL:isCut()
             then
-                footL:setCutTime(0);
-                footL:setCut(false, true);
-                ATM.UndamageUnbleedBodyPart(footL, damage);
+                ATM.HealLaceration(player:getBodyDamage(), BodyPartType.Foot_L);
             end
             if footR:isCut()
             then
-                footR:setCutTime(0);
-                footR:setCut(false, true);
-                ATM.UndamageUnbleedBodyPart(footR, damage);
-
+                ATM.HealLaceration(player:getBodyDamage(), BodyPartType.Foot_R);
             end
             if footL:bitten()
             then
-                --casing is inconsistent in the game >:C
-                footL:setBiteTime(0);
-                footL:SetBitten(false, false);
-                ATM.UndamageUnbleedBodyPart(footL, damage);
+                ATM.HealBite(player:getBodyDamage(), BodyPartType.Foot_L);
             end
             if footR:bitten()
             then
-                footR:setBiteTime(0);
-                footR:SetBitten(false, false);
-                ATM.UndamageUnbleedBodyPart(footR, damage);
-
-            end
-        elseif player:hasTrait(ATGt.DIGITIGRADE)
-        then
-            --immune to scratches
-            local footL = player:getBodyDamage():getBodyPart(BodyPartType.Foot_L);
-            local footR = player:getBodyDamage():getBodyPart(BodyPartType.Foot_R);
-
-            if footL:scratched()
-            then
-                --casing is inconsistent in the game >:C
-                footL:setScratched(false, true);
-                footL:setScratchTime(0);
-                footL:SetScratchedWeapon(false);
-                ATM.UndamageUnbleedBodyPart(footL, damage);
-            end
-            if footR:scratched()
-            then
-                footL:setScratched(false, true);
-                footR:setScratchTime(0);
-                footR:SetScratchedWeapon(false);
-                ATM.UndamageUnbleedBodyPart(footR, damage);
-            end
-        end
-    elseif isServer and not isClient()
-    then
-        DebugLog.log("OnPlayerGetDamage: I'm a server function!");
-
-        if player:isZombie()
-        then
-            return
-        end
-
-        
-        local playerData = player:getModData().ATPlayerData;
-
-        if player:getBodyDamage():isInfected() == true and playerData.trulyInfected == false
-        then
-            if getDebug()
-            then
-                DebugLog.log("Handle Infection about to be triggered");
-            end
-            playerData.trulyInfected = ATM.HandleInfection(player);
-        end
-
-        if player:hasTrait(ATGt.UNGULIGRADE)
-        then
-            --immune to scratches, lacerations, bites
-            local footL = player:getBodyDamage():getBodyPart(BodyPartType.Foot_L);
-            local footR = player:getBodyDamage():getBodyPart(BodyPartType.Foot_R);
-
-            if footL:scratched()
-            then
-                --casing is inconsistent in the game >:C
-                footL:setScratched(false, true);
-                footL:setScratchTime(0);
-                footL:SetScratchedWeapon(false);
-                ATM.UndamageUnbleedBodyPart(footL, damage);
-            end
-            if footR:scratched()
-            then
-                footR:setScratched(false, true);
-                footR:setScratchTime(0);
-                footR:SetScratchedWeapon(false);
-                ATM.UndamageUnbleedBodyPart(footR, damage);
-            end
-            if footL:isCut()
-            then
-                footL:setCutTime(0);
-                footL:setCut(false, true);
-                ATM.UndamageUnbleedBodyPart(footL, damage);
-            end
-            if footR:isCut()
-            then
-                footR:setCutTime(0);
-                footR:setCut(false, true);
-                ATM.UndamageUnbleedBodyPart(footR, damage);
-
-            end
-            if footL:bitten()
-            then
-                --casing is inconsistent in the game >:C
-                footL:setBiteTime(0);
-                footL:SetBitten(false, false);
-                ATM.UndamageUnbleedBodyPart(footL, damage);
-            end
-            if footR:bitten()
-            then
-                footR:setBiteTime(0);
-                footR:SetBitten(false, false);
-                ATM.UndamageUnbleedBodyPart(footR, damage);
-
-            end
-        elseif player:hasTrait(ATGt.DIGITIGRADE)
-        then
-            --immune to scratches
-            local footL = player:getBodyDamage():getBodyPart(BodyPartType.Foot_L);
-            local footR = player:getBodyDamage():getBodyPart(BodyPartType.Foot_R);
-
-            if footL:scratched()
-            then
-                --casing is inconsistent in the game >:C
-                footL:setScratched(false, true);
-                footL:setScratchTime(0);
-                footL:SetScratchedWeapon(false);
-                ATM.UndamageUnbleedBodyPart(footL, damage);
-            end
-            if footR:scratched()
-            then
-                footL:setScratched(false, true);
-                footR:setScratchTime(0);
-                footR:SetScratchedWeapon(false);
-                ATM.UndamageUnbleedBodyPart(footR, damage);
+                ATM.HealBite(player:getBodyDamage(), BodyPartType.Foot_R);
             end
         end
     end
