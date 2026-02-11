@@ -1,5 +1,5 @@
 ---@diagnostic disable-next-line: unknown-diag-code
----@diagnostic disable: undefined-field, undefined-global, type-not-found, inject-field, undefined-doc-name, need-check-nil, duplicate-set-field, param-type-mismatch, redundant-parameter, assign-type-mismatch, cast-local-type, missing-parameter
+---@diagnostic disable: undefined-field, invert-if, undefined-global, type-not-found, inject-field, undefined-doc-name, need-check-nil, duplicate-set-field, param-type-mismatch, redundant-parameter, assign-type-mismatch, cast-local-type, missing-parameter
 --
 --
 --                                  @*x/||x8
