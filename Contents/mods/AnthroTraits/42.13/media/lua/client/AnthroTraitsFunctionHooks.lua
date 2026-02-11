@@ -176,7 +176,7 @@ ISBaseTimedAction.create = function(self)
                 local newTime = self.maxTime * (1 + SandboxVars.AnthroTraits.AT_UnwieldyHandsTimeIncrease)
                 if getDebug()
                 then
-                    print("UnwieldyHands activated. Old time: "..tostring(self.maxTime).." New time: "..tostring(newTime));
+                    DebugLog.log("UnwieldyHands activated. Old time: "..tostring(self.maxTime).." New time: "..tostring(newTime));
                 end
                 self.maxTime = newTime;
                 break;

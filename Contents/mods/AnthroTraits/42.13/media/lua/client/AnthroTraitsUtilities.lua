@@ -195,11 +195,11 @@ AnthroTraitsUtilities.AddItemTagToItemsFromSandbox = function(itemList, tag)
                 itemTags:add(tag);
                 if getDebug()
                 then
-                    print("tag "..tag:toString().." added to "..tableEntry);
+                    DebugLog.log("tag "..tag:toString().." added to "..tableEntry);
                 end
             end
         else
-            print("Cannot find item "..tableEntry.." to add tag "..tag:toString());
+            DebugLog.log("Cannot find item "..tableEntry.." to add tag "..tag:toString());
         end
     end
 end

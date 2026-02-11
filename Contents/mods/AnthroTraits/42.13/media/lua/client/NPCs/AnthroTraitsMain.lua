@@ -307,7 +307,7 @@ AnthroTraitsMain.CarryWeightUpdate = function(player)
     local newMaxWeightBase = defaultMaxWeightBase;
     if getDebug()
     then
-        --print(string.format("Base: %f", newMaxWeightBase));
+        --DebugLog.log(string.format("Base: %f", newMaxWeightBase));
     end
     -- if getActivatedMods():contains("\\ToadTraits")
     -- then
@@ -327,7 +327,7 @@ AnthroTraitsMain.CarryWeightUpdate = function(player)
             -- newMaxWeightBase =  MTDefaultWeight + MTPackMuleBonus;
             -- if getDebug()
             -- then
-                -- print(string.format("packmule: %f", newMaxWeightBase));
+                -- DebugLog.log(string.format("packmule: %f", newMaxWeightBase));
             -- end    
         -- elseif player:hasTrait(CharacterTrait.get(ResourceLocation.of("packmouse")))
         -- then
@@ -335,7 +335,7 @@ AnthroTraitsMain.CarryWeightUpdate = function(player)
             -- newMaxWeightBase =  MTDefaultWeight + MTPackMouseMalus;
             -- if getDebug()
             -- then
-                -- print(string.format("packmouse: %f", newMaxWeightBase));
+                -- DebugLog.log(string.format("packmouse: %f", newMaxWeightBase));
             -- end    
         -- end
     -- end
@@ -351,7 +351,7 @@ AnthroTraitsMain.CarryWeightUpdate = function(player)
             newMaxWeightBase = newMaxWeightBase + SOTOStrongBackBonus;
             if getDebug()
             then
-                print(string.format("StrongBack: %f", newMaxWeightBase));
+                DebugLog.log(string.format("StrongBack: %f", newMaxWeightBase));
             end    
         elseif player:hasTrait(CharacterTrait.get(ResourceLocation.of("SOTO:WeakBack")))
         then
@@ -359,7 +359,7 @@ AnthroTraitsMain.CarryWeightUpdate = function(player)
             newMaxWeightBase = newMaxWeightBase + SOTOWeakBackMalus;
             if getDebug()
             then
-                print(string.format("WeakBack: %f", newMaxWeightBase));
+                DebugLog.log(string.format("WeakBack: %f", newMaxWeightBase));
             end    
         end
     end
@@ -373,7 +373,7 @@ AnthroTraitsMain.CarryWeightUpdate = function(player)
             -- newMaxWeightBase = newMaxWeightBase + hBonus;
             -- if getDebug()
             -- then
-                -- print(string.format("Hoarder: %f", newMaxWeightBase));
+                -- DebugLog.log(string.format("Hoarder: %f", newMaxWeightBase));
             -- end    
         -- end
     -- end
@@ -385,7 +385,7 @@ AnthroTraitsMain.CarryWeightUpdate = function(player)
         newMaxWeightBase = newMaxWeightBase + bobBonus;
         if getDebug()
         then
-            print(string.format("BOB: %f", newMaxWeightBase));
+            DebugLog.log(string.format("BOB: %f", newMaxWeightBase));
         end    
     end
     if baseWeightChanged
@@ -442,7 +442,7 @@ AnthroTraitsMain.HandleInfection = function(player)
     local scratchInfectionChance = SandboxVars.AnthroTraits.AT_AnthroImmunityScratchInfectionChance;
     if getDebug()
     then
-        print("Handle Infection Triggered");
+        DebugLog.log("Handle Infection Triggered");
     end
 
     for i = 0, player:getBodyDamage():getBodyParts():size() - 1 
@@ -452,7 +452,7 @@ AnthroTraitsMain.HandleInfection = function(player)
         then
             if getDebug()
             then
-                print( tostring(bodyPart:getType()) .. " is injured and infected.");
+                DebugLog.log( tostring(bodyPart:getType()) .. " is injured and infected.");
             end
             if player:hasTrait(ATGt.UNGULIGRADE)
             then
@@ -460,7 +460,7 @@ AnthroTraitsMain.HandleInfection = function(player)
                 then
                     if getDebug()
                     then
-                        print("AT_Unguligrade foot immunity triggered.");
+                        DebugLog.log("AT_Unguligrade foot immunity triggered.");
                     end
                     ATM.CureKnoxInfection(player, bodyPart:getType());
                 end
@@ -475,7 +475,7 @@ AnthroTraitsMain.HandleInfection = function(player)
                 then
                     if getDebug()
                     then
-                        print("Rolled " .. rolledInfectionChance);
+                        DebugLog.log("Rolled " .. rolledInfectionChance);
                     end
                     if bodyPart:bitten() 
                     then
@@ -484,14 +484,14 @@ AnthroTraitsMain.HandleInfection = function(player)
                             ATM.CureKnoxInfection(player, bodyPart:getType());
                             if getDebug()
                             then
-                                print("Infection defense successful.");
+                                DebugLog.log("Infection defense successful.");
                             end
                             if SandboxVars.AnthroTraits.AT_AnthroImmunityBiteGetsRegularInfectionOnDefense
                             then
                                 ATM.InfectWound(bodyPart:getType())
                                 if getDebug()
                                 then
-                                    print("Knox infection substituted with regular infection. Human mouths are septic :S");
+                                    DebugLog.log("Knox infection substituted with regular infection. Human mouths are septic :S");
                                 end
 
                             end
@@ -499,7 +499,7 @@ AnthroTraitsMain.HandleInfection = function(player)
                         else
                             if getDebug()
                             then
-                                print("Infection defense UNSUCCESSFUL. DIE WELL!");
+                                DebugLog.log("Infection defense UNSUCCESSFUL. DIE WELL!");
                             end
                             return true;
                         end
@@ -510,13 +510,13 @@ AnthroTraitsMain.HandleInfection = function(player)
                             ATM.CureKnoxInfection(player, bodyPart:getType());
                             if getDebug()
                             then
-                                print("Infection defense successful.");
+                                DebugLog.log("Infection defense successful.");
                             end
                             return false;
                         else
                             if getDebug()
                             then
-                                print("Infection defense UNSUCCESSFUL. DIE WELL!");
+                                DebugLog.log("Infection defense UNSUCCESSFUL. DIE WELL!");
                             end
                             return true;
                         end
@@ -527,13 +527,13 @@ AnthroTraitsMain.HandleInfection = function(player)
                             ATM.CureKnoxInfection(player, bodyPart:getType());
                             if getDebug()
                             then
-                                print("Infection defense successful.");
+                                DebugLog.log("Infection defense successful.");
                             end
                             return false;
                         else
                             if getDebug()
                             then
-                                print("Infection defense UNSUCCESSFUL. DIE WELL!");
+                                DebugLog.log("Infection defense UNSUCCESSFUL. DIE WELL!");
                             end
                             return true;
                         end
@@ -541,7 +541,7 @@ AnthroTraitsMain.HandleInfection = function(player)
                 else
                     if getDebug()
                     then
-                        print("Not applying Anthro Immunity to infection from anthro. DIE WELL!")
+                        DebugLog.log("Not applying Anthro Immunity to infection from anthro. DIE WELL!")
                     end
                 end
             end
@@ -703,17 +703,17 @@ AnthroTraitsMain.ATOnCharacterCollide = function(collider, collidee)
         local modData = collider:getModData().ATPlayerData;
         if getDebug()
         then
-            print("ATOnCharacterCollide Triggered");
+            DebugLog.log("ATOnCharacterCollide Triggered");
         end
 --        if not collidee:isKnockedDown() and collider:hasTrait(ATGt.BULLRUSH) and collider:isSprinting() and collider:getBeenSprintingFor() >= 10
 --        then
             -- if getDebug()
             -- then
-                -- print("collidee: "..tostring(collidee));
-                -- print("colliderBehindCollidee: "..tostring(colliderBehindCollidee));
-                -- print("Is Sprinting: "..tostring(collider:isSprinting()));
-                -- print("getBeenSprintingFor(): "..tostring(collider:getBeenSprintingFor()));
-                -- print("Tripping: "..tostring(collider:getStats():isTripping()));
+                -- DebugLog.log("collidee: "..tostring(collidee));
+                -- DebugLog.log("colliderBehindCollidee: "..tostring(colliderBehindCollidee));
+                -- DebugLog.log("Is Sprinting: "..tostring(collider:isSprinting()));
+                -- DebugLog.log("getBeenSprintingFor(): "..tostring(collider:getBeenSprintingFor()));
+                -- DebugLog.log("Tripping: "..tostring(collider:getStats():isTripping()));
             -- end
             -- if instanceof(collidee, "IsoZombie")
             -- then
@@ -818,7 +818,7 @@ AnthroTraitsMain.ATOnCharacterCollide = function(collider, collidee)
                 collider:setBumpFall(false);
                 if getDebug()
                 then
-                    print("Player bump/trip prevented by Tail trait. Rolled Chance:"..rolledChance);
+                    DebugLog.log("Player bump/trip prevented by Tail trait. Rolled Chance:"..rolledChance);
                 end
             else
                 modData.canTripChecked = true;
@@ -831,7 +831,7 @@ AnthroTraitsMain.ATOnCharacterCollide = function(collider, collidee)
             collider:setBumpFall(false);
             if getDebug()
             then
-                print("Player bump/trip prevented by Tail trait during minute grace period.");
+                DebugLog.log("Player bump/trip prevented by Tail trait during minute grace period.");
             end
         end
     end
@@ -854,7 +854,7 @@ AnthroTraitsMain.ATEveryWeaponHitChar = function(attacker, target, weapon, damag
         target:applyDamage(dmgBonus);
         if getDebug()
         then
-            print(string.format("Applying %s extra damage.", dmgBonus));
+            DebugLog.log(string.format("Applying %s extra damage.", dmgBonus));
         end
     end
 end
@@ -866,9 +866,9 @@ AnthroTraitsMain.ATOnObjectCollide = function(collider, collidee)
         local modData = collider:getModData().ATPlayerData;
         if getDebug()
         then
-            print("ATOnObjectCollide Triggered");
-            print("Object: "..type(collidee));
-            print("collider: "..type(collider));
+            DebugLog.log("ATOnObjectCollide Triggered");
+            DebugLog.log("Object: "..type(collidee));
+            DebugLog.log("collider: "..type(collider));
         end
         if collider:hasTrait(ATGt.TAIL) and modData.canTripChecked == false and (collider:getStats():isTripping() or collider:isBumped())
         then
@@ -880,7 +880,7 @@ AnthroTraitsMain.ATOnObjectCollide = function(collider, collidee)
                 collider:setBumpFall(false);
                 if getDebug()
                 then
-                    print("Player bump/trip prevented by Tail trait. Rolled Chance:"..rolledChance);
+                    DebugLog.log("Player bump/trip prevented by Tail trait. Rolled Chance:"..rolledChance);
                 end
             else
                 modData.canTripChecked = true;
@@ -893,7 +893,7 @@ AnthroTraitsMain.ATOnObjectCollide = function(collider, collidee)
             collider:setBumpFall(false);
             if getDebug()
             then
-                print("Player bump/trip prevented by Tail trait during minute grace period.");
+                DebugLog.log("Player bump/trip prevented by Tail trait during minute grace period.");
             end
         end
     end
@@ -926,7 +926,7 @@ AnthroTraitsMain.ATEveryOneMinute = function()
                     modData.trulyInfected = false;
                     if getDebug
                     then
-                        print("trulyInfected set to false. Anthro Immunity applies again.");
+                        DebugLog.log("trulyInfected set to false. Anthro Immunity applies again.");
                     end
                 end
 
