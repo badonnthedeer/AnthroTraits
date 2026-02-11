@@ -55,8 +55,9 @@ local AT_REQ_MST = require("MoreSimpleTraits");
 local AT_REQ_SOTO = require("SimpleOverhaulTraitsAndOccupations");
 local AT_REQ_MT = require("ToadTraits");
 
-local AnthroTraitsMain = {};
+local AnthroTraitsClient = {};
 local ATU = require("AnthroTraitsUtilities");
+local AnthroTraitsUtilities = require("Contents.mods.AnthroTraits.42.12.media.lua.client.AnthroTraitsUtilities")
 ATU.ImportExclaimerPhrases()
 
 -- C:\Program Files (x86)\Steam\steamapps\common\ProjectZomboid\media\lua | Project Zomboid files
@@ -67,521 +68,10 @@ ATU.ImportExclaimerPhrases()
 -- C:\Users\[user]\Zomboid\Logs
 
 
----comment
----@param bodyDamage BodyDamage
----@param bodyPartType BodyPartType
-AnthroTraitsMain.HealScratch = function(bodyDamage, bodyPartType)
-    local bodyPart = bodyDamage:getBodyPart(bodyPartType)
-
-    bodyPart:setScratched(false, true);
-    bodyPart:setScratchTime(0);
-    bodyPart:SetScratchedWeapon(false);
-    bodyPart:setBleedingTime(0);
-	bodyPart:setBleeding(false);
-end
-
-
----comment
----@param bodyDamage BodyDamage
----@param bodyPartType BodyPartType
-AnthroTraitsMain.HealLaceration = function(bodyDamage, bodyPartType)
-    local bodyPart = bodyDamage:getBodyPart(bodyPartType)
-
-    bodyPart:setCut(false, true);
-    bodyPart:setCutTime(0);
-    bodyPart:setBleedingTime(0);
-	bodyPart:setBleeding(false);
-end
-
-
----comment
----@param bodyDamage BodyDamage
----@param bodyPartType BodyPartType
-AnthroTraitsMain.HealBite = function(bodyDamage, bodyPartType)
-    local bodyPart = bodyDamage:getBodyPart(bodyPartType)
-
-    bodyPart:setBiteTime(0);
-    bodyPart:SetBitten(false, false);
-    bodyPart:setBleedingTime(0);
-	bodyPart:setBleeding(false);
-end
-
-
--- overwrites vanilla processing of stats but also avoids clamping issues at 0 and 100
-AnthroTraitsMain.ApplyFoodChanges = function(character, foodEaten, percentEaten, preCharStats)
-	local ATGt = AnthroTraitsGlobals.CharacterTrait
-	local foodProps = ATU.GetConsumableProperties(foodEaten)
-    local foodChanges = ATU.CalculateFoodChanges(character, foodEaten, foodProps)
-    local charStats = character:getStats()
-    local charNutrition = character:getNutrition()
-	
-	for stat, _ in pairs(AnthroTraitsGlobals.FoodCharacterStatInfo) do
-		if foodChanges[stat] ~= 0
-		then
-			charStats:set(stat, preCharStats[stat] + (foodProps[stat] + foodChanges[stat]) * percentEaten)
-		end
-	end
-    if foodChanges[CharacterStat.POISON] ~= 0
-    then
-		local newPoisonValue = preCharStats[CharacterStat.POISON] + (foodProps[CharacterStat.POISON] + foodChanges[CharacterStat.POISON]) * percentEaten
-        charStats:set(CharacterStat.POISON, newPoisonValue);
-		if newPoisonValue > 0
-		then
-			--b42 specific. Won't trigger dmg unless sick moodle = lvl 1 or up.
-			charStats:set(CharacterStat.FOOD_SICKNESS, 55)
-		end
-    end
-	if foodChanges.Calories ~= 0
-	then
-		charNutrition:setCalories(preCharStats.Calories + (foodProps.Calories + foodChanges.Calories) * percentEaten)
-	end
-	if foodChanges.Carbs ~= 0
-	then
-		charNutrition:setCarbohydrates(preCharStats.Carbs + (foodProps.Carbs + foodChanges.Carbs) * percentEaten)
-	end
-	if foodChanges.Proteins ~= 0
-	then
-		charNutrition:setProteins(preCharStats.Proteins + (foodProps.Proteins + foodChanges.Proteins) * percentEaten)
-	end
-	if foodChanges.Lipids ~= 0
-	then
-		charNutrition:setLipids(preCharStats.Lipids + (foodProps.Lipids + foodChanges.Lipids) * percentEaten)
-	end
-	-- RabenRabo: I'm not 100% sure what this does...best guess? deal with dangerous uncooked food?
-    -- Badonn: that's correct. Eating raw foods, and dangerous uncooked foods can cause food sickness.
-	if foodChanges.undoAddedPoison
-	then
-		character:getModData().ATPlayerData.undoAddedPoison = true;
-		character:getModData().ATPlayerData.beforeEatPoisonLvl = preCharStats[CharacterStat.POISON];
-	end
-	-- -> moved to ATU for more centralized calculations
-	-- if foodEaten:hasTag(AnthroTraitsGlobals.FoodTags.CARNIVORE)
-    -- then
-        -- if (character:hasTrait(ATGt.CARNIVORE) or character:hasTrait(ATGt.CARRIONEATER)) and not foodEaten:isRotten()
-        -- then
-            -- if instanceof(character, "IsoPlayer") and not foodEaten:isPoison()
-            -- then
-                -- character:getModData().ATPlayerData.undoAddedPoison = true;
-                -- character:getModData().ATPlayerData.beforeEatPoisonLvl = preCharStats[CharacterStat.POISON];
-            -- end
-        -- elseif foodEaten:isRotten() and character:hasTrait(ATGt.CARRIONEATER)
-        -- then
-            -- if instanceof(character, "IsoPlayer") and not foodEaten:isPoison()
-            -- then
-                -- character:getModData().ATPlayerData.undoAddedPoison = true;
-                -- character:getModData().ATPlayerData.beforeEatPoisonLvl = preCharStats[CharacterStat.POISON];
-            -- end
-        -- end
-    -- elseif foodEaten:hasTag(AnthroTraitsGlobals.FoodTags.HERBIVORE)
-    -- then
-        -- if character:hasTrait(ATGt.HERBIVORE)
-        -- then
-            -- if not foodEaten:isRotten()
-            -- then
-                -- if instanceof(character, "IsoPlayer") and not foodEaten:isPoison()
-                -- then
-                    -- character:getModData().ATPlayerData.undoAddedPoison = true;
-                    -- character:getModData().ATPlayerData.beforeEatPoisonLvl = preCharStats[CharacterStat.POISON];
-                -- end
-            -- end
-        -- end
-    -- end
-end
-
-AnthroTraitsMain.ExclaimerCheck = function(player)
-	local ATGt = AnthroTraitsGlobals.CharacterTrait
-    local moodles = player:getMoodles();
-    local panicLevel = moodles:getMoodleLevel(MoodleType.PANIC)
-    local thresholdMultiplier = SandboxVars.AnthroTraits.AT_ExclaimerExclaimThresholdMultiplier;
-	local mitigationThreshold = SandboxVars.AnthroTraits.AT_ExclaimerAnthroVoiceMitigation
-    local exclaimChance = ZombRand(1,100);
-
-    if (exclaimChance <= (panicLevel * thresholdMultiplier)) and panicLevel > 1
-    then
-        local phrases = nil
-		local mitigationChance = 100
-		-- check if any trait-related phrases available
-		for trait, phr in pairs(ATU.ExclaimPhrases) do
-			if player:hasTrait(trait)
-			then
-				phrases = phr
-				-- assume additional trait has chance to be mistaken for real animal call => will be ignored by zombies
-				mitigationChance = ZombRand(1, 100)
-				break
-			end
-		end
-		-- otherwise use generic phrases
-		if phrases == nil
-		then
-			phrases = ATU.GenericExclaimPhrases
-		end
-		local phraseChance = ZombRand(1, #phrases);
-		if mitigationChance > mitigationThreshold
-		then
-			player:SayShout(string.upper(phrases[phraseChance]));
-			local playerSquare = player:getCurrentSquare();
-			getWorldSoundManager():addSound(player,
-					playerSquare:getX(),
-					playerSquare:getY(),
-					playerSquare:getZ(),
-					20,
-					100);
-		else
-			player:SayShout("(" .. string.lower(phrases[phraseChance]) .. ")");
-		end
-    end
-end
-
-
-AnthroTraitsMain.BeStinky = function(player)
-    local stinkyLoudness = SandboxVars.AnthroTraits.AT_StinkyLoudness
-    local stinkyDistance = SandboxVars.AnthroTraits.AT_StinkyDistance
-    local stinkyCommentChance = SandboxVars.AnthroTraits.AT_StinkyCommentChance
-    local stinkyThreshold = SandboxVars.AnthroTraits.AT_StinkyThreshold
-    local playerSquare = player:getCurrentSquare();
-    --this is for splitscreen :C
-    local localPlayers = getNumActivePlayers();
-    --getOnlinePlayers can return nil if not in mp
-    local onlinePlayers = getOnlinePlayers();
-    local playerInQuestion = player;
-    local bloodBodyPartType = BloodBodyPartType.FromIndex(0)
-    local totalDirtiness = 0;
-    local visual = player:getHumanVisual();
-
-    for i = 0, BloodBodyPartType.MAX:index()-1 do
-        bloodBodyPartType = BloodBodyPartType.FromIndex(i)
-        totalDirtiness = totalDirtiness + visual:getDirt(bloodBodyPartType);
-    end
-
-    if(totalDirtiness >= stinkyThreshold)
-    then
-        getWorldSoundManager():addSound(player,
-                playerSquare:getX(),
-                playerSquare:getY(),
-                playerSquare:getZ(),
-                stinkyDistance,
-                stinkyLoudness);
-        if (onlinePlayers:size() - 1) > 1
-        then
-            for playerIndex = 0, (onlinePlayers:size() - 1)
-            do
-                playerInQuestion = getSpecificPlayer(playerIndex)
-                if player == not playerInQuestion
-                then
-                    if ZombRand(0,1) >= stinkyCommentChance and playerInQuestion:DistTo(player) < stinkyLoudness and playerInQuestion:getMoodles():getMoodleLevel(MoodleType.Pain) < 2 and playerInQuestion:getMoodles():getMoodleLevel(MoodleType.Panic) < 1
-                    then
-                        playerInQuestion:Say("Stinky!");
-                    end
-                end
-            end
-        end
-    end
-end
-
-AnthroTraitsMain.LonelyUpdate = function(player)
-    local lonelyDistance = SandboxVars.AnthroTraits.AT_StinkyDistance
-    local modData = player:getModData().ATPlayerData
-    local activePlayers = getNumActivePlayers();
-    local playerInQuestion = player;
-
-    if activePlayers > 1
-    then
-        for playerIndex = 0, (activePlayers - 1)
-        do
-            playerInQuestion = getSpecificPlayer(playerIndex);
-            if player == not playerInQuestion and playerInQuestion:DistTo() < lonelyDistance
-            then
-                modData.HoursSinceSeenOthers = 0;
-            end
-        end
-    end
-end
-
-AnthroTraitsMain.CarryWeightUpdate = function(player)
-	local ATGt = AnthroTraitsGlobals.CharacterTrait
-    local strength = player:getPerkLevel(Perks.Strength);
-    --local traits = player:getTraits();
-    local baseWeightChanged = false;
-    local defaultMaxWeightBase = 8;
-
-    local newMaxWeightBase = defaultMaxWeightBase;
-    if getDebug()
-    then
-        --DebugLog.log(string.format("Base: %f", newMaxWeightBase));
-    end
-    -- if getActivatedMods():contains("\\ToadTraits")
-    -- then
-        -- local MTGlobalMod = SandboxVars.MoreTraits.WeightGlobalMod or 0;
-        -- local MTPackMuleBonus = SandboxVars.MoreTraits.WeightPackMule or 2;
-        -- local MTPackMouseMalus = SandboxVars.MoreTraits.WeightPackMouse or -2;
-        -- local MTDefaultWeight = SandboxVars.MoreTraits.WeightDefault or 8;
-
-        -- defaultMaxWeightBase = MTDefaultWeight;
-
-        -- MTPackMuleBonus = MTPackMuleBonus + math.floor(strength / 5) + MTGlobalMod;
-        -- MTPackMouseMalus = MTPackMouseMalus + MTGlobalMod;
-        
-        -- if player:hasTrait(CharacterTrait.get(ResourceLocation.of("packmule")))
-        -- then
-            -- baseWeightChanged = true;
-            -- newMaxWeightBase =  MTDefaultWeight + MTPackMuleBonus;
-            -- if getDebug()
-            -- then
-                -- DebugLog.log(string.format("packmule: %f", newMaxWeightBase));
-            -- end    
-        -- elseif player:hasTrait(CharacterTrait.get(ResourceLocation.of("packmouse")))
-        -- then
-            -- baseWeightChanged = true;
-            -- newMaxWeightBase =  MTDefaultWeight + MTPackMouseMalus;
-            -- if getDebug()
-            -- then
-                -- DebugLog.log(string.format("packmouse: %f", newMaxWeightBase));
-            -- end    
-        -- end
-    -- end
-    if (getActivatedMods():contains("\\MoreSimpleTraits") 
-    or getActivatedMods():contains("\\MoreSimpleTraitsVanilla")
-    or getActivatedMods():contains("\\SimpleOverhaulTraitsAndOccupations"))
-    then
-        local SOTOStrongBackBonus =  2;
-        local SOTOWeakBackMalus = -1;
-        if player:hasTrait(CharacterTrait.get(ResourceLocation.of("SOTO:StrongBack"))) or player:hasTrait(CharacterTrait.get(ResourceLocation.of("SOTO:StrongBack2")))
-        then
-            baseWeightChanged = true;
-            newMaxWeightBase = newMaxWeightBase + SOTOStrongBackBonus;
-            if getDebug()
-            then
-                DebugLog.log(string.format("StrongBack: %f", newMaxWeightBase));
-            end    
-        elseif player:hasTrait(CharacterTrait.get(ResourceLocation.of("SOTO:WeakBack")))
-        then
-            baseWeightChanged = true;
-            newMaxWeightBase = newMaxWeightBase + SOTOWeakBackMalus;
-            if getDebug()
-            then
-                DebugLog.log(string.format("WeakBack: %f", newMaxWeightBase));
-            end    
-        end
-    end
-    -- if getActivatedMods():contains("\\DracoExpandedTraits")
-    -- then
-        -- local DracoHoarderPctIncrease = .25;
-    -- if player:hasTrait(CharacterTrait.get(ResourceLocation.of("Hoarder")))
-        -- then
-            -- baseWeightChanged = true;
-            -- local hBonus = (math.floor(newMaxWeightBase *  DracoHoarderPctIncrease));
-            -- newMaxWeightBase = newMaxWeightBase + hBonus;
-            -- if getDebug()
-            -- then
-                -- DebugLog.log(string.format("Hoarder: %f", newMaxWeightBase));
-            -- end    
-        -- end
-    -- end
-    local BobPctIncrease = SandboxVars.AnthroTraits.AT_BeastOfBurdenPctIncrease;
-    if player:hasTrait(ATGt.BEASTOFBURDEN)
-    then
-        baseWeightChanged = true;
-        local bobBonus = (math.floor(newMaxWeightBase * BobPctIncrease));
-        newMaxWeightBase = newMaxWeightBase + bobBonus;
-        if getDebug()
-        then
-            DebugLog.log(string.format("BOB: %f", newMaxWeightBase));
-        end    
-    end
-    if baseWeightChanged
-    then
-        --max weight is 50 due to java cap. BASE must be calculated to be slightly less than 50 to allow for hunger bonuses.
-        -- 18 here is more or less the equivalent of 50 in max weight i guess. Base weight is weird af.
-        if newMaxWeightBase > 18
-        then
-            newMaxWeightBase = 18
-        end
-        player:setMaxWeightBase(newMaxWeightBase)
-    else
-        if getActivatedMods():contains("\\ToadTraits")
-        then
-            player:setMaxWeightBase(defaultMaxWeightBase + (SandboxVars.MoreTraits.WeightGlobalMod or 0));
-        else
-            player:setMaxWeightBase(defaultMaxWeightBase);
-        end
-        
-    end
-end
-
-
-AnthroTraitsMain.IsAnthro = function(gameCharacter)
-    if (getActivatedMods():contains("\\FurryMod") or getActivatedMods():contains("\\FurryApocalypse")) and gameCharacter ~= nil
-    then
-        local hasFur = false;
-        local itemVisuals = gameCharacter:getItemVisuals();
-        if itemVisuals ~= nil
-        then
-            for i=0, itemVisuals:size() - 1
-            do
-                local itemVisual = itemVisuals:get(i);
-                local item =  itemVisual:getScriptItem();
-                if item ~= nil and (item:hasTag(ItemTag.get(ResourceLocation.of("FurryMod:Fur"))) or item:hasTag(ItemTag.get(ResourceLocation.of("FurryMod:DeceasedFur"))))
-                then
-                    hasFur = true;
-                    break;
-                end
-            end;
-        end 
-        return hasFur;
-    else
-        return false;
-    end
-end
-
-
-AnthroTraitsMain.HandleInfection = function(player)
-    local ATM = AnthroTraitsMain;
-	local ATGt = AnthroTraitsGlobals.CharacterTrait
-    local biteInfectionChance = SandboxVars.AnthroTraits.AT_AnthroImmunityBiteInfectionChance;
-    local lacerationInfectionChance = SandboxVars.AnthroTraits.AT_AnthroImmunityLacerationInfectionChance;
-    local scratchInfectionChance = SandboxVars.AnthroTraits.AT_AnthroImmunityScratchInfectionChance;
-    if getDebug()
-    then
-        DebugLog.log("Handle Infection Triggered");
-    end
-
-    for i = 0, player:getBodyDamage():getBodyParts():size() - 1 
-    do
-        local bodyPart = player:getBodyDamage():getBodyParts():get(i);
-        if bodyPart:HasInjury() == true and bodyPart:IsInfected()
-        then
-            if getDebug()
-            then
-                DebugLog.log( tostring(bodyPart:getType()) .. " is injured and infected.");
-            end
-            if player:hasTrait(ATGt.UNGULIGRADE)
-            then
-                if tostring(bodyPart:getType()) == "Foot_L" or tostring(bodyPart:getType()) == "Foot_R"
-                then
-                    if getDebug()
-                    then
-                        DebugLog.log("AT_Unguligrade foot immunity triggered.");
-                    end
-                    ATM.CureKnoxInfection(player, bodyPart:getType());
-                end
-            end
-            if player:hasTrait(ATGt.ANTHROIMMUNITY) 
-            then
-                local rolledInfectionChance = ZombRand(1, 100);
-                local lastAttackedBy = player:getAttackedBy();
-				local attackerIsAnthro = ATM.IsAnthro(lastAttackedBy)
-				local anthroIgnoreImmunity = SandboxVars.AnthroTraits.AT_AnthroImmunityIgnoredByAnthroZombies
-                if not anthroIgnoreImmunity or not attackerIsAnthro
-                then
-                    if getDebug()
-                    then
-                        DebugLog.log("Rolled " .. rolledInfectionChance);
-                    end
-                    if bodyPart:bitten() 
-                    then
-                        if biteInfectionChance <= rolledInfectionChance 
-                        then
-                            ATM.CureKnoxInfection(player, bodyPart:getType());
-                            if getDebug()
-                            then
-                                DebugLog.log("Infection defense successful.");
-                            end
-                            if SandboxVars.AnthroTraits.AT_AnthroImmunityBiteGetsRegularInfectionOnDefense
-                            then
-                                ATM.InfectWound(bodyPart:getType())
-                                if getDebug()
-                                then
-                                    DebugLog.log("Knox infection substituted with regular infection. Human mouths are septic :S");
-                                end
-
-                            end
-                            return false;
-                        else
-                            if getDebug()
-                            then
-                                DebugLog.log("Infection defense UNSUCCESSFUL. DIE WELL!");
-                            end
-                            return true;
-                        end
-                    elseif bodyPart:isCut() --irritatingly, using the function to get laceration doesn't follow the same naming convention
-                    then
-                        if lacerationInfectionChance <= rolledInfectionChance 
-                        then
-                            ATM.CureKnoxInfection(player, bodyPart:getType());
-                            if getDebug()
-                            then
-                                DebugLog.log("Infection defense successful.");
-                            end
-                            return false;
-                        else
-                            if getDebug()
-                            then
-                                DebugLog.log("Infection defense UNSUCCESSFUL. DIE WELL!");
-                            end
-                            return true;
-                        end
-                    elseif bodyPart:scratched() 
-                    then
-                        if scratchInfectionChance <= rolledInfectionChance 
-                        then
-                            ATM.CureKnoxInfection(player, bodyPart:getType());
-                            if getDebug()
-                            then
-                                DebugLog.log("Infection defense successful.");
-                            end
-                            return false;
-                        else
-                            if getDebug()
-                            then
-                                DebugLog.log("Infection defense UNSUCCESSFUL. DIE WELL!");
-                            end
-                            return true;
-                        end
-                    end
-                else
-                    if getDebug()
-                    then
-                        DebugLog.log("Not applying Anthro Immunity to infection from anthro. DIE WELL!")
-                    end
-                end
-            end
-        end
-    end
-end
-
-
-AnthroTraitsMain.UndamageUnbleedBodyPart = function(bodyPart, damage)
-	bodyPart:setBleedingTime(0);
-	bodyPart:setBleeding(false);
-	bodyPart:AddHealth(damage)
-end
-
-
----@param player IsoPlayer
----@param bodyPartType BodyPartType
-AnthroTraitsMain.CureKnoxInfection = function(player, bodyPartType)
-    if not isClient()
-    then
-        local bodyDmg = player:getBodyDamage();
-
-        bodyDmg:getBodyPart(bodyPartType):SetInfected(false);
-
-        bodyDmg:setInfected(false);
-        bodyDmg:setInfectionMortalityDuration(-1);
-        bodyDmg:setInfectionTime(-1);
-        bodyDmg:setInfectionGrowthRate(0);
-    else
-        sendClientCommand("AnthroTraits", "CureKnoxInfection", {playerOnlineID = player:getOnlineID(), bodyPartType = bodyPartType})
-    end
-
-    DebugLog.log("Knox Infection removed from "..player:getDisplayName())
-end
-
-
 --EVENT HANDLERS
 ---@param _playerIndex integer
 ---@param player IsoPlayer
-AnthroTraitsMain.ATInitPlayerData = function(_playerIndex, player)
+AnthroTraitsClient.ATInitPlayerData = function(_playerIndex, player)
     --run in clients or sp
     if not isServer()
     then
@@ -609,7 +99,7 @@ AnthroTraitsMain.ATInitPlayerData = function(_playerIndex, player)
 end
 
 
-AnthroTraitsMain.ATOnInitWorld = function()
+AnthroTraitsClient.ATOnInitWorld = function()
     ATU.AddItemTagToItemsFromSandbox(SandboxVars.AnthroTraits.AT_CarnivoreItems, AnthroTraitsGlobals.FoodTags.CARNIVORE);
     ATU.AddItemTagToItemsFromSandbox(SandboxVars.AnthroTraits.AT_HerbivoreItems, AnthroTraitsGlobals.FoodTags.HERBIVORE);
     ATU.AddItemTagToItemsFromSandbox(SandboxVars.AnthroTraits.AT_Bug_o_ssieurItems, AnthroTraitsGlobals.FoodTags.INSECT);
@@ -630,9 +120,9 @@ end
 ---@param player IsoPlayer
 ---@param damageType DAMAGETYPE
 ---@param damage integer
-AnthroTraitsMain.ATPlayerDamageTick = function(player, damageType, damage)
+AnthroTraitsClient.ATPlayerDamageTick = function(player, damageType, damage)
 	local ATGt = AnthroTraitsGlobals.CharacterTrait
-    local ATM = AnthroTraitsMain;
+    local ATU = AnthroTraitsUtilities;
 
     if player:isZombie()
     then
@@ -653,7 +143,7 @@ AnthroTraitsMain.ATPlayerDamageTick = function(player, damageType, damage)
             then
                 DebugLog.log("Handle Infection about to be triggered");
             end
-            playerData.trulyInfected = ATM.HandleInfection(player);
+            playerData.trulyInfected = ATU.HandleInfection(player);
         end
 
         if player:hasTrait(ATGt.UNGULIGRADE) or player:hasTrait(ATGt.DIGITIGRADE)
@@ -661,11 +151,11 @@ AnthroTraitsMain.ATPlayerDamageTick = function(player, damageType, damage)
             --immune to scratches
             if footL:scratched()
             then
-                ATM.HealScratch(player:getBodyDamage(), BodyPartType.Foot_L);
+                ATU.HealScratch(player:getBodyDamage(), BodyPartType.Foot_L);
             end
             if footR:scratched()
             then
-                ATM.HealScratch(player:getBodyDamage(), BodyPartType.Foot_R);
+                ATU.HealScratch(player:getBodyDamage(), BodyPartType.Foot_R);
             end
         end
         if player:hasTrait(ATGt.UNGULIGRADE)
@@ -673,26 +163,26 @@ AnthroTraitsMain.ATPlayerDamageTick = function(player, damageType, damage)
             --immune to lacerations and bites
             if footL:isCut()
             then
-                ATM.HealLaceration(player:getBodyDamage(), BodyPartType.Foot_L);
+                ATU.HealLaceration(player:getBodyDamage(), BodyPartType.Foot_L);
             end
             if footR:isCut()
             then
-                ATM.HealLaceration(player:getBodyDamage(), BodyPartType.Foot_R);
+                ATU.HealLaceration(player:getBodyDamage(), BodyPartType.Foot_R);
             end
             if footL:bitten()
             then
-                ATM.HealBite(player:getBodyDamage(), BodyPartType.Foot_L);
+                ATU.HealBite(player:getBodyDamage(), BodyPartType.Foot_L);
             end
             if footR:bitten()
             then
-                ATM.HealBite(player:getBodyDamage(), BodyPartType.Foot_R);
+                ATU.HealBite(player:getBodyDamage(), BodyPartType.Foot_R);
             end
         end
     end
 end
 
 
-AnthroTraitsMain.ATOnCharacterCollide = function(collider, collidee)
+AnthroTraitsClient.ATOnCharacterCollide = function(collider, collidee)
 	local ATGt = AnthroTraitsGlobals.CharacterTrait
     if instanceof(collider, "IsoPlayer") and collider:isLocalPlayer()
     then
@@ -838,7 +328,7 @@ AnthroTraitsMain.ATOnCharacterCollide = function(collider, collidee)
 end
 
 
-AnthroTraitsMain.ATEveryWeaponHitChar = function(attacker, target, weapon, damage)
+AnthroTraitsClient.ATEveryWeaponHitChar = function(attacker, target, weapon, damage)
 	local ATGt = AnthroTraitsGlobals.CharacterTrait
     local dmgBonus = 0;
 
@@ -859,7 +349,7 @@ AnthroTraitsMain.ATEveryWeaponHitChar = function(attacker, target, weapon, damag
     end
 end
 
-AnthroTraitsMain.ATOnObjectCollide = function(collider, collidee)
+AnthroTraitsClient.ATOnObjectCollide = function(collider, collidee)
 	local ATGt = AnthroTraitsGlobals.CharacterTrait
     if instanceof(collider, "IsoPlayer") and not collider:isZombie() and collider:isLocalPlayer()
     then
@@ -900,9 +390,9 @@ AnthroTraitsMain.ATOnObjectCollide = function(collider, collidee)
 end
 
 
-AnthroTraitsMain.ATEveryOneMinute = function()
+AnthroTraitsClient.ATEveryOneMinute = function()
 	local ATGt = AnthroTraitsGlobals.CharacterTrait
-    local ATM = AnthroTraitsMain;
+    local ATU = AnthroTraitsUtilities;
     local activePlayers = getNumActivePlayers()
     if activePlayers >= 1
     then
@@ -932,21 +422,21 @@ AnthroTraitsMain.ATEveryOneMinute = function()
 
                 if player:hasTrait(ATGt.EXCLAIMER) and not player:isAsleep()
                 then
-                    ATM.ExclaimerCheck(player);
+                    ATU.ExclaimerCheck(player);
                 end
                 if player:hasTrait(ATGt.STINKY)
                 then
-                    ATM.BeStinky(player);
+                    ATU.BeStinky(player);
                 end
                 modData.canTripChecked = false;
                 modData.tripSafe = false;
-                ATM.CarryWeightUpdate(player);
+                ATU.CarryWeightUpdate(player);
             end
         end
     end
 end
 
-AnthroTraitsMain.ATEveryHours = function()
+AnthroTraitsClient.ATEveryHours = function()
 	local ATGt = AnthroTraitsGlobals.CharacterTrait
     local activePlayers = getNumActivePlayers();
     if activePlayers >= 1
@@ -968,7 +458,7 @@ AnthroTraitsMain.ATEveryHours = function()
 end
 
 
-AnthroTraitsMain.ATEveryDays = function()
+AnthroTraitsClient.ATEveryDays = function()
 	local ATGt = AnthroTraitsGlobals.CharacterTrait
     local activePlayers = getNumActivePlayers();
     local season = getClimateManager():getSeason();
@@ -992,9 +482,9 @@ AnthroTraitsMain.ATEveryDays = function()
 end
 
 
-AnthroTraitsMain.ATPlayerUpdate = function(player)
+AnthroTraitsClient.ATPlayerUpdate = function(player)
 	local ATGt = AnthroTraitsGlobals.CharacterTrait
-    local ATM = AnthroTraitsMain;
+    local ATU = AnthroTraitsUtilities;
     local fallTimeMult = SandboxVars.AnthroTraits.AT_NaturalTumblerFallTimeMult;
     local modData =  player:getModData().ATPlayerData;
     local beforeFallSpeed = modData.oldFallSpeed;
@@ -1024,32 +514,31 @@ AnthroTraitsMain.ATPlayerUpdate = function(player)
 		end
     end
 	modData.oldFallSpeed = beforeFallSpeed
-    ATM.LonelyUpdate(player);
+    ATU.LonelyUpdate(player);
 end
 
 --needed to init player data in sp when launching a new game
---needed to init player data in sp when launching a new game
-Events.OnLoad.Add(AnthroTraitsMain.ATInitPlayerData);
+Events.OnLoad.Add(AnthroTraitsClient.ATInitPlayerData);
 --needed for mp/ creating a second+ character in a sp world
-Events.OnCreatePlayer.Add(AnthroTraitsMain.ATInitPlayerData);
+Events.OnCreatePlayer.Add(AnthroTraitsClient.ATInitPlayerData);
 --needed for mp/ creating a second+ character in a sp world
-Events.OnCreatePlayer.Add(AnthroTraitsMain.ATInitPlayerData);
-Events.OnInitWorld.Add(AnthroTraitsMain.ATOnInitWorld);
+Events.OnCreatePlayer.Add(AnthroTraitsClient.ATInitPlayerData);
+Events.OnInitWorld.Add(AnthroTraitsClient.ATOnInitWorld);
 
 
-Events.OnObjectCollide.Add(AnthroTraitsMain.ATOnObjectCollide);
-Events.OnCharacterCollide.Add(AnthroTraitsMain.ATOnCharacterCollide);
-Events.OnWeaponHitCharacter.Add(AnthroTraitsMain.ATEveryWeaponHitChar);
-Events.EveryDays.Add(AnthroTraitsMain.ATEveryDays);
-Events.EveryHours.Add(AnthroTraitsMain.ATEveryHours);
-Events.EveryOneMinute.Add(AnthroTraitsMain.ATEveryOneMinute);
+Events.OnObjectCollide.Add(AnthroTraitsClient.ATOnObjectCollide);
+Events.OnCharacterCollide.Add(AnthroTraitsClient.ATOnCharacterCollide);
+Events.OnWeaponHitCharacter.Add(AnthroTraitsClient.ATEveryWeaponHitChar);
+Events.EveryDays.Add(AnthroTraitsClient.ATEveryDays);
+Events.EveryHours.Add(AnthroTraitsClient.ATEveryHours);
+Events.EveryOneMinute.Add(AnthroTraitsClient.ATEveryOneMinute);
 ---@diagnostic disable-next-line: param-type-mismatch
-Events.OnPlayerGetDamage.Add(AnthroTraitsMain.ATPlayerDamageTick);
+Events.OnPlayerGetDamage.Add(AnthroTraitsClient.ATPlayerDamageTick);
 ---@diagnostic disable-next-line: param-type-mismatch
-Events.OnPlayerGetDamage.Add(AnthroTraitsMain.ATPlayerDamageTick);
-Events.OnPlayerUpdate.Add(AnthroTraitsMain.ATPlayerUpdate);
+Events.OnPlayerGetDamage.Add(AnthroTraitsClient.ATPlayerDamageTick);
+Events.OnPlayerUpdate.Add(AnthroTraitsClient.ATPlayerUpdate);
 
 
 
 
-return AnthroTraitsMain;
+return AnthroTraitsClient;

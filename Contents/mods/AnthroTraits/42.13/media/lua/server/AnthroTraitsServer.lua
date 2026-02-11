@@ -1,4 +1,4 @@
-local AnthroTraitsServerMain = {};
+local AnthroTraitsServer = {};
 
 --local ATUs = require("AnthroTraitsServerUtilities");
 
@@ -7,7 +7,7 @@ local AnthroTraitsServerMain = {};
 ---@param module string
 ---@param command string
 ---@param args table
-AnthroTraitsServerMain.ATOnClientCommand = function(module, command, args)
+AnthroTraitsServer.ATOnClientCommand = function(module, command, args)
     if isServer()
     then
         --no use for this yet
@@ -19,7 +19,7 @@ end
 ---@param module string
 ---@param command string
 ---@param args table
-AnthroTraitsServerMain.ATOnServerCommand = function(module, command, args)
+AnthroTraitsServer.ATOnServerCommand = function(module, command, args)
     if isClient()
     then
         if module == "AnthroTraits"
@@ -53,8 +53,8 @@ AnthroTraitsServerMain.ATOnServerCommand = function(module, command, args)
 end
 
 
-Events.OnClientCommand.Add(AnthroTraitsServerMain.ATOnClientCommand);
-Events.OnServerCommand.Add(AnthroTraitsServerMain.ATOnServerCommand);
+Events.OnClientCommand.Add(AnthroTraitsServer.ATOnClientCommand);
+Events.OnServerCommand.Add(AnthroTraitsServer.ATOnServerCommand);
 
 
-return AnthroTraitsServerMain;
+return AnthroTraitsServer;
