@@ -48,10 +48,6 @@
 -- Have a problem or question? Reach me on Discord: badonn
 ------------------------------------------------------------------------------------------------------
 
-local function Sign(number)
-	return (number > 0 and 1) or (number == 0 and 0) or -1
-end
-
 local AnthroTraitsUtilities = {}
 -- fallback exclaimer phrases
 AnthroTraitsUtilities.GenericExclaimPhrases = {"AAAH!", "AAAH!", "AAAH!!", "AEIEEEE!", "EAAH!", "AAAGH!"}
@@ -61,6 +57,11 @@ AnthroTraitsUtilities.ExclaimPhrases = { }
 --avian = { "!!♩♪-♩♪-♩♪!!", "!!♫♩♪-♫♩♪!!", "!!♪♫♩-♪♫♩!!", "!!♫♫♩♫!!" } sadly these symbols don't work in-game :(
 
 --UTILITIES
+
+AnthroTraitsUtilities.Sign = function(number)
+	return (number > 0 and 1) or (number == 0 and 0) or -1
+end
+
 AnthroTraitsUtilities.FileExists = function(path)
 
     local reader = getModFileReader(AnthroTraitsGlobals.ModID, path, false);
@@ -292,7 +293,7 @@ AnthroTraitsUtilities.CalculateFoodModifiers = function(character, food)
 	then
 		modifiers.foodTooltip = nil	-- no modifiers => use default tooptip (for now)
 	else
-		modifiers.foodTooltip = Sign(mod + modCarrion)
+		modifiers.foodTooltip = this.Sign(mod + modCarrion)
 	end
     return modifiers
 end
@@ -301,13 +302,14 @@ end
 ---For extra effects of food.
 AnthroTraitsUtilities.CalculateFoodChanges = function(character, food, foodProps)
 	local ATGt = AnthroTraitsGlobals.CharacterTrait
+    local this = AnthroTraitsUtilities
     local modifiers = AnthroTraitsUtilities.CalculateFoodModifiers(character, food)
 	local result = {}
 
 	-- calculate trait related boni/mali
 	for stat, info in pairs(AnthroTraitsGlobals.FoodCharacterStatInfo) do
 		-- only apply modifier if change is good
-		if foodProps[stat] ~= nil and Sign(foodProps[stat]) == info.Sign
+		if foodProps[stat] ~= nil and this.Sign(foodProps[stat]) == info.Sign
 		then
 			result[stat] = foodProps[stat] * modifiers[stat]
 		else
@@ -315,25 +317,25 @@ AnthroTraitsUtilities.CalculateFoodChanges = function(character, food, foodProps
 		end
 	end
 	result[CharacterStat.POISON] = 0
-	if foodProps.Calories ~= nil and Sign(foodProps.Calories) == 1
+	if foodProps.Calories ~= nil and this.Sign(foodProps.Calories) == 1
 	then
 		result.Calories = foodProps.Calories * modifiers.Calories
 	else
 		result.Calories = 0
 	end
-	if foodProps.Carbs ~= nil and Sign(foodProps.Carbs) == 1
+	if foodProps.Carbs ~= nil and this.Sign(foodProps.Carbs) == 1
 	then
 		result.Carbs = foodProps.Carbs * modifiers.Carbs
 	else
 		result.Carbs = 0
 	end
-	if foodProps.Proteins ~= nil and Sign(foodProps.Proteins) == 1
+	if foodProps.Proteins ~= nil and this.Sign(foodProps.Proteins) == 1
 	then
 		result.Proteins = foodProps.Proteins * modifiers.Proteins
 	else
 		result.Proteins = 0
 	end
-	if foodProps.Lipids ~= nil and Sign(foodProps.Lipids) == 1
+	if foodProps.Lipids ~= nil and this.Sign(foodProps.Lipids) == 1
 	then
 		result.Lipids = foodProps.Lipids * modifiers.Lipids
 	else
@@ -354,12 +356,12 @@ AnthroTraitsUtilities.CalculateFoodChanges = function(character, food, foodProps
 			(food:IsRotten() and food:hasTag(AnthroTraitsGlobals.FoodTags.CARNIVORE)) or					--CARRIONEATER doesn't mind rotten meat
 			(character:hasTrait(ATGt.FOODMOTIVATED) and food:hasTag(AnthroTraitsGlobals.FoodTags.FOODMOTIVATED))	--FOODMOTIVATED doesn't mind eating certain foods
 		then
-			if Sign(foodProps[CharacterStat.UNHAPPINESS]) ~= AnthroTraitsGlobals.FoodCharacterStatInfo[CharacterStat.UNHAPPINESS].Sign
+			if this.Sign(foodProps[CharacterStat.UNHAPPINESS]) ~= AnthroTraitsGlobals.FoodCharacterStatInfo[CharacterStat.UNHAPPINESS].Sign
 			then
 				result[CharacterStat.UNHAPPINESS] = result[CharacterStat.UNHAPPINESS] - foodProps[CharacterStat.UNHAPPINESS]
 				result.foodTooltip = result.foodTooltip or 0
 			end
-			if Sign(foodProps[CharacterStat.BOREDOM]) ~= AnthroTraitsGlobals.FoodCharacterStatInfo[CharacterStat.BOREDOM].Sign
+			if this.Sign(foodProps[CharacterStat.BOREDOM]) ~= AnthroTraitsGlobals.FoodCharacterStatInfo[CharacterStat.BOREDOM].Sign
 			then
 				result[CharacterStat.BOREDOM] = result[CharacterStat.BOREDOM] - foodProps[CharacterStat.BOREDOM]
 				result.foodTooltip = result.foodTooltip or 0
@@ -465,7 +467,7 @@ AnthroTraitsUtilities.GetConsumableProperties = function(item)
 end
 
 local function AddFoodPropsChanges(foodProps, foodChanges)
-	result = {}
+	local result = {}
 	for stat, _ in pairs(AnthroTraitsGlobals.FoodCharacterStatInfo) do
 		result[stat] = foodProps[stat] + foodChanges[stat]
 	end
