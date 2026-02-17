@@ -173,7 +173,6 @@ AnthroTraitsUtilities.ExportFoodGuideFiles = function()
 end
 
 AnthroTraitsUtilities.AddItemTagToItemsFromSandbox = function(itemList, tag)
-    local ATU = AnthroTraitsUtilities;
 
     local itemTable = {};
     local foundItem;
@@ -250,8 +249,8 @@ end
 AnthroTraitsUtilities.CalculateFoodModifiers = function(character, food)
     local modifiers = { }
 
-    local ATU = AnthroTraitsUtilities
-    local foodVoreType = ATU.FoodVoreType(food)
+    local this = AnthroTraitsUtilities
+    local foodVoreType = this.FoodVoreType(food)
 
 	local mod = 0
 	local modCarrion = 0
@@ -479,7 +478,7 @@ local function AddFoodPropsChanges(foodProps, foodChanges)
 end
 
 AnthroTraitsUtilities.BuildFoodDescription = function(player, foodProps, foodChanges, item)
-    local ATU = AnthroTraitsUtilities;
+    local this = AnthroTraitsUtilities;
     local returnTable = {}
 
     local foodName = item:getName();
@@ -537,7 +536,7 @@ AnthroTraitsUtilities.BuildFoodDescription = function(player, foodProps, foodCha
 	for stat, info in pairs(AnthroTraitsGlobals.FoodCharacterStatInfo) do
 		if newFoodProps[stat] ~= 0
 		then
-			table.insert(returnTable, getText("Tooltip_food_" .. info.TooltipName)..":"..ATU.getTooltipValueColor(foodProps[stat], newFoodProps[stat], info.Sign < 0)..ATU.getTooltipValueSymbol(newFoodProps[stat])..string.format("%3.1f", newFoodProps[stat] * info.TooltipFactor))
+			table.insert(returnTable, getText("Tooltip_food_" .. info.TooltipName)..":"..this.getTooltipValueColor(foodProps[stat], newFoodProps[stat], info.Sign < 0)..this.getTooltipValueSymbol(newFoodProps[stat])..string.format("%3.1f", newFoodProps[stat] * info.TooltipFactor))
 		end
 	end
 	
@@ -573,19 +572,19 @@ AnthroTraitsUtilities.BuildFoodDescription = function(player, foodProps, foodCha
     then
         if newFoodProps.Calories ~= 0
         then
-            table.insert(returnTable, getText("Tooltip_food_Calories")..":"..ATU.getTooltipValueColor(foodProps.Calories, newFoodProps.Calories, false)..string.format("%5.1f", newFoodProps.Calories));
+            table.insert(returnTable, getText("Tooltip_food_Calories")..":"..this.getTooltipValueColor(foodProps.Calories, newFoodProps.Calories, false)..string.format("%5.1f", newFoodProps.Calories));
         end
         if newFoodProps.Carbs ~= 0
         then
-            table.insert(returnTable, getText("Tooltip_food_Carbs")..":"..ATU.getTooltipValueColor(foodProps.Carbs, newFoodProps.Carbs, false)..string.format("%5.1f", newFoodProps.Carbs));
+            table.insert(returnTable, getText("Tooltip_food_Carbs")..":"..this.getTooltipValueColor(foodProps.Carbs, newFoodProps.Carbs, false)..string.format("%5.1f", newFoodProps.Carbs));
         end
         if newFoodProps.Proteins ~= 0
         then
-            table.insert(returnTable, getText("Tooltip_food_Prots")..":"..ATU.getTooltipValueColor(foodProps.Proteins, newFoodProps.Proteins, false)..string.format("%5.1f", newFoodProps.Proteins));
+            table.insert(returnTable, getText("Tooltip_food_Prots")..":"..this.getTooltipValueColor(foodProps.Proteins, newFoodProps.Proteins, false)..string.format("%5.1f", newFoodProps.Proteins));
         end
         if newFoodProps.Lipids ~= 0
         then
-            table.insert(returnTable, getText("Tooltip_food_Fat")..":"..ATU.getTooltipValueColor(foodProps.Lipids, newFoodProps.Lipids, false)..string.format("%5.1f", newFoodProps.Lipids));
+            table.insert(returnTable, getText("Tooltip_food_Fat")..":"..this.getTooltipValueColor(foodProps.Lipids, newFoodProps.Lipids, false)..string.format("%5.1f", newFoodProps.Lipids));
         end
     end
     if not instanceof(item, "ComboItem") and item:isbDangerousUncooked() and not item:isCooked() and not item:isBurnt()
@@ -622,7 +621,7 @@ AnthroTraitsUtilities.BuildFoodDescription = function(player, foodProps, foodCha
 end
 
 AnthroTraitsUtilities.BuildFluidContainerDescription = function(player, description, item)
-    local ATU = AnthroTraitsUtilities;
+    local this = AnthroTraitsUtilities;
     local returnTable = {}
 
     local foodName = item:getName();
@@ -645,8 +644,8 @@ AnthroTraitsUtilities.BuildFluidContainerDescription = function(player, descript
     local minutesTillCooked = item:getMinutesToCook();
     local minutesTillBurned = item:getMinutesToBurn();
 
-	local foodProps = ATU.GetConsumableProperties(item)
-    local foodChanges = ATU.CalculateFoodChanges(player, item, foodProps)
+	local foodProps = this.GetConsumableProperties(item)
+    local foodChanges = this.CalculateFoodChanges(player, item, foodProps)
 	local newFoodProps = AddFoodPropsChanges(foodProps, foodChanges)
 
     if foodName ~= nil
@@ -684,7 +683,7 @@ AnthroTraitsUtilities.BuildFluidContainerDescription = function(player, descript
 	for stat, info in pairs(AnthroTraitsGlobals.FoodCharacterStatInfo) do
 		if newFoodProps[stat] ~= 0
 		then
-			table.insert(returnTable, "%DarkKhaki%"..getText("Tooltip_food_" .. info.TooltipName)..":"..ATU.getTooltipValueColor(foodProps[stat], newFoodProps[stat], info.Sign < 0)..ATU.getTooltipValueSymbol(newFoodProps[stat])..string.format("%3.1f", newFoodProps[stat]))
+			table.insert(returnTable, "%DarkKhaki%"..getText("Tooltip_food_" .. info.TooltipName)..":"..this.getTooltipValueColor(foodProps[stat], newFoodProps[stat], info.Sign < 0)..this.getTooltipValueSymbol(newFoodProps[stat])..string.format("%3.1f", newFoodProps[stat]))
 		end
 	end
 
@@ -720,19 +719,19 @@ AnthroTraitsUtilities.BuildFluidContainerDescription = function(player, descript
     then
         if newFoodProps.Calories ~= 0
         then
-            table.insert(returnTable, "%DarkKhaki%"..getText("Tooltip_food_Calories")..":"..ATU.getTooltipValueColor(foodProps.Calories, newFoodProps.Calories, false)..string.format("%5.1f", newFoodProps.Calories));
+            table.insert(returnTable, "%DarkKhaki%"..getText("Tooltip_food_Calories")..":"..this.getTooltipValueColor(foodProps.Calories, newFoodProps.Calories, false)..string.format("%5.1f", newFoodProps.Calories));
         end
         if newFoodProps.Carbs ~= 0
         then
-            table.insert(returnTable, "%DarkKhaki%"..getText("Tooltip_food_Carbs")..":"..ATU.getTooltipValueColor(foodProps.Carbs, newFoodProps.Carbs, false)..string.format("%5.1f", newFoodProps.Carbs));
+            table.insert(returnTable, "%DarkKhaki%"..getText("Tooltip_food_Carbs")..":"..this.getTooltipValueColor(foodProps.Carbs, newFoodProps.Carbs, false)..string.format("%5.1f", newFoodProps.Carbs));
         end
         if newFoodProps.Proteins ~= 0
         then
-            table.insert(returnTable, "%DarkKhaki%"..getText("Tooltip_food_Prots")..":"..ATU.getTooltipValueColor(foodProps.Proteins, newFoodProps.Proteins, false)..string.format("%5.1f", newFoodProps.Proteins));
+            table.insert(returnTable, "%DarkKhaki%"..getText("Tooltip_food_Prots")..":"..this.getTooltipValueColor(foodProps.Proteins, newFoodProps.Proteins, false)..string.format("%5.1f", newFoodProps.Proteins));
         end
         if newFoodProps.Lipids ~= 0
         then
-            table.insert(returnTable, "%DarkKhaki%"..getText("Tooltip_food_Fat")..":"..ATU.getTooltipValueColor(foodProps.Lipids, newFoodProps.Lipids, false)..string.format("%5.1f", newFoodProps.Lipids));
+            table.insert(returnTable, "%DarkKhaki%"..getText("Tooltip_food_Fat")..":"..this.getTooltipValueColor(foodProps.Lipids, newFoodProps.Lipids, false)..string.format("%5.1f", newFoodProps.Lipids));
         end
     end
     if foodProps[CharacterStat.POISON] > 0
@@ -851,8 +850,9 @@ end
 -- overwrites vanilla processing of stats but also avoids clamping issues at 0 and 100
 AnthroTraitsUtilities.ApplyFoodChanges = function(character, foodEaten, percentEaten, preCharStats)
 	local ATGt = AnthroTraitsGlobals.CharacterTrait
-	local foodProps = ATU.GetConsumableProperties(foodEaten)
-    local foodChanges = ATU.CalculateFoodChanges(character, foodEaten, foodProps)
+    local this = AnthroTraitsUtilities
+	local foodProps = this.GetConsumableProperties(foodEaten)
+    local foodChanges = this.CalculateFoodChanges(character, foodEaten, foodProps)
     local charStats = character:getStats()
     local charNutrition = character:getNutrition()
 	
@@ -930,7 +930,8 @@ AnthroTraitsUtilities.ApplyFoodChanges = function(character, foodEaten, percentE
 end
 
 AnthroTraitsUtilities.ExclaimerCheck = function(player)
-	local ATGt = AnthroTraitsGlobals.CharacterTrait
+	local ATGt = AnthroTraitsGlobals.CharacterTrait;
+    local this = AnthroTraitsUtilities;
     local moodles = player:getMoodles();
     local panicLevel = moodles:getMoodleLevel(MoodleType.PANIC)
     local thresholdMultiplier = SandboxVars.AnthroTraits.AT_ExclaimerExclaimThresholdMultiplier;
@@ -942,7 +943,7 @@ AnthroTraitsUtilities.ExclaimerCheck = function(player)
         local phrases = nil
 		local mitigationChance = 100
 		-- check if any trait-related phrases available
-		for trait, phr in pairs(ATU.ExclaimPhrases) do
+		for trait, phr in pairs(this.ExclaimPhrases) do
 			if player:hasTrait(trait)
 			then
 				phrases = phr
@@ -954,7 +955,7 @@ AnthroTraitsUtilities.ExclaimerCheck = function(player)
 		-- otherwise use generic phrases
 		if phrases == nil
 		then
-			phrases = ATU.GenericExclaimPhrases
+			phrases = this.GenericExclaimPhrases
 		end
 		local phraseChance = ZombRand(1, #phrases);
 		if mitigationChance > mitigationThreshold
@@ -1176,7 +1177,7 @@ end
 
 
 AnthroTraitsUtilities.HandleInfection = function(player)
-    local ATM = AnthroTraitsClient;
+    local this = AnthroTraitsUtilities;
 	local ATGt = AnthroTraitsGlobals.CharacterTrait
     local biteInfectionChance = SandboxVars.AnthroTraits.AT_AnthroImmunityBiteInfectionChance;
     local lacerationInfectionChance = SandboxVars.AnthroTraits.AT_AnthroImmunityLacerationInfectionChance;
@@ -1203,14 +1204,14 @@ AnthroTraitsUtilities.HandleInfection = function(player)
                     then
                         DebugLog.log("AT_Unguligrade foot immunity triggered.");
                     end
-                    ATM.CureKnoxInfection(player, bodyPart:getType());
+                    this.CureKnoxInfection(player, bodyPart:getType());
                 end
             end
             if player:hasTrait(ATGt.ANTHROIMMUNITY) 
             then
                 local rolledInfectionChance = ZombRand(1, 100);
                 local lastAttackedBy = player:getAttackedBy();
-				local attackerIsAnthro = ATM.IsAnthro(lastAttackedBy)
+				local attackerIsAnthro = this.IsAnthro(lastAttackedBy)
 				local anthroIgnoreImmunity = SandboxVars.AnthroTraits.AT_AnthroImmunityIgnoredByAnthroZombies
                 if not anthroIgnoreImmunity or not attackerIsAnthro
                 then
@@ -1222,14 +1223,14 @@ AnthroTraitsUtilities.HandleInfection = function(player)
                     then
                         if biteInfectionChance <= rolledInfectionChance 
                         then
-                            ATM.CureKnoxInfection(player, bodyPart:getType());
+                            this.CureKnoxInfection(player, bodyPart:getType());
                             if getDebug()
                             then
                                 DebugLog.log("Infection defense successful.");
                             end
                             if SandboxVars.AnthroTraits.AT_AnthroImmunityBiteGetsRegularInfectionOnDefense
                             then
-                                ATM.InfectWound(bodyPart:getType())
+                                this.InfectWound(bodyPart:getType())
                                 if getDebug()
                                 then
                                     DebugLog.log("Knox infection substituted with regular infection. Human mouths are septic :S");
@@ -1248,7 +1249,7 @@ AnthroTraitsUtilities.HandleInfection = function(player)
                     then
                         if lacerationInfectionChance <= rolledInfectionChance 
                         then
-                            ATM.CureKnoxInfection(player, bodyPart:getType());
+                            this.CureKnoxInfection(player, bodyPart:getType());
                             if getDebug()
                             then
                                 DebugLog.log("Infection defense successful.");
@@ -1265,7 +1266,7 @@ AnthroTraitsUtilities.HandleInfection = function(player)
                     then
                         if scratchInfectionChance <= rolledInfectionChance 
                         then
-                            ATM.CureKnoxInfection(player, bodyPart:getType());
+                            this.CureKnoxInfection(player, bodyPart:getType());
                             if getDebug()
                             then
                                 DebugLog.log("Infection defense successful.");

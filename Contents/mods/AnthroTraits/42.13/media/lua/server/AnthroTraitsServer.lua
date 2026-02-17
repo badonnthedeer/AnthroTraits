@@ -1,6 +1,6 @@
 local AnthroTraitsServer = {};
 
---local ATUs = require("AnthroTraitsServerUtilities");
+local ATU = require("AnthroTraitsUtilities");
 
 
 ---Sends commands TO THE SERVER from the originating client.

@@ -62,8 +62,8 @@ local function GetSandboxVarsTrait(traitDef, addString)
 	return nil
 end
 
-local ATM = require("NPCs/AnthroTraitsMain");
-local ATC = require("NPCs/AnthroTraitsCreationMethods");
+local ATC = require("AnthroTraitsClient");
+local ATCM = require("NPCs/AnthroTraitsCreationMethods");
 local ATU = require("AnthroTraitsUtilities");
 
 
@@ -150,7 +150,7 @@ ISEatFoodAction.stop = function(self)
 	local preStats = GetCharFoodStats(self.character)
     OriginalEatStop(self);
 	-- apply AT food changes
-	ATM.ApplyFoodChanges(self.character, self.item, self.percentage * self:getJobDelta(), preStats)
+	ATC.ApplyFoodChanges(self.character, self.item, self.percentage * self:getJobDelta(), preStats)
 end
 
 -- eating process finished completely
@@ -160,7 +160,7 @@ ISEatFoodAction.complete = function(self)
 	local preStats = GetCharFoodStats(self.character)
     OriginalEatComplete(self);
 	-- apply AT food changes
-	ATM.ApplyFoodChanges(self.character, self.item, self.percentage * self:getJobDelta(), preStats)
+	ATC.ApplyFoodChanges(self.character, self.item, self.percentage * self:getJobDelta(), preStats)
 end
 
 
@@ -472,8 +472,8 @@ end
 
 local oldSOSMD = SandboxOptionsScreen.onOptionMouseDown
 SandboxOptionsScreen.onOptionMouseDown = function(...)
-    ATC.refundSelectedAffectedTraits();
+    ATCM.refundSelectedAffectedTraits();
     oldSOSMD(...);
-    ATC.setTraitDescriptions();
-    ATC.sortTraits();
+    ATCM.setTraitDescriptions();
+    ATCM.sortTraits();
 end

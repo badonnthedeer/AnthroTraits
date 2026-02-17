@@ -57,8 +57,6 @@ local AT_REQ_MT = require("ToadTraits");
 
 local AnthroTraitsClient = {};
 local ATU = require("AnthroTraitsUtilities");
-local AnthroTraitsUtilities = require("Contents.mods.AnthroTraits.42.12.media.lua.client.AnthroTraitsUtilities")
-ATU.ImportExclaimerPhrases()
 
 -- C:\Program Files (x86)\Steam\steamapps\common\ProjectZomboid\media\lua | Project Zomboid files
 -- C:\Program Files (x86)\Steam\steamapps\common\ProjectZomboid\media\AnimSets\player
@@ -106,6 +104,8 @@ AnthroTraitsClient.ATOnInitWorld = function()
     ATU.AddItemTagToItemsFromSandbox(SandboxVars.AnthroTraits.AT_FeralDigestionItems, AnthroTraitsGlobals.FoodTags.FERALPOISON);
     ATU.AddItemTagToItemsFromSandbox(SandboxVars.AnthroTraits.AT_FoodMotivatedItems, AnthroTraitsGlobals.FoodTags.FOODMOTIVATED);
 
+    ATU.ImportExclaimerPhrases();
+    
     if getDebug()
     then
         ATU.ExportFoodGuideFiles();
@@ -122,7 +122,6 @@ end
 ---@param damage integer
 AnthroTraitsClient.ATPlayerDamageTick = function(player, damageType, damage)
 	local ATGt = AnthroTraitsGlobals.CharacterTrait
-    local ATU = AnthroTraitsUtilities;
 
     if player:isZombie()
     then
@@ -392,7 +391,6 @@ end
 
 AnthroTraitsClient.ATEveryOneMinute = function()
 	local ATGt = AnthroTraitsGlobals.CharacterTrait
-    local ATU = AnthroTraitsUtilities;
     local activePlayers = getNumActivePlayers()
     if activePlayers >= 1
     then
@@ -484,7 +482,6 @@ end
 
 AnthroTraitsClient.ATPlayerUpdate = function(player)
 	local ATGt = AnthroTraitsGlobals.CharacterTrait
-    local ATU = AnthroTraitsUtilities;
     local fallTimeMult = SandboxVars.AnthroTraits.AT_NaturalTumblerFallTimeMult;
     local modData =  player:getModData().ATPlayerData;
     local beforeFallSpeed = modData.oldFallSpeed;
