@@ -518,8 +518,6 @@ end
 Events.OnLoad.Add(AnthroTraitsClient.ATInitPlayerData);
 --needed for mp/ creating a second+ character in a sp world
 Events.OnCreatePlayer.Add(AnthroTraitsClient.ATInitPlayerData);
---needed for mp/ creating a second+ character in a sp world
-Events.OnCreatePlayer.Add(AnthroTraitsClient.ATInitPlayerData);
 Events.OnInitWorld.Add(AnthroTraitsClient.ATOnInitWorld);
 
 
@@ -529,8 +527,6 @@ Events.OnWeaponHitCharacter.Add(AnthroTraitsClient.ATEveryWeaponHitChar);
 Events.EveryDays.Add(AnthroTraitsClient.ATEveryDays);
 Events.EveryHours.Add(AnthroTraitsClient.ATEveryHours);
 Events.EveryOneMinute.Add(AnthroTraitsClient.ATEveryOneMinute);
----@diagnostic disable-next-line: param-type-mismatch
-Events.OnPlayerGetDamage.Add(AnthroTraitsClient.ATPlayerDamageTick);
 ---@diagnostic disable-next-line: param-type-mismatch
 Events.OnPlayerGetDamage.Add(AnthroTraitsClient.ATPlayerDamageTick);
 Events.OnPlayerUpdate.Add(AnthroTraitsClient.ATPlayerUpdate);
