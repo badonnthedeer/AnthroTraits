@@ -201,10 +201,8 @@ ATU.ImportExclaimerPhrases()
 -- end
 
 -- overwrites vanilla processing of stats but also avoids clamping issues at 0 and 100
-AnthroTraitsMain.ApplyFoodChanges = function(character, foodEaten, percentEaten, preCharStats)
+AnthroTraitsMain.ApplyFoodChanges = function(character, percentEaten, preCharStats, foodProps, foodChanges)
 	local ATGt = AnthroTraitsGlobals.CharacterTrait
-	local foodProps = ATU.GetConsumableProperties(foodEaten)
-    local foodChanges = ATU.CalculateFoodChanges(character, foodEaten, foodProps)
     local charStats = character:getStats()
     local charNutrition = character:getNutrition()
 	
