@@ -148,9 +148,12 @@ local OriginalEatStop = ISEatFoodAction.stop;
 ISEatFoodAction.stop = function(self)
 	-- get stats before original eat result
 	local preStats = GetCharFoodStats(self.character)
+	local foodProps = ATU.GetConsumableProperties(self.item)
+    local foodChanges = ATU.CalculateFoodChanges(self.character, self.item, foodProps)
+
     OriginalEatStop(self);
 	-- apply AT food changes
-	ATC.ApplyFoodChanges(self.character, self.item, self.percentage * self:getJobDelta(), preStats)
+	ATC.ApplyFoodChanges(self.character, self.percentage * self:getJobDelta(), preStats, foodProps, foodChanges);
 end
 
 -- eating process finished completely
@@ -158,9 +161,11 @@ local OriginalEatComplete = ISEatFoodAction.complete;
 ISEatFoodAction.complete = function(self)
 	-- get stats before original eat result
 	local preStats = GetCharFoodStats(self.character)
+	local foodProps = ATU.GetConsumableProperties(self.item)
+    local foodChanges = ATU.CalculateFoodChanges(self.character, self.item, foodProps)
     OriginalEatComplete(self);
 	-- apply AT food changes
-	ATC.ApplyFoodChanges(self.character, self.item, self.percentage * self:getJobDelta(), preStats)
+	ATC.ApplyFoodChanges(self.character, self.percentage * self:getJobDelta(), preStats, foodProps, foodChanges)
 end
 
 

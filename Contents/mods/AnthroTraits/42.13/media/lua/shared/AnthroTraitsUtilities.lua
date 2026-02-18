@@ -850,12 +850,10 @@ end
 
 
 -- overwrites vanilla processing of stats but also avoids clamping issues at 0 and 100
-AnthroTraitsUtilities.ApplyFoodChanges = function(character, foodEaten, percentEaten, preCharStats)
+AnthroTraitsUtilities.ApplyFoodChanges = function(character, percentEaten, preCharStats, foodProps, foodChanges)
 	local ATGt = AnthroTraitsGlobals.CharacterTrait
     local this = AnthroTraitsUtilities
-	local foodProps = this.GetConsumableProperties(foodEaten)
-    local foodChanges = this.CalculateFoodChanges(character, foodEaten, foodProps)
-    local charStats = character:getStats()
+	local charStats = character:getStats()
     local charNutrition = character:getNutrition()
 	
 	for stat, _ in pairs(AnthroTraitsGlobals.FoodCharacterStatInfo) do
