@@ -105,7 +105,7 @@ AnthroTraitsClient.ATOnInitWorld = function()
     ATU.AddItemTagToItemsFromSandbox(SandboxVars.AnthroTraits.AT_FoodMotivatedItems, AnthroTraitsGlobals.FoodTags.FOODMOTIVATED);
 
     ATU.ImportExclaimerPhrases();
-    
+
     if getDebug()
     then
         ATU.ExportFoodGuideFiles();
@@ -128,55 +128,51 @@ AnthroTraitsClient.ATPlayerDamageTick = function(player, damageType, damage)
         return
     end
 
-    --single player code
-    if not isServer() and not isClient()
+    local playerData = player:getModData().ATPlayerData;
+    local footL = player:getBodyDamage():getBodyPart(BodyPartType.Foot_L);
+    local footR = player:getBodyDamage():getBodyPart(BodyPartType.Foot_R);
+
+    if player:getBodyDamage():isInfected() == true and playerData.trulyInfected == false
     then
-
-        local playerData = player:getModData().ATPlayerData;
-        local footL = player:getBodyDamage():getBodyPart(BodyPartType.Foot_L);
-        local footR = player:getBodyDamage():getBodyPart(BodyPartType.Foot_R);
-
-        if player:getBodyDamage():isInfected() == true and playerData.trulyInfected == false
+        if getDebug()
         then
-            if getDebug()
-            then
-                DebugLog.log("Handle Infection about to be triggered");
-            end
-            playerData.trulyInfected = ATU.HandleInfection(player);
+            DebugLog.log("Handle Infection about to be triggered");
         end
+        playerData.trulyInfected = ATU.HandleInfection(player);
+    end
 
-        if player:hasTrait(ATGt.UNGULIGRADE) or player:hasTrait(ATGt.DIGITIGRADE)
+    if player:hasTrait(ATGt.UNGULIGRADE) or player:hasTrait(ATGt.DIGITIGRADE)
+    then
+        --immune to scratches
+        if footL:scratched()
         then
-            --immune to scratches
-            if footL:scratched()
-            then
-                ATU.HealScratch(player:getBodyDamage(), BodyPartType.Foot_L);
-            end
-            if footR:scratched()
-            then
-                ATU.HealScratch(player:getBodyDamage(), BodyPartType.Foot_R);
-            end
+            ATU.HealScratch(player:getBodyDamage(), BodyPartType.Foot_L);
         end
-        if player:hasTrait(ATGt.UNGULIGRADE)
+        if footR:scratched()
         then
-            --immune to lacerations and bites
-            if footL:isCut()
-            then
-                ATU.HealLaceration(player:getBodyDamage(), BodyPartType.Foot_L);
-            end
-            if footR:isCut()
-            then
-                ATU.HealLaceration(player:getBodyDamage(), BodyPartType.Foot_R);
-            end
-            if footL:bitten()
-            then
-                ATU.HealBite(player:getBodyDamage(), BodyPartType.Foot_L);
-            end
-            if footR:bitten()
-            then
-                ATU.HealBite(player:getBodyDamage(), BodyPartType.Foot_R);
-            end
+            ATU.HealScratch(player:getBodyDamage(), BodyPartType.Foot_R);
         end
+    end
+    if player:hasTrait(ATGt.UNGULIGRADE)
+    then
+        --immune to lacerations and bites
+        if footL:isCut()
+        then
+            ATU.HealLaceration(player:getBodyDamage(), BodyPartType.Foot_L);
+        end
+        if footR:isCut()
+        then
+            ATU.HealLaceration(player:getBodyDamage(), BodyPartType.Foot_R);
+        end
+        if footL:bitten()
+        then
+            ATU.HealBite(player:getBodyDamage(), BodyPartType.Foot_L);
+        end
+        if footR:bitten()
+        then
+            ATU.HealBite(player:getBodyDamage(), BodyPartType.Foot_R);
+        end
+            
     end
 end
 
@@ -514,6 +510,17 @@ AnthroTraitsClient.ATPlayerUpdate = function(player)
     ATU.LonelyUpdate(player);
 end
 
+---Executes commands on the CLIENT FROM the SERVER.
+---@param module string
+---@param command string
+---@param args table
+AnthroTraitsClient.ATOnServerCommand = function(module, command, args)
+    if isClient()
+    then
+
+    end
+end
+
 --needed to init player data in sp when launching a new game
 Events.OnLoad.Add(AnthroTraitsClient.ATInitPlayerData);
 --needed for mp/ creating a second+ character in a sp world
@@ -530,6 +537,8 @@ Events.EveryOneMinute.Add(AnthroTraitsClient.ATEveryOneMinute);
 ---@diagnostic disable-next-line: param-type-mismatch
 Events.OnPlayerGetDamage.Add(AnthroTraitsClient.ATPlayerDamageTick);
 Events.OnPlayerUpdate.Add(AnthroTraitsClient.ATPlayerUpdate);
+
+Events.OnServerCommand.Add(AnthroTraitsClient.ATOnServerCommand);
 
 
 

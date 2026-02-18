@@ -1177,6 +1177,18 @@ AnthroTraitsUtilities.IsAnthro = function(gameCharacter)
     end
 end
 
+---@param player IsoPlayer
+---@param bodyPartType BodyPartType
+AnthroTraitsUtilities.InfectWound = function(player, bodyPartType)
+    if not isClient
+    then
+        local bodyDmg = player:getBodyDamage();
+        bodyDmg:getBodyPart(bodyPartType):setInfectedWound(true); 
+    else
+        sendClientCommand("AnthroTraits", "InfectWound", {{playerOnlineID = player:getOnlineID(), bodyPartType = bodyPartType}});
+    end
+end
+
 
 AnthroTraitsUtilities.HandleInfection = function(player)
     local this = AnthroTraitsUtilities;
@@ -1232,7 +1244,7 @@ AnthroTraitsUtilities.HandleInfection = function(player)
                             end
                             if SandboxVars.AnthroTraits.AT_AnthroImmunityBiteGetsRegularInfectionOnDefense
                             then
-                                this.InfectWound(bodyPart:getType())
+                                this.InfectWound(player, bodyPart:getType())
                                 if getDebug()
                                 then
                                     DebugLog.log("Knox infection substituted with regular infection. Human mouths are septic :S");
