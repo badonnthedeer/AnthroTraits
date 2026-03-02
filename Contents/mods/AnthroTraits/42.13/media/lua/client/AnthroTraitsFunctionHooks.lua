@@ -153,7 +153,7 @@ ISEatFoodAction.stop = function(self)
 
     OriginalEatStop(self);
 	-- apply AT food changes
-	ATC.ApplyFoodChanges(self.character, self.percentage * self:getJobDelta(), preStats, foodProps, foodChanges);
+	ATU.ApplyFoodChanges(self.character, self.percentage * self:getJobDelta(), preStats, foodProps, foodChanges);
 end
 
 -- eating process finished completely
@@ -165,7 +165,7 @@ ISEatFoodAction.complete = function(self)
     local foodChanges = ATU.CalculateFoodChanges(self.character, self.item, foodProps)
     OriginalEatComplete(self);
 	-- apply AT food changes
-	ATC.ApplyFoodChanges(self.character, self.percentage * self:getJobDelta(), preStats, foodProps, foodChanges)
+	ATU.ApplyFoodChanges(self.character, self.percentage * self:getJobDelta(), preStats, foodProps, foodChanges)
 end
 
 
