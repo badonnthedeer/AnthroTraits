@@ -39,7 +39,13 @@ AnthroTraitsGlobals.CharacterTrait.UNGULIGRADE = CharacterTrait.register("Anthro
 AnthroTraitsGlobals.CharacterTrait.UNWIELDYHANDS = CharacterTrait.register("AnthroTraits:AT_UnwieldyHands")
 AnthroTraitsGlobals.CharacterTrait.VESTIGIALWINGS = CharacterTrait.register("AnthroTraits:AT_VestigialWings")
 AnthroTraitsGlobals.CharacterTrait.VOICEAVIAN = CharacterTrait.register("AnthroTraits:AT_VoiceAvian")
+AnthroTraitsGlobals.CharacterTrait.VOICEFELINE = CharacterTrait.register("AnthroTraits:AT_VoiceFeline")
 AnthroTraitsGlobals.CharacterTrait.VOICESHEEP = CharacterTrait.register("AnthroTraits:AT_VoiceSheep")
+
+AnthroTraitsGlobals.ExclaimerTraits = { }
+AnthroTraitsGlobals.ExclaimerTraits[AnthroTraitsGlobals.CharacterTrait.VOICEAVIAN] = "AnthroTraits:AT_VoiceAvian";
+AnthroTraitsGlobals.ExclaimerTraits[AnthroTraitsGlobals.CharacterTrait.VOICEFELINE] = "AnthroTraits:AT_VoiceFeline";
+AnthroTraitsGlobals.ExclaimerTraits[AnthroTraitsGlobals.CharacterTrait.VOICESHEEP] = "AnthroTraits:AT_VoiceSheep";
 
 AnthroTraitsGlobals.FoodTags.CARNIVORE = ItemTag.register("AnthroTraits:ATCarnivore")
 AnthroTraitsGlobals.FoodTags.HERBIVORE = ItemTag.register("AnthroTraits:ATHerbivore")
