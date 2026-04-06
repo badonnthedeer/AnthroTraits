@@ -102,11 +102,23 @@ AnthroTraitsUtilities.ImportExclaimerPhrases = function()
 	end
 end
 
+local function writeToGuideFile(items, file)
+    local writer = getModFileWriter(AnthroTraitsGlobals.ModID, file, false, false);
+    if not writer then
+        return;
+    end
+    for i = 0, items:size() -1
+    do
+        local line = items:get(i):getFullName()..";";
+        writer:writeln(line);
+    end
+    writer:close();
+end
+
 AnthroTraitsUtilities.ExportFoodGuideFiles = function()
 
     local allItems = getScriptManager():getAllItems();
     local unusedFood = {};
-    local line;
 
     local CarnItems = getScriptManager():getItemsTag(AnthroTraitsGlobals.FoodTags.CARNIVORE);
     local HerbItems = getScriptManager():getItemsTag(AnthroTraitsGlobals.FoodTags.HERBIVORE);
@@ -131,46 +143,20 @@ AnthroTraitsUtilities.ExportFoodGuideFiles = function()
             end
         end
     end
+    writeToGuideFile(CarnItems, "AT_Carnivore_Items.txt");
+    writeToGuideFile(HerbItems, "AT_Herbivore_Items.txt");
+    writeToGuideFile(BugItems, "AT_Insect_Items.txt");
+    writeToGuideFile(PoisItems, "AT_FeralPoison_Items.txt");
 
-    local writer1 = getModFileWriter("\\"..AnthroTraitsGlobals.ModID, "AT_Carnivore_Items.txt", false, false);
-    for i = 0, CarnItems:size() -1
-    do
-        line = CarnItems:get(i):getFullName()..";";
-        writer1:writeln(line);
+    local writer = getModFileWriter(AnthroTraitsGlobals.ModID, "Unused_Food_Items.txt", false, false);
+    if writer then
+        for _, tableEntry in ipairs(unusedFood)
+        do
+            local line = tableEntry:getFullName()..";";
+            writer:writeln(line);
+        end;
+        writer:close();
     end
-    writer1:close();
-
-    local writer2 = getModFileWriter("\\"..AnthroTraitsGlobals.ModID, "AT_Herbivore_Items.txt", false, false);
-    for i = 0, HerbItems:size() -1
-    do
-        line = HerbItems:get(i):getFullName()..";";
-        writer2:writeln(line);
-    end
-    writer2:close();
-
-    local writer3 = getModFileWriter("\\"..AnthroTraitsGlobals.ModID, "AT_Insect_Items.txt", false, false);
-    for i = 0, BugItems:size() -1
-    do
-        line = BugItems:get(i):getFullName()..";";
-        writer3:writeln(line);
-    end
-    writer3:close();
-
-    local writer4 = getModFileWriter("\\"..AnthroTraitsGlobals.ModID, "AT_FeralPoison_Items.txt", false, false);
-    for i = 0, PoisItems:size() -1
-    do
-        line = PoisItems:get(i):getFullName()..";";
-        writer4:writeln(line);
-    end
-    writer4:close();
-
-    local writer = getModFileWriter("\\"..AnthroTraitsGlobals.ModID, "Unused_Food_Items.txt", false, false);
-    for _, tableEntry in ipairs(unusedFood)
-    do
-        line = tableEntry:getFullName()..";";
-        writer:writeln(line);
-    end;
-    writer:close();
 end
 
 AnthroTraitsUtilities.AddItemTagToItemsFromSandbox = function(itemList, tag)
