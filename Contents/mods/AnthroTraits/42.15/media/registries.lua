@@ -4,9 +4,6 @@ AnthroTraitsGlobals = AnthroTraitsGlobals or {}
 AnthroTraitsGlobals.ModID = "AnthroTraits"
 AnthroTraitsGlobals.WorkshopID = 3025679944
 AnthroTraitsGlobals.ModVersion = 2.0
----@class DAMAGETYPE @As of B42.13, there is no Umbrella entry for DamageTypes taken in by the OnPlayerGetDamage event. This table acts as an enum for accuracy, precision and clarity's sake. 
-DAMAGETYPE = {Poison = "POISON", Hunger = "HUNGRY", Sickness = "SICK", Bleed = "BLEEDING", Thirst = "THIRST", HeavyLoad = "HEAVYLOAD", Knox = "INFECTION",
-                Malnutrition =  "LOWWEIGHT", Fall = "FALLDOWN", Weapon = "WEAPONHIT", HitByCar = "CARHITDAMAGE", CrashedInCar = "CARCRASHDAMAGE"}
 AnthroTraitsGlobals.UnwieldyHandsAffectedTimedActions = {"ISBuildAction", "ISCureFliesAction", "ISCureMildewAction", "ISHarvestPlantAction", "ISSeedAction",
                                          "ISAddItemInRecipe", "ISAddWaterFromItemAction", "ISBarricadeAction", "ISCraftAction", "ISCutHair",
                                          "ISDismantleAction", "ISDyeHair", "ISEjectMagazine", "ISFixAction", "ISFixGenerator", "ISInsertMagazine",
@@ -39,13 +36,7 @@ AnthroTraitsGlobals.CharacterTrait.UNGULIGRADE = CharacterTrait.register("Anthro
 AnthroTraitsGlobals.CharacterTrait.UNWIELDYHANDS = CharacterTrait.register("AnthroTraits:AT_UnwieldyHands")
 AnthroTraitsGlobals.CharacterTrait.VESTIGIALWINGS = CharacterTrait.register("AnthroTraits:AT_VestigialWings")
 AnthroTraitsGlobals.CharacterTrait.VOICEAVIAN = CharacterTrait.register("AnthroTraits:AT_VoiceAvian")
-AnthroTraitsGlobals.CharacterTrait.VOICEFELINE = CharacterTrait.register("AnthroTraits:AT_VoiceFeline")
 AnthroTraitsGlobals.CharacterTrait.VOICESHEEP = CharacterTrait.register("AnthroTraits:AT_VoiceSheep")
-
-AnthroTraitsGlobals.ExclaimerTraits = { }
-AnthroTraitsGlobals.ExclaimerTraits[AnthroTraitsGlobals.CharacterTrait.VOICEAVIAN] = "AnthroTraits:AT_VoiceAvian";
-AnthroTraitsGlobals.ExclaimerTraits[AnthroTraitsGlobals.CharacterTrait.VOICEFELINE] = "AnthroTraits:AT_VoiceFeline";
-AnthroTraitsGlobals.ExclaimerTraits[AnthroTraitsGlobals.CharacterTrait.VOICESHEEP] = "AnthroTraits:AT_VoiceSheep";
 
 AnthroTraitsGlobals.FoodTags.CARNIVORE = ItemTag.register("AnthroTraits:ATCarnivore")
 AnthroTraitsGlobals.FoodTags.HERBIVORE = ItemTag.register("AnthroTraits:ATHerbivore")

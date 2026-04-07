@@ -3,7 +3,7 @@
     "workspace": {
         "library": ["$PZ_UMBRELLA"],
         "workspaceRoots": [
-            "Contents/mods/AnthroTraits/42/media/lua"
+            "Contents/mods/AnthroTraits/42.13/media/lua"
         ]
     },
     "runtime": {

@@ -48,30 +48,11 @@
 -- Have a problem or question? Reach me on Discord: badonn
 ------------------------------------------------------------------------------------------------------
 
-local function startsWith(str, prefix, caseInsensitive)
-	local prefixLen = string.len(prefix);
-	if string.len(str) < prefixLen then
-		return false;
-	end
-	local start = string.sub(str, 1, string.len(prefix));
-	local prefixComp = prefix;
-	if caseInsensitive then
-		return string.lower(start) == string.lower(prefix);
-	end
-	return start == prefix;
-end
-
 -- gets sandbox var via case insensitive search from trait definition
 
 local function GetSandboxVarsTrait(traitDef, addString)
 	local locID = Registries.CHARACTER_TRAIT:getLocation(traitDef:getType())
-	local optionName;
-	-- special case for animal voice traits (shouldn't have a separate cost variable for each)
-	if startsWith(locID:getPath(), "AT_Voice", true) then
-		optionName = string.lower("AT_VoiceAnimal" .. addString)
-	else
-		optionName = string.lower(locID:getPath() .. addString)
-	end
+	local optionName = string.lower(locID:getPath() .. addString)
 	for k,v in pairs(SandboxVars.AnthroTraits) do
 		if string.lower(k) == optionName
 		then
@@ -81,8 +62,8 @@ local function GetSandboxVarsTrait(traitDef, addString)
 	return nil
 end
 
-local ATC = require("AnthroTraitsClient");
-local ATCM = require("NPCs/AnthroTraitsCreationMethods");
+local ATM = require("NPCs/AnthroTraitsMain");
+local ATC = require("NPCs/AnthroTraitsCreationMethods");
 local ATU = require("AnthroTraitsUtilities");
 
 
@@ -172,7 +153,7 @@ ISEatFoodAction.stop = function(self)
 
     OriginalEatStop(self);
 	-- apply AT food changes
-	ATU.ApplyFoodChanges(self.character, self.percentage * self:getJobDelta(), preStats, foodProps, foodChanges);
+	ATM.ApplyFoodChanges(self.character, self.percentage * self:getJobDelta(), preStats, foodProps, foodChanges)
 end
 
 -- eating process finished completely
@@ -184,7 +165,7 @@ ISEatFoodAction.complete = function(self)
     local foodChanges = ATU.CalculateFoodChanges(self.character, self.item, foodProps)
     OriginalEatComplete(self);
 	-- apply AT food changes
-	ATU.ApplyFoodChanges(self.character, self.percentage * self:getJobDelta(), preStats, foodProps, foodChanges)
+	ATM.ApplyFoodChanges(self.character, self.percentage * self:getJobDelta(), preStats, foodProps, foodChanges)
 end
 
 
@@ -200,7 +181,7 @@ ISBaseTimedAction.create = function(self)
                 local newTime = self.maxTime * (1 + SandboxVars.AnthroTraits.AT_UnwieldyHandsTimeIncrease)
                 if getDebug()
                 then
-                    DebugLog.log("UnwieldyHands activated. Old time: "..tostring(self.maxTime).." New time: "..tostring(newTime));
+                    print("UnwieldyHands activated. Old time: "..tostring(self.maxTime).." New time: "..tostring(newTime));
                 end
                 self.maxTime = newTime;
                 break;
@@ -496,8 +477,8 @@ end
 
 local oldSOSMD = SandboxOptionsScreen.onOptionMouseDown
 SandboxOptionsScreen.onOptionMouseDown = function(...)
-    ATCM.refundSelectedAffectedTraits();
+    ATC.refundSelectedAffectedTraits();
     oldSOSMD(...);
-    ATCM.setTraitDescriptions();
-    ATCM.sortTraits();
+    ATC.setTraitDescriptions();
+    ATC.sortTraits();
 end

@@ -324,8 +324,14 @@ option AnthroTraits.AT_VestigialWings_Cost
 	page = AnthroTraits, translation = AnthroTraits_VestigialWings_Cost,
 }
 
-option AnthroTraits.AT_VoiceAnimal_Cost
+option AnthroTraits.AT_VoiceAvian_Cost
 {
 	type = integer, min = -15, max = 15, default = 1,
-	page = AnthroTraits, translation = AnthroTraits_VoiceAnimal_Cost,
+	page = AnthroTraits, translation = AnthroTraits_VoiceAvian_Cost,
+}
+
+option AnthroTraits.AT_VoiceSheep_Cost
+{
+	type = integer, min = -15, max = 15, default = 1,
+	page = AnthroTraits, translation = AnthroTraits_VoiceSheep_Cost,
 }
