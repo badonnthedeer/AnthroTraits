@@ -75,31 +75,23 @@ AnthroTraitsUtilities.FileExists = function(path)
 end
 
 AnthroTraitsUtilities.ImportExclaimerPhrases = function()
-	local reader = getModFileReader("\\".. AnthroTraitsGlobals.ModID, "AT_ExclaimerPhrases.txt", false);
-	if reader
-	then
-		local line = reader:readLine()
-		while line ~= nil
-		do
-			local traitName = nil
-			local phrases = { }
-			for word in string.gmatch(line, "[^;]+") do
-				if traitName == nil
-				then
-					traitName = word
-				else
-					table.insert(phrases, word)
-				end
-			end
-			local trait = CharacterTrait.get(ResourceLocation.of(traitName))
-			if trait ~= nil and #phrases > 0
-			then
-				AnthroTraitsUtilities.ExclaimPhrases[trait] = phrases
-			end
-			line = reader:readLine()
-		end
-		reader:close()
-	end
+    for trait, name in pairs(AnthroTraitsGlobals.ExclaimerTraits) do
+        local line = getTextOrNull("IGUI_ExclaimerPhrases_" .. name)
+        if line then
+            local phrases = { }
+            for word in string.gmatch(line, "[^;]+") do
+                if traitName == nil
+                then
+                    traitName = word
+                else
+                    table.insert(phrases, word)
+                end
+            end
+            if #phrases > 0 then
+                AnthroTraitsUtilities.ExclaimPhrases[trait] = phrases
+            end
+        end
+    end
 end
 
 AnthroTraitsUtilities.ExportFoodGuideFiles = function()

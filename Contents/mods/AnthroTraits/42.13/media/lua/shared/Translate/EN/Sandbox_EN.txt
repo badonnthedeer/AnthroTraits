@@ -108,8 +108,6 @@ Sandbox_EN = {
 	Sandbox_AnthroTraits_UnwieldyHands_Cost_tooltip = "The cost of this trait at character creation.",
 	Sandbox_AnthroTraits_VestigialWings_Cost = "Vestigial Wings Cost",
 	Sandbox_AnthroTraits_VestigialWings_Cost_tooltip = "The cost of this trait at character creation.",
-	Sandbox_AnthroTraits_VoiceAvian_Cost = "Bird-like Voice Cost",
-	Sandbox_AnthroTraits_VoiceAvian_Cost_tooltip = "The cost of this trait at character creation.",
-	Sandbox_AnthroTraits_VoiceSheep_Cost = "Sheep-like Voice Cost",
-	Sandbox_AnthroTraits_VoiceSheep_Cost_tooltip = "The cost of this trait at character creation.",
+	Sandbox_AnthroTraits_VoiceAnimal_Cost = "Animal-like Voice Cost",
+	Sandbox_AnthroTraits_VoiceAnimal_Cost_tooltip = "The cost of the '<Animal> Voice' traits at character creation.",
 }

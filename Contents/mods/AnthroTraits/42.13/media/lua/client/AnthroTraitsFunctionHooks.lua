@@ -48,11 +48,30 @@
 -- Have a problem or question? Reach me on Discord: badonn
 ------------------------------------------------------------------------------------------------------
 
+local function startsWith(str, prefix, caseInsensitive)
+	local prefixLen = string.len(prefix);
+	if string.len(str) < prefixLen then
+		return false;
+	end
+	local start = string.sub(str, 1, string.len(prefix));
+	local prefixComp = prefix;
+	if caseInsensitive then
+		return string.lower(start) == string.lower(prefix);
+	end
+	return start == prefix;
+end
+
 -- gets sandbox var via case insensitive search from trait definition
 
 local function GetSandboxVarsTrait(traitDef, addString)
 	local locID = Registries.CHARACTER_TRAIT:getLocation(traitDef:getType())
-	local optionName = string.lower(locID:getPath() .. addString)
+	local optionName;
+	-- special case for animal voice traits (shouldn't have a separate cost variable for each)
+	if startsWith(locID:getPath(), "AT_Voice", true) then
+		optionName = string.lower("AT_VoiceAnimal" .. addString)
+	else
+		optionName = string.lower(locID:getPath() .. addString)
+	end
 	for k,v in pairs(SandboxVars.AnthroTraits) do
 		if string.lower(k) == optionName
 		then

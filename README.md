@@ -52,10 +52,13 @@ Do you really enjoy this mod--or even better--want to build on it? Please consid
     Don't take fall damage. Fall speed capped.
     </li>
 	<li><h2>Bird-like Voice</h2>
-    Need to think of some positive effects (or negative ones?). Will change phrases from Exclaimer negative trait.
+    Adds a chance for zombies to dismiss the exclamation as an animal call. Will change phrases from Exclaimer negative trait.
+    </li>
+	<li><h2>Feline Voice</h2>
+    Adds a chance for zombies to dismiss the exclamation as an animal call. Will change phrases from Exclaimer negative trait.
     </li>
 	<li><h2>Sheep-like Voice</h2>
-    Need to think of some positive effects (or negative ones?). Will change phrases from Exclaimer negative trait.
+    Adds a chance for zombies to dismiss the exclamation as an animal call. Will change phrases from Exclaimer negative trait.
     </li>
 </ul>
 <h1>Negative Trait List</h1>
