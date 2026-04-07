@@ -77,6 +77,12 @@ description=    [*][h2]Unwieldy Hands[/h2]
 description=    Actions requiring fine motor control are slower.
 description=[/list]
 description=[hr][/hr]
+description=
+description=[h1]Other interesting mods[/h1]
+description=- [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2893930681]Anthro Survivors[/url]: for obvious reasons, Anthro Traits integrates well with this one
+description=- [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3686068158]True Dualwield Z[/url] or [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3698500716]Dual Wielding Attacks[/url]: both offer unarmed punching or (with a bit of imagination) clawed hand attacks
+description=- [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2840805724]Simple Overhaul: Traits and Occupations[/url]: Anthro Traits has integrated compatiblity for this mod
+description=
 description=[h1]A message from the creator[/h1]
 description=Do you really enjoy this mod--or even better--want to build on it? Please consider [url=https://ko-fi.com/badonnthedeer]donating to me[/url]! I'm in definite financial need, so every little bit helps! Thank you.
 description=
