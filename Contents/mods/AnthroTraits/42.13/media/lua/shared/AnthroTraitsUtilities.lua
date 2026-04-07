@@ -1156,12 +1156,14 @@ end
 ---@param player IsoPlayer
 ---@param bodyPartType BodyPartType
 AnthroTraitsUtilities.InfectWound = function(player, bodyPartType)
-    if not isClient
+    if not isClient()
     then
         local bodyDmg = player:getBodyDamage();
         bodyDmg:getBodyPart(bodyPartType):setInfectedWound(true); 
+        DebugLog.log("Anthrotraits: ran infect wound on client.");
     else
-        sendClientCommand("AnthroTraits", "InfectWound", {{playerOnlineID = player:getOnlineID(), bodyPartType = bodyPartType}});
+        DebugLog.log("Anthrotraits: sending infect wound command");
+        sendClientCommand("AnthroTraits", "InfectWound", player, {{playerOnlineID = player:getOnlineID(), bodyPartType = bodyPartType}});
     end
 end
 
