@@ -62,8 +62,8 @@ local function GetSandboxVarsTrait(traitDef, addString)
 	return nil
 end
 
-local ATM = require("NPCs/AnthroTraitsMain");
-local ATC = require("NPCs/AnthroTraitsCreationMethods");
+local ATM = require("AnthroTraitsMain");
+local ATC = require("AnthroTraitsCreationMethods");
 local ATU = require("AnthroTraitsUtilities");
 
 
