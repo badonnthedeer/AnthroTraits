@@ -188,27 +188,6 @@ ISEatFoodAction.complete = function(self)
 end
 
 
-local OriginalTimedActionCreate = ISBaseTimedAction.create;
-ISBaseTimedAction.create = function(self)
-    OriginalTimedActionCreate(self);
-    if self.character:hasTrait(AnthroTraitsGlobals.CharacterTrait.UNWIELDYHANDS)
-    then
-        for i = 1, #AnthroTraitsGlobals.UnwieldyHandsAffectedTimedActions
-        do
-            if self.Type == AnthroTraitsGlobals.UnwieldyHandsAffectedTimedActions[i]
-            then
-                local newTime = self.maxTime * (1 + SandboxVars.AnthroTraits.AT_UnwieldyHandsTimeIncrease)
-                if getDebug()
-                then
-                    print("UnwieldyHands activated. Old time: "..tostring(self.maxTime).." New time: "..tostring(newTime));
-                end
-                self.maxTime = newTime;
-                break;
-            end
-        end
-    end
-end
-
 
 local oldRender = ISToolTipInv.render
 ISToolTipInv.render = function(self)

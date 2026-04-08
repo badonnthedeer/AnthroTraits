@@ -4,13 +4,32 @@ AnthroTraitsGlobals = AnthroTraitsGlobals or {}
 AnthroTraitsGlobals.ModID = "AnthroTraits"
 AnthroTraitsGlobals.WorkshopID = 3025679944
 AnthroTraitsGlobals.ModVersion = 2.0
-AnthroTraitsGlobals.UnwieldyHandsAffectedTimedActions = {"ISBuildAction", "ISCureFliesAction", "ISCureMildewAction", "ISHarvestPlantAction", "ISSeedAction",
-                                         "ISAddItemInRecipe", "ISAddWaterFromItemAction", "ISBarricadeAction", "ISCraftAction", "ISCutHair",
-                                         "ISDismantleAction", "ISDyeHair", "ISEjectMagazine", "ISFixAction", "ISFixGenerator", "ISInsertMagazine",
-                                         "ISLoadBulletsInMagazine", "ISPickupBrokenGlass", "ISPlaceTrap", "ISPlumbItem", "ISRackFirearm",
-                                         "ISReloadWeaponAction", "ISRemoveBrokenGlass", "ISRemoveBullet", "ISRemoveWeaponUpgrade", "ISStitch",
-                                         "ISTakePillAction" , "ISTrimBeard", "ISUnbarricadeAction", "ISUnloadBulletsFromFirearm",
-                                         "ISUnloadBulletsFromMagazine", "ISUpgradeWeapon"}
+AnthroTraitsGlobals.UnwieldyHandsAffectedTimedActions =
+{
+    -- animal related
+    "ISAttachAnimalToPlayer", "ISAttachAnimalToTree", "ISHutchGrabEgg", "ISMilkAnimal",
+    -- fishing related
+    "AIAttachLureAction", "AIRemoveLureAction",
+    -- misc (from lua/shared/TimedActions) folder; client TimedActions are primarily for showing infos to players (nothing that really requires dexterity)
+    "ISAddItemInRecipe", "ISApplyBandage", "ISApplyMakeUp", "ISBarricadeAction", "ISBBQInsertPropaneTank", "ISConnectCarBatteryToChargerAction",
+    "ISCraftAction", "ISCutHair", "ISDeviceBatteryAction", "ISDismantleAction", "ISDyeHair", "ISFixAction", "ISFixGenerator",
+    "ISFixVehiclePartAction", "ISLockDoor", "ISPadlockAction", "ISPadlockByCodeAction",
+    "ISPickupBrokenGlass", "ISPlaceTrap", "ISPlugGenerator", "ISPlumbItem", "ISRemoveBrokenGlass",
+    "ISRemoveBullet", "ISRemoveCarBatteryFromChargerAction", "ISRemoveWeaponUpgrade", "ISRepairClothing", "ISSplint", "ISStitch", "ISTakePillAction",
+    "ISTakeTrap", "ISTrimBeard", "ISUnbarricadeAction", "ISUpgradeWeapon",
+    -- building related
+    "ISBuildAction", "ISMultiStageBuild", "ISPaintAction", "ISPaintSignAction", "ISPlasterAction", "ISWallpaperAction",
+    -- farming related
+    "ISCurePlantAction", "ISHarvestPlantAction", "ISSeedActionNew",
+    -- moveable related
+    "ISMoveablesAction",
+    -- vehicles related
+    "ISHotwireVehicle", "ISInstallVehiclePart", "ISRepairEngine", "ISRepairLightbar", "ISTakeEngineParts", "ISUninstallVehiclePart",
+    -- entity (?) related
+    "ISHandcraftAction",
+}
+-- not working because special time calculations: "ISEjectMagazine", "ISInsertMagazine", "ISLoadBulletsInMagazine", "ISRackFirearm", "ISReloadWeaponAction", "ISUnloadBulletsFromFirearm", "ISUnloadBulletsFromMagazine"
+
 AnthroTraitsGlobals.CharacterTrait = {}
 AnthroTraitsGlobals.FoodTags = {}
 AnthroTraitsGlobals.FoodCharacterStatInfo = {}
