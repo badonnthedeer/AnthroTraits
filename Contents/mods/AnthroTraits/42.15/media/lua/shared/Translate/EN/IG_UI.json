@@ -2,4 +2,6 @@
     "IGUI_ExclaimerPhrases_AnthroTraits:AT_VoiceAvian" : "*TWEEEET-REEEET*;*CHIEEP-CHIEEP-CHIEEP*;*CAW-CAW-CAW*;*KRI-KRI-KRI-KRI*;*JI-JI-JI-JI-JI-JI*",
     "IGUI_ExclaimerPhrases_AnthroTraits:AT_VoiceFeline" : "*MEEOOW*;*MRREOWW*;*HSSSSSSS*;*HHHRRSSSSS*;*MCHREOW*;*MEOOOOOUUUW*;*MMMWRAAWWWW*;*RWWAAAWWR*",
     "IGUI_ExclaimerPhrases_AnthroTraits:AT_VoiceSheep" : "*BLEA-BLEAT*;*BLEAT*;*BLEAAAAT*;*BLEE-EAT*;*EEEEP*",
+    "IGUI_AT_Lonely_Comment" : "I'm feeling sooo lonely...",
+    "IGUI_AT_Stinky_Comment" : "You stink!",
 }

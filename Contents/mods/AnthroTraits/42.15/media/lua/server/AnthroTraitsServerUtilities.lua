@@ -26,6 +26,31 @@ local AnthroTraitsServerUtilities = {}
 	-- return false
 -- end
 
+function AnthroTraitsServerUtilities.getPlayerModDataField(player, field, defValue)
+    if not player then
+        DebugLog.log("AT getPlayerModDataField: player nil");
+        return defValue;
+    end
+    local atData = player:getModData().ATPlayerData;
+    if not atData then
+        return defValue;
+    end
+    return atData[field] or defValue;
+end
+
+function AnthroTraitsServerUtilities.setPlayerModDataField(player, field, value)
+    if not player then
+        DebugLog.log("AT setPlayerModDataField: player nil");
+        return;
+    end
+    local atData = player:getModData().ATPlayerData;
+    if not atData then
+        atData = {}
+        player:getModData().ATPlayerData = atData;
+    end
+    atData[field] = value;
+end
+
 function AnthroTraitsServerUtilities.foreachPlayerDo(func)
 	if isServer() then
 		local players = getOnlinePlayers();

@@ -349,6 +349,38 @@ local function playerBeStinky(player)
     end
 end
 
+local function playerLonelyCheck(player)
+    local currentTime = GameTime.getInstance():getWorldAgeHours();
+    local tolerance = SandboxVars.AnthroTraits.AT_LonelyHoursToAffect;
+    local lastSeenSomeoneElse = ATSU.getPlayerModDataField(player, "LastSeenSomeoneElse");
+    if not lastSeenSomeoneElse then
+        lastSeenSomeoneElse = currentTime;
+        ATSU.setPlayerModDataField(player, "LastSeenSomeoneElse", lastSeenSomeoneElse);
+    end
+    local lonelyDistance = 30;
+    local seenAnyone = false;
+    ATSU.foreachPlayerDo(function(otherPlayer)
+        -- filter self and by distance
+        if otherPlayer == player or player:getDistanceSq(otherPlayer) > lonelyDistance ^ 2 then
+            return false;
+        end
+        -- check if can see other player, NOTE: not sure if this really works as expected... maybe just stick with distance?
+        -- local otherSquare = player:getSquare();
+        -- if not otherSquare or otherSquare:isBlockedTo(player:getSquare()) then
+        --     return false;
+        -- end
+        seenAnyone = true;
+        return true;    -- can cancel loop here
+    end);
+    if seenAnyone then
+        ATSU.setPlayerModDataField(player, "LastSeenSomeoneElse", currentTime);
+    elseif currentTime > lastSeenSomeoneElse + tolerance then
+        player:getStats():add(CharacterStat.UNHAPPINESS, SandboxVars.AnthroTraits.AT_LonelyHourlyUnhappyIncrease);
+        DebugLog.log(DebugLog.Network, "AT sending server command feelingLonely");
+        ATSU.sendServerCommand(player, AnthroTraitsGlobals.ModID, "feelingLonely", { ATShU.getPlayerID(player) });
+    end
+end
+
 local function onEveryOneMinutePlayer(player)
 	local ATGt = AnthroTraitsGlobals.CharacterTrait;
     if player:hasTrait(ATGt.EXCLAIMER) and not player:isAsleep() then
@@ -359,14 +391,26 @@ local function onEveryOneMinutePlayer(player)
     end
 end
 
+local function everyHoursPlayer(player)
+	local ATGt = AnthroTraitsGlobals.CharacterTrait;
+    if player:hasTrait(ATGt.LONELY) then
+        playerLonelyCheck(player);
+    end
+end
+
 function AnthroTraitsServerMain.OnEveryOneMinute()
     ATSU.foreachPlayerDo(onEveryOneMinutePlayer);
+end
+
+function AnthroTraitsServerMain.EveryHours()
+    ATSU.foreachPlayerDo(everyHoursPlayer);
 end
 
 -- WTF?! why does PZ load the server folder on an mp client?!
 if not isClient() then
     Events.EveryOneMinute.Add(AnthroTraitsServerMain.OnEveryOneMinute);
     Events.OnPlayerGetDamage.Add(AnthroTraitsServerMain.ATPlayerDamageTick);
+    Events.EveryHours.Add(AnthroTraitsServerMain.EveryHours)
 end
 
 return AnthroTraitsServerMain;

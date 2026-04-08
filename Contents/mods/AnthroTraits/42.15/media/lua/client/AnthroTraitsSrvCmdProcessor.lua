@@ -1,11 +1,15 @@
 local ATShU = require "AnthroTraitsSharedUtilities"
 local ATU = require "AnthroTraitsUtilities"
 
+local function showLonelyComment(player)
+    player:Say(getText("IGUI_AT_Lonely_Comment"));
+end
+
 local function showStinkyComments(nearbyPlayers)
     for _, playerID in ipairs(nearbyPlayers) do
         local nearbyPlayer = ATShU.getPlayerFromID(playerID);
         if nearbyPlayer then
-            nearbyPlayer:Say("You stink!");
+            nearbyPlayer:Say(getText("IGUI_AT_Stinky_Comment"));
         end
     end
 end
@@ -38,6 +42,9 @@ local function onServerCommandReceived(module, command, data)
         triggerExclaimer(exclaimingPlayer, mitigated);
     elseif command == "stinkyComments" then
         showStinkyComments(data);
+    elseif command == "feelingLonely" then
+        local player = ATShU.getPlayerFromID(data[1]);
+        showLonelyComment(player);
     end
 end
 
