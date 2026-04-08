@@ -83,7 +83,7 @@
 	"Sandbox_AnthroTraits_Lonely_Cost" : "Lonely Cost",
 	"Sandbox_AnthroTraits_Lonely_Cost_tooltip" : "The cost of this trait at character creation.",
 	"Sandbox_AnthroTraits_NaturalTumblerFallTimeMult" : "Natural Tumbler Fall Reduction",
-	"Sandbox_AnthroTraits_NaturalTumblerFallTimeMult_tooltip" : "That amount that the fall time attribute is multiplied per frame, determining damage or death.<br> (a value of 0.5 effectively doubles the height you can fall without injury or dying.) ",
+	"Sandbox_AnthroTraits_NaturalTumblerFallTimeMult_tooltip" : "That amount that the fall speed is multiplied per frame, determining damage or death.<br> (a value of 0.5 effectively doubles the height you can fall without injury or dying.) ",
 	"Sandbox_AnthroTraits_NaturalTumbler_Cost" : "Natural Tumbler Cost",
 	"Sandbox_AnthroTraits_NaturalTumbler_Cost_tooltip" : "The cost of this trait at character creation.",
 	"Sandbox_AnthroTraits_StinkyCommentChance" : "Stinky Comment Chance",

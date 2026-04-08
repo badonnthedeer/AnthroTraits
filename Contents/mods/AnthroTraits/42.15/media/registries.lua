@@ -34,6 +34,8 @@ AnthroTraitsGlobals.CharacterTrait = {}
 AnthroTraitsGlobals.FoodTags = {}
 AnthroTraitsGlobals.FoodCharacterStatInfo = {}
 
+AnthroTraitsGlobals.VESTIGIALWINGS_MAXFALLSPEED = 2;    -- 2 looks like a plausible fallspeed for someone with kinda (not) working wings
+
 AnthroTraitsGlobals.CharacterTrait.ANTHROIMMUNITY = CharacterTrait.register("AnthroTraits:AT_AnthroImmunity")
 AnthroTraitsGlobals.CharacterTrait.BEASTOFBURDEN = CharacterTrait.register("AnthroTraits:AT_BeastOfBurden")
 AnthroTraitsGlobals.CharacterTrait.BUG_O_SSIEUR = CharacterTrait.register("AnthroTraits:AT_Bug_o_ssieur")

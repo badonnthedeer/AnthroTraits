@@ -27,7 +27,7 @@
 	"UI_trait_AT_Lonely" : "Lonely",
 	"UI_trait_AT_Lonely_desc" : "Being solitary never suited you or your pack.<br>After %1 hours without seeing a player, lose %2% happiness per hour.",
 	"UI_trait_AT_NaturalTumbler" : "Natural Tumbler",
-	"UI_trait_AT_NaturalTumbler_desc" : "Your body is built for short falls.<br>Fall as if you fell %1% the height.",
+	"UI_trait_AT_NaturalTumbler_desc" : "Your body is built for short falls.<br>You fall at %1% the normal acceleration.",
 	"UI_trait_AT_Stinky" : "Stinky",
 	"UI_trait_AT_Stinky_desc" : "You have a tendency to stink. Worse, you're nose-blind to it.<br>If you're too dirty, Zombies will be more attracted to you.<br>Other players may comment on your smell.",
 	"UI_trait_AT_Tail" : "Tailed",

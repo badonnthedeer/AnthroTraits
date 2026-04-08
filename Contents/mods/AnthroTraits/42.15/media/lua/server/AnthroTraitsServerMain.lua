@@ -357,7 +357,7 @@ local function playerLonelyCheck(player)
         lastSeenSomeoneElse = currentTime;
         ATSU.setPlayerModDataField(player, "LastSeenSomeoneElse", lastSeenSomeoneElse);
     end
-    local lonelyDistance = 30;
+    local lonelyDistance = SandboxVars.AnthroTraits.AT_StinkyDistance;
     local seenAnyone = false;
     ATSU.foreachPlayerDo(function(otherPlayer)
         -- filter self and by distance
@@ -381,6 +381,15 @@ local function playerLonelyCheck(player)
     end
 end
 
+-- initialized during server start
+local prevLastFallSpeedPlayers;
+
+local function onServerTickPlayer(player)
+    local playerID = ATShU.getPlayerID(player);
+    -- SP/MP server must process fallspeed and MP client must do the same
+    prevLastFallSpeedPlayers[playerID] = ATShU.processFallingPlayer(player, prevLastFallSpeedPlayers[playerID])
+end
+
 local function onEveryOneMinutePlayer(player)
 	local ATGt = AnthroTraitsGlobals.CharacterTrait;
     if player:hasTrait(ATGt.EXCLAIMER) and not player:isAsleep() then
@@ -398,6 +407,10 @@ local function everyHoursPlayer(player)
     end
 end
 
+function AnthroTraitsServerMain.OnServerTick(tick)
+    ATSU.foreachPlayerDo(onServerTickPlayer);
+end
+
 function AnthroTraitsServerMain.OnEveryOneMinute()
     ATSU.foreachPlayerDo(onEveryOneMinutePlayer);
 end
@@ -406,11 +419,17 @@ function AnthroTraitsServerMain.EveryHours()
     ATSU.foreachPlayerDo(everyHoursPlayer);
 end
 
+function AnthroTraitsServerMain.OnGameStart()
+    prevLastFallSpeedPlayers = {};
+end
+
 -- WTF?! why does PZ load the server folder on an mp client?!
 if not isClient() then
+    Events.OnTick.Add(AnthroTraitsServerMain.OnServerTick);
     Events.EveryOneMinute.Add(AnthroTraitsServerMain.OnEveryOneMinute);
     Events.OnPlayerGetDamage.Add(AnthroTraitsServerMain.ATPlayerDamageTick);
-    Events.EveryHours.Add(AnthroTraitsServerMain.EveryHours)
+    Events.EveryHours.Add(AnthroTraitsServerMain.EveryHours);
+    Events.OnGameStart.Add(AnthroTraitsServerMain.OnGameStart);
 end
 
 return AnthroTraitsServerMain;
