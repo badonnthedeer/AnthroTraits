@@ -1,6 +1,7 @@
 local AnthroTraitsServerMain = {};
 
---local ATUs = require("AnthroTraitsServerUtilities");
+local ATSU = require("AnthroTraitsServerUtilities");
+local ATShU = require "AnthroTraitsSharedUtilities"
 
 local function IsAnthro(gameCharacter)
     if (getActivatedMods():contains("\\FurryMod") or getActivatedMods():contains("\\FurryApocalypse")) and gameCharacter ~= nil
@@ -256,6 +257,116 @@ AnthroTraitsServerMain.ATPlayerDamageTick = function(player, damageType, damage)
     end
 end
 
-Events.OnPlayerGetDamage.Add(AnthroTraitsServerMain.ATPlayerDamageTick);
+local function playerExclaimerCheck(player)
+    local moodles = player:getMoodles();
+    local panicLevel = moodles:getMoodleLevel(MoodleType.PANIC)
+    local thresholdMultiplier = SandboxVars.AnthroTraits.AT_ExclaimerExclaimThresholdMultiplier;
+	local mitigationThreshold = SandboxVars.AnthroTraits.AT_ExclaimerAnthroVoiceMitigation
+    local exclaimChance = ZombRand(1,100);
+
+    if panicLevel <= 1 or exclaimChance > (panicLevel * thresholdMultiplier) then
+        return;
+    end
+    local mitigated = false;
+    -- check for mitigation
+    for trait, _ in pairs(AnthroTraitsGlobals.ExclaimerTraits) do
+        if player:hasTrait(trait) then
+            mitigated = ZombRand(1, 100) <= mitigationThreshold;
+            break;
+        end
+    end
+    if not mitigated then
+        local playerSquare = player:getCurrentSquare();
+        getWorldSoundManager():addSound(player,
+                playerSquare:getX(),
+                playerSquare:getY(),
+                playerSquare:getZ(),
+                20,
+                100);
+    end
+    local playerID = ATShU.getPlayerID(player);
+    DebugLog.log(DebugLog.Network, "AT sending server command exclaimerTriggered");
+    ATSU.sendServerCommand(AnthroTraitsGlobals.ModID, "exclaimerTriggered", { playerID, mitigated });
+end
+
+-- cooldown for stinky comments to prevent players spam commenting
+local stinkyCommentCooldowns = {}
+local stinkyCommentDefaultCooldown = 0.5    -- in hours
+
+local function playerBeStinky(player)
+    local stinkyLoudness = SandboxVars.AnthroTraits.AT_StinkyLoudness
+    local stinkyDistance = SandboxVars.AnthroTraits.AT_StinkyDistance
+    local stinkyCommentChance = SandboxVars.AnthroTraits.AT_StinkyCommentChance * 100
+    local stinkyThreshold = SandboxVars.AnthroTraits.AT_StinkyThreshold
+    local playerSquare = player:getCurrentSquare();
+    local totalDirtiness = 0;
+    local visual = player:getHumanVisual();
+    for i = 0, BloodBodyPartType.MAX:index()-1 do
+        local bloodBodyPartType = BloodBodyPartType.FromIndex(i)
+        totalDirtiness = totalDirtiness + visual:getDirt(bloodBodyPartType);
+    end
+    if(totalDirtiness < stinkyThreshold) then
+        return;
+    end
+    getWorldSoundManager():addSound(player,
+            playerSquare:getX(),
+            playerSquare:getY(),
+            playerSquare:getZ(),
+            stinkyDistance,
+            stinkyLoudness);
+    local currentTime = GameTime.getInstance():getWorldAgeHours();
+    local commentingPlayers = nil;
+    ATSU.foreachPlayerDo(function(nearbyPlayer)
+        if nearbyPlayer == player then
+            return;
+        end
+        local nearbyPlayerID = ATShU.getPlayerID(nearbyPlayer);
+        local cooldown = stinkyCommentCooldowns[nearbyPlayerID] or 0;
+        if currentTime < cooldown then
+            return;
+        end
+        if ZombRand(1, 100) > stinkyCommentChance then
+            return;
+        end
+        if nearbyPlayer:isAsleep() or nearbyPlayer:DistTo(player) > stinkyLoudness then
+            DebugLog.log("AT stinky asleep or too far away");
+            return; 
+        end
+        local moodles = nearbyPlayer:getMoodles();
+        if moodles:getMoodleLevel(MoodleType.PAIN) >= 2 or moodles:getMoodleLevel(MoodleType.PANIC) >= 1 then
+            DebugLog.log("AT stinky too pained or panicked");
+            return;
+        end
+        -- 
+        stinkyCommentCooldowns[nearbyPlayerID] = currentTime + stinkyCommentDefaultCooldown;
+        -- show comment only to stinky player (TODO: maybe show it to everyone?)
+        commentingPlayers = commentingPlayers or {};
+        table.insert(commentingPlayers, nearbyPlayerID);
+    end);
+    if commentingPlayers then
+        DebugLog.log(DebugLog.Network, "AT sending server command stinkyComments");
+        ATSU.sendServerCommand(player, AnthroTraitsGlobals.ModID, "stinkyComments", commentingPlayers);
+    end
+end
+
+local function onEveryOneMinutePlayer(player)
+	local ATGt = AnthroTraitsGlobals.CharacterTrait;
+    if player:hasTrait(ATGt.EXCLAIMER) and not player:isAsleep() then
+        playerExclaimerCheck(player);
+    end
+    if player:hasTrait(ATGt.STINKY) then
+        playerBeStinky(player);
+    end
+end
+
+function AnthroTraitsServerMain.OnEveryOneMinute()
+    ATSU.foreachPlayerDo(onEveryOneMinutePlayer);
+end
+
+-- WTF?! why does PZ load the server folder on an mp client?!
+if not isClient() then
+    Events.EveryOneMinute.Add(AnthroTraitsServerMain.OnEveryOneMinute);
+    Events.OnPlayerGetDamage.Add(AnthroTraitsServerMain.ATPlayerDamageTick);
+end
 
 return AnthroTraitsServerMain;

@@ -272,7 +272,7 @@ option AnthroTraits.AT_Stinky_Cost
 
 option AnthroTraits.AT_StinkyCommentChance
 {
-	type = double, min = 0, max = 1, default = .001,
+	type = double, min = 0, max = 1, default = .5,
 	page = AnthroTraits, translation = AnthroTraits_StinkyCommentChance,
 }
 
