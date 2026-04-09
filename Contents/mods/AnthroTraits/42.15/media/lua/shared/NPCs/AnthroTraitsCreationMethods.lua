@@ -151,7 +151,7 @@ AnthroTraitsCreationMethods.initAnthroTraits = function()
     AT_Digitigrade:addXPBoost(Perks.Sneak, 1);
     ATCM.TTF.Add("AnthroTraits:AT_Digitigrade", "AnthroTraits,CostVariable,Anthro");
 	createDescInfo(AT_Digitigrade, "AT_Digitigrade",
-		{ createDescVar("AT_DigitigradeStompDmgPctIncrease", 100) }
+		{ createDescVar("AT_DigitigradeStompDmgPctIncrease", 100), createDescVar("AT_DigitigradeCarryWeightMalus", 100) }
 	)
 
     --EXCLAIMER
@@ -237,7 +237,7 @@ AnthroTraitsCreationMethods.initAnthroTraits = function()
     AT_Unguligrade:addXPBoost(Perks.Nimble, 1);
     ATCM.TTF.Add("AnthroTraits:AT_Unguligrade", "AnthroTraits,CostVariable,Anthro,Unguligrade");
 	createDescInfo(AT_Unguligrade, "AT_Unguligrade",
-		{ createDescVar("AT_UnguligradeStompDmgPctIncrease", 100) }
+		{ createDescVar("AT_UnguligradeStompDmgPctIncrease", 100), createDescVar("AT_UnguligradeCarryWeightMalus", 100) }
 	)
     --UNWIELDY HANDS
 	local AT_UnwieldyHands = CharacterTraitDefinition.addCharacterTraitDefinition(ATGt.UNWIELDYHANDS,

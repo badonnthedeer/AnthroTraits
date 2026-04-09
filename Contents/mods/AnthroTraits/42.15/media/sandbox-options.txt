@@ -144,6 +144,12 @@ option AnthroTraits.AT_DigitigradeStompDmgPctIncrease
 	page = AnthroTraits, translation = AnthroTraits_DigitigradeStompDmgPctIncrease,
 }
 
+option AnthroTraits.AT_DigitigradeCarryWeightMalus
+{
+	type = double, min = 0, max = 1, default = .05,
+	page = AnthroTraits, translation = AnthroTraits_DigitigradeCarryWeightMalus,
+}
+
 option AnthroTraits.AT_Exclaimer_Cost
 {
 	type = integer, min = -15, max = 15, default = -6,
@@ -322,6 +328,12 @@ option AnthroTraits.AT_Unguligrade_Cost
 {
 	type = integer, min = -15, max = 15, default = 4,
 	page = AnthroTraits, translation = AnthroTraits_Unguligrade_Cost,
+}
+
+option AnthroTraits.AT_UnguligradeCarryWeightMalus
+{
+	type = double, min = 0, max = 1, default = .1,
+	page = AnthroTraits, translation = AnthroTraits_UnguligradeCarryWeightMalus,
 }
 
 option AnthroTraits.AT_UnguligradeStompDmgPctIncrease

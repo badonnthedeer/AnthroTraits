@@ -3,6 +3,8 @@ local AnthroTraitsServerMain = {};
 local ATSU = require("AnthroTraitsServerUtilities");
 local ATShU = require "AnthroTraitsSharedUtilities"
 
+local isWinter;
+
 local function IsAnthro(gameCharacter)
     if (getActivatedMods():contains("\\FurryMod") or getActivatedMods():contains("\\FurryApocalypse")) and gameCharacter ~= nil
     then
@@ -388,6 +390,8 @@ local function onServerTickPlayer(player)
     local playerID = ATShU.getPlayerID(player);
     -- SP/MP server must process fallspeed and MP client must do the same
     prevLastFallSpeedPlayers[playerID] = ATShU.processFallingPlayer(player, prevLastFallSpeedPlayers[playerID])
+    -- server applies torpor => will be periodically sync'ed to clients
+    ATShU.applyTorporPlayer(player, isWinter);
 end
 
 local function onEveryOneMinutePlayer(player)
@@ -419,8 +423,13 @@ function AnthroTraitsServerMain.EveryHours()
     ATSU.foreachPlayerDo(everyHoursPlayer);
 end
 
+function AnthroTraitsServerMain.EveryDays()
+    isWinter = ATShU.checkIfIsWinter();
+end
+
 function AnthroTraitsServerMain.OnGameStart()
     prevLastFallSpeedPlayers = {};
+    isWinter = ATShU.checkIfIsWinter();
 end
 
 -- WTF?! why does PZ load the server folder on an mp client?!
@@ -429,6 +438,7 @@ if not isClient() then
     Events.EveryOneMinute.Add(AnthroTraitsServerMain.OnEveryOneMinute);
     Events.OnPlayerGetDamage.Add(AnthroTraitsServerMain.ATPlayerDamageTick);
     Events.EveryHours.Add(AnthroTraitsServerMain.EveryHours);
+    Events.EveryDays.Add(AnthroTraitsServerMain.EveryDays);
     Events.OnGameStart.Add(AnthroTraitsServerMain.OnGameStart);
 end
 

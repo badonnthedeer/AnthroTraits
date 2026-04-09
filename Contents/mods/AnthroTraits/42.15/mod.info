@@ -6,5 +6,5 @@ url=https://github.com/badonnthedeer/AnthroTraits
 poster=poster.png
 icon=icon.png
 modversion=42_15.0.0
-require=\TraitTagFramework
+require=\TraitTagFramework,\UnifiedCarryWeightFramework
 versionMin=42.15.0

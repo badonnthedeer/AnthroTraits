@@ -1,3 +1,4 @@
+
 local AnthroTraitsSharedUtilities = {}
 
 function AnthroTraitsSharedUtilities.getPlayerID(player)
@@ -34,6 +35,23 @@ function AnthroTraitsSharedUtilities.processFallingPlayer(player, prevLastFallSp
 		end
     end
 	return prevLastFallSpeed;
+end
+
+function AnthroTraitsSharedUtilities.checkIfIsWinter()
+	local season = getClimateManager():getSeason();
+    local winterInt = zombie.erosion.season.ErosionSeason.SEASON_WINTER;
+    --https://demiurgequantified.github.io/ProjectZomboidJavaDocs/constant-values.html#zombie.erosion.season.ErosionSeason.NUM_SEASONS
+    return season:isSeason(winterInt);
+end
+
+function AnthroTraitsSharedUtilities.applyTorporPlayer(player, isWinter)
+	if isWinter and player:hasTrait(AnthroTraitsGlobals.CharacterTrait.TORPOR) then
+        local limit = 1.0 - SandboxVars.AnthroTraits.AT_TorporEnduranceDecrease;
+        local stats = player:getStats();
+        if stats:get(CharacterStat.ENDURANCE) > limit then
+            stats:set(CharacterStat.ENDURANCE, limit);
+        end
+    end
 end
 
 return AnthroTraitsSharedUtilities;
