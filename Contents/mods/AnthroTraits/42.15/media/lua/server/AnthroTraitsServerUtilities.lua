@@ -51,24 +51,30 @@ function AnthroTraitsServerUtilities.setPlayerModDataField(player, field, value)
     atData[field] = value;
 end
 
-function AnthroTraitsServerUtilities.foreachPlayerDo(func)
+function AnthroTraitsServerUtilities.foreachPlayerDo(func, arg, predicate)
 	if isServer() then
 		local players = getOnlinePlayers();
 		if not players then
 			return;
 		end
 		for i=0, players:size()-1 do
-			local res = func(players:get(i));
-			if res then
-				return;
-			end
+            local player = players:get(i);
+            if not predicate or predicate(player) then
+                local res = func(player, arg);
+                if res then
+                    return;
+                end
+            end
 		end
 	else
 		for i=0, getNumActivePlayers()-1 do
-			local res = func(getSpecificPlayer(i));
-			if res then
-				return;
-			end
+            local player = getSpecificPlayer(i);
+            if not predicate or predicate(player) then
+                local res = func(player, arg);
+                if res then
+                    return;
+                end
+            end
 		end
 	end
 end

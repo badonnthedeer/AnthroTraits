@@ -35,6 +35,11 @@ AnthroTraitsGlobals.FoodTags = {}
 AnthroTraitsGlobals.FoodCharacterStatInfo = {}
 
 AnthroTraitsGlobals.VESTIGIALWINGS_MAXFALLSPEED = 2;    -- 2 looks like a plausible fallspeed for someone with kinda (not) working wings
+AnthroTraitsGlobals.BULLRUSH_PUSHSTART = 15;    -- player starts pushing zombies over after this many ticks
+AnthroTraitsGlobals.BULLRUSH_PUSHINTERVAL = 8;
+AnthroTraitsGlobals.BULLRUSH_PUSHRANGE = 1;
+AnthroTraitsGlobals.BULLRUSH_PERZOMBIECOST_MIN = 0.001;
+AnthroTraitsGlobals.BULLRUSH_PERZOMBIECOST_MAX = 0.02;
 
 AnthroTraitsGlobals.CharacterTrait.ANTHROIMMUNITY = CharacterTrait.register("AnthroTraits:AT_AnthroImmunity")
 AnthroTraitsGlobals.CharacterTrait.BEASTOFBURDEN = CharacterTrait.register("AnthroTraits:AT_BeastOfBurden")

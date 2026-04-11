@@ -31,11 +31,27 @@ local function triggerExclaimer(exclaimingPlayer, mitigated)
     end
 end
 
+local function bullrushZombies(player, zombieIDs)
+    -- too far away for this client to know about zombies being knocked down
+    if not player:getCell() then
+        return;
+    end
+    local count = 0;
+    for _, zombieID in ipairs(zombieIDs) do
+        local zombie = ATShU.getZombieFromID(player, zombieID);
+        if zombie then
+            ATShU.knockdownZombie(zombie);
+            count = count + 1;
+        end
+    end
+    print("AT bullrush player " .. zombieIDs.player .. " knocking down " .. count .. "/" .. #zombieIDs .. " zombies");
+end
+
 local function onServerCommandReceived(module, command, data)
     if module ~= AnthroTraitsGlobals.ModID then
         return;
     end
-    DebugLog.log(DebugLog.Network, "AT server command received: " .. command)
+    DebugLog.log(DebugLog.Network, "AT client received command from server: " .. command)
     if command == "exclaimerTriggered" then
         local exclaimingPlayer = ATShU.getPlayerFromID(data[1])
         local mitigated = data[2];
@@ -45,6 +61,9 @@ local function onServerCommandReceived(module, command, data)
     elseif command == "feelingLonely" then
         local player = ATShU.getPlayerFromID(data[1]);
         showLonelyComment(player);
+    elseif command == "bullrushZombies" then
+        local bullrushingPlayer = ATShU.getPlayerFromID(data.player);
+        bullrushZombies(bullrushingPlayer, data);
     end
 end
 

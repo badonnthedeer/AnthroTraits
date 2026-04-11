@@ -122,9 +122,12 @@ AnthroTraitsCreationMethods.initAnthroTraits = function()
 	)
 
     --BULL RUSH
-	--CharacterTraitDefinition.addCharacterTraitDefinition(ATGt.BULLRUSH,
-	--	"UI_trait_AT_BullRush", 1, "UI_trait_AT_BullRush_desc", false)
-    --this.TTF.Add("AnthroTraits:AT_BullRush", "AnthroTraits,CostVariable,Anthro,Horns");
+	local AT_BullRush = CharacterTraitDefinition.addCharacterTraitDefinition(ATGt.BULLRUSH,
+		"UI_trait_AT_BullRush", 1, "UI_trait_AT_BullRush_desc", false, false)	--NOTE: disabled bullrush in MP for now since I can't get the client to consistently identify the zombies knocked down on the server :(
+    ATCM.TTF.Add("AnthroTraits:AT_BullRush", "AnthroTraits,CostVariable,Anthro,Horns");
+	createDescInfo(AT_BullRush, "AT_BullRush",
+		{ }
+	)
 
     --CARNIVORE
 	local AT_Carnivore = CharacterTraitDefinition.addCharacterTraitDefinition(ATGt.CARNIVORE,

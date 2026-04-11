@@ -78,10 +78,10 @@ option AnthroTraits.AT_BullRush_Cost
 	page = AnthroTraits, translation = AnthroTraits_BullRush_Cost,
 }
 
-option AnthroTraits.AT_BullRushKnockdownEndCost
+option AnthroTraits.AT_BullRushKnockdownCostMultiplier
 {
-	type = double, min = 0, max = 1, default = 0.10,
-	page = AnthroTraits, translation = AnthroTraits_BullRushKnockdownEndCost,
+	type = double, min = 0, max = 10, default = 1,
+	page = AnthroTraits, translation = AnthroTraits_BullRushKnockdownCostMultiplier,
 }
 
 option AnthroTraits.AT_Carnivore_Cost

@@ -1,6 +1,32 @@
 
 local AnthroTraitsSharedUtilities = {}
 
+function AnthroTraitsSharedUtilities.getZombieID(zombie)
+	if isClient() or isServer() then
+		return zombie:getOnlineID()
+	end
+	return zombie:getID() 
+end
+
+function AnthroTraitsSharedUtilities.getZombieFromID(referencePlayer, zombieID)
+	local cell = referencePlayer:getCell();
+	if not cell then
+		return nil;
+	end
+	local zombieList = cell:getZombieList();
+	for i=0, zombieList:size() - 1 do
+		local zombie = zombieList:get(i);
+		if (isClient() or isServer()) then
+			if zombie:getOnlineID() == zombieID then
+				return zombie;
+			end
+		elseif zombie:getID() == zombieID then
+			return zombie;
+		end
+	end
+	return nil;
+end
+
 function AnthroTraitsSharedUtilities.getPlayerID(player)
 	if isClient() or isServer() then
 		return player:getOnlineID()
@@ -16,6 +42,22 @@ function AnthroTraitsSharedUtilities.getPlayerFromID(playerID)
 		return getSpecificPlayer(playerID);
 	end
 	return nil;
+end
+
+function AnthroTraitsSharedUtilities.knockdownZombie(zombie)
+	--zombie:setStaggerBack(false);
+	zombie:setKnockedDown(true);
+	zombie:setOnFloor(true);
+	--zombie:setHitReaction("stagger");
+	if not isServer() then
+		zombie:setBumpFall(true); -- throwing error, only for players?
+	end
+	-- if ZombRand(100) < 50 then
+	-- 	zombie:setBumpFallType("pushedBehind");
+	-- else
+	-- 	zombie:setBumpFallType("pushedFront");
+	-- end
+	-- zombie:reportEvent("wasBumped");
 end
 
 -- returns the current "LastFallSpeed" for the next processFallingPlayer() call or nil if not relevant
