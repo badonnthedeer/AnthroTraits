@@ -1,3 +1,4 @@
+local usingSOTO = getActivatedMods():contains("SimpleOverhaulTraitsAndOccupations") or getActivatedMods():contains("SOTOB42MPTEST");
 
 local AnthroTraitsSharedUtilities = {}
 
@@ -95,5 +96,80 @@ function AnthroTraitsSharedUtilities.applyTorporPlayer(player, isWinter)
         end
     end
 end
+
+function AnthroTraitsSharedUtilities.calcCarryWeightMultiplier(player)
+	local res = 0;
+	if player:hasTrait(AnthroTraitsGlobals.CharacterTrait.BEASTOFBURDEN) then
+		res = res + SandboxVars.AnthroTraits.AT_BeastOfBurdenPctIncrease;
+	end
+	if player:hasTrait(AnthroTraitsGlobals.CharacterTrait.DIGITIGRADE) then
+		res = res - SandboxVars.AnthroTraits.AT_DigitigradeCarryWeightMalus;
+	elseif player:hasTrait(AnthroTraitsGlobals.CharacterTrait.UNGULIGRADE) then
+		res = res - SandboxVars.AnthroTraits.AT_UnguligradeCarryWeightMalus;
+	end
+	return res + 1;
+end
+
+function AnthroTraitsSharedUtilities.updatePlayerCarryWeight(player)
+	local baseWeight = 8;
+	if usingSOTO then
+		if player:hasTrait(SOTO.CharacterTrait.STRONG_BACK) then
+			baseWeight = 9;
+		elseif player:hasTrait(SOTO.CharacterTrait.WEAK_BACK) then
+			baseWeight = 7;
+		end
+	end
+	local mult = AnthroTraitsSharedUtilities.calcCarryWeightMultiplier(player)
+	print("AT adjusting carry weight")
+	player:setMaxWeightBase(baseWeight * mult);
+	player:getBodyDamage():UpdateStrength();
+end
+
+local minInHour = -1;
+
+local delayedHourlyQueueRepeating = {}
+function AnthroTraitsSharedUtilities.queueRepeatingDelayedEvent(func, minInHour)
+	table.insert(delayedHourlyQueueRepeating, { Func = func, MinInHour = minInHour });
+end
+
+local delayedHourlyQueueOnce = {}
+function AnthroTraitsSharedUtilities.queueDelayedEvent(func, delayInMin)
+	if delayInMin < 1 then
+		func();
+		return;
+	end
+	local hours = math.floor((minInHour + delayInMin) / 60);
+	local minInHour = (minInHour + delayInMin) % 60;
+	for index, ev in ipairs(delayedHourlyQueueOnce) do
+		if hours < ev.Hours and minInHour < ev.MinInHour then
+			table.insert(delayedHourlyQueueOnce, index, { Func = func, Hours = hours, MinInHour = minInHour });
+			return;
+		end
+	end
+	table.insert(delayedHourlyQueueOnce, { Func = func, Hours = hours, MinInHour = minInHour });
+end
+
+local function everyOneMinute()
+	minInHour = minInHour + 1;
+	for _, ev in ipairs(delayedHourlyQueueRepeating) do
+		if ev.MinInHour == minInHour then
+			ev.Func();
+		end
+	end
+	while #delayedHourlyQueueOnce > 0 and delayedHourlyQueueOnce[1].Hours <= 0 and delayedHourlyQueueOnce[1].MinInHour <= minInHour do
+		delayedHourlyQueueOnce[1].Func();
+		table.remove(delayedHourlyQueueOnce, 1);
+	end
+end
+
+local function onEveryHours()
+	minInHour = -1;
+	for _, ev in ipairs(delayedHourlyQueueOnce) do
+		ev.Hours = ev.Hours - 1;
+	end
+end
+
+Events.EveryOneMinute.Add(everyOneMinute);
+Events.EveryHours.Add(onEveryHours);
 
 return AnthroTraitsSharedUtilities;

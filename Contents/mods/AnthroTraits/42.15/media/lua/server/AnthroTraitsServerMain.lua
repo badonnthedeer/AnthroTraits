@@ -2,9 +2,10 @@ local ATSU = require("AnthroTraitsServerUtilities");
 local ATShU = require "AnthroTraitsSharedUtilities"
 
 local isWinter;
-
+local usingFurryMod = getActivatedMods():contains("FurryMod");
+local usingFurryApocalypse = getActivatedMods():contains("FurryApocalypse");
 local function IsAnthro(gameCharacter)
-    if (getActivatedMods():contains("FurryMod") or getActivatedMods():contains("FurryApocalypse")) and gameCharacter ~= nil
+    if (usingFurryMod or usingFurryApocalypse) and gameCharacter ~= nil
     then
         local hasFur = false;
         local itemVisuals = gameCharacter:getItemVisuals();
@@ -423,6 +424,25 @@ local function onServerTick(tick)
     ATSU.foreachPlayerDo(onServerTickPlayer, tick, isNotDead);
 end
 
+local function onWeaponHitCharacter(attacker, target, weapon, damageSplit)
+    if not instanceof(attacker, "IsoPlayer") or not attacker:isDoStomp() then
+        return;
+    end
+    local hasUnguligrade = attacker:hasTrait(AnthroTraitsGlobals.CharacterTrait.UNGULIGRADE);
+    local hasDigitigrade = attacker:hasTrait(AnthroTraitsGlobals.CharacterTrait.DIGITIGRADE);
+    local mult;
+    if hasUnguligrade then
+        mult = SandboxVars.AnthroTraits.AT_UnguligradeStompDmgPctIncrease
+    elseif hasDigitigrade then
+        mult = SandboxVars.AnthroTraits.AT_DigitigradeStompDmgPctIncrease;
+    else
+        return;
+    end
+    print("AT unguligrade or digitigrade stomp doing additional " .. mult .. " damage");
+    local damage = target:processHitDamage(weapon, attacker, damageSplit, false, 1.0) * mult;
+	target:hitConsequences(weapon, attacker, false, damage, false);
+end
+
 local function onEveryOneMinute()
     ATSU.foreachPlayerDo(onEveryOneMinutePlayer, nil, isNotDead);
 end
@@ -444,8 +464,32 @@ end
 -- WTF?! why does PZ load the server folder on an mp client?!
 if not isClient() then
     Events.OnTick.Add(onServerTick);
+    Events.OnWeaponHitCharacter.Add(onWeaponHitCharacter);
     Events.EveryOneMinute.Add(onEveryOneMinute);
     Events.EveryHours.Add(everyHours);
     Events.EveryDays.Add(everyDays);
     Events.OnGameStart.Add(onGameStart);
 end
+
+local function updateAllPlayerCarryWeight()
+    ATSU.foreachPlayerDo(function(player)
+        ATShU.updatePlayerCarryWeight(player);
+    end, nil, isNotDead);
+end
+
+local function perkLevelPlayer(character, perk, level, increasing)
+    if instanceof(character, "IsoPlayer") and not character:isDead() and perk == Perks.Strength then
+        -- one minute after strengh perk level changes, recalculate carry weight
+        ATShU.queueDelayedEvent(function() ATShU.updatePlayerCarryWeight(character); end, 1);
+    end
+end
+
+local usingUCWF = getActivatedMods():contains("UnifiedCarryWeightFramework");
+if not usingUCWF then
+    -- one minute into the hour trigger carry weight recalculation (to overwrite SOTO if active)
+    -- should happen both on MP client and server
+    ATShU.queueRepeatingDelayedEvent(updateAllPlayerCarryWeight, 1);
+    Events.LevelPerk.Add(perkLevelPlayer);
+end
+
+

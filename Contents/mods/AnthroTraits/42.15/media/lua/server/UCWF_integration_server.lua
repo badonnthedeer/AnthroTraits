@@ -1,4 +1,10 @@
+local ATShU = require "AnthroTraitsSharedUtilities"
 --NOTE: following UCWF_server_excample.lua in the "Unified Carry Weight Framework" by MusicManiac
+
+-- optional integration of UCWF
+if not getActivatedMods():contains("UnifiedCarryWeightFramework") then
+	return;
+end
 
 local function gameMode()
 	if not isClient() and not isServer() then
@@ -17,25 +23,10 @@ end
 
 require("UnifiedCarryWeightFramework")
 
-UnifiedCarryWeightFramework.registerMaxModifier({
+UnifiedCarryWeightFramework.registerBaseModifier({
 	id = "AnthroTraits.CarryWeightChangingTraits",
-
 	resolve = function(ctx)
-		local player = ctx.player -- context will always have player object so you should access it from there.
-        local res = {}
-
-		if player:hasTrait(AnthroTraitsGlobals.CharacterTrait.BEASTOFBURDEN) then
-            res.mult = SandboxVars.AnthroTraits.AT_BeastOfBurdenPctIncrease;
-        end
-        if player:hasTrait(AnthroTraitsGlobals.CharacterTrait.DIGITIGRADE) then
-            res.mult = (res.mult or 0) - SandboxVars.AnthroTraits.AT_DigitigradeCarryWeightMalus;
-        elseif player:hasTrait(AnthroTraitsGlobals.CharacterTrait.UNGULIGRADE) then
-            res.mult = (res.mult or 0) - SandboxVars.AnthroTraits.AT_UnguligradeCarryWeightMalus;
-        end
-        if res.mult then
-            res.mult = res.mult + 1;
-        end
-		return res;
+        return { mult = ATShU.calcCarryWeightMultiplier(ctx.player) };
 	end,
 })
 

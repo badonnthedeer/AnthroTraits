@@ -95,8 +95,8 @@ end
 Events.OnObjectCollide.Add(onObjectCollide);
 Events.OnCharacterCollide.Add(onCharacterCollide);
 
--- don't do playerUpdates in SP: AnthroTraitsServerMain already does an onTick operation that runs on MP server and in SP
--- this should only run in MP client to match MP server fall speed/location
+-- don't do playerUpdates in SP: AnthroTraitsServerMain already does an onTick operation that runs on MP server and in SP.
+-- this should only run in MP client to match MP server fall speed/location.
 if isClient() then
     Events.OnPlayerUpdate.Add(onPlayerUpdate);
     Events.EveryDays.Add(everyDays);
