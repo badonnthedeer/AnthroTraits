@@ -455,6 +455,10 @@ local function everyDays()
     isWinter = ATShU.checkIfIsWinter();
 end
 
+local function onInitWorld()
+    ATShU.initialiseItemTags();
+end
+
 local function onGameStart()
     prevLastFallSpeedPlayers = {};
     bullrushingPlayers = {};
@@ -468,6 +472,7 @@ if not isClient() then
     Events.EveryOneMinute.Add(onEveryOneMinute);
     Events.EveryHours.Add(everyHours);
     Events.EveryDays.Add(everyDays);
+    Events.OnInitWorld.Add(onInitWorld);
     Events.OnGameStart.Add(onGameStart);
 end
 

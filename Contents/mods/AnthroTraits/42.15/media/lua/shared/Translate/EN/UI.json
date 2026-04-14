@@ -5,7 +5,7 @@
 	"UI_trait_AT_BeastOfBurden" : "Beast of Burden",
 	"UI_trait_AT_BeastOfBurden_desc" : "Your body's frame is well-built for carrying weight.<br>Weight cap increases by %1%",
 	"UI_trait_AT_Bug_o_ssieur" : "Bug-o-ssieur",
-	"UI_trait_AT_Bug_o_ssieur_desc" : "Your ancestors weren't shy about eating insects.<br>You don't gain unhappiness or boredom when eating bugs.<br>Your chances of foraging for insects are increased by %1%.",
+	"UI_trait_AT_Bug_o_ssieur_desc" : "Your ancestors weren't shy about eating insects.<br>You don't gain unhappiness or boredom when eating insects.<br>Insects are %1% more nutritious.<br>Your chances of foraging for insects are increased by %2%.",
 	"UI_trait_AT_BullRush" : "Bull Rush",
 	"UI_trait_AT_BullRush_desc" : "You have horns or another feature built for knocking opponents about.<br>When sprinting, knock zombies over at the cost of endurance.",
 	"UI_trait_AT_Carnivore" : "Carnivore",

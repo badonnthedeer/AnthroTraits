@@ -149,6 +149,37 @@ function AnthroTraitsSharedUtilities.queueDelayedEvent(func, delayInMin)
 	table.insert(delayedHourlyQueueOnce, { Func = func, Hours = hours, MinInHour = minInHour });
 end
 
+local function addItemTagToItemsFromSandbox(itemList, tag)
+    local itemTable = {};
+    local foundItem;
+    local itemTags;
+
+    for str in string.gmatch(itemList, "([^;]+)") do
+        table.insert(itemTable, str)
+    end
+
+    for _, tableEntry in ipairs(itemTable) do
+        foundItem = getScriptManager():getItem(tableEntry);
+        if foundItem then
+            itemTags = foundItem:getTags();
+            if not itemTags:contains(tag) then
+                itemTags:add(tag);
+                DebugLog.log("tag "..tag:toString().." added to "..tableEntry);
+            end
+        else
+            DebugLog.log("Cannot find item "..tableEntry.." to add tag "..tag:toString());
+        end
+    end
+end
+
+function AnthroTraitsSharedUtilities.initialiseItemTags()
+    addItemTagToItemsFromSandbox(SandboxVars.AnthroTraits.AT_CarnivoreItems, AnthroTraitsGlobals.FoodTags.CARNIVORE);
+    addItemTagToItemsFromSandbox(SandboxVars.AnthroTraits.AT_HerbivoreItems, AnthroTraitsGlobals.FoodTags.HERBIVORE);
+    addItemTagToItemsFromSandbox(SandboxVars.AnthroTraits.AT_Bug_o_ssieurItems, AnthroTraitsGlobals.FoodTags.INSECT);
+    addItemTagToItemsFromSandbox(SandboxVars.AnthroTraits.AT_FeralDigestionItems, AnthroTraitsGlobals.FoodTags.FERALPOISON);
+    addItemTagToItemsFromSandbox(SandboxVars.AnthroTraits.AT_FoodMotivatedItems, AnthroTraitsGlobals.FoodTags.FOODMOTIVATED);
+end
+
 local function everyOneMinute()
 	minInHour = minInHour + 1;
 	for _, ev in ipairs(delayedHourlyQueueRepeating) do

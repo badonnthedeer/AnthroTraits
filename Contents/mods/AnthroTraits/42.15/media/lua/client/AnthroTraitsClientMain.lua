@@ -72,6 +72,10 @@ local function everyDays()
     isWinter = ATShU.checkIfIsWinter();
 end
 
+local function onInitWorld()
+    ATShU.initialiseItemTags();
+end
+
 local function everyOneMinute()
     for i=0, getNumActivePlayers()-1 do
         if playerTripInfos[i] then
@@ -100,6 +104,7 @@ Events.OnCharacterCollide.Add(onCharacterCollide);
 if isClient() then
     Events.OnPlayerUpdate.Add(onPlayerUpdate);
     Events.EveryDays.Add(everyDays);
+    Events.OnInitWorld.Add(onInitWorld);
 end
 
 Events.EveryOneMinute.Add(everyOneMinute);

@@ -118,7 +118,7 @@ AnthroTraitsCreationMethods.initAnthroTraits = function()
 		"UI_trait_AT_Bug_o_ssieur", 1, "UI_trait_AT_Bug_o_ssieur_desc", false)
     ATCM.TTF.Add("AnthroTraits:AT_Bug_o_ssieur", "AnthroTraits,CostVariable");
 	createDescInfo(AT_Bug_o_ssieur, "AT_Bug_o_ssieur",
-		{ createDescVar("AT_Bug_o_ssieurForageBonus") }
+		{ createDescVar("AT_Bug_o_ssieurBonus"), createDescVar("AT_Bug_o_ssieurForageBonus") }
 	)
 
     --BULL RUSH

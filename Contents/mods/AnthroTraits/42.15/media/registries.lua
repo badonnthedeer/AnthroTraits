@@ -65,28 +65,20 @@ AnthroTraitsGlobals.CharacterTrait.VOICEAVIAN = CharacterTrait.register("AnthroT
 AnthroTraitsGlobals.CharacterTrait.VOICEFELINE = CharacterTrait.register("AnthroTraits:AT_VoiceFeline")
 AnthroTraitsGlobals.CharacterTrait.VOICESHEEP = CharacterTrait.register("AnthroTraits:AT_VoiceSheep")
 
-AnthroTraitsGlobals.ExclaimerTraits = { }
+AnthroTraitsGlobals.ExclaimerTraits = {}
 AnthroTraitsGlobals.ExclaimerTraits[AnthroTraitsGlobals.CharacterTrait.VOICEAVIAN] = "AnthroTraits:AT_VoiceAvian";
 AnthroTraitsGlobals.ExclaimerTraits[AnthroTraitsGlobals.CharacterTrait.VOICEFELINE] = "AnthroTraits:AT_VoiceFeline";
 AnthroTraitsGlobals.ExclaimerTraits[AnthroTraitsGlobals.CharacterTrait.VOICESHEEP] = "AnthroTraits:AT_VoiceSheep";
+
+AnthroTraitsGlobals.FoodTraits = {}
+AnthroTraitsGlobals.FoodTraits.BONISTATS = { "Hunger", "Carbohydrates", "Lipids", "Proteins", "Calories" }
+AnthroTraitsGlobals.FoodTraits.FOODMOTIVATEDSTATS = { "Boredom", "Stress", "Unhappiness" }
 
 AnthroTraitsGlobals.FoodTags.CARNIVORE = ItemTag.register("AnthroTraits:ATCarnivore")
 AnthroTraitsGlobals.FoodTags.HERBIVORE = ItemTag.register("AnthroTraits:ATHerbivore")
 AnthroTraitsGlobals.FoodTags.INSECT = ItemTag.register("AnthroTraits:ATInsect")
 AnthroTraitsGlobals.FoodTags.FERALPOISON = ItemTag.register("AnthroTraits:ATFeralPoison")
 AnthroTraitsGlobals.FoodTags.FOODMOTIVATED = ItemTag.register("AnthroTraits:ATFoodMotivated")
-AnthroTraitsGlobals.EvolvedRecipeFoodTags = { AnthroTraitsGlobals.FoodTags.CARNIVORE, AnthroTraitsGlobals.FoodTags.HERBIVORE }
 
--- modifiers (boni/mali) only apply to good changes
--- good changes are identified by the sign
--- food related traits will deal with these stats (plus calories)
-
-AnthroTraitsGlobals.FoodCharacterStatInfo[CharacterStat.HUNGER] = { Sign = -1, TooltipName = "Hunger", TooltipFactor = 100 }
-AnthroTraitsGlobals.FoodCharacterStatInfo[CharacterStat.THIRST] = { Sign = -1, TooltipName = "Thirst", TooltipFactor = 100 }
-AnthroTraitsGlobals.FoodCharacterStatInfo[CharacterStat.FATIGUE] = { Sign = -1, TooltipName = "Fatigue", TooltipFactor = 100 }
-AnthroTraitsGlobals.FoodCharacterStatInfo[CharacterStat.ENDURANCE] = { Sign = 1, TooltipName = "Endurance", TooltipFactor = 100 }
-AnthroTraitsGlobals.FoodCharacterStatInfo[CharacterStat.STRESS] = { Sign = -1, TooltipName = "Stress", TooltipFactor = 1 }
-AnthroTraitsGlobals.FoodCharacterStatInfo[CharacterStat.BOREDOM] = { Sign = -1, TooltipName = "Boredom", TooltipFactor = 1 }
-AnthroTraitsGlobals.FoodCharacterStatInfo[CharacterStat.UNHAPPINESS] = { Sign = -1, TooltipName = "Unhappiness", TooltipFactor = 1 }
 -- food stats processed by CARRIONEATER (plus calories)
 AnthroTraitsGlobals.CarrionFoodCharacterStats = { CharacterStat.HUNGER, CharacterStat.THIRST }
