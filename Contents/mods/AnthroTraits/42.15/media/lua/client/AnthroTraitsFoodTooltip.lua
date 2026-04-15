@@ -39,11 +39,12 @@ ISToolTipInv.render = function(self)
     local originalfoodStats = ATFU.getFoodStats(self.item);
     local adjustedFoodStats = originalfoodStats:add(addFoodStats, true, true);
 
+    local originalItem = self.item;
+    self.item = self.item:createCloneItem();
     adjustedFoodStats:setToItem(self.item);
     if extraFoodInfo then extraFoodInfo:setToItem(self.item); end
     oldRender(self);
-    originalfoodStats:setToItem(self.item);
-    if extraFoodInfo then extraFoodInfo:resetItem(self.item); end
+    self.item = originalItem;
 
     local addendum = nil;
     if extraFoodInfo and extraFoodInfo.FeralPoison then

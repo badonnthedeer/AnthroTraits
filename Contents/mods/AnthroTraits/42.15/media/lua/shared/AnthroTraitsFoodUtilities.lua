@@ -422,7 +422,7 @@ local function getFoodMultiplier(player, food, foodStats, foodTagInfo)
                     if not res then
                         res = AnthroTraitsFoodUtilities.createStatsObject();
                     end
-                    res[name] = (res[name] or 0) + foodStats[name] * statInfos[name].DesiredMultiplier;
+                    res[name] = -1;
                 end
             end
         elseif isHerbivore then
@@ -507,6 +507,7 @@ function AnthroTraitsFoodUtilities.getAdditionalFoodStats(player, food)
     foodAdditive, extraInfo = getFoodAdditive(player, food, foodStats, foodTagInfo, extraInfo);
 
     if foodMultiplier then
+        -- filter out any food stats without a corresponding multiplier and then multiply 
         foodStats:filterPredicate(function(val, info) return foodMultiplier[info.Name]; end):multiply(foodMultiplier);
         if foodAdditive then
             foodStats:add(foodAdditive);
