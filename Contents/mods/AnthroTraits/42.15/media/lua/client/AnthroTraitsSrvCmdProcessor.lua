@@ -44,7 +44,7 @@ local function bullrushZombies(player, zombieIDs)
             count = count + 1;
         end
     end
-    print("AT bullrush player " .. zombieIDs.player .. " knocking down " .. count .. "/" .. #zombieIDs .. " zombies");
+    DebugLog.log("AT bullrush player " .. zombieIDs.player .. " knocking down " .. count .. "/" .. #zombieIDs .. " zombies");
 end
 
 local function onServerCommandReceived(module, command, data)

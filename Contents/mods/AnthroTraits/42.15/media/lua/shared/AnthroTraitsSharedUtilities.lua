@@ -120,7 +120,7 @@ function AnthroTraitsSharedUtilities.updatePlayerCarryWeight(player)
 		end
 	end
 	local mult = AnthroTraitsSharedUtilities.calcCarryWeightMultiplier(player)
-	print("AT adjusting carry weight")
+	DebugLog.log("AT adjusting carry weight")
 	player:setMaxWeightBase(baseWeight * mult);
 	player:getBodyDamage():UpdateStrength();
 end

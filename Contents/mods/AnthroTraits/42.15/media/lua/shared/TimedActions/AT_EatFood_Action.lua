@@ -5,53 +5,43 @@ local function sign(number)
 end
 
 local function getClampedAdditionalFoodStats(player, food, percentage)
-    local addFoodStats, extraInfo = ATFU.getAdditionalFoodStats(player, food);
+    local addFoodStats, extraFoodInfo = ATFU.getAdditionalFoodStats(player, food);
     if not addFoodStats then
         return nil, nil;
     end
     addFoodStats:multiplyScalar(percentage);
-    local preStats = ATFU.getPlayerStats(player);
+    local playerStats = ATFU.getPlayerStats(player);
     local foodStats = ATFU.getFoodStats(food):multiplyScalar(percentage);
     -- get all values, that will be clamped by base game
-    preStats:add(foodStats):filterPredicate(function(val, info) return val < info.min or val > info.max; end);
+    playerStats:add(foodStats):filterPredicate(function(val, info) return val < info.Min or val > info.Max; end);
     -- filter out any stats, that AT won't change
     addFoodStats:filterPredicate(function(val, info) return val ~= 0; end);
     -- counteract clamping by base game
-    addFoodStats:customOperation(preStats,
+    addFoodStats:customOperation(playerStats,
         function(a, b, info)
             -- base game clamps and AT changes same value in different directions. E.g.: Unhappines: 80 + 50(dogfood) - 55(AT food motivated) with clamping would result in 45 instead of correct 75
             if a and b then
-                if sign(a) == -1 and b > info.max then
-                    return a + (b - info.max);
-                elseif sign(a) == 1 and b < info.min then
-                    return a + (b + info.max);
+                if sign(a) == -1 and b > info.Max then
+                    return a - (info.Max - b);  -- a needs to compensate for how much b is beyond max
+                elseif sign(a) == 1 and b < info.Min then
+                    return a - (info.Min - b);  -- a needs to compensate for how much b is beyond min
                 end
             end
             return a;
         end);
-    return addFoodStats, extraInfo;
+    return addFoodStats, extraFoodInfo;
 end
 
 local function playerEat(originalFunc, action)
-    local addFoodChanges, extraInfo = getClampedAdditionalFoodStats(action.character, action.item, action.percentage);
+    local addFoodChanges, extraFoodInfo = getClampedAdditionalFoodStats(action.character, action.item, action.percentage);
     if addFoodChanges then
-        local dangerousUncooked = action.item:isbDangerousUncooked();
-		print("AT eating dangerous uncooked " .. tostring(dangerousUncooked));
-		if extraInfo then
-			print("AT eating has extra info")
-			if extraInfo then
-				print("AT eating can eat uncooked " .. tostring(extraInfo.CanEatUncooked))
-			end
-		end
-        if extraInfo and extraInfo.CanEatUncooked and dangerousUncooked then
-			print("AT protecting against dangerous uncooked")
-            action.item:setbDangerousUncooked(false);
+        if extraFoodInfo then
+            extraFoodInfo:setToItem(action.item);
         end
-		local foodStats = ATFU.getFoodStats(action.item):multiplyScalar(action.percentage);
-		print("AT eating food: " .. foodStats:toString());
-		print("AT add food: " .. addFoodChanges:toString());
         originalFunc(action);
-        action.item:setbDangerousUncooked(dangerousUncooked);
+        if extraFoodInfo then
+            extraFoodInfo:resetItem(action.item);
+        end
         addFoodChanges:addToPlayer(action.character);
     else
         originalFunc(action);

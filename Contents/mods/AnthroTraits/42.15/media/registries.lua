@@ -70,8 +70,10 @@ AnthroTraitsGlobals.ExclaimerTraits[AnthroTraitsGlobals.CharacterTrait.VOICEAVIA
 AnthroTraitsGlobals.ExclaimerTraits[AnthroTraitsGlobals.CharacterTrait.VOICEFELINE] = "AnthroTraits:AT_VoiceFeline";
 AnthroTraitsGlobals.ExclaimerTraits[AnthroTraitsGlobals.CharacterTrait.VOICESHEEP] = "AnthroTraits:AT_VoiceSheep";
 
-AnthroTraitsGlobals.FoodTraits = {}
-AnthroTraitsGlobals.FoodTraits.BONISTATS = { "Hunger", "Carbohydrates", "Lipids", "Proteins", "Calories" }
+AnthroTraitsGlobals.FoodTraits = { }
+-- rotten stats are affected by food age and will be counteracted by e.g. carrion eater (technically, Hunger is also affected by age but carrion eater already gives hunger bonus)
+AnthroTraitsGlobals.FoodTraits.ROTTENSTATS = { "Boredom", "Endurance", "Stress", "Unhappiness", "Food_Sickness" }
+AnthroTraitsGlobals.FoodTraits.NUTRITIONSTATS = { "Hunger", "Carbohydrates", "Lipids", "Proteins", "Calories" }
 AnthroTraitsGlobals.FoodTraits.FOODMOTIVATEDSTATS = { "Boredom", "Stress", "Unhappiness" }
 
 AnthroTraitsGlobals.FoodTags.CARNIVORE = ItemTag.register("AnthroTraits:ATCarnivore")
@@ -79,6 +81,3 @@ AnthroTraitsGlobals.FoodTags.HERBIVORE = ItemTag.register("AnthroTraits:ATHerbiv
 AnthroTraitsGlobals.FoodTags.INSECT = ItemTag.register("AnthroTraits:ATInsect")
 AnthroTraitsGlobals.FoodTags.FERALPOISON = ItemTag.register("AnthroTraits:ATFeralPoison")
 AnthroTraitsGlobals.FoodTags.FOODMOTIVATED = ItemTag.register("AnthroTraits:ATFoodMotivated")
-
--- food stats processed by CARRIONEATER (plus calories)
-AnthroTraitsGlobals.CarrionFoodCharacterStats = { CharacterStat.HUNGER, CharacterStat.THIRST }

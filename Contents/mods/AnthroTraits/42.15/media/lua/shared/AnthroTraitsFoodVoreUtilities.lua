@@ -17,6 +17,13 @@ foodVoreTags[AnthroTraitsGlobals.FoodTags.FOODMOTIVATED] = {
 
 local AnthroTraitsFoodVoreUtilities = {}
 
+local function isDangerousUncooked(itemOrScript)
+    if itemOrScript.getScriptItem then
+        return itemOrScript:getScriptItem():isDangerousUncooked();
+    end
+    return itemOrScript:isDangerousUncooked();
+end
+
 local function getSingleFoodVoreType(food, foodTagInfo)
     local res = foodTagInfo;
     local tagCount = 0;
@@ -30,7 +37,7 @@ local function getSingleFoodVoreType(food, foodTagInfo)
             end
             --NOTE: yay, somebody REALLY wanted us to know that a "is..." method returns a b(oolean) >.<
             --NOTE2: but of course (!) only only on the InventoryItem. The (Script)Item is mean and doesn't tell us that it returns a boolean...
-            if tagMetaData.CountsForDangerousUncooked and ((food.isbDangerousUncooked and food:isbDangerousUncooked()) or food:isDangerousUncooked()) then
+            if tagMetaData.CountsForDangerousUncooked and isDangerousUncooked(food) then
                 res[tag].DangerousUncooked = true;
             end
             tagCount = tagCount + 1;

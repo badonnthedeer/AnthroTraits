@@ -438,7 +438,7 @@ local function onWeaponHitCharacter(attacker, target, weapon, damageSplit)
     else
         return;
     end
-    print("AT unguligrade or digitigrade stomp doing additional " .. mult .. " damage");
+    DebugLog.log("AT unguligrade or digitigrade stomp doing additional " .. mult .. " damage");
     local damage = target:processHitDamage(weapon, attacker, damageSplit, false, 1.0) * mult;
 	target:hitConsequences(weapon, attacker, false, damage, false);
 end
