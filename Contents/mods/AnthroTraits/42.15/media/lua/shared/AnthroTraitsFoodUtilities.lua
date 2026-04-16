@@ -364,6 +364,22 @@ function AnthroTraitsFoodUtilities.getFoodStats(item)
     return res;
 end
 
+function AnthroTraitsFoodUtilities.getFeralPoisonPercent(fluidContainer)
+    --NOTE: for now this is a very simple implementation, which only considers alcohol. More elaborate stuff would first require adding tags to fluids (not just items)
+    -- e.g.:
+    -- pure whiskey: 0.4 (getAlcohol) * 1 (getPercentage) = 0.4
+    -- 50% whiskey + 50% beer: 0.4 (getAlcohol(whiskey)) * 0.5 (getPercentage(whiskey)) + 0.05 (getAlcohol(beer)) * 0.5 (getPercentage(beer)) = 0.225
+    local res = 0;
+    local fluidSample = fluidContainer:createFluidSample();
+    for index=0, fluidSample:size()-1 do
+        local fluid = fluidSample:getFluid(index);
+        local props = fluid:getProperties();
+        res = res + props:getAlcohol() * fluidSample:getPercentage(index);
+    end
+    fluidSample:release();
+    return res;
+end
+
 local function addMultiplierForDesiredStats(current, multiplier, foodStats, multiplierStats)
     local mod = AnthroTraitsFoodUtilities.createStatsObject();
     for _, name in ipairs(multiplierStats) do
@@ -394,6 +410,10 @@ local function getFoodMultiplier(player, food, foodStats, foodTagInfo)
     local uncookedCounteracted = 0;
     if insectTagInfo and not isRotten and isBugEater then
         res = addMultiplierForDesiredStats(res, SandboxVars.AnthroTraits.AT_Bug_o_ssieurBonus * insectTagInfo.Weight, foodStats, AnthroTraitsGlobals.FoodTraits.NUTRITIONSTATS);
+        if foodStats:isDesired("Hunger") then
+            --NOTE: this overwrites the 0.5 from the addMultiplierForDesiredStats()
+            res.Hunger = SandboxVars.AnthroTraits.AT_Bug_o_ssieurHungerBonusMultiplier * insectTagInfo.Weight;
+        end
         if foodStats:isUndesired("Boredom") then
             res.Boredom = -1;
         end

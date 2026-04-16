@@ -66,6 +66,12 @@ option AnthroTraits.AT_Bug_o_ssieurBonus
 	page = AnthroTraits, translation = AnthroTraits_Bug_o_ssieurBonus,
 }
 
+option AnthroTraits.AT_Bug_o_ssieurHungerBonusMultiplier
+{
+	type = double, min = 0, max = 20, default = 5,
+	page = AnthroTraits, translation = AnthroTraits_Bug_o_ssieurHungerBonusMultiplier,
+}
+
 option AnthroTraits.AT_Bug_o_ssieurItems
 {
 	type = string, default = Base.AmericanLadyCaterpillar;Base.BandedWoolyBearCaterpillar;Base.Centipede2;Base.Centipede;Base.Cockroach;Base.Cricket;Base.Grasshopper;Base.Ladybug;Base.Maggots;Base.Millipede2;Base.Millipede;Base.MonarchCaterpillar;Base.Pillbug;Base.SawflyLarva;Base.SilkMothCaterpillar;Base.Slug2;Base.Slug;Base.Snail;Base.SwallowtailCaterpillar;Base.Termites;Base.Worm,
