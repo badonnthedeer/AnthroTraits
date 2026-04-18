@@ -168,8 +168,8 @@ AnthroTraitsCreationMethods.initAnthroTraits = function()
     --FERAL BODY
 	local AT_FeralBody = CharacterTraitDefinition.addCharacterTraitDefinition(ATGt.FERALBODY,
 		"UI_trait_AT_FeralBody", 1, "UI_trait_AT_FeralBody_desc", false)
-    AT_FeralBody:addXPBoost(Perks.Strength, 1);
-    AT_FeralBody:addXPBoost(Perks.Fitness, -1);
+    -- AT_FeralBody:addXPBoost(Perks.Strength, 1);
+    -- AT_FeralBody:addXPBoost(Perks.Fitness, -1);
     ATCM.TTF.Add("AnthroTraits:AT_FeralBody", "AnthroTraits,CostVariable,Anthro");
 
     --FERAL DIGESTION
@@ -202,6 +202,17 @@ AnthroTraitsCreationMethods.initAnthroTraits = function()
     ATCM.TTF.Add("AnthroTraits:AT_Lonely", "AnthroTraits,CostVariable,Anthro,Social"); --(Xochi suggestion)
 	createDescInfo(AT_Lonely, "AT_Lonely",
 		{ createDescVar("AT_LonelyHoursToAffect"), createDescVar("AT_LonelyHourlyUnhappyIncrease", 100) }
+	)
+
+	--LOW END HUNTER
+	local AT_LowEndHunter = CharacterTraitDefinition.addCharacterTraitDefinition(ATGt.LOWENDHUNTER,
+		"UI_trait_AT_LowEndHunter", -1, "UI_trait_AT_LowEndHunter_desc", false)
+    AT_LowEndHunter:addXPBoost(Perks.Sneak, 1);
+    AT_LowEndHunter:addXPBoost(Perks.Sprinting, 1);
+    AT_LowEndHunter:addXPBoost(Perks.Fitness, -1);
+    ATCM.TTF.Add("AnthroTraits:AT_LowEndHunter", "AnthroTraits,CostVariable,Anthro");
+	createDescInfo(AT_LowEndHunter, "AT_LowEndHunter",
+		{ createDescVar("AT_LowEndHunterEndRecoMalus") }
 	)
 
     --NATURAL TUMBLER

@@ -54,6 +54,7 @@ AnthroTraitsGlobals.CharacterTrait.FERALDIGESTION = CharacterTrait.register("Ant
 AnthroTraitsGlobals.CharacterTrait.FOODMOTIVATED = CharacterTrait.register("AnthroTraits:AT_FoodMotivated")
 AnthroTraitsGlobals.CharacterTrait.HERBIVORE = CharacterTrait.register("AnthroTraits:AT_Herbivore")
 AnthroTraitsGlobals.CharacterTrait.LONELY = CharacterTrait.register("AnthroTraits:AT_Lonely")
+AnthroTraitsGlobals.CharacterTrait.LOWENDHUNTER = CharacterTrait.register("AnthroTraits:AT_LowEndHunter")
 AnthroTraitsGlobals.CharacterTrait.NATURALTUMBLER = CharacterTrait.register("AnthroTraits:AT_NaturalTumbler")
 AnthroTraitsGlobals.CharacterTrait.STINKY = CharacterTrait.register("AnthroTraits:AT_Stinky")
 AnthroTraitsGlobals.CharacterTrait.TAIL = CharacterTrait.register("AnthroTraits:AT_Tail")

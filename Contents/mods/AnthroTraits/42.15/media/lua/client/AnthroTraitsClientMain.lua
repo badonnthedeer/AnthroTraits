@@ -3,6 +3,7 @@ local ATShU = require "AnthroTraitsSharedUtilities"
 
 --NOTE: uses playerIndex as keys instead of playerOnlineID, since playerOnlineID might assign different ID to same player after re-join. playerIndex should be limited to 0-3 for split screen players
 local prevFallSpeedPlayers = {}
+local prevLastEndurancePlayers = {};
 local isWinter;
 
 local playerTripInfos = {};
@@ -66,6 +67,7 @@ local function onPlayerUpdate(player)
     prevFallSpeedPlayers[playerID] = ATShU.processFallingPlayer(player, prevFallSpeedPlayers[playerID]);
     -- server is authority but client should also enforce limit to avoid inconsistent states
     ATShU.applyTorporPlayer(player, isWinter);
+    prevLastEndurancePlayers[playerID] = ATShU.applyLowEndHunterPlayer(player, prevLastEndurancePlayers[playerID])
 end
 
 local function everyDays()

@@ -270,6 +270,18 @@ option AnthroTraits.AT_LonelyHourlyUnhappyIncrease
 	page = AnthroTraits, translation = AnthroTraits_LonelyHourlyUnhappyIncrease,
 }
 
+option AnthroTraits.AT_LowEndHunter_Cost
+{
+	type = integer, min = -15, max = 15, default = -1,
+	page = AnthroTraits, translation = AnthroTraits_LowEndHunter_Cost,
+}
+
+option AnthroTraits.AT_LowEndHunterEndRecoMalus
+{
+	type = integer, min = 0, max = 50, default = 5,
+	page = AnthroTraits, translation = AnthroTraits_LowEndHunterEndRecoMalus,
+}
+
 option AnthroTraits.AT_NaturalTumbler_Cost
 {
 	type = integer, min = -15, max = 15, default = 3,

@@ -388,6 +388,7 @@ end
 
 -- initialized during server start
 local prevLastFallSpeedPlayers = {};
+local prevLastEndurancePlayers = {};
 
 local function onServerTickPlayer(player, tick)
     local playerID = ATShU.getPlayerID(player);
@@ -395,6 +396,7 @@ local function onServerTickPlayer(player, tick)
     prevLastFallSpeedPlayers[playerID] = ATShU.processFallingPlayer(player, prevLastFallSpeedPlayers[playerID])
     -- server applies torpor => will be periodically sync'ed to clients
     ATShU.applyTorporPlayer(player, isWinter);
+    prevLastEndurancePlayers[playerID] = ATShU.applyLowEndHunterPlayer(player, prevLastEndurancePlayers[playerID])
     checkBullrush(player, tick);
     processPlayerHealth(player);
 end

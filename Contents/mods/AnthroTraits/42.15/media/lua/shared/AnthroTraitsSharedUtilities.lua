@@ -97,6 +97,56 @@ function AnthroTraitsSharedUtilities.applyTorporPlayer(player, isWinter)
     end
 end
 
+--NOTE: the calculations should roughly match base game. The main purpose of this method is to provide a value to determine whether endurance recovery should be reduced
+local function getMaxEndRegen(player, stats)
+	local moodles = player:getMoodles();
+	local gameTimeMult = GameTime:getInstance():getMultiplier();
+	-- calculations copied from IsoPlayer Java class
+	if player:isAsleep() then
+		local endMult = 2;
+        if IsoPlayer.allPlayersAsleep() then
+            endMult = endMult * GameTime:getInstance():getDeltaMinutesPerDay();
+		end
+		return ZomboidGlobals.ImobileEnduranceIncrease
+			* SandboxOptions:getInstance():getEnduranceRegenMultiplier()
+			* player:getRecoveryMod()
+			* gameTimeMult
+			* endMult;
+	elseif player:isSitOnGround() or player:isSittingOnFurniture() or player:isResting() or player:isSeatedInVehicle() then
+		local mul = 5; -- should be ZomboidGlobals.SittingEnduranceMultiplier, but not defined in lua (only in Java)
+        mul = mul * (1.0 - stats:get(CharacterStat.FATIGUE)) * 0.8;
+        mul = mul * gameTimeMult;
+		return ZomboidGlobals.ImobileEnduranceIncrease * SandboxOptions:getInstance():getEnduranceRegenMultiplier() * player:getRecoveryMod() * mul;
+	elseif not player:isPlayerMoving() and moodles:getMoodleLevel(MoodleType.HEAVY_LOAD) <= 1 then
+		local mul = 1.0;
+		mul = mul * (1.0 - stats:get(CharacterStat.FATIGUE)) * 0.85;
+		mul = mul * gameTimeMult;
+		return ZomboidGlobals.ImobileEnduranceIncrease * SandboxOptions:getInstance():getEnduranceRegenMultiplier() * player:getRecoveryMod() * mul;
+	elseif player:isPlayerMoving() and moodles:getMoodleLevel(MoodleType.ENDURANCE) < 2 and moodles:getMoodleLevel(MoodleType.HEAVY_LOAD) <= 1 then
+		local mul = 1.0;
+		mul = mul * (1.0 - stats:get(CharacterStat.FATIGUE));
+		mul = mul * gameTimeMult;
+		return ZomboidGlobals.ImobileEnduranceIncrease / 4 * SandboxOptions:getInstance():getEnduranceRegenMultiplier() * player:getRecoveryMod() * mul;
+	end
+	return 0;
+end
+
+function AnthroTraitsSharedUtilities.applyLowEndHunterPlayer(player, prevEndurance)
+	local stats = player:getStats();
+	local currEnd = stats:get(CharacterStat.ENDURANCE);
+	local prevEnd = prevEndurance or currEnd;
+	if player:hasTrait(AnthroTraitsGlobals.CharacterTrait.LOWENDHUNTER) and currEnd > prevEnd and SandboxVars.AnthroTraits.AT_LowEndHunterEndRecoMalus > 0 then
+		local limit = getMaxEndRegen(player, stats) * (1 - SandboxVars.AnthroTraits.AT_LowEndHunterEndRecoMalus);
+		local recoAmount = currEnd - prevEnd;
+		-- check if recovered endurance amount is above limit to prevent Achilles' tortoise (e.g. default end. rec. is 5% but only NEED to recover 3%, then shouldn't reduce)
+        if limit > 0 and recoAmount > limit then
+            stats:remove(CharacterStat.ENDURANCE, recoAmount * SandboxVars.AnthroTraits.AT_LowEndHunterEndRecoMalus);
+        end
+		return stats:get(CharacterStat.ENDURANCE);
+    end
+	return currEnd;
+end
+
 function AnthroTraitsSharedUtilities.calcCarryWeightMultiplier(player)
 	local res = 0;
 	if player:hasTrait(AnthroTraitsGlobals.CharacterTrait.BEASTOFBURDEN) then
