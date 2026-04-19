@@ -48,6 +48,8 @@
 -- Have a problem or question? Reach me on Discord: badonn
 ------------------------------------------------------------------------------------------------------
 
+local ATShU = require "AnthroTraitsSharedUtilities"
+
 local function Sign(number)
 	return (number > 0 and 1) or (number == 0 and 0) or -1
 end
@@ -62,7 +64,6 @@ AnthroTraitsUtilities.ExclaimPhrases = { }
 
 --UTILITIES
 AnthroTraitsUtilities.FileExists = function(path)
-
     local reader = getModFileReader(AnthroTraitsGlobals.ModID, path, false);
     if not reader
     then
@@ -78,14 +79,7 @@ AnthroTraitsUtilities.ImportExclaimerPhrases = function()
         local line = getTextOrNull("IGUI_ExclaimerPhrases_" .. name)
         if line then
             local phrases = { }
-            for word in string.gmatch(line, "[^;]+") do
-                if traitName == nil
-                then
-                    traitName = word
-                else
-                    table.insert(phrases, word)
-                end
-            end
+            ATShU.splitSemicolonListString(line, function(word) table.insert(phrases, word); end);
             if #phrases > 0 then
                 AnthroTraitsUtilities.ExclaimPhrases[trait] = phrases
             end

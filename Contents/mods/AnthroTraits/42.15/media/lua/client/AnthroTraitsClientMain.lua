@@ -68,6 +68,7 @@ local function onPlayerUpdate(player)
     -- server is authority but client should also enforce limit to avoid inconsistent states
     ATShU.applyTorporPlayer(player, isWinter);
     prevLastEndurancePlayers[playerID] = ATShU.applyLowEndHunterPlayer(player, prevLastEndurancePlayers[playerID])
+    ATShU.applyFeralBodyDiscomfortPlayer(player);
 end
 
 local function everyDays()
@@ -76,6 +77,7 @@ end
 
 local function onInitWorld()
     ATShU.initialiseItemTags();
+    ATShU.initialiseFeralBodyItemBodyLocations();
 end
 
 local function everyOneMinute()
@@ -83,6 +85,8 @@ local function everyOneMinute()
         if playerTripInfos[i] then
             playerTripInfos[i].protected = false;
             playerTripInfos[i].checked = false;
+            local player = getSpecificPlayer(i);
+            ATShU.applyFeralBodySpeedPlayer(player);
         end
     end
 end

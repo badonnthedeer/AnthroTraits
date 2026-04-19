@@ -186,6 +186,36 @@ option AnthroTraits.AT_FeralBody_Cost
 	page = AnthroTraits, translation = AnthroTraits_FeralBody_Cost,
 }
 
+option AnthroTraits.AT_FeralBodyLocations
+{
+	type = string, default = Base:Boilersuit;Base:Cuirass;Base:Dress;Base:FullSuit;Base:FullTop;Base:Jacket;Base:Jacket_Bulky;Base:JacketHat_Bulky;Base:Jersey;Base:LongDress;Base:Pants;Base:PantsExtra;Base:Pants_Skinny;Base:Shirt;Base:ShortPants;Base:ShortSleeveShirt;Base:ShortsShort;Base:Sweater;Base:SweaterHat;Base:TankTop;Base:Torso1Legs1;Base:TorsoExtraVest;Base:TorsoExtraVestBullet;Base:Tshirt;Base:VestTexture,
+	page = AnthroTraits, translation = AnthroTraits_FeralBodyLocations,
+}
+
+option AnthroTraits.AT_FeralBodyDiscomfortPerSlot
+{
+	type = double, min = 0, max = 100, default = 5,
+	page = AnthroTraits, translation = AnthroTraits_FeralBodyDiscomfortPerSlot,
+}
+
+option AnthroTraits.AT_FeralBodyDiscomfortArmourMultiplier
+{
+	type = double, min = 0, max = 5, default = 1.5,
+	page = AnthroTraits, translation = AnthroTraits_FeralBodyDiscomfortArmourMultiplier,
+}
+
+option AnthroTraits.AT_FeralBodyDiscomfortArmourThreshold
+{
+	type = double, min = 0, max = 100, default = 5,
+	page = AnthroTraits, translation = AnthroTraits_FeralBodyDiscomfortArmourThreshold,
+}
+
+option AnthroTraits.AT_FeralBodySpeedMultiplier
+{
+	type = double, min = 0, max = 1, default = 0.2,
+	page = AnthroTraits, translation = AnthroTraits_FeralBodySpeedMultiplier,
+}
+
 option AnthroTraits.AT_FeralDigestion_Cost
 {
 	type = integer, min = -15, max = 15, default = -4,

@@ -399,6 +399,7 @@ local function onServerTickPlayer(player, tick)
     prevLastEndurancePlayers[playerID] = ATShU.applyLowEndHunterPlayer(player, prevLastEndurancePlayers[playerID])
     checkBullrush(player, tick);
     processPlayerHealth(player);
+    ATShU.applyFeralBodyDiscomfortPlayer(player);
 end
 
 local function onEveryOneMinutePlayer(player)
@@ -409,6 +410,7 @@ local function onEveryOneMinutePlayer(player)
     if player:hasTrait(ATGt.STINKY) then
         playerBeStinky(player);
     end
+    ATShU.applyFeralBodySpeedPlayer(player);
 end
 
 local function everyHoursPlayer(player)
@@ -459,6 +461,7 @@ end
 
 local function onInitWorld()
     ATShU.initialiseItemTags();
+    ATShU.initialiseFeralBodyItemBodyLocations();
 end
 
 local function onGameStart()

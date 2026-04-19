@@ -1,6 +1,7 @@
 local usingSOTO = getActivatedMods():contains("SimpleOverhaulTraitsAndOccupations") or getActivatedMods():contains("SOTOB42MPTEST");
 
 local AnthroTraitsSharedUtilities = {}
+AnthroTraitsSharedUtilities.FeralBodyItemBodyLocations = {}
 
 function AnthroTraitsSharedUtilities.getZombieID(zombie)
 	if isClient() or isServer() then
@@ -45,6 +46,32 @@ function AnthroTraitsSharedUtilities.getPlayerFromID(playerID)
 	return nil;
 end
 
+function AnthroTraitsSharedUtilities.splitSemicolonListString(str, doForEachItem)
+	for item in string.gmatch(str, "[^;]+") do
+		doForEachItem(item);
+	end
+end
+
+local function parseFeralBodyIBL(locName)
+	if not locName or string.len(locName) == 0 then
+		print("AnthroTraits, FeralBody ItemBodyLocation nil or empty");
+		return;
+	end
+	local locID = ResourceLocation.of(locName);
+	local ibl = ItemBodyLocation.get(locID);
+	if not ibl then
+		print("AnthroTraits, FeralBody unable to find ItemBodyLocation " .. locName);
+		return;
+	end
+	DebugLog.log("AnthroTraits, FeralBody added ItemBodyLocation " .. locName);
+	table.insert(AnthroTraitsSharedUtilities.FeralBodyItemBodyLocations, ibl);
+end
+
+function AnthroTraitsSharedUtilities.initialiseFeralBodyItemBodyLocations()
+	AnthroTraitsSharedUtilities.FeralBodyItemBodyLocations = {}
+	AnthroTraitsSharedUtilities.splitSemicolonListString(SandboxVars.AnthroTraits.AT_FeralBodyLocations, parseFeralBodyIBL);
+end
+
 function AnthroTraitsSharedUtilities.knockdownZombie(zombie)
 	--zombie:setStaggerBack(false);
 	zombie:setKnockedDown(true);
@@ -78,6 +105,41 @@ function AnthroTraitsSharedUtilities.processFallingPlayer(player, prevLastFallSp
 		end
     end
 	return prevLastFallSpeed;
+end
+
+local function hasDefensiveStats(clothing)
+	return clothing:getScratchDefense() > SandboxVars.AnthroTraits.AT_FeralBodyDiscomfortArmourThreshold
+		or clothing:getBiteDefense() > SandboxVars.AnthroTraits.AT_FeralBodyDiscomfortArmourThreshold
+		or clothing:getBulletDefense() > SandboxVars.AnthroTraits.AT_FeralBodyDiscomfortArmourThreshold;
+end
+
+function AnthroTraitsSharedUtilities.applyFeralBodySpeedPlayer(player)
+	if player:hasTrait(AnthroTraitsGlobals.CharacterTrait.FERALBODY) then
+		SpeedFramework.SetPlayerSpeed(player, 1 + SandboxVars.AnthroTraits.AT_FeralBodySpeedMultiplier);
+	else
+		SpeedFramework.SetPlayerSpeed(player, nil);
+	end
+end
+
+function AnthroTraitsSharedUtilities.applyFeralBodyDiscomfortPlayer(player)
+	if player:hasTrait(AnthroTraitsGlobals.CharacterTrait.FERALBODY) then
+		local wornItems = player:getWornItems();
+		local minDiscomfort = 0;
+		for _, ibl in ipairs(AnthroTraitsSharedUtilities.FeralBodyItemBodyLocations) do
+			local item = wornItems:getItem(ibl); 
+			if item then
+				local addDiscomfort = SandboxVars.AnthroTraits.AT_FeralBodyDiscomfortPerSlot;
+				if hasDefensiveStats(item) then
+					addDiscomfort = addDiscomfort * SandboxVars.AnthroTraits.AT_FeralBodyDiscomfortArmourMultiplier;
+				end
+				minDiscomfort = minDiscomfort + addDiscomfort;
+			end
+		end
+		local stats = player:getStats();
+		if stats:get(CharacterStat.DISCOMFORT) < minDiscomfort then
+			stats:set(CharacterStat.DISCOMFORT, minDiscomfort);
+		end
+	end
 end
 
 function AnthroTraitsSharedUtilities.checkIfIsWinter()
@@ -136,14 +198,16 @@ function AnthroTraitsSharedUtilities.applyLowEndHunterPlayer(player, prevEnduran
 	local currEnd = stats:get(CharacterStat.ENDURANCE);
 	local prevEnd = prevEndurance or currEnd;
 	if player:hasTrait(AnthroTraitsGlobals.CharacterTrait.LOWENDHUNTER) and currEnd > prevEnd and SandboxVars.AnthroTraits.AT_LowEndHunterEndRecoMalus > 0 then
-		local limit = getMaxEndRegen(player, stats) * (1 - SandboxVars.AnthroTraits.AT_LowEndHunterEndRecoMalus);
+		local limit = getMaxEndRegen(player, stats) * (1 - SandboxVars.AnthroTraits.AT_LowEndHunterEndRecoMalus / 100);
 		local recoAmount = currEnd - prevEnd;
 		-- check if recovered endurance amount is above limit to prevent Achilles' tortoise (e.g. default end. rec. is 5% but only NEED to recover 3%, then shouldn't reduce)
         if limit > 0 and recoAmount > limit then
-            stats:remove(CharacterStat.ENDURANCE, recoAmount * SandboxVars.AnthroTraits.AT_LowEndHunterEndRecoMalus);
+			print("end reco changed");
+            stats:remove(CharacterStat.ENDURANCE, recoAmount * SandboxVars.AnthroTraits.AT_LowEndHunterEndRecoMalus / 100);
         end
 		return stats:get(CharacterStat.ENDURANCE);
     end
+	print("no end reco change");
 	return currEnd;
 end
 

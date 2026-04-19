@@ -123,7 +123,7 @@ AnthroTraitsCreationMethods.initAnthroTraits = function()
 
     --BULL RUSH
 	local AT_BullRush = CharacterTraitDefinition.addCharacterTraitDefinition(ATGt.BULLRUSH,
-		"UI_trait_AT_BullRush", 1, "UI_trait_AT_BullRush_desc", false, false)	--NOTE: disabled bullrush in MP for now since I can't get the client to consistently identify the zombies knocked down on the server :(
+		"UI_trait_AT_BullRush", 1, "UI_trait_AT_BullRush_desc", false, true)	--NOTE: disabled bullrush in MP for now since I can't get the client to consistently identify the zombies knocked down on the server :(
     ATCM.TTF.Add("AnthroTraits:AT_BullRush", "AnthroTraits,CostVariable,Anthro,Horns");
 	createDescInfo(AT_BullRush, "AT_BullRush",
 		{ }
@@ -167,10 +167,11 @@ AnthroTraitsCreationMethods.initAnthroTraits = function()
 
     --FERAL BODY
 	local AT_FeralBody = CharacterTraitDefinition.addCharacterTraitDefinition(ATGt.FERALBODY,
-		"UI_trait_AT_FeralBody", 1, "UI_trait_AT_FeralBody_desc", false)
-    -- AT_FeralBody:addXPBoost(Perks.Strength, 1);
-    -- AT_FeralBody:addXPBoost(Perks.Fitness, -1);
+		"UI_trait_AT_FeralBody", 1, "UI_trait_AT_FeralBody_desc", false, true)	--NOTE: disabled feral body in MP since setting player speed via TchernoLib mod doesn't seem to work in MP
     ATCM.TTF.Add("AnthroTraits:AT_FeralBody", "AnthroTraits,CostVariable,Anthro");
+	createDescInfo(AT_FeralBody, "AT_FeralBody",
+		{ createDescVar("AT_FeralBodySpeedMultiplier", 100), createDescVar("AT_FeralBodyDiscomfortPerSlot"), createDescVar("AT_FeralBodyDiscomfortArmourMultiplier", 1, 2), createDescVar("AT_FeralBodyDiscomfortArmourThreshold") }
+	)
 
     --FERAL DIGESTION
 	local AT_FeralDigestion = CharacterTraitDefinition.addCharacterTraitDefinition(ATGt.FERALDIGESTION,
