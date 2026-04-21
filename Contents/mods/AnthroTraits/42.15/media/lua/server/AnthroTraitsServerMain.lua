@@ -106,7 +106,7 @@ local function checkBullrush(player, tick)
     targetIDs.player = playerID;
     -- only send command if on MP server, in SP: server already knocked down zombies
     if isServer() then
-        DebugLog.log(DebugLog.Network, "AT sending server command bullrushZombies");
+        DebugLog.log(DebugType.Network, "AT sending server command bullrushZombies");
         ATSU.sendServerCommand(AnthroTraitsGlobals.ModID, "bullrushZombies", targetIDs);
     end
 end
@@ -292,7 +292,7 @@ local function playerExclaimerCheck(player)
                 100);
     end
     local playerID = ATShU.getPlayerID(player);
-    DebugLog.log(DebugLog.Network, "AT sending server command exclaimerTriggered");
+    DebugLog.log(DebugType.Network, "AT sending server command exclaimerTriggered");
     ATSU.sendServerCommand(AnthroTraitsGlobals.ModID, "exclaimerTriggered", { playerID, mitigated });
 end
 
@@ -349,7 +349,7 @@ local function playerBeStinky(player)
     end
     ATSU.foreachPlayerDo(nearbyPlayerFunc, nil, function(nearbyPlayer) return nearbyPlayer ~= player and not nearbyPlayer:isDead(); end);
     if commentingPlayers then
-        DebugLog.log(DebugLog.Network, "AT sending server command stinkyComments");
+        DebugLog.log(DebugType.Network, "AT sending server command stinkyComments");
         ATSU.sendServerCommand(player, AnthroTraitsGlobals.ModID, "stinkyComments", commentingPlayers);
     end
 end
@@ -381,7 +381,7 @@ local function playerLonelyCheck(player)
         ATSU.setPlayerModDataField(player, "LastSeenSomeoneElse", currentTime);
     elseif currentTime > lastSeenSomeoneElse + tolerance then
         player:getStats():add(CharacterStat.UNHAPPINESS, SandboxVars.AnthroTraits.AT_LonelyHourlyUnhappyIncrease);
-        DebugLog.log(DebugLog.Network, "AT sending server command feelingLonely");
+        DebugLog.log(DebugType.Network, "AT sending server command feelingLonely");
         ATSU.sendServerCommand(player, AnthroTraitsGlobals.ModID, "feelingLonely", { ATShU.getPlayerID(player) });
     end
 end

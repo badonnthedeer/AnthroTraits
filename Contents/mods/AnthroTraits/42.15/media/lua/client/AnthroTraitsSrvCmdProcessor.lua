@@ -51,7 +51,7 @@ local function onServerCommandReceived(module, command, data)
     if module ~= AnthroTraitsGlobals.ModID then
         return;
     end
-    DebugLog.log(DebugLog.Network, "AT client received command from server: " .. command)
+    DebugLog.log(DebugType.Network, "AT client received command from server: " .. command)
     if command == "exclaimerTriggered" then
         local exclaimingPlayer = ATShU.getPlayerFromID(data[1])
         local mitigated = data[2];
