@@ -104,7 +104,7 @@ function AnthroTraitsSharedUtilities.processFallingPlayer(player, prevLastFallSp
 			return currLastFallSpeed;
 		end
     end
-	return prevLastFallSpeed;
+	return nil;
 end
 
 local function hasDefensiveStats(clothing)
@@ -202,12 +202,10 @@ function AnthroTraitsSharedUtilities.applyLowEndHunterPlayer(player, prevEnduran
 		local recoAmount = currEnd - prevEnd;
 		-- check if recovered endurance amount is above limit to prevent Achilles' tortoise (e.g. default end. rec. is 5% but only NEED to recover 3%, then shouldn't reduce)
         if limit > 0 and recoAmount > limit then
-			print("end reco changed");
             stats:remove(CharacterStat.ENDURANCE, recoAmount * SandboxVars.AnthroTraits.AT_LowEndHunterEndRecoMalus / 100);
         end
 		return stats:get(CharacterStat.ENDURANCE);
     end
-	print("no end reco change");
 	return currEnd;
 end
 
