@@ -60,6 +60,18 @@ option AnthroTraits.AT_Bug_o_ssieur_Cost
 	page = AnthroTraits, translation = AnthroTraits_Bug_o_ssieur_Cost,
 }
 
+option AnthroTraits.AT_Bug_o_ssieurBonus
+{
+	type = double, min = 0, max = 1, default = 0.5,
+	page = AnthroTraits, translation = AnthroTraits_Bug_o_ssieurBonus,
+}
+
+option AnthroTraits.AT_Bug_o_ssieurHungerBonusMultiplier
+{
+	type = double, min = 0, max = 20, default = 5,
+	page = AnthroTraits, translation = AnthroTraits_Bug_o_ssieurHungerBonusMultiplier,
+}
+
 option AnthroTraits.AT_Bug_o_ssieurItems
 {
 	type = string, default = Base.AmericanLadyCaterpillar;Base.BandedWoolyBearCaterpillar;Base.Centipede2;Base.Centipede;Base.Cockroach;Base.Cricket;Base.Grasshopper;Base.Ladybug;Base.Maggots;Base.Millipede2;Base.Millipede;Base.MonarchCaterpillar;Base.Pillbug;Base.SawflyLarva;Base.SilkMothCaterpillar;Base.Slug2;Base.Slug;Base.Snail;Base.SwallowtailCaterpillar;Base.Termites;Base.Worm,
@@ -78,10 +90,10 @@ option AnthroTraits.AT_BullRush_Cost
 	page = AnthroTraits, translation = AnthroTraits_BullRush_Cost,
 }
 
-option AnthroTraits.AT_BullRushKnockdownEndCost
+option AnthroTraits.AT_BullRushKnockdownCostMultiplier
 {
-	type = double, min = 0, max = 1, default = 0.10,
-	page = AnthroTraits, translation = AnthroTraits_BullRushKnockdownEndCost,
+	type = double, min = 0, max = 10, default = 1,
+	page = AnthroTraits, translation = AnthroTraits_BullRushKnockdownCostMultiplier,
 }
 
 option AnthroTraits.AT_Carnivore_Cost
@@ -144,6 +156,12 @@ option AnthroTraits.AT_DigitigradeStompDmgPctIncrease
 	page = AnthroTraits, translation = AnthroTraits_DigitigradeStompDmgPctIncrease,
 }
 
+option AnthroTraits.AT_DigitigradeCarryWeightMalus
+{
+	type = double, min = 0, max = 1, default = .05,
+	page = AnthroTraits, translation = AnthroTraits_DigitigradeCarryWeightMalus,
+}
+
 option AnthroTraits.AT_Exclaimer_Cost
 {
 	type = integer, min = -15, max = 15, default = -6,
@@ -166,6 +184,36 @@ option AnthroTraits.AT_FeralBody_Cost
 {
 	type = integer, min = -15, max = 15, default = 1,
 	page = AnthroTraits, translation = AnthroTraits_FeralBody_Cost,
+}
+
+option AnthroTraits.AT_FeralBodyLocations
+{
+	type = string, default = Base:Boilersuit;Base:Cuirass;Base:Dress;Base:FullSuit;Base:FullTop;Base:Jacket;Base:Jacket_Bulky;Base:JacketHat_Bulky;Base:Jersey;Base:LongDress;Base:Pants;Base:PantsExtra;Base:Pants_Skinny;Base:Shirt;Base:ShortPants;Base:ShortSleeveShirt;Base:ShortsShort;Base:Sweater;Base:SweaterHat;Base:TankTop;Base:Torso1Legs1;Base:TorsoExtraVest;Base:TorsoExtraVestBullet;Base:Tshirt;Base:VestTexture,
+	page = AnthroTraits, translation = AnthroTraits_FeralBodyLocations,
+}
+
+option AnthroTraits.AT_FeralBodyDiscomfortPerSlot
+{
+	type = double, min = 0, max = 100, default = 5,
+	page = AnthroTraits, translation = AnthroTraits_FeralBodyDiscomfortPerSlot,
+}
+
+option AnthroTraits.AT_FeralBodyDiscomfortArmourMultiplier
+{
+	type = double, min = 0, max = 5, default = 1.5,
+	page = AnthroTraits, translation = AnthroTraits_FeralBodyDiscomfortArmourMultiplier,
+}
+
+option AnthroTraits.AT_FeralBodyDiscomfortArmourThreshold
+{
+	type = double, min = 0, max = 100, default = 5,
+	page = AnthroTraits, translation = AnthroTraits_FeralBodyDiscomfortArmourThreshold,
+}
+
+option AnthroTraits.AT_FeralBodySpeedMultiplier
+{
+	type = double, min = 0, max = 1, default = 0.2,
+	page = AnthroTraits, translation = AnthroTraits_FeralBodySpeedMultiplier,
 }
 
 option AnthroTraits.AT_FeralDigestion_Cost
@@ -252,6 +300,18 @@ option AnthroTraits.AT_LonelyHourlyUnhappyIncrease
 	page = AnthroTraits, translation = AnthroTraits_LonelyHourlyUnhappyIncrease,
 }
 
+option AnthroTraits.AT_LowEndHunter_Cost
+{
+	type = integer, min = -15, max = 15, default = -1,
+	page = AnthroTraits, translation = AnthroTraits_LowEndHunter_Cost,
+}
+
+option AnthroTraits.AT_LowEndHunterEndRecoMalus
+{
+	type = integer, min = 0, max = 50, default = 5,
+	page = AnthroTraits, translation = AnthroTraits_LowEndHunterEndRecoMalus,
+}
+
 option AnthroTraits.AT_NaturalTumbler_Cost
 {
 	type = integer, min = -15, max = 15, default = 3,
@@ -260,7 +320,7 @@ option AnthroTraits.AT_NaturalTumbler_Cost
 
 option AnthroTraits.AT_NaturalTumblerFallTimeMult
 {
-	type = double, min = 0, max = 1, default = 0.5,
+	type = double, min = 0.1, max = 1, default = 0.5,
 	page = AnthroTraits, translation = AnthroTraits_NaturalTumblerFallTimeMult,
 }
 
@@ -272,7 +332,7 @@ option AnthroTraits.AT_Stinky_Cost
 
 option AnthroTraits.AT_StinkyCommentChance
 {
-	type = double, min = 0, max = 1, default = .001,
+	type = double, min = 0, max = 1, default = .5,
 	page = AnthroTraits, translation = AnthroTraits_StinkyCommentChance,
 }
 
@@ -322,6 +382,12 @@ option AnthroTraits.AT_Unguligrade_Cost
 {
 	type = integer, min = -15, max = 15, default = 4,
 	page = AnthroTraits, translation = AnthroTraits_Unguligrade_Cost,
+}
+
+option AnthroTraits.AT_UnguligradeCarryWeightMalus
+{
+	type = double, min = 0, max = 1, default = .1,
+	page = AnthroTraits, translation = AnthroTraits_UnguligradeCarryWeightMalus,
 }
 
 option AnthroTraits.AT_UnguligradeStompDmgPctIncrease

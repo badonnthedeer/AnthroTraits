@@ -28,13 +28,13 @@ description=    Knox Infection is rare, even from bites. Optionally, be infected
 description=    [*][h2]Beast of Burden[/h2]
 description=    Carry additional weight.
 description=    [*][h2]Bug-o-ssieur[/h2]
-description=    You don't gain unhappiness or boredom when eating bugs.
+description=    You don't gain unhappiness or boredom when eating bugs. Will find more insects when foraging.
 description=    [*][h2]Carnivore[/h2]
-description=    Meat is more beneficial for your character, plants less.
+description=    Meat is more beneficial for your character, plants less. Will find more dead animals when foraging.
 description=    [*][h2]Carrion Eater[/h2]
-description=    Can eat rotten meat (and insects with Bug-o-ssieur) without getting sick, is more beneficial than usual.
+description=    Can eat rotten meat without getting sick (boredom and unhappiness still displayed in tooltip, but don't actually apply), is more beneficial than usual. Will find more dead animals when foraging.
 description=    [*][h2]Digitigrade[/h2]
-description=    Stomps do more damage.
+description=    Stomps do more damage, but carry weight is slightly decreased.
 description=    +1 Sprinting.
 description=    +1 Lightfoot.
 description=    +1 Sneak.
@@ -45,10 +45,10 @@ description=    [*][h2]Food Motivated[/h2]
 description=    Food makes you slightly less unhappy and bored.
 description=    Dog/cat food doesn't make you unhappy.
 description=    [*][h2]Herbivore[/h2]
-description=    Plants are more beneficial for your character, meat less.
+description=    Plants are more beneficial for your character, meat less. Will find more vegetables, fruits and berries when foraging.
 description=    [*][h2]Unguligrade (UN-gyuh-lih-grade)[/h2]
-description=    Feet cannot be scratched, lacerated, or bitten. (glass is still a threat)
-description=    Stomps do much more damage.
+description=    Feet cannot be scratched, lacerated, or bitten and won't bleed, but glass or bullets are still dangerous and will leave deep wounds.
+description=    Stomps do much more damage, but carry weight is decreased.
 description=    +1 Sprinting.
 description=    +1 Nimble.
 description=    [*][h2]Natural Tumbler[/h2]
@@ -81,7 +81,8 @@ description=
 description=[h1]Other interesting mods[/h1]
 description=- [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2893930681]Anthro Survivors[/url]: for obvious reasons, Anthro Traits integrates well with this one
 description=- [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3686068158]True Dualwield Z[/url] or [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3698500716]Dual Wielding Attacks[/url]: both offer unarmed punching or (with a bit of imagination) clawed hand attacks
-description=- [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2840805724]Simple Overhaul: Traits and Occupations[/url]: Anthro Traits has integrated compatiblity for this mod
+description=- [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2840805724]Simple Overhaul: Traits and Occupations[/url]: Anthro Traits has integrated compatiblity for this mod regarding carry weight changing traits
+description=- [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3682045254]Unified Carry Weight Framework[/url]: if you have this mod activated, Anthro Traits will detect it and use it
 description=
 description=[h1]A message from the creator[/h1]
 description=Do you really enjoy this mod--or even better--want to build on it? Please consider [url=https://ko-fi.com/badonnthedeer]donating to me[/url]! I'm in definite financial need, so every little bit helps! Thank you.

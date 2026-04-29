@@ -1,0 +1,318 @@
+local usingSOTO = getActivatedMods():contains("SimpleOverhaulTraitsAndOccupations") or getActivatedMods():contains("SOTOB42MPTEST");
+
+local AnthroTraitsSharedUtilities = {}
+AnthroTraitsSharedUtilities.FeralBodyItemBodyLocations = {}
+
+function AnthroTraitsSharedUtilities.getZombieID(zombie)
+	if isClient() or isServer() then
+		return zombie:getOnlineID()
+	end
+	return zombie:getID() 
+end
+
+function AnthroTraitsSharedUtilities.getZombieFromID(referencePlayer, zombieID)
+	local cell = referencePlayer:getCell();
+	if not cell then
+		return nil;
+	end
+	local zombieList = cell:getZombieList();
+	for i=0, zombieList:size() - 1 do
+		local zombie = zombieList:get(i);
+		if (isClient() or isServer()) then
+			if zombie:getOnlineID() == zombieID then
+				return zombie;
+			end
+		elseif zombie:getID() == zombieID then
+			return zombie;
+		end
+	end
+	return nil;
+end
+
+function AnthroTraitsSharedUtilities.getPlayerID(player)
+	if isClient() or isServer() then
+		return player:getOnlineID()
+	end
+	return player:getIndex() 
+end
+
+function AnthroTraitsSharedUtilities.getPlayerFromID(playerID)
+	if isClient() or isServer() then
+		return getPlayerByOnlineID(playerID);
+	end
+	if playerID < getNumActivePlayers() then
+		return getSpecificPlayer(playerID);
+	end
+	return nil;
+end
+
+function AnthroTraitsSharedUtilities.splitSemicolonListString(str, doForEachItem)
+	for item in string.gmatch(str, "[^;]+") do
+		doForEachItem(item);
+	end
+end
+
+local function parseFeralBodyIBL(locName)
+	if not locName or string.len(locName) == 0 then
+		print("AnthroTraits, FeralBody ItemBodyLocation nil or empty");
+		return;
+	end
+	local locID = ResourceLocation.of(locName);
+	local ibl = ItemBodyLocation.get(locID);
+	if not ibl then
+		print("AnthroTraits, FeralBody unable to find ItemBodyLocation " .. locName);
+		return;
+	end
+	DebugLog.log("AnthroTraits, FeralBody added ItemBodyLocation " .. locName);
+	table.insert(AnthroTraitsSharedUtilities.FeralBodyItemBodyLocations, ibl);
+end
+
+function AnthroTraitsSharedUtilities.initialiseFeralBodyItemBodyLocations()
+	AnthroTraitsSharedUtilities.FeralBodyItemBodyLocations = {}
+	AnthroTraitsSharedUtilities.splitSemicolonListString(SandboxVars.AnthroTraits.AT_FeralBodyLocations, parseFeralBodyIBL);
+end
+
+function AnthroTraitsSharedUtilities.knockdownZombie(zombie)
+	--zombie:setStaggerBack(false);
+	zombie:setKnockedDown(true);
+	zombie:setOnFloor(true);
+	--zombie:setHitReaction("stagger");
+	if not isServer() then
+		zombie:setBumpFall(true); -- throwing error, only for players?
+	end
+	-- if ZombRand(100) < 50 then
+	-- 	zombie:setBumpFallType("pushedBehind");
+	-- else
+	-- 	zombie:setBumpFallType("pushedFront");
+	-- end
+	-- zombie:reportEvent("wasBumped");
+end
+
+-- returns the current "LastFallSpeed" for the next processFallingPlayer() call or nil if not relevant
+function AnthroTraitsSharedUtilities.processFallingPlayer(player, prevLastFallSpeed)
+	if player:isFalling() then
+        if player:hasTrait(AnthroTraitsGlobals.CharacterTrait.VESTIGIALWINGS) then
+            player:setLastFallSpeed(math.min(player:getLastFallSpeed(), AnthroTraitsGlobals.VESTIGIALWINGS_MAXFALLSPEED));
+        elseif player:hasTrait(AnthroTraitsGlobals.CharacterTrait.NATURALTUMBLER) then
+            local currLastFallSpeed = player:getLastFallSpeed();
+			prevLastFallSpeed = prevLastFallSpeed or 0;
+			if currLastFallSpeed > prevLastFallSpeed then
+				local newFallSpeed = prevLastFallSpeed + (currLastFallSpeed - prevLastFallSpeed) * SandboxVars.AnthroTraits.AT_NaturalTumblerFallTimeMult;
+				player:setLastFallSpeed(newFallSpeed);
+				return newFallSpeed;
+			end
+			return currLastFallSpeed;
+		end
+    end
+	return nil;
+end
+
+local function hasDefensiveStats(clothing)
+	return clothing:getScratchDefense() > SandboxVars.AnthroTraits.AT_FeralBodyDiscomfortArmourThreshold
+		or clothing:getBiteDefense() > SandboxVars.AnthroTraits.AT_FeralBodyDiscomfortArmourThreshold
+		or clothing:getBulletDefense() > SandboxVars.AnthroTraits.AT_FeralBodyDiscomfortArmourThreshold;
+end
+
+function AnthroTraitsSharedUtilities.applyFeralBodySpeedPlayer(player)
+	if player:hasTrait(AnthroTraitsGlobals.CharacterTrait.FERALBODY) then
+		SpeedFramework.SetPlayerSpeed(player, 1 + SandboxVars.AnthroTraits.AT_FeralBodySpeedMultiplier);
+	else
+		SpeedFramework.SetPlayerSpeed(player, nil);
+	end
+end
+
+function AnthroTraitsSharedUtilities.applyFeralBodyDiscomfortPlayer(player)
+	if player:hasTrait(AnthroTraitsGlobals.CharacterTrait.FERALBODY) then
+		local wornItems = player:getWornItems();
+		local minDiscomfort = 0;
+		for _, ibl in ipairs(AnthroTraitsSharedUtilities.FeralBodyItemBodyLocations) do
+			local item = wornItems:getItem(ibl); 
+			if item then
+				local addDiscomfort = SandboxVars.AnthroTraits.AT_FeralBodyDiscomfortPerSlot;
+				if hasDefensiveStats(item) then
+					addDiscomfort = addDiscomfort * SandboxVars.AnthroTraits.AT_FeralBodyDiscomfortArmourMultiplier;
+				end
+				minDiscomfort = minDiscomfort + addDiscomfort;
+			end
+		end
+		local stats = player:getStats();
+		if stats:get(CharacterStat.DISCOMFORT) < minDiscomfort then
+			stats:set(CharacterStat.DISCOMFORT, minDiscomfort);
+		end
+	end
+end
+
+function AnthroTraitsSharedUtilities.checkIfIsWinter()
+	local season = getClimateManager():getSeason();
+    local winterInt = zombie.erosion.season.ErosionSeason.SEASON_WINTER;
+    --https://demiurgequantified.github.io/ProjectZomboidJavaDocs/constant-values.html#zombie.erosion.season.ErosionSeason.NUM_SEASONS
+    return season:isSeason(winterInt);
+end
+
+function AnthroTraitsSharedUtilities.applyTorporPlayer(player, isWinter)
+	if isWinter and player:hasTrait(AnthroTraitsGlobals.CharacterTrait.TORPOR) then
+        local limit = 1.0 - SandboxVars.AnthroTraits.AT_TorporEnduranceDecrease;
+        local stats = player:getStats();
+        if stats:get(CharacterStat.ENDURANCE) > limit then
+            stats:set(CharacterStat.ENDURANCE, limit);
+        end
+    end
+end
+
+--NOTE: the calculations should roughly match base game. The main purpose of this method is to provide a value to determine whether endurance recovery should be reduced
+local function getMaxEndRegen(player, stats)
+	local moodles = player:getMoodles();
+	local gameTimeMult = GameTime:getInstance():getMultiplier();
+	-- calculations copied from IsoPlayer Java class
+	if player:isAsleep() then
+		local endMult = 2;
+        if IsoPlayer.allPlayersAsleep() then
+            endMult = endMult * GameTime:getInstance():getDeltaMinutesPerDay();
+		end
+		return ZomboidGlobals.ImobileEnduranceIncrease
+			* SandboxOptions:getInstance():getEnduranceRegenMultiplier()
+			* player:getRecoveryMod()
+			* gameTimeMult
+			* endMult;
+	elseif player:isSitOnGround() or player:isSittingOnFurniture() or player:isResting() or player:isSeatedInVehicle() then
+		local mul = 5; -- should be ZomboidGlobals.SittingEnduranceMultiplier, but not defined in lua (only in Java)
+        mul = mul * (1.0 - stats:get(CharacterStat.FATIGUE)) * 0.8;
+        mul = mul * gameTimeMult;
+		return ZomboidGlobals.ImobileEnduranceIncrease * SandboxOptions:getInstance():getEnduranceRegenMultiplier() * player:getRecoveryMod() * mul;
+	elseif not player:isPlayerMoving() and moodles:getMoodleLevel(MoodleType.HEAVY_LOAD) <= 1 then
+		local mul = 1.0;
+		mul = mul * (1.0 - stats:get(CharacterStat.FATIGUE)) * 0.85;
+		mul = mul * gameTimeMult;
+		return ZomboidGlobals.ImobileEnduranceIncrease * SandboxOptions:getInstance():getEnduranceRegenMultiplier() * player:getRecoveryMod() * mul;
+	elseif player:isPlayerMoving() and moodles:getMoodleLevel(MoodleType.ENDURANCE) < 2 and moodles:getMoodleLevel(MoodleType.HEAVY_LOAD) <= 1 then
+		local mul = 1.0;
+		mul = mul * (1.0 - stats:get(CharacterStat.FATIGUE));
+		mul = mul * gameTimeMult;
+		return ZomboidGlobals.ImobileEnduranceIncrease / 4 * SandboxOptions:getInstance():getEnduranceRegenMultiplier() * player:getRecoveryMod() * mul;
+	end
+	return 0;
+end
+
+function AnthroTraitsSharedUtilities.applyLowEndHunterPlayer(player, prevEndurance)
+	local stats = player:getStats();
+	local currEnd = stats:get(CharacterStat.ENDURANCE);
+	local prevEnd = prevEndurance or currEnd;
+	if player:hasTrait(AnthroTraitsGlobals.CharacterTrait.LOWENDHUNTER) and currEnd > prevEnd and SandboxVars.AnthroTraits.AT_LowEndHunterEndRecoMalus > 0 then
+		local limit = getMaxEndRegen(player, stats) * (1 - SandboxVars.AnthroTraits.AT_LowEndHunterEndRecoMalus / 100);
+		local recoAmount = currEnd - prevEnd;
+		-- check if recovered endurance amount is above limit to prevent Achilles' tortoise (e.g. default end. rec. is 5% but only NEED to recover 3%, then shouldn't reduce)
+        if limit > 0 and recoAmount > limit then
+            stats:remove(CharacterStat.ENDURANCE, recoAmount * SandboxVars.AnthroTraits.AT_LowEndHunterEndRecoMalus / 100);
+        end
+		return stats:get(CharacterStat.ENDURANCE);
+    end
+	return currEnd;
+end
+
+function AnthroTraitsSharedUtilities.calcCarryWeightMultiplier(player)
+	local res = 0;
+	if player:hasTrait(AnthroTraitsGlobals.CharacterTrait.BEASTOFBURDEN) then
+		res = res + SandboxVars.AnthroTraits.AT_BeastOfBurdenPctIncrease;
+	end
+	if player:hasTrait(AnthroTraitsGlobals.CharacterTrait.DIGITIGRADE) then
+		res = res - SandboxVars.AnthroTraits.AT_DigitigradeCarryWeightMalus;
+	elseif player:hasTrait(AnthroTraitsGlobals.CharacterTrait.UNGULIGRADE) then
+		res = res - SandboxVars.AnthroTraits.AT_UnguligradeCarryWeightMalus;
+	end
+	return res + 1;
+end
+
+function AnthroTraitsSharedUtilities.updatePlayerCarryWeight(player)
+	local baseWeight = 8;
+	if usingSOTO then
+		if player:hasTrait(SOTO.CharacterTrait.STRONG_BACK) then
+			baseWeight = 9;
+		elseif player:hasTrait(SOTO.CharacterTrait.WEAK_BACK) then
+			baseWeight = 7;
+		end
+	end
+	local mult = AnthroTraitsSharedUtilities.calcCarryWeightMultiplier(player)
+	DebugLog.log("AT adjusting carry weight")
+	player:setMaxWeightBase(baseWeight * mult);
+	player:getBodyDamage():UpdateStrength();
+end
+
+local minInHour = -1;
+
+local delayedHourlyQueueRepeating = {}
+function AnthroTraitsSharedUtilities.queueRepeatingDelayedEvent(func, minInHour)
+	table.insert(delayedHourlyQueueRepeating, { Func = func, MinInHour = minInHour });
+end
+
+local delayedHourlyQueueOnce = {}
+function AnthroTraitsSharedUtilities.queueDelayedEvent(func, delayInMin)
+	if delayInMin < 1 then
+		func();
+		return;
+	end
+	local hours = math.floor((minInHour + delayInMin) / 60);
+	local minInHour = (minInHour + delayInMin) % 60;
+	for index, ev in ipairs(delayedHourlyQueueOnce) do
+		if hours < ev.Hours and minInHour < ev.MinInHour then
+			table.insert(delayedHourlyQueueOnce, index, { Func = func, Hours = hours, MinInHour = minInHour });
+			return;
+		end
+	end
+	table.insert(delayedHourlyQueueOnce, { Func = func, Hours = hours, MinInHour = minInHour });
+end
+
+local function addItemTagToItemsFromSandbox(itemList, tag)
+    local itemTable = {};
+    local foundItem;
+    local itemTags;
+
+    for str in string.gmatch(itemList, "([^;]+)") do
+        table.insert(itemTable, str)
+    end
+
+    for _, tableEntry in ipairs(itemTable) do
+        foundItem = getScriptManager():getItem(tableEntry);
+        if foundItem then
+            itemTags = foundItem:getTags();
+            if not itemTags:contains(tag) then
+                itemTags:add(tag);
+                DebugLog.log("tag "..tag:toString().." added to "..tableEntry);
+            end
+        else
+            DebugLog.log("Cannot find item "..tableEntry.." to add tag "..tag:toString());
+        end
+    end
+end
+
+function AnthroTraitsSharedUtilities.initialiseItemTags()
+    addItemTagToItemsFromSandbox(SandboxVars.AnthroTraits.AT_CarnivoreItems, AnthroTraitsGlobals.FoodTags.CARNIVORE);
+    addItemTagToItemsFromSandbox(SandboxVars.AnthroTraits.AT_HerbivoreItems, AnthroTraitsGlobals.FoodTags.HERBIVORE);
+    addItemTagToItemsFromSandbox(SandboxVars.AnthroTraits.AT_Bug_o_ssieurItems, AnthroTraitsGlobals.FoodTags.INSECT);
+    addItemTagToItemsFromSandbox(SandboxVars.AnthroTraits.AT_FeralDigestionItems, AnthroTraitsGlobals.FoodTags.FERALPOISON);
+    addItemTagToItemsFromSandbox(SandboxVars.AnthroTraits.AT_FoodMotivatedItems, AnthroTraitsGlobals.FoodTags.FOODMOTIVATED);
+end
+
+local function everyOneMinute()
+	minInHour = minInHour + 1;
+	for _, ev in ipairs(delayedHourlyQueueRepeating) do
+		if ev.MinInHour == minInHour then
+			ev.Func();
+		end
+	end
+	while #delayedHourlyQueueOnce > 0 and delayedHourlyQueueOnce[1].Hours <= 0 and delayedHourlyQueueOnce[1].MinInHour <= minInHour do
+		delayedHourlyQueueOnce[1].Func();
+		table.remove(delayedHourlyQueueOnce, 1);
+	end
+end
+
+local function onEveryHours()
+	minInHour = -1;
+	for _, ev in ipairs(delayedHourlyQueueOnce) do
+		ev.Hours = ev.Hours - 1;
+	end
+end
+
+Events.EveryOneMinute.Add(everyOneMinute);
+Events.EveryHours.Add(onEveryHours);
+
+return AnthroTraitsSharedUtilities;

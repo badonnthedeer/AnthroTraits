@@ -1,4 +1,4 @@
--- local AnthroTraitsServerUtilities = {}
+local AnthroTraitsServerUtilities = {}
 
 -- AnthroTraitsServerUtilities.IsAnthro = function(gameCharacter)
     -- -- if (getActivatedMods():contains("\\FurryMod") or getActivatedMods():contains("\\FurryApocalypse")) and gameCharacter ~= nil
@@ -26,4 +26,85 @@
 	-- return false
 -- end
 
--- return AnthroTraitsServerUtilities
+function AnthroTraitsServerUtilities.getPlayerModDataField(player, field, defValue)
+    if not player then
+        DebugLog.log("AT getPlayerModDataField: player nil");
+        return defValue;
+    end
+    local atData = player:getModData().ATPlayerData;
+    if not atData then
+        return defValue;
+    end
+    return atData[field] or defValue;
+end
+
+function AnthroTraitsServerUtilities.setPlayerModDataField(player, field, value)
+    if not player then
+        DebugLog.log("AT setPlayerModDataField: player nil");
+        return;
+    end
+    local atData = player:getModData().ATPlayerData;
+    if not atData then
+        atData = {}
+        player:getModData().ATPlayerData = atData;
+    end
+    atData[field] = value;
+end
+
+function AnthroTraitsServerUtilities.foreachPlayerDo(func, arg, predicate)
+	if isServer() then
+		local players = getOnlinePlayers();
+		if not players then
+			return;
+		end
+		for i=0, players:size()-1 do
+            local player = players:get(i);
+            if not predicate or predicate(player) then
+                local res = func(player, arg);
+                if res then
+                    return;
+                end
+            end
+		end
+	else
+		for i=0, getNumActivePlayers()-1 do
+            local player = getSpecificPlayer(i);
+            if not predicate or predicate(player) then
+                local res = func(player, arg);
+                if res then
+                    return;
+                end
+            end
+		end
+	end
+end
+
+function AnthroTraitsServerUtilities.sendServerCommand(playerOrModule, moduleOrCommand, commandOrData, maybeData)
+    local player = nil;
+    local module;
+    local command;
+    local data;
+
+    if maybeData then
+        player = playerOrModule;
+        module =  moduleOrCommand;
+        command = commandOrData;
+        data = maybeData;
+    else
+        module = playerOrModule;
+        command = moduleOrCommand;
+        data = commandOrData;
+    end
+        
+	if isServer() then
+        if player then
+            sendServerCommand(player, module, command, data);
+        else
+            sendServerCommand(module, command, data);
+        end
+    else
+        triggerEvent("OnServerCommand", module, command, data);
+    end
+end
+
+return AnthroTraitsServerUtilities

@@ -118,13 +118,16 @@ AnthroTraitsCreationMethods.initAnthroTraits = function()
 		"UI_trait_AT_Bug_o_ssieur", 1, "UI_trait_AT_Bug_o_ssieur_desc", false)
     ATCM.TTF.Add("AnthroTraits:AT_Bug_o_ssieur", "AnthroTraits,CostVariable");
 	createDescInfo(AT_Bug_o_ssieur, "AT_Bug_o_ssieur",
-		{ createDescVar("AT_Bug_o_ssieurForageBonus") }
+		{ createDescVar("AT_Bug_o_ssieurBonus"), createDescVar("AT_Bug_o_ssieurForageBonus") }
 	)
 
     --BULL RUSH
-	--CharacterTraitDefinition.addCharacterTraitDefinition(ATGt.BULLRUSH,
-	--	"UI_trait_AT_BullRush", 1, "UI_trait_AT_BullRush_desc", false)
-    --this.TTF.Add("AnthroTraits:AT_BullRush", "AnthroTraits,CostVariable,Anthro,Horns");
+	local AT_BullRush = CharacterTraitDefinition.addCharacterTraitDefinition(ATGt.BULLRUSH,
+		"UI_trait_AT_BullRush", 1, "UI_trait_AT_BullRush_desc", false, true)	--NOTE: disabled bullrush in MP for now since I can't get the client to consistently identify the zombies knocked down on the server :(
+    ATCM.TTF.Add("AnthroTraits:AT_BullRush", "AnthroTraits,CostVariable,Anthro,Horns");
+	createDescInfo(AT_BullRush, "AT_BullRush",
+		{ }
+	)
 
     --CARNIVORE
 	local AT_Carnivore = CharacterTraitDefinition.addCharacterTraitDefinition(ATGt.CARNIVORE,
@@ -151,7 +154,7 @@ AnthroTraitsCreationMethods.initAnthroTraits = function()
     AT_Digitigrade:addXPBoost(Perks.Sneak, 1);
     ATCM.TTF.Add("AnthroTraits:AT_Digitigrade", "AnthroTraits,CostVariable,Anthro");
 	createDescInfo(AT_Digitigrade, "AT_Digitigrade",
-		{ createDescVar("AT_DigitigradeStompDmgPctIncrease", 100) }
+		{ createDescVar("AT_DigitigradeStompDmgPctIncrease", 100), createDescVar("AT_DigitigradeCarryWeightMalus", 100) }
 	)
 
     --EXCLAIMER
@@ -164,10 +167,11 @@ AnthroTraitsCreationMethods.initAnthroTraits = function()
 
     --FERAL BODY
 	local AT_FeralBody = CharacterTraitDefinition.addCharacterTraitDefinition(ATGt.FERALBODY,
-		"UI_trait_AT_FeralBody", 1, "UI_trait_AT_FeralBody_desc", false)
-    AT_FeralBody:addXPBoost(Perks.Strength, 1);
-    AT_FeralBody:addXPBoost(Perks.Fitness, -1);
+		"UI_trait_AT_FeralBody", 1, "UI_trait_AT_FeralBody_desc", false, true)	--NOTE: disabled feral body in MP since setting player speed via TchernoLib mod doesn't seem to work in MP
     ATCM.TTF.Add("AnthroTraits:AT_FeralBody", "AnthroTraits,CostVariable,Anthro");
+	createDescInfo(AT_FeralBody, "AT_FeralBody",
+		{ createDescVar("AT_FeralBodySpeedMultiplier", 100), createDescVar("AT_FeralBodyDiscomfortPerSlot"), createDescVar("AT_FeralBodyDiscomfortArmourMultiplier", 1, 2), createDescVar("AT_FeralBodyDiscomfortArmourThreshold") }
+	)
 
     --FERAL DIGESTION
 	local AT_FeralDigestion = CharacterTraitDefinition.addCharacterTraitDefinition(ATGt.FERALDIGESTION,
@@ -199,6 +203,17 @@ AnthroTraitsCreationMethods.initAnthroTraits = function()
     ATCM.TTF.Add("AnthroTraits:AT_Lonely", "AnthroTraits,CostVariable,Anthro,Social"); --(Xochi suggestion)
 	createDescInfo(AT_Lonely, "AT_Lonely",
 		{ createDescVar("AT_LonelyHoursToAffect"), createDescVar("AT_LonelyHourlyUnhappyIncrease", 100) }
+	)
+
+	--LOW END HUNTER
+	local AT_LowEndHunter = CharacterTraitDefinition.addCharacterTraitDefinition(ATGt.LOWENDHUNTER,
+		"UI_trait_AT_LowEndHunter", -1, "UI_trait_AT_LowEndHunter_desc", false)
+    AT_LowEndHunter:addXPBoost(Perks.Sneak, 1);
+    AT_LowEndHunter:addXPBoost(Perks.Sprinting, 1);
+    AT_LowEndHunter:addXPBoost(Perks.Fitness, -1);
+    ATCM.TTF.Add("AnthroTraits:AT_LowEndHunter", "AnthroTraits,CostVariable,Anthro");
+	createDescInfo(AT_LowEndHunter, "AT_LowEndHunter",
+		{ createDescVar("AT_LowEndHunterEndRecoMalus") }
 	)
 
     --NATURAL TUMBLER
@@ -237,7 +252,7 @@ AnthroTraitsCreationMethods.initAnthroTraits = function()
     AT_Unguligrade:addXPBoost(Perks.Nimble, 1);
     ATCM.TTF.Add("AnthroTraits:AT_Unguligrade", "AnthroTraits,CostVariable,Anthro,Unguligrade");
 	createDescInfo(AT_Unguligrade, "AT_Unguligrade",
-		{ createDescVar("AT_UnguligradeStompDmgPctIncrease", 100) }
+		{ createDescVar("AT_UnguligradeStompDmgPctIncrease", 100), createDescVar("AT_UnguligradeCarryWeightMalus", 100) }
 	)
     --UNWIELDY HANDS
 	local AT_UnwieldyHands = CharacterTraitDefinition.addCharacterTraitDefinition(ATGt.UNWIELDYHANDS,
