@@ -13,7 +13,7 @@
 	"UI_trait_AT_CarrionEater" : "Carrion Eater",
 	"UI_trait_AT_CarrionEater_desc" : "Your bloodline has gifted you an iron stomach.<br>Rotten meat is %1% more nutritious.<br>Rotten and/or raw meat doesn't make you sick.<br>Your chances of foraging for dead animals are increased by %2%.",
 	"UI_trait_AT_Digitigrade" : "Digitigrade",
-	"UI_trait_AT_Digitigrade_desc" : "You lightly walk on your toes (or claws) and your legs are build for sneaking/running.<br>Stomps do %1% more damage, but your carry weight is decreased by %2%.<br>+1 Sprinting<br>+1 Stealth<br>+1 Lightfoot",
+	"UI_trait_AT_Digitigrade_desc" : "You lightly walk on your toes (paws or claws) and your legs are build for sneaking/running.<br>Stomps do %1% more damage, but your carry weight is decreased by %2%.<br>Your paws/claws cannot be scratched.<br>+1 Sprinting<br>+1 Stealth<br>+1 Lightfoot",
 	"UI_trait_AT_Exclaimer" : "Exclaimer",
 	"UI_trait_AT_Exclaimer_desc" : "The need to warn others of danger runs deep.<br>%1% chance to yell per minute, when at panic level 2.<br>Higher panic levels mean much more yelling.",
 	"UI_trait_AT_FeralBody" : "Feral Body",

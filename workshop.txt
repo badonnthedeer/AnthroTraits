@@ -34,6 +34,7 @@ description=    Meat is more beneficial for your character, plants less. Will fi
 description=    [*][h2]Carrion Eater[/h2]
 description=    Can eat rotten meat without getting sick (boredom and unhappiness still displayed in tooltip, but don't actually apply), is more beneficial than usual. Will find more dead animals when foraging.
 description=    [*][h2]Digitigrade[/h2]
+description=    Feet cannot be scratched.
 description=    Stomps do more damage, but carry weight is slightly decreased.
 description=    +1 Sprinting.
 description=    +1 Lightfoot.
