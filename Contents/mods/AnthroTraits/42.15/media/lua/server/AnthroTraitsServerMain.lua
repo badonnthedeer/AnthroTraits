@@ -139,25 +139,35 @@ local injuryTypes =
     },
 }
 
+local function isBodyPartFoot(bodyPart)
+    return bodyPart:getType() == BodyPartType.Foot_L or bodyPart:getType() == BodyPartType.Foot_R;
+end
+
+local function checkDigitigradeFoodInfection(player, bodyPart, injuryName)
+	local ATGt = AnthroTraitsGlobals.CharacterTrait;
+    -- player has digitigrade and was scratched on foot => automatic pass
+    return isBodyPartFoot(bodyPart) and injuryName == "scratch" and player:hasTrait(ATGt.DIGITIGRADE);
+end
+
 local function checkIfRemoveInfection(player, bodyPart, bodyPartInfo, attackerIsAnthro)
 	local ATGt = AnthroTraitsGlobals.CharacterTrait
-    if player:hasTrait(ATGt.UNGULIGRADE) and (bodyPart:getType() == BodyPartType.Foot_L or bodyPart:getType() == BodyPartType.Foot_R) then
+    -- automatically remove infection from feet if Unguligrade
+    if player:hasTrait(ATGt.UNGULIGRADE) and isBodyPartFoot(bodyPart) then
         DebugLog.log("AT Unguligrade foot immunity triggered");
         return true;
     end
     local anthroIgnoreImmunity = SandboxVars.AnthroTraits.AT_AnthroImmunityIgnoredByAnthroZombies
-    if player:hasTrait(ATGt.ANTHROIMMUNITY) and (not anthroIgnoreImmunity or not attackerIsAnthro) then
-        local rolledInfectionChance = ZombRand(1, 100);
-        local healedAllInfections = true;
-        for injuryName, injuryInfo in pairs(injuryTypes) do
-            if checkIfIsNewInjury(bodyPartInfo, injuryName, injuryInfo.getInjuryTime(bodyPart)) then
-                healedAllInfections = healedAllInfections and rolledInfectionChance >= injuryInfo.InfectionChance;
-            end
+    local applyAnthroImmunity = player:hasTrait(ATGt.ANTHROIMMUNITY) and (not anthroIgnoreImmunity or not attackerIsAnthro);
+    local rolledInfectionChance = ZombRand(1, 100);
+    local healedAllInfections = true;
+    for injuryName, injuryInfo in pairs(injuryTypes) do
+        -- check only for new injuries (e.g. don't reroll for an old scratch)
+        if checkIfIsNewInjury(bodyPartInfo, injuryName, injuryInfo.getInjuryTime(bodyPart)) then
+            healedAllInfections = healedAllInfections and (checkDigitigradeFoodInfection(player, bodyPart, injuryName) or (applyAnthroImmunity and rolledInfectionChance >= injuryInfo.InfectionChance));
+            DebugLog.log("AT AnthroImmunity rolled " .. rolledInfectionChance .. " against infections from " .. injuryName);
         end
-        DebugLog.log("AT AnthroImmunity rolled " .. rolledInfectionChance .. " against infections");
-        return healedAllInfections;
     end
-    return false;
+    return healedAllInfections;
 end
 
 local function healBodyPart(bodyPart, bodyPartInfo, healScratch, healCut, healBite)
@@ -246,11 +256,13 @@ local function processPlayerBodyParts(player, healthInfo, bodyDamage)
             DebugLog.log("AT all infection defenses failed. Die well o7");
         end
     end
-    if player:hasTrait(AnthroTraitsGlobals.CharacterTrait.UNGULIGRADE) then
+    local hasUnguligrade = player:hasTrait(AnthroTraitsGlobals.CharacterTrait.UNGULIGRADE);
+    local hasDigitigrade = player:hasTrait(AnthroTraitsGlobals.CharacterTrait.DIGITIGRADE);
+    if hasUnguligrade or hasDigitigrade then
         local footL = bodyDamage:getBodyPart(BodyPartType.Foot_L);
-        healBodyPart(footL, healthInfo[footL:getIndex()], true, true, true);
+        healBodyPart(footL, healthInfo[footL:getIndex()], true, hasUnguligrade, hasUnguligrade);
         local footR = bodyDamage:getBodyPart(BodyPartType.Foot_R);
-        healBodyPart(footR, healthInfo[footR:getIndex()], true, true, true);
+        healBodyPart(footR, healthInfo[footR:getIndex()], true, hasUnguligrade, hasUnguligrade);
     end
 end
 
