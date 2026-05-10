@@ -88,23 +88,32 @@ function AnthroTraitsSharedUtilities.knockdownZombie(zombie)
 	-- zombie:reportEvent("wasBumped");
 end
 
--- returns the current "LastFallSpeed" for the next processFallingPlayer() call or nil if not relevant
-function AnthroTraitsSharedUtilities.processFallingPlayer(player, prevLastFallSpeed)
+-- returns whether the current player has been fall protected by Natural Tumbler trait
+function AnthroTraitsSharedUtilities.processFallingPlayer(player, fallProtected)
+	local lastFallSpeed = player:getLastFallSpeed();
 	if player:isFalling() then
         if player:hasTrait(AnthroTraitsGlobals.CharacterTrait.VESTIGIALWINGS) then
-            player:setLastFallSpeed(math.min(player:getLastFallSpeed(), AnthroTraitsGlobals.VESTIGIALWINGS_MAXFALLSPEED));
-        elseif player:hasTrait(AnthroTraitsGlobals.CharacterTrait.NATURALTUMBLER) then
-            local currLastFallSpeed = player:getLastFallSpeed();
-			prevLastFallSpeed = prevLastFallSpeed or 0;
-			if currLastFallSpeed > prevLastFallSpeed then
-				local newFallSpeed = prevLastFallSpeed + (currLastFallSpeed - prevLastFallSpeed) * SandboxVars.AnthroTraits.AT_NaturalTumblerFallTimeMult;
-				player:setLastFallSpeed(newFallSpeed);
-				return newFallSpeed;
+            player:setLastFallSpeed(math.min(lastFallSpeed, AnthroTraitsGlobals.VESTIGIALWINGS_MAXFALLSPEED));
+        elseif player:hasTrait(AnthroTraitsGlobals.CharacterTrait.NATURALTUMBLER) and not fallProtected and lastFallSpeed > 0 then
+			local dt = GameTime.getInstance():getTimeDelta();
+            if isServer() then
+                dt = dt * 0.16;
 			end
-			return currLastFallSpeed;
+            local fallDelta = lastFallSpeed * dt + 2.5005207 * dt * dt;
+            local newZ = player:getZ() - fallDelta - 0.1; 	-- add small amount to find floor before base game
+			local heightAboveFloor = player:getHeightAboveFloor();
+			local floorZ = player:getZ() - heightAboveFloor;
+			if newZ < floorZ then
+				player:setLastFallSpeed(lastFallSpeed * SandboxVars.AnthroTraits.AT_NaturalTumblerFallTimeMult);
+				-- set fall protection to avoid reducing fall speed again until next fall
+				return true;
+			end
 		end
+	elseif lastFallSpeed <= 0 then
+		-- reset fall protection
+		return nil;
     end
-	return nil;
+	return fallProtected;
 end
 
 local function hasDefensiveStats(clothing)
