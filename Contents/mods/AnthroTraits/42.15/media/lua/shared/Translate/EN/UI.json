@@ -29,7 +29,7 @@
 	"UI_trait_AT_LowEndHunter" : "Low Endurance Hunter",
 	"UI_trait_AT_LowEndHunter_desc" : "You prefer to sneak up to your target and pounce on them. You are not made for long chases.<br>+1 Sprinting<br>+1 Sneak<br>-1 Fitness<br>Endurance recovery is decreased by %1%.",
 	"UI_trait_AT_NaturalTumbler" : "Natural Tumbler",
-	"UI_trait_AT_NaturalTumbler_desc" : "Your body is built for short falls.<br>You fall at %1% the normal acceleration.",
+	"UI_trait_AT_NaturalTumbler_desc" : "Your body is built for short falls.<br>You impact the floor at only %1% of the fall speed.",
 	"UI_trait_AT_Stinky" : "Stinky",
 	"UI_trait_AT_Stinky_desc" : "You have a tendency to stink. Worse, you're nose-blind to it.<br>If you're too dirty, Zombies will be more attracted to you.<br>Other players may comment on your smell.",
 	"UI_trait_AT_Tail" : "Tailed",

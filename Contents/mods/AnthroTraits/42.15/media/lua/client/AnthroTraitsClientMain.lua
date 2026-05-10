@@ -2,7 +2,7 @@ local ATU = require "AnthroTraitsUtilities"
 local ATShU = require "AnthroTraitsSharedUtilities"
 
 --NOTE: uses playerIndex as keys instead of playerOnlineID, since playerOnlineID might assign different ID to same player after re-join. playerIndex should be limited to 0-3 for split screen players
-local prevFallSpeedPlayers = {}
+local fallProtectedPlayers = {}
 local prevLastEndurancePlayers = {};
 local isWinter;
 
@@ -64,7 +64,7 @@ end
 local function onPlayerUpdate(player)
     local playerID = player:getIndex();
     -- SP/MP server must process fallspeed and MP client must do the same
-    prevFallSpeedPlayers[playerID] = ATShU.processFallingPlayer(player, prevFallSpeedPlayers[playerID]);
+    fallProtectedPlayers[playerID] = ATShU.processFallingPlayer(player, fallProtectedPlayers[playerID]);
     -- server is authority but client should also enforce limit to avoid inconsistent states
     ATShU.applyTorporPlayer(player, isWinter);
     prevLastEndurancePlayers[playerID] = ATShU.applyLowEndHunterPlayer(player, prevLastEndurancePlayers[playerID])
@@ -94,7 +94,7 @@ end
 local function onCreatePlayer(playerIndex, player)
     isWinter = ATShU.checkIfIsWinter();
     local playerID = player:getIndex();
-    prevFallSpeedPlayers[playerIndex] = nil;
+    fallProtectedPlayers[playerIndex] = nil;
 end
 
 local function initAnthroTraits()
