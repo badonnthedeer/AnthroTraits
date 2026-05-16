@@ -249,25 +249,54 @@ end
 local minInHour = -1;
 
 local delayedHourlyQueueRepeating = {}
-function AnthroTraitsSharedUtilities.queueRepeatingDelayedEvent(func, minInHour)
-	table.insert(delayedHourlyQueueRepeating, { Func = func, MinInHour = minInHour });
+function AnthroTraitsSharedUtilities.queueRepeatingDelayedEvent(func, minInHour, delayInTicks)
+	table.insert(delayedHourlyQueueRepeating, { Func = func, MinInHour = minInHour, delayInTicks = delayInTicks });
+end
+
+local delayedTickEvents = {}
+
+local function processDelayedTickEvents()
+	while #delayedTickEvents > 0 do
+		local nextEv = delayedTickEvents[1];
+		if nextEv.delayInTicks > 1 then
+			break;
+		end
+		nextEv.Func();
+		table.remove(delayedTickEvents, 1);
+	end
+	if #delayedTickEvents == 0 then
+		Events.OnTick.Remove(processDelayedTickEvents);
+	else
+		for _, event in ipairs(delayedTickEvents) do
+			event.delayInTicks = event.delayInTicks - 1;
+		end
+	end
 end
 
 local delayedHourlyQueueOnce = {}
-function AnthroTraitsSharedUtilities.queueDelayedEvent(func, delayInMin)
+
+function AnthroTraitsSharedUtilities.queueDelayedEvent(func, delayInMin, delayInTicks)
 	if delayInMin < 1 then
-		func();
-		return;
-	end
-	local hours = math.floor((minInHour + delayInMin) / 60);
-	local minInHour = (minInHour + delayInMin) % 60;
-	for index, ev in ipairs(delayedHourlyQueueOnce) do
-		if hours < ev.Hours and minInHour < ev.MinInHour then
-			table.insert(delayedHourlyQueueOnce, index, { Func = func, Hours = hours, MinInHour = minInHour });
-			return;
+		if (delayInTicks or 0) <= 0 then
+			func();
+		else
+			table.insert(delayedTickEvents, { Func = func, delayInTicks = delayInTicks });
+			Events.OnTick.Remove(processDelayedTickEvents);
+			Events.OnTick.Add(processDelayedTickEvents);
 		end
+	else
+		local hours = math.floor((minInHour + delayInMin) / 60);
+		local minInHour = (minInHour + delayInMin) % 60;
+		for index, ev in ipairs(delayedHourlyQueueOnce) do
+			if hours < ev.Hours or
+				(hours == ev.Hours and minInHour < ev.MinInHour) or
+				(hours == ev.Hours and minInHour == ev.MinInHour and (delayInTicks or 0) < ev.delayInTicks) then
+				table.insert(delayedHourlyQueueOnce, index, { Func = func, Hours = hours, MinInHour = minInHour, delayInTicks = (delayInTicks or 0) });
+				return;
+			end
+		end
+		table.insert(delayedHourlyQueueOnce, { Func = func, Hours = hours, MinInHour = minInHour, delayInTicks = (delayInTicks or 0) });
 	end
-	table.insert(delayedHourlyQueueOnce, { Func = func, Hours = hours, MinInHour = minInHour });
 end
 
 local function addItemTagToItemsFromSandbox(itemList, tag)
@@ -305,12 +334,28 @@ local function everyOneMinute()
 	minInHour = minInHour + 1;
 	for _, ev in ipairs(delayedHourlyQueueRepeating) do
 		if ev.MinInHour == minInHour then
-			ev.Func();
+			if ev.delayInTicks > 0 then
+				table.insert(delayedTickEvents, ev);
+			else
+				ev.Func();
+			end
 		end
 	end
-	while #delayedHourlyQueueOnce > 0 and delayedHourlyQueueOnce[1].Hours <= 0 and delayedHourlyQueueOnce[1].MinInHour <= minInHour do
-		delayedHourlyQueueOnce[1].Func();
+	while #delayedHourlyQueueOnce > 0 do
+		local nextEvent = delayedHourlyQueueOnce[1];
+		if nextEvent.Hours > 0 or nextEvent.MinInHour > minInHour then
+			break;
+		end
+		if nextEvent.delayInTicks > 0 then
+			table.insert(delayedTickEvents, nextEvent);
+		else
+			nextEvent.Func();
+		end
 		table.remove(delayedHourlyQueueOnce, 1);
+	end
+	if #delayedTickEvents > 0 then
+		Events.OnTick.Remove(processDelayedTickEvents);
+		Events.OnTick.Add(processDelayedTickEvents);
 	end
 end
 
