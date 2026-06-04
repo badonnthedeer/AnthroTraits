@@ -501,16 +501,16 @@ end
 
 local function perkLevelPlayer(character, perk, level, increasing)
     if instanceof(character, "IsoPlayer") and not character:isDead() and perk == Perks.Strength then
-        -- one minute after strengh perk level changes, recalculate carry weight
-        ATShU.queueDelayedEvent(function() ATShU.updatePlayerCarryWeight(character); end, 1);
+        -- one tick after strengh perk level changes, recalculate carry weight
+        ATShU.queueDelayedEvent(function() ATShU.updatePlayerCarryWeight(character); end, 0, 1);
     end
 end
 
 local usingUCWF = getActivatedMods():contains("UnifiedCarryWeightFramework");
 if not usingUCWF then
-    -- one minute into the hour trigger carry weight recalculation (to overwrite SOTO if active)
+    -- one tick into the hour trigger carry weight recalculation (to overwrite SOTO if active)
     -- should happen both on MP client and server
-    ATShU.queueRepeatingDelayedEvent(updateAllPlayerCarryWeight, 1);
+    ATShU.queueRepeatingDelayedEvent(updateAllPlayerCarryWeight, 0, 1);
     Events.LevelPerk.Add(perkLevelPlayer);
 end
 
