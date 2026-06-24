@@ -25,7 +25,7 @@ function forageSystem.pickRandomItemType(_zoneName, _rolledCategory)
                 _rolledCategory = "Insects";
             end
         elseif player:hasTrait(ATGt.HERBIVORE) then
-            if ZombRand(0, 100) < SandboxVars.AnthroTraits.AnthroTraits_HerbivoreForageBonus then
+            if ZombRand(0, 100) < SandboxVars.AnthroTraits.AT_HerbivoreForageBonus then
 				local catRoll = ZombRand(0, 3)
 				if catRoll < 1 then
 					_rolledCategory = "Berries";
