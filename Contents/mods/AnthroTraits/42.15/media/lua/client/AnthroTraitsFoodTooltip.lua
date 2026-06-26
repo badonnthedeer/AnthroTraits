@@ -63,13 +63,15 @@ ISToolTipInv.render = function(self)
     if self.item:isFluidContainer() and player:hasTrait(AnthroTraitsGlobals.CharacterTrait.FERALDIGESTION) and ATFU.getFeralPoisonPercent(self.item:getFluidContainer()) > 0 then
         oldRender(self);
         addendum = tooltipAddendums.POISONOUS;
-    else
+    elseif instanceof(self.item, "Food") then
         local addFoodStats, extraFoodInfo = ATFU.getAdditionalFoodStats(player, self.item);
         if not addFoodStats then
             oldRender(self);
             return;
         end
         addendum = adjustFoodTooltip(self, addFoodStats, extraFoodInfo);
+    else
+		oldRender(self);
     end
     if addendum then
         local tooltipPaddingLeft = 7;
