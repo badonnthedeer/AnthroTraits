@@ -25,6 +25,11 @@ local function isGood(val, info)
     return sign(val) == info.DesiredMultiplier;
 end
 
+local function cloneFoodItem(item)
+	local newItem = instanceItem(item:getFullType());
+	newItem:copyFoodFrom(item);
+	return newItem;
+end
 
 local oldRender = ISToolTipInv.render;
 local function adjustFoodTooltip(tooltip, addFoodStats, extraFoodInfo)
@@ -32,7 +37,9 @@ local function adjustFoodTooltip(tooltip, addFoodStats, extraFoodInfo)
     local adjustedFoodStats = originalfoodStats:add(addFoodStats, true, true);
 
     local originalItem = tooltip.item;
-    tooltip.item = tooltip.item:createCloneItem();
+    --NOTE: InventoryItem:createCloneItem() only works in debug mode
+    --tooltip.item = tooltip.item:createCloneItem();
+    tooltip.item = cloneFoodItem(tooltip.item);
     adjustedFoodStats:setToItem(tooltip.item);
     if extraFoodInfo then extraFoodInfo:setToItem(tooltip.item); end
     oldRender(tooltip);
@@ -63,13 +70,15 @@ ISToolTipInv.render = function(self)
     if self.item:isFluidContainer() and player:hasTrait(AnthroTraitsGlobals.CharacterTrait.FERALDIGESTION) and ATFU.getFeralPoisonPercent(self.item:getFluidContainer()) > 0 then
         oldRender(self);
         addendum = tooltipAddendums.POISONOUS;
-    else
+    elseif instanceof(self.item, "Food") then
         local addFoodStats, extraFoodInfo = ATFU.getAdditionalFoodStats(player, self.item);
         if not addFoodStats then
             oldRender(self);
             return;
         end
         addendum = adjustFoodTooltip(self, addFoodStats, extraFoodInfo);
+    else
+		oldRender(self);
     end
     if addendum then
         local tooltipPaddingLeft = 7;
