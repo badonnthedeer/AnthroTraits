@@ -10,6 +10,8 @@
 	"Sandbox_AnthroTraits_AnthroImmunityLacerationInfectionChance_tooltip" : "Chance to actually be infected after being infected from a laceration.<br>'Stacks' with vanilla infection chance.",
 	"Sandbox_AnthroTraits_AnthroImmunityScratchInfectionChance" : "Anthro Immunity Scratch Chance",
 	"Sandbox_AnthroTraits_AnthroImmunityScratchInfectionChance_tooltip" : "Chance to actually be infected after being infected from a scratch.<br>'Stacks' with vanilla infection chance.",
+	"Sandbox_AnthroTraits_AnthroImmunityOtherInfectionChance" : "Anthro Immunity Other Chance",
+	"Sandbox_AnthroTraits_AnthroImmunityOtherInfectionChance_tooltip" : "Chance to actually be infected from some other source (other mods).",
 	"Sandbox_AnthroTraits_AnthroImmunity_Cost" : "Anthro Immunity Cost",
 	"Sandbox_AnthroTraits_AnthroImmunity_Cost_tooltip" : "The cost of this trait at character creation.",
 	"Sandbox_AnthroTraits_BeastOfBurdenPctIncrease" : "Beast of Burden Increase",

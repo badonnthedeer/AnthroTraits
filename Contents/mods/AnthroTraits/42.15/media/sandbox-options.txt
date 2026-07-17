@@ -42,6 +42,12 @@ option AnthroTraits.AT_AnthroImmunityScratchInfectionChance
 	page = AnthroTraits, translation = AnthroTraits_AnthroImmunityScratchInfectionChance,
 }
 
+option AnthroTraits.AT_AnthroImmunityOtherInfectionChance
+{
+	type = integer, min = 0, max = 100, default = 15,
+	page = AnthroTraits, translation = AnthroTraits_AnthroImmunityOtherInfectionChance,
+}
+
 option AnthroTraits.AT_BeastOfBurden_Cost
 {
 	type = integer, min = -15, max = 15, default = 4,

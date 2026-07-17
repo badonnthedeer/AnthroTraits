@@ -143,27 +143,29 @@ local function isBodyPartFoot(bodyPart)
     return bodyPart:getType() == BodyPartType.Foot_L or bodyPart:getType() == BodyPartType.Foot_R;
 end
 
-local function checkDigitigradeFoodInfection(player, bodyPart, injuryName)
+local function checkDigitigradeFootInfection(player, bodyPart, injuryName)
 	local ATGt = AnthroTraitsGlobals.CharacterTrait;
     -- player has digitigrade and was scratched on foot => automatic pass
     return isBodyPartFoot(bodyPart) and injuryName == "scratch" and player:hasTrait(ATGt.DIGITIGRADE);
 end
 
+local function checkUnguligradeFootInfection(player, bodyPart, injuryName)
+	local ATGt = AnthroTraitsGlobals.CharacterTrait;
+    -- player has digitigrade and was scratched on foot => automatic pass
+    return isBodyPartFoot(bodyPart) and (injuryName == "bite" or injuryName == "scratch" or injuryName == "cut") and player:hasTrait(ATGt.UNGULIGRADE);
+end
+
 local function checkIfRemoveInfection(player, bodyPart, bodyPartInfo, attackerIsAnthro)
 	local ATGt = AnthroTraitsGlobals.CharacterTrait
-    -- automatically remove infection from feet if Unguligrade
-    if player:hasTrait(ATGt.UNGULIGRADE) and isBodyPartFoot(bodyPart) then
-        DebugLog.log("AT Unguligrade foot immunity triggered");
-        return true;
-    end
     local anthroIgnoreImmunity = SandboxVars.AnthroTraits.AT_AnthroImmunityIgnoredByAnthroZombies
     local applyAnthroImmunity = player:hasTrait(ATGt.ANTHROIMMUNITY) and (not anthroIgnoreImmunity or not attackerIsAnthro);
-    local rolledInfectionChance = ZombRand(1, 100);
-    local healedAllInfections = true;
+    local rolledInfectionChance = ZombRand(0, 100);
+    -- nil means no injury was checked
+    local healedAllInfections = nil;
     for injuryName, injuryInfo in pairs(injuryTypes) do
         -- check only for new injuries (e.g. don't reroll for an old scratch)
         if checkIfIsNewInjury(bodyPartInfo, injuryName, injuryInfo.getInjuryTime(bodyPart)) then
-            healedAllInfections = healedAllInfections and (checkDigitigradeFoodInfection(player, bodyPart, injuryName) or (applyAnthroImmunity and rolledInfectionChance >= injuryInfo.InfectionChance));
+            healedAllInfections = (healedAllInfections or true) and (checkUnguligradeFootInfection(player, bodyPart, injuryName) or checkDigitigradeFootInfection(player, bodyPart, injuryName) or (applyAnthroImmunity and rolledInfectionChance >= injuryInfo.InfectionChance));
             DebugLog.log("AT AnthroImmunity rolled " .. rolledInfectionChance .. " against infections from " .. injuryName);
         end
     end
@@ -216,7 +218,8 @@ local function processPlayerBodyParts(player, healthInfo, bodyDamage)
     local lastAttackedBy = player:getAttackedBy();
     local attackerIsAnthro = IsAnthro(lastAttackedBy)
 
-    local isTrulyInfected = false;
+    local anyBodyPartInfected = false;
+    local processedAnyBodyPart = false;
     for i = 0, bodyParts:size() - 1 do
         local bodyPart = bodyParts:get(i);
         local bodyPartIndex = bodyPart:getIndex();
@@ -227,34 +230,48 @@ local function processPlayerBodyParts(player, healthInfo, bodyDamage)
         end
         if doInfectionChecks and bodyPart:IsInfected() then
             if not bodyPartInfo.infected then
-                if checkIfRemoveInfection(player, bodyPart, bodyPartInfo, attackerIsAnthro) then
+                local shouldRemoveInfection = checkIfRemoveInfection(player, bodyPart, bodyPartInfo, attackerIsAnthro)
+                if shouldRemoveInfection == true then
                     bodyPart:SetFakeInfected(false);
                     bodyPart:SetInfected(false);
-                else
+                    processedAnyBodyPart = true;
+                elseif shouldRemoveInfection == false then
                     bodyPartInfo.infected = true;
+                    processedAnyBodyPart = true;
                 end
+                -- don't do anything if shouldRemoveInfection == nil
             end
         else
             -- still need to track of current infection state of bodypart
             bodyPartInfo.infected = bodyPart:IsInfected();
         end
-        isTrulyInfected = isTrulyInfected or bodyPartInfo.infected;
+        anyBodyPartInfected = anyBodyPartInfected or bodyPartInfo.infected;
         -- update injury times
         for injuryName, injuryInfo in pairs(injuryTypes) do
             bodyPartInfo[injuryName] = injuryInfo.getInjuryTime(bodyPart);
         end
     end
     if doInfectionChecks then
-        if not isTrulyInfected then
+        local canHealInfection = processedAnyBodyPart;
+        if not processedAnyBodyPart then
+            -- infection not from an injury...another mod? apply bite chance if has anthro immunity
+            local anthroIgnoreImmunity = SandboxVars.AnthroTraits.AT_AnthroImmunityIgnoredByAnthroZombies
+            local applyAnthroImmunity = player:hasTrait(AnthroTraitsGlobals.CharacterTrait.ANTHROIMMUNITY) and (not anthroIgnoreImmunity or not attackerIsAnthro);
+            -- anyBodyPartInfected will be false (since infection didn't come from an injury) => if anthro immunity applies roll on bite chance
+            canHealInfection = applyAnthroImmunity and ZombRand(0, 100) >= SandboxVars.AnthroTraits.AT_AnthroImmunityOtherInfectionChance;
+            DebugLog.log("AT detected infection from other source: remove=" .. tostring(canHealInfection));
+        end
+        if canHealInfection and not anyBodyPartInfected then
             bodyDamage:setInfected(false);
             bodyDamage:setIsFakeInfected(false);
             bodyDamage:setInfectionTime(-1);
             bodyDamage:setInfectionMortalityDuration(-1);
             --bodyDamage:setInfectionGrowthRate(-1);
         else
-            ATSU.setPlayerModDataField(player, "TrulyInfected", isTrulyInfected);
             DebugLog.log("AT all infection defenses failed. Die well o7");
         end
+        -- update directly from bodyDamage in case some other source set it directly to true
+        ATSU.setPlayerModDataField(player, "TrulyInfected", bodyDamage:isInfected());
     end
     local hasUnguligrade = player:hasTrait(AnthroTraitsGlobals.CharacterTrait.UNGULIGRADE);
     local hasDigitigrade = player:hasTrait(AnthroTraitsGlobals.CharacterTrait.DIGITIGRADE);
