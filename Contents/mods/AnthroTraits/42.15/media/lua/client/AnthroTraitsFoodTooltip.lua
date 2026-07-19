@@ -62,7 +62,7 @@ end
 
 ISToolTipInv.render = function(self)
     local player = self.tooltip:getCharacter();
-    if not self.item or not player then
+    if not self.item or not instanceof(self.item, "InventoryItem") or not player then
         oldRender(self);
         return;
     end
