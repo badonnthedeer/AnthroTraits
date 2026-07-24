@@ -12,9 +12,9 @@ function ISDrinkFluidAction:updateEat(delta)
         local consumedRatio = self.startRatio - self.fluidContainer:getFilledRatio();
         local ratioToConsume = targetRatio - consumedRatio;
         local deltaToConsume = ratioToConsume / self.fluidContainer:getFilledRatio();
-        -- deltaToConsume is the amount of fluid consumed per tick, multiplied with alcohol percent and feral poison amount = poison per tick
-        -- NOTE: the numbers tend to get a bit wonky, the longer one drinks (maybe due to FP imprecision?)
-        local poisonDelta = SandboxVars.AnthroTraits.AT_FeralDigestionPoisonAmt * deltaToConsume * self.AT_FeralPoisonPercent;
+        -- deltaToConsume is the percentage of the fluid consumed per tick
+        -- multiply with the amount (liters) in the bottle, the alcohol percent, feral poison amount and constant multiplier = poison per tick
+        local poisonDelta = deltaToConsume * self.fluidContainer:getAmount() * self.AT_FeralPoisonPercent * SandboxVars.AnthroTraits.AT_FeralDigestionPoisonAmt * AnthroTraitsGlobals.FERALDIGESTION_FLUIDMULTIPLIER;
         if not isNaN(poisonDelta) then
             self.character:getStats():add(CharacterStat.POISON, poisonDelta);
         end
