@@ -40,6 +40,7 @@ AnthroTraitsGlobals.BULLRUSH_PUSHINTERVAL = 8;
 AnthroTraitsGlobals.BULLRUSH_PUSHRANGE = 1;
 AnthroTraitsGlobals.BULLRUSH_PERZOMBIECOST_MIN = 0.001;
 AnthroTraitsGlobals.BULLRUSH_PERZOMBIECOST_MAX = 0.02;
+AnthroTraitsGlobals.FERALDIGESTION_FLUIDMULTIPLIER = 20;
 
 AnthroTraitsGlobals.CharacterTrait.ANTHROIMMUNITY = CharacterTrait.register("AnthroTraits:AT_AnthroImmunity")
 AnthroTraitsGlobals.CharacterTrait.BEASTOFBURDEN = CharacterTrait.register("AnthroTraits:AT_BeastOfBurden")
