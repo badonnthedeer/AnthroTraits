@@ -374,7 +374,11 @@ function AnthroTraitsFoodUtilities.getFeralPoisonPercent(fluidContainer)
     for index=0, fluidSample:size()-1 do
         local fluid = fluidSample:getFluid(index);
         local props = fluid:getProperties();
-        res = res + props:getAlcohol() * fluidSample:getPercentage(index);
+        --not all fluids have properties
+        if props ~= nil
+        then
+            res = res + (props:getAlcohol() * fluidSample:getPercentage(index));
+        end
     end
     fluidSample:release();
     return res;
