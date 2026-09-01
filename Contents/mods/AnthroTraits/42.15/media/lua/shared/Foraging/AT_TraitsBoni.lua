@@ -5,7 +5,7 @@ require "Foraging/forageSystem";
 --NOTE2: apparently these values don't actually improve spawn rates but rather how good the player is at detecting/identifying them >.<
 local function generateAT_FoodTraitDefs(forageSystem)
 	local traits = {
-		carnivore = 
+		AT_Carnivore = 
 		{
 			name                    = "AnthroTraits:AT_Carnivore",
 			type                    = "trait",
@@ -16,7 +16,7 @@ local function generateAT_FoodTraitDefs(forageSystem)
 				["DeadAnimals"]     = 30,
 			},
 		},
-		carrionEater = 
+		AT_CarrionEater = 
 		{
 			name                    = "AnthroTraits:AT_CarrionEater",
 			type                    = "trait",
@@ -27,7 +27,7 @@ local function generateAT_FoodTraitDefs(forageSystem)
 				["DeadAnimals"]     = 50,
 			},
 		},
-		herbivore = 
+		AT_Herbivore = 
 		{
 			name                    = "AnthroTraits:AT_Herbivore",
 			type                    = "trait",
@@ -38,9 +38,9 @@ local function generateAT_FoodTraitDefs(forageSystem)
 				["Vegetables"]      = 30,
 			},
 		},
-		bug_o_ssieur = 
+		AT_Bug_o_ssieur = 
 		{
-			name                    = getText(UI_trait_AT_Bug_o_ssieur),
+			name                    = "AnthroTraits:AT_Bug_o_ssieur",
 			type                    = "trait",
 			visionBonus             = 0,
 			weatherEffect           = 0,
