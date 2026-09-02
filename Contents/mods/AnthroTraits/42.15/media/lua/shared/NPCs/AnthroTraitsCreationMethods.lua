@@ -202,7 +202,7 @@ AnthroTraitsCreationMethods.initAnthroTraits = function()
 		"UI_trait_AT_Lonely", -1, "UI_trait_AT_Lonely_desc", false)
     ATCM.TTF.Add("AnthroTraits:AT_Lonely", "AnthroTraits,CostVariable,Anthro,Social"); --(Xochi suggestion)
 	createDescInfo(AT_Lonely, "AT_Lonely",
-		{ createDescVar("AT_LonelyHoursToAffect"), createDescVar("AT_LonelyHourlyUnhappyIncrease", 100) }
+		{ createDescVar("AT_LonelyHoursToAffect"), createDescVar("AT_LonelyHourlyUnhappyIncrease", 1) }
 	)
 
 	--LOW END HUNTER
