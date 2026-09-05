@@ -291,6 +291,18 @@ local function processPlayerHealth(player)
     end
     local bodyDamage = player:getBodyDamage();
     processPlayerBodyParts(player, healthInfo, bodyDamage);
+    
+    if (ATSU.getPlayerModDataField(player, "CheckForSpoiledFoodPoison", false) == true) 
+    then
+
+        ATSU.setPlayerModDataField(player, "CheckForSpoiledFoodPoison", false);
+        
+        --local currentPoison = player:getStats():get(CharacterStat.POISON);
+
+        player:getStats():set(CharacterStat.POISON, ATSU.getPlayerModDataField(player, "ExpectedPoisonLevel", 0));
+
+        ATSU.setPlayerModDataField(player, "ExpectedPoisonLevel", 0);
+    end
 end
 
 local function playerExclaimerCheck(player)

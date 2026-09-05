@@ -1,4 +1,5 @@
-local ATFU = require "AnthroTraitsFoodUtilities"
+local ATFU = require ("AnthroTraitsFoodUtilities");
+local ATSU = require ("AnthroTraitsServerUtilities");
 
 local function sign(number)
     return (number > 0 and 1) or (number == 0 and 0) or -1
@@ -34,6 +35,30 @@ end
 
 local function playerEat(originalFunc, action)
     local addFoodChanges, extraFoodInfo = getClampedAdditionalFoodStats(action.character, action.item, action.percentage);
+
+    if(action.character:hasTrait(AnthroTraitsGlobals.CharacterTrait.CARRIONEATER) and ATFU.offFoodCanPoison(action.item))
+    then
+        local beforePoison = action.character:getStats():get(CharacterStat.POISON);
+        local foodPoisonPower = action.item:getPoisonPower();
+        local addedPoison = 0;
+
+        if addFoodChanges
+        then
+            if addFoodChanges["Poison"]
+            then
+                addedPoison = addFoodChanges["Poison"].value;
+            end
+        end
+
+        if foodPoisonPower
+        then
+            addedPoison = addedPoison + action.item:getPoisonPower();
+        end
+
+        ATSU.setPlayerModDataField(action.character, "CheckForSpoiledFoodPoison", true);
+        ATSU.setPlayerModDataField(action.character, "ExpectedPoisonLevel", beforePoison + addedPoison)
+    end
+
     if addFoodChanges then
         if extraFoodInfo then
             extraFoodInfo:setToItem(action.item);

@@ -188,6 +188,7 @@ local function isNaN(number)
     return number ~= number;
 end
 
+--Handles removing and adding DangerousUncooked tags from food
 local function createExtraFoodInfo()
     return {
         setToItem = function(self, item)
@@ -457,15 +458,15 @@ local function getFoodMultiplier(player, food, foodStats, foodTagInfo)
             uncookedCounteracted = uncookedCounteracted + 1;
         end
     end
-    local pantTagInfo = foodTagInfo[AnthroTraitsGlobals.FoodTags.HERBIVORE];
-    if pantTagInfo then
+    local plantTagInfo = foodTagInfo[AnthroTraitsGlobals.FoodTags.HERBIVORE];
+    if plantTagInfo then
         if not isRotten and isHerbivore then
-            res = addMultiplierForDesiredStats(res,  SandboxVars.AnthroTraits.AT_HerbivoreBonus * pantTagInfo.Weight, foodStats, AnthroTraitsGlobals.FoodTraits.NUTRITIONSTATS);
-            if pantTagInfo.DangerousUncooked then
+            res = addMultiplierForDesiredStats(res,  SandboxVars.AnthroTraits.AT_HerbivoreBonus * plantTagInfo.Weight, foodStats, AnthroTraitsGlobals.FoodTraits.NUTRITIONSTATS);
+            if plantTagInfo.DangerousUncooked then
                 uncookedCounteracted = uncookedCounteracted + 1;
             end
         elseif isCarnivore then
-            res = addMultiplierForDesiredStats(res, SandboxVars.AnthroTraits.AT_CarnivoreMalus * pantTagInfo.Weight, foodStats, AnthroTraitsGlobals.FoodTraits.NUTRITIONSTATS);
+            res = addMultiplierForDesiredStats(res, SandboxVars.AnthroTraits.AT_CarnivoreMalus * plantTagInfo.Weight, foodStats, AnthroTraitsGlobals.FoodTraits.NUTRITIONSTATS);
         end
     end
     if not isRotten and isFoodMotivated and foodTagInfo[AnthroTraitsGlobals.FoodTags.FOODMOTIVATED] then
@@ -539,6 +540,19 @@ function AnthroTraitsFoodUtilities.getAdditionalFoodStats(player, food)
         return foodStats, extraInfo;
     end
     return foodAdditive, extraInfo;
+end
+
+--Checks if food that is any percentage spoiled can poison the player. Uses base game calculations.
+function AnthroTraitsFoodUtilities.offFoodCanPoison(food)
+-- illnessChance : (offness / (food:getOffAgeMax() - food:getOffAge()) * 100.0f);
+    local offness = food:getAge() - food:getOffAgeMax();
+
+    if offness > 0
+    then
+        return true;
+    else
+        return false;
+    end
 end
 
 return AnthroTraitsFoodUtilities;
