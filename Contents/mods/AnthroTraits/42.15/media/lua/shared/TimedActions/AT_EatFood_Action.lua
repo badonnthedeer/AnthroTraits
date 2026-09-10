@@ -1,5 +1,4 @@
 local ATFU = require ("AnthroTraitsFoodUtilities");
-local ATSU = require ("AnthroTraitsServerUtilities");
 
 local function sign(number)
     return (number > 0 and 1) or (number == 0 and 0) or -1
@@ -55,8 +54,8 @@ local function playerEat(originalFunc, action)
             addedPoison = addedPoison + action.item:getPoisonPower();
         end
 
-        ATSU.setPlayerModDataField(action.character, "CheckForSpoiledFoodPoison", true);
-        ATSU.setPlayerModDataField(action.character, "ExpectedPoisonLevel", beforePoison + addedPoison)
+        sendClientCommand(action.character, AnthroTraitsGlobals.ModID, "setPlayerModDataField", {CheckForSpoiledFoodPoison = true, ExpectedPoisonLevel = (beforePoison + addedPoison)});
+        
     end
 
     if addFoodChanges then
